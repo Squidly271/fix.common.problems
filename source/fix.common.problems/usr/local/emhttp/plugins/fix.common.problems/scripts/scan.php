@@ -246,7 +246,20 @@ if ( $autoUpdateSettings['Global'] != "true" ) {
   }
 }
 
+# check for 32 bit packages in /boot/extra and /boot/packages
 
+$files = array_diff(scandir("/boot/extra"),array(".",".."));
+foreach ($files as $file) {
+  if ( strpos($file,"i386") || strpos($file,"i486") ) {
+    addError("Probable 32 Big package <font color='purple'><b>$file</b></font> found on the flash drive in the <b>extra</b> folder","32 Bit packages are incompatible with unRaid 6.x and need to be removed - Using your desktop, navigate to the <em>flash</em> share (extra folder) and delete the offending file");
+  }
+}
+$files = array_diff(scandir("/boot/packages"),array(".",".."));
+foreach ($files as $file) {
+  if ( strpos($file,"i386") || strpos($file,"i486") ) {
+    addError("Probable 32 Big package <font color='purple'><b>$file</b></font> found on the flash drive in the <b>packages</b> folder","32 Bit packages are incompatible with unRaid 6.x and need to be removed - Using your desktop, navigate to the <em>flash</em> share (packages folder) and delete the offending file");
+  }
+}
 if ( ! $errors ) {
   @unlink($fixPaths['errors']);
 } else {
