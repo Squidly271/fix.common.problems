@@ -228,6 +228,25 @@ foreach ( $disks as $disk ) {
   }
 }  
 
+# look for plugins not up to date
+
+$autoUpdateSettings = readJsonFile($communityPaths['autoUpdateSettings']);
+if ( $autoUpdateSettings['Global'] != "true" ) {
+  $installedPlugins = array_diff(scandir("/var/log/plugins"),array(".",".."));
+  foreach ($installedPlugins as $Plugin) {
+    if ( $autoUpdateSettings[$Plugin] != "true" ) {
+      if ( is_file("/var/log/plugins/$Plugin") ) {
+        if ( strtolower(pathinfo($Plugin, PATHINFO_EXTENSION)) == "plg" ) {
+          if ( checkPluginUpdate($Plugin) ) {
+            addError("Plugin <font color='purple'><b>$Plugin</b></font> is not up to date","Upgrade the plugin here: ".addLinkButton("Plugins","/Plugins"));
+          }
+        }
+      }
+    }
+  }
+}
+
+
 if ( ! $errors ) {
   @unlink($fixPaths['errors']);
 } else {
