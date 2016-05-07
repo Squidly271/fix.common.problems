@@ -3,6 +3,7 @@
 $communityPaths['autoUpdateSettings'] = "/boot/config/plugins/community.applications/AutoUpdate.json";
 $fixPaths['tempFiles'] = "/tmp/fix.common.problems";
 $fixPaths['errors'] = $fixPaths['tempFiles']."/errors.json";
+$fixPaths['disks.ini'] = "/var/local/emhttp/disks.ini";
 
 exec("mkdir -p ".$fixPaths['tempFiles']);
 
@@ -18,7 +19,7 @@ function addError($description,$action) {
 }
 
 function addLinkButton($buttonName,$link) {
-  $link = str_replacE("'","&quot;",$link);
+  $link = str_replace("'","&quot;",$link);
   return "<input type='button' value='$buttonName' onclick='window.location.href=&quot;$link&quot;'>";
 }
 
@@ -39,6 +40,7 @@ $shareList = array_diff(scandir("/mnt/user"),array(".",".."));
 # Check for implied cache only but files / folders on array
     
 foreach ($shareList as $share) {
+  if ( startsWith($share,".") ) { continue; }
   if ( ! is_file("/boot/config/shares/$share.cfg") ) {
     if ( is_dir("/mnt/user0/$share") ) {
       $shareURL = str_replace(" ","+",$share);
@@ -50,6 +52,7 @@ foreach ($shareList as $share) {
 # Check for cache only share, but files / folders on array
     
 foreach ($shareList as $share) {
+  if ( startsWith($share,".") ) { continue; }
   if ( is_file("/boot/config/shares/$share.cfg") ) {
     $shareCfg = parse_ini_file("/boot/config/shares/$share.cfg");
     if ( $shareCfg['shareUseCache'] == "only" ) {
@@ -64,6 +67,7 @@ foreach ($shareList as $share) {
 # Check for don't use cache, but files on cache drive
     
 foreach ($shareList as $share) {
+  if ( startsWith($share,".") ) { continue; }
   if ( is_file("/boot/config/shares/$share.cfg") ) {
     $shareCfg = parse_ini_file("/boot/config/shares/$share.cfg");
     if ( $shareCfg['shareUseCache'] == "no" ) {
@@ -184,7 +188,7 @@ if ( is_dir("/mnt/cache") ) {
 
 # look for disabled disks
 
-$disks = parse_ini_file("/var/local/emhttp/disks.ini",true);
+$disks = parse_ini_file($fixPaths['disks.ini'],true);
 
 foreach ($disks as $disk) {
   if ( startsWith($disk['status'],'DISK_DSBL') ) {
@@ -195,9 +199,9 @@ foreach ($disks as $disk) {
 # look for missing disks
 
 foreach ($disks as $disk) {
-  if ( ( $disk['status'] == "DISK_NP") || ( $disk['status'] == "DISK_DSBL_NP" ) ) {
+  if ( ( $disk['status'] == "DISK_NP") || ( $disk['status'] == "DISK_NP_DSBL" ) ) {
     if ( $disk['id'] ) {
-      addError("<font color='purple'><b>".$disk['name']." (".$disk['id'].")</b></font> is missing","Begin Investigation Here: ".addLinkButton("unRaid Main","/Main"));
+      addError("<font color='purple'><b>".$disk['name']." (".$disk['id'].")</b></font> is missing","unRaid believes that your hard drive is not connected to any SATA port.  Begin Investigation Here: ".addLinkButton("unRaid Main","/Main")."  And also look at the ".addLinkButton("Diagnostics","/Tools/Diagnostics"));
     }
   }
 }
@@ -206,7 +210,7 @@ foreach ($disks as $disk) {
 
 foreach ($disks as $disk) {
   if ( $disk['numErrors'] ) {
-    addError("<font color='purple'><b>".$disk['name']." (".$disk['id'].")</b></font> has read errors","Begin Investigation Here: ".addLinkButton("unRaid Main","/Main"));
+    addError("<font color='purple'><b>".$disk['name']." (".$disk['id'].")</b></font> has read errors","If the disk has not been disabled, then unRaid has successfully rewritten the contents of the offending sectors back to the hard drive.  It would be a good idea to look at the S.M.A.R.T. Attributes for the drive in questionBegin Investigation Here: ".addLinkButton($disk['name']." Settings","/Main/Device?name=".$disk['name']));
   }
 }
 
@@ -214,7 +218,7 @@ foreach ($disks as $disk) {
 
 foreach ( $disks as $disk ) {
   if ( $disk['fsError'] ) {
-    addError("<font color='purple'><b>".$disk['name']." (".$disk['id'].")</b></font> has file system errors","If the disk if XFS / REISERFS, stop the array, restart the Array in Maintenance mode, and run the file system checks.  If the disk is BTRFS, then just run the file system checks".addLinkButton("unRaid Main","/Main"));
+    addError("<font color='purple'><b>".$disk['name']." (".$disk['id'].")</b></font> has file system errors (".$disk['fsError'].")","If the disk if XFS / REISERFS, stop the array, restart the Array in Maintenance mode, and run the file system checks.  If the disk is BTRFS, then just run the file system checks".addLinkButton("unRaid Main","/Main")."<b>If the disk is listed as being unmountable, and it has data on it, whatever you do do not hit the format button.  Seek assistance <a href='http://lime-technology.com/forum/index.php?board=71.0' target='_blank'>HERE</a>");
   }
 }
 
