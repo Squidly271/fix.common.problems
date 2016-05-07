@@ -29,7 +29,7 @@ $checkList = "
 * Look for read errors
 * Look for file system errors
 * Look for SSD's within the Array
-
+* Check if plugins are up to date (and ignore if autoupdate settings are enabled in CA)
 </strong>
 ";
 echo Markdown($checkList);
