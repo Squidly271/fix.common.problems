@@ -1,0 +1,83 @@
+Menu="Utilities"
+Icon="FixIt.png"
+Title="Fix Common Problems"
+---
+<?
+###############################################################
+#                                                             #
+# Fix Common Problems copyright 2015-2016, Andrew Zawadzki    #
+#                                                             #
+###############################################################
+
+$plugin = "fix.common.problems";
+
+?>
+<script>
+
+var URL = "/plugins/<?=$plugin?>/include/fixExec.php";
+
+function myAlert(description,textdescription,textimage,imagesize, outsideClick, showCancel, showConfirm, alertType) {
+  if ( !outsideClick ) outsideClick = false;
+  if ( !showCancel )   showCancel = false;
+  if ( !showConfirm )  showConfirm = false;
+  if ( imagesize == "" ) { imagesize = "80x80"; }
+   
+  swal({
+    title: description,
+    text: textdescription,
+    imageUrl: textimage,
+    imageSize: imagesize,
+    allowOutsideClick: outsideClick,
+    showConfirmButton: showConfirm,
+    showCancelButton: showCancel,
+    type: alertType,
+    html: true
+  });
+}
+
+function myCloseAlert() {
+  swal.close();
+}
+function checkList() {
+  openBox('/plugins/fix.common.problems/scripts/checkList.php',"What Is Checked?",550,550);
+}
+function moveToCache(share) {
+  swal({
+    title: "Are You Sure?",
+    text: "Are you sure you want to move all files from the cache-only share <em><b><font color='red'>"+share+"</font></b></em> from the array to the cache drive?  This function is currently disabled",
+    type: "warning",
+    html: true,
+    allowOutsideClick: true,
+    showConfirmButton: true,
+    showCancelButton: true,
+    closeOnConfirm: true
+  });
+}
+
+function moveToArray(share) {
+  swal({
+    title: "Are You Sure?",
+    text: "Are you sure you want to move all files from the array-only share <em><b><font color='red'>"+share+"</font></b></em> from the cache drive to the array?  This function is currently disabled",
+    type: "warning",
+    html: true,
+    allowOutsideClick: true,
+    showConfirmButton: true,
+    showCancelButton: true,
+    closeOnConfirm: true
+  });
+}
+
+$(function() {
+  myAlert("Scanning","Now Scanning your system for common problems.  This may take a minute","","",false,false,false,"warning");
+  $.post(URL,{action:'scan'},function(data) {
+    if (data) {
+      $("#settings").html(data);
+      myCloseAlert();
+    }
+  });
+});
+
+</script>
+<span id='settings'></span>
+
+<center><input type='button' value='What is checked' onclick='checkList();'></center>
