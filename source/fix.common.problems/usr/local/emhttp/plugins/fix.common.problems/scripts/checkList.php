@@ -31,6 +31,7 @@ $checkList = "
 * Look for SSD's within the Array
 * Check if plugins are up to date (and ignore if autoupdate settings are enabled in CA)
 * Check for 32 bit packages in /boot/extra and /boot/packages
+* Check for docker applications updates available
 </strong>
 ";
 echo Markdown($checkList);

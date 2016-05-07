@@ -1,6 +1,7 @@
 #!/usr/bin/php
 <?PHP
 $communityPaths['autoUpdateSettings'] = "/boot/config/plugins/community.applications/AutoUpdate.json";
+$fixPaths['dockerUpdateStatus'] = "/var/lib/docker/unraid-update-status.json";
 $fixPaths['tempFiles'] = "/tmp/fix.common.problems";
 $fixPaths['errors'] = $fixPaths['tempFiles']."/errors.json";
 $fixPaths['disks.ini'] = "/var/local/emhttp/disks.ini";
@@ -8,6 +9,8 @@ $fixPaths['disks.ini'] = "/var/local/emhttp/disks.ini";
 exec("mkdir -p ".$fixPaths['tempFiles']);
 
 require_once("/usr/local/emhttp/plugins/fix.common.problems/include/helpers.php");
+require_once("/usr/local/emhttp/plugins/dynamix.docker.manager/include/DockerClient.php");
+
 
 function addError($description,$action) {
   global $errors;
@@ -251,19 +254,36 @@ if ( $autoUpdateSettings['Global'] != "true" ) {
 }
 
 # check for 32 bit packages in /boot/extra and /boot/packages
+if ( is_dir("/boot/extra") ) {
+  $files = array_diff(scandir("/boot/extra"),array(".",".."));
+  foreach ($files as $file) {
+    if ( strpos($file,"i386") || strpos($file,"i486") ) {
+      addError("Probable 32 Big package <font color='purple'><b>$file</b></font> found on the flash drive in the <b>extra</b> folder","32 Bit packages are incompatible with unRaid 6.x and need to be removed - Using your desktop, navigate to the <em>flash</em> share (extra folder) and delete the offending file");
+    }
+  }
+}
+if ( is_dir("/boot/packages") ) {
+  $files = array_diff(scandir("/boot/packages"),array(".",".."));
+  foreach ($files as $file) {
+    if ( strpos($file,"i386") || strpos($file,"i486") ) {
+      addError("Probable 32 Big package <font color='purple'><b>$file</b></font> found on the flash drive in the <b>packages</b> folder","32 Bit packages are incompatible with unRaid 6.x and need to be removed - Using your desktop, navigate to the <em>flash</em> share (packages folder) and delete the offending file");
+    }
+  }
+}
 
-$files = array_diff(scandir("/boot/extra"),array(".",".."));
-foreach ($files as $file) {
-  if ( strpos($file,"i386") || strpos($file,"i486") ) {
-    addError("Probable 32 Big package <font color='purple'><b>$file</b></font> found on the flash drive in the <b>extra</b> folder","32 Bit packages are incompatible with unRaid 6.x and need to be removed - Using your desktop, navigate to the <em>flash</em> share (extra folder) and delete the offending file");
+# Check if docker containers not updated
+
+$DockerClient = new DockerClient();
+$info = $DockerClient->getDockerContainers();
+$updateStatus = readJsonFile($fixPaths['dockerUpdateStatus']);
+
+foreach ($info as $docker) {
+  if ( $updateStatus[$docker['Image']]['status'] == 'false' ) {
+    addError("Docker Application <font color='purple'><b>".$docker['Name']."</b></font> has an update available for it","Install the updates here: ".addLinkButton("Docker","/Docker"));
   }
 }
-$files = array_diff(scandir("/boot/packages"),array(".",".."));
-foreach ($files as $file) {
-  if ( strpos($file,"i386") || strpos($file,"i486") ) {
-    addError("Probable 32 Big package <font color='purple'><b>$file</b></font> found on the flash drive in the <b>packages</b> folder","32 Bit packages are incompatible with unRaid 6.x and need to be removed - Using your desktop, navigate to the <em>flash</em> share (packages folder) and delete the offending file");
-  }
-}
+
+
 if ( ! $errors ) {
   @unlink($fixPaths['errors']);
 } else {

@@ -30,7 +30,12 @@ $communityApplicationsInstalled = is_file("/var/log/plugins/community.applicatio
 
 switch ($_POST['action']) {
   case 'scan':
-    exec("/usr/local/emhttp/plugins/fix.common.problems/scripts/scan.php");
+    exec("/usr/local/emhttp/plugins/fix.common.problems/scripts/scan.php",$output);
+    if ($output) {
+      foreach ($output as $line) {
+        echo $line."<br>";
+      }
+    }
     $errors = readJsonFile($fixPaths['errors']);
     
     if ( ! $errors ) {
