@@ -3,8 +3,8 @@
 <!ENTITY name      "fix.common.problems">
 <!ENTITY author    "Andrew Zawadzki">
 <!ENTITY version   "2016.05.06">
-<!ENTITY md5       "d50de43de78133617d5a63828ce5f089">
-<!ENTITY launch    "Apps">
+<!ENTITY md5       "7fbbc48f1aae842f8be01cf08743c212">
+<!ENTITY launch    "Settings/FixProblems">
 <!ENTITY plugdir   "/usr/local/emhttp/plugins/&name;">
 <!ENTITY github    "Squidly271/fix.common.problems">
 <!ENTITY pluginURL "https://raw.githubusercontent.com/&github;/master/plugins/&name;.plg">
@@ -24,7 +24,7 @@
 <!--
 The 'source' file.
 -->
-<FILE Name="/boot/config/plugins/&name;/&name;-&version;.txz" Run="upgradepkg --install-new">
+<FILE Name="/boot/config/plugins/&name;/&name;-&version;-x86_64-1.txz" Run="upgradepkg --install-new">
 <URL>https://raw.github.com/&github;/master/archive/&name;-&version;-x86_64-1.txz</URL>
 <MD5>&md5;</MD5>
 </FILE>
@@ -50,6 +50,7 @@ The 'remove' script.
 <FILE Run="/bin/bash" Method="remove">
 <INLINE>
 removepkg &name;-&version;-x86_64-1
+rm -rf /usr/local/emhttp/plugins/fix.common.problems
 </INLINE>
 </FILE> 
 </PLUGIN>
