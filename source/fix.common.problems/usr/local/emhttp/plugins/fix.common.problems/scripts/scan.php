@@ -17,8 +17,19 @@ function addError($description,$action) {
 
   $newError['error'] = "<font color='red'>$description</font>";
   $newError['suggestion'] = $action;
-  
+  logger("Fix Common Problems: Error: ".strip_tags($description));
+  logger("Fix Common Problems: Suggestion:".strip_tags($action));
   $errors[] = $newError;
+}
+
+function addWarning($description,$action) {
+  global $warnings;
+  
+  $newWarning['error'] = "$description";
+  $newWarning['suggestion'] = $action;
+  logger("Fix Common Problems: Warning: ".strip_tags($description));
+  logger("Fix Common Problems: Suggestion: ".strip_tags($action));
+  $warnings[] = $newWarning;
 }
 
 function addLinkButton($buttonName,$link) {
@@ -38,16 +49,20 @@ function addButton($buttonName,$action) {
 
 $communityApplicationsInstalled = is_file("/var/log/plugins/community.applications.plg");
 
-$shareList = array_diff(scandir("/mnt/user"),array(".",".."));
+if ( is_dir("/mnt/user") ) {
+  $shareList = array_diff(scandir("/mnt/user"),array(".",".."));
+} else {
+  $shareList = array();
+}
 
-# Check for implied cache only but files / folders on array
+# Check for implied array only but files / folders on cache
     
 foreach ($shareList as $share) {
   if ( startsWith($share,".") ) { continue; }
   if ( ! is_file("/boot/config/shares/$share.cfg") ) {
     if ( is_dir("/mnt/user0/$share") ) {
       $shareURL = str_replace(" ","+",$share);
-      addError("Share <b><font color='purple'>$share</font></b> is an implied <em>cache-only</em> share, but files / folders exist on the array","Set <b><em>Use Cache</em></b> appropriately, then rerun this analysis. ".addLinkButton("$share Settings","/Shares/Share?name=$shareURL"));
+      addError("Share <b><font color='purple'>$share</font></b> is an implied <em>array-only</em> share, but files / folders exist on the cache","Set <b><em>Use Cache</em></b> appropriately, then rerun this analysis. ".addLinkButton("$share Settings","/Shares/Share?name=$shareURL"));
     }
   }
 }
@@ -94,17 +109,17 @@ if ( $communityApplicationsInstalled ) {
   $autoUpdateSettings = readJsonFile($communityPaths['autoUpdateSettings']);
   if ( $autoUpdateSettings['Global'] != "true" ) {
     if ( $autoUpdateSettings['community.applications.plg'] != "true" ) {
-      addError("<font color='purple'><b>Community Applications</b></font> not set to auto update</font>",addLinkButton("Auto Update Settings","/Settings/AutoUpdate")."Recommended to enable auto updates for this plugin to minimize issues with applications");
+      addWarning("<font color='purple'><b>Community Applications</b></font> not set to auto update</font>",addLinkButton("Auto Update Settings","/Settings/AutoUpdate")."Recommended to enable auto updates for this plugin to minimize issues with applications");
     }
     if ( $autoUpdateSettings['dynamix.plg'] != "true" ) {
-      addError("<font color='purple'><b>Dynamix WebUI</b></font> not set to auto update</font>",addLinkButton("Auto Update Settings","/Settings/AutoUpdate")."Recommended to enable auto updates for this plugin to minimize GUI problems");
+      addWarning("<font color='purple'><b>Dynamix WebUI</b></font> not set to auto update</font>",addLinkButton("Auto Update Settings","/Settings/AutoUpdate")."Recommended to enable auto updates for this plugin to minimize GUI problems");
     }
     if ( $autoUpdateSettings['fix.common.problems.plg'] != "true" ) {
       addError("This plugin <font color='purple'><b>(Fix Common Problems)</b></font> not set to auto update</font>",addLinkButton("Auto Update Settings","/Settings/AutoUpdate")."Recommended to enable auto updates for this plugin to enable further problem solving / fixes");
     }
   }
 } else {
-  addError("<font color='purple'><b>Community Applications</b></font> not installed","Recommended to install Community Applications so that plugins can auto-update.  Follow the directions <a href='http://lime-technology.com/forum/index.php?topic=40262.0' target='_blank'>HERE</a> to install");
+  addWarning("<font color='purple'><b>Community Applications</b></font> not installed","Recommended to install Community Applications so that plugins can auto-update.  Follow the directions <a href='http://lime-technology.com/forum/index.php?topic=40262.0' target='_blank'>HERE</a> to install");
 }
    
 # Check for shares spelled the same but with different case
@@ -172,7 +187,7 @@ if ( is_dir("/var/lib/docker/tmp") ) {
 if ( is_dir("/mnt/cache") ) {
   $dockerOptions = @parse_ini_file("/boot/config/docker.cfg");
   if ( startsWith($dockerOptions['DOCKER_APP_CONFIG_PATH'],"/mnt/user/") ) {
-    addError("<font color='purple'><b>docker appdata location</b></font> is stored within /mnt/user","Many (if not most) docker applications will have issues (weird results, not starting, etc) if their appdata is stored within a user share.  You should constrain the appdata share to a <b>single</b>disk or to the cache drive.  This is true even if the appdata share is a <em>Cache-Only</em> share.  Change the default here: ".addLinkButton("Docker Settings","/Settings/DockerSettings"));
+    addWarning("<font color='purple'><b>docker appdata location</b></font> is stored within /mnt/user","Many (if not most) docker applications will have issues (weird results, not starting, etc) if their appdata is stored within a user share.  You should constrain the appdata share to a <b>single</b>disk or to the cache drive.  This is true even if the appdata share is a <em>Cache-Only</em> share.  Change the default here: ".addLinkButton("Docker Settings","/Settings/DockerSettings"));
   }
 }
 
@@ -230,7 +245,7 @@ foreach ( $disks as $disk ) {
 foreach ( $disks as $disk ) {
   if ( $disk['rotational'] == "0" ) {
     if ( startsWith($disk['name'],"disk") ) {
-      addError("<font color='purple'><b>".$disk['name']." (".$disk['id'].")</b></font> is an SSD.","SSD's are not currently supported within the array, and their background garbage collection *may* impact your ability to rebuild a disk");
+      addWarning("<font color='purple'><b>".$disk['name']." (".$disk['id'].")</b></font> is an SSD.","SSD's are not currently supported within the array, and their background garbage collection *may* impact your ability to rebuild a disk");
     }
   }
 }  
@@ -245,7 +260,11 @@ if ( $autoUpdateSettings['Global'] != "true" ) {
       if ( is_file("/var/log/plugins/$Plugin") ) {
         if ( strtolower(pathinfo($Plugin, PATHINFO_EXTENSION)) == "plg" ) {
           if ( checkPluginUpdate($Plugin) ) {
-            addError("Plugin <font color='purple'><b>$Plugin</b></font> is not up to date","Upgrade the plugin here: ".addLinkButton("Plugins","/Plugins"));
+            if ( $Plugin == "fix.common.problems.plg" ) {
+              addError("Plugin <font color='purple'><b>$Plugin</b></font> is not up to date","Upgrade the plugin here: ".addLinkButton("Plugins","/Plugins"));
+            } else {
+              addWarning("Plugin <font color='purple'><b>$Plugin</b></font> is not up to date","Upgrade the plugin here: ".addLinkButton("Plugins","/Plugins"));
+            }
           }
         }
       }
@@ -273,21 +292,174 @@ if ( is_dir("/boot/packages") ) {
 
 # Check if docker containers not updated
 
-$DockerClient = new DockerClient();
-$info = $DockerClient->getDockerContainers();
-$updateStatus = readJsonFile($fixPaths['dockerUpdateStatus']);
+if ( is_file("/var/lib/docker/tmp") ) {
+  $DockerClient = new DockerClient();
+  $info = $DockerClient->getDockerContainers();
+  $updateStatus = readJsonFile($fixPaths['dockerUpdateStatus']);
 
-foreach ($info as $docker) {
-  if ( $updateStatus[$docker['Image']]['status'] == 'false' ) {
-    addError("Docker Application <font color='purple'><b>".$docker['Name']."</b></font> has an update available for it","Install the updates here: ".addLinkButton("Docker","/Docker"));
+  foreach ($info as $docker) {
+    if ( $updateStatus[$docker['Image']]['status'] == 'false' ) {
+      addWarning("Docker Application <font color='purple'><b>".$docker['Name']."</b></font> has an update available for it","Install the updates here: ".addLinkButton("Docker","/Docker"));
+    }
   }
 }
 
+# Check for docker application's config folders pointed at /mnt/user
 
-if ( ! $errors ) {
+if ( is_file("/var/lib/docker/tmp") ) {
+  $DockerClient = new DockerClient();
+  $info = $DockerClient->getDockerContainers();
+
+  foreach ($info as $docker) {
+    $appData = findAppData($docker['Volumes']);
+    if ( startsWith($appData,"/mnt/user") ) {
+      addWarning("<font color='purple'><b>".$docker['Name']."</b></font> docker application has its /config folder set to <font color='purple'><b>$appData</b></font>","Many (if not most docker applications) will not function correctly if their appData folder is set to a user share.  Ideally, they should be set to a disk share.  Either /mnt/cache/... or /mnt/diskX/...  Fix it here: ".addLinkButton("Docker Settings","/Docker"));    
+    }
+  }
+}
+
+# Check for /var/log filling up
+
+unset($output);
+exec("df /var/log",$output);
+$statusLine = preg_replace('!\s+!', ' ', $output[1]);
+$status = explode(" ",$statusLine);
+$used = str_replace("%","",$status[4]);
+
+if ( $used > 80 ) {
+  addError("<font color='purple'><b>/var/log</b></font> is getting full (currently <font color='purple'>$used % </font>used)","Either your server has an extremely long uptime, or your syslog could be potentially being spammed with error messages.  A reboot of your server will at least temporarily solve this problem, but ideally you should seek assistance in the forums and post your ".addLinkButton("Diagnostics","/Tools/Diagnostics"));
+} else {
+  if ( $used > 50 ) {
+    addWarning("<font color='purple'><b>/var/log</b></font> is getting full (currently <font color='purple'>$used % </font>used)","Either your server has an extremely long uptime, or your syslog could be potentially being spammed with error messages.  A reboot of your server will at least temporarily solve this problem, but ideally you should seek assistance in the forums and post your ".addLinkButton("Diagnostics","/Tools/Diagnostics"));
+  }
+}
+
+# Check for docker image getting full
+
+unset($output);
+if ( is_dir("/var/lib/docker/tmp") ) {
+  exec("df /var/lib/docker",$output);
+  $statusLine = preg_replace('!\s+!', ' ', $output[1]);
+  $status = explode(" ",$statusLine);
+  $used = str_replace("%","",$status[4]);
+
+  if ( $used > 90 ) {
+    addError("<font color='purple'><b>Docker image</b></font> file is getting full (currently <font color='purple'>$used % </font>used)","You should either increase the available image size to the docker image here ".addLinkButton("Docker Settings","/Settings/DockerSettings")."or investigate the possibility of docker applications storing completed downloads / incomplete downloads / etc within the actual docker image here: ".addLinkButton("Docker","/Docker"));
+  } else {
+    if ( $used > 80 ) {
+      addWarning("<font color='purple'><b>Docker image</b></font> file is getting full (currently <font color='purple'>$used % </font>used)","You should either increase the available image size to the docker image here ".addLinkButton("Docker Settings","/Settings/DockerSettings")."or investigate the possibility of docker applications storing completed downloads / incomplete downloads / etc within the actual docker image here: ".addLinkButton("Docker","/Docker"));
+    }
+  }
+}
+
+# Check for rootfs getting full
+
+unset($output);
+if ( is_dir("/") ) {
+  exec("df /",$output);
+  $statusLine = preg_replace('!\s+!', ' ', $output[1]);
+  $status = explode(" ",$statusLine);
+  $used = str_replace("%","",$status[4]);
+
+  if ( $used > 90 ) {
+    addError("<font color='purple'><b>Rootfs</b></font> file is getting full (currently <font color='purple'>$used % </font>used)","Possibly an application is storing excessive amount of data in /tmp.  Seek assistance on the forums and post your ".addLinkButton("Diagnostics","/Tools/Diagnostics"));
+  } else {
+    if ( $used > 75 ) {
+      addWarning("<font color='purple'><b>Rootfs</b></font> file is getting full (currently <font color='purple'>$used % </font>used)","Possibly an application is storing excessive amount of data in /tmp.  Seek assistance on the forums and post your ".addLinkButton("Diagnostics","/Tools/Diagnostics"));
+    }
+  }
+}
+
+# Check if the server's time is out to lunch
+
+$filename = randomFile("/tmp");
+download_url("http://currentmillis.com/time/minutes-since-unix-epoch.php",$filename);
+$actualTime = @file_get_contents($filename);
+if (intval($actualTime) > 24377381 ) { # current time as of this code being written as a check for complete download_url
+  $serverTime = intval(time() / 60);
+  $timeDifference = abs($serverTime - intval($actualTime));
+  
+  if ( $timeDifference > 5 ) {
+    addWarning("Your server's <font color='purple'><b>current time</b></font> differs from the actual time by more than 5 minutes.  Currently out by approximately <font color='purple'>$timeDifference minutes</font>","Either set your date / time manually, or set up the server to use an NTP server to automatically update the date and time".addLinkButton("Date and Time Settings","/Settings/DateTime"));  
+  }
+}
+
+# Check for scheduled parity checks
+
+if ( is_file("/boot/config/plugins/dynamix/dynamix.cfg") ) {
+  $dynamixSettings = parse_ini_file("/boot/config/plugins/dynamix/dynamix.cfg",true);
+  
+  if ( $dynamixSettings['parity']['mode'] == "0" ) {
+    addWarning("Scheduled <font color='purple'><b>Parity Checks</b></font> are not enabled","It is highliy recommended to schedule parity checks for your system (most users choose monthly).  This is so that you know if unRaid has the ability to rebuild a failed drive if it needs to.  Set the schedule here: ".addLinkButton("Scheduler","/Settings/Scheduler"));
+  }
+}
+
+# Check for shares having both included and excluded disks set
+
+foreach ($shareList as $share) {
+  if ( is_file("/boot/config/shares/$share.cfg") ) {
+    $shareCfg = parse_ini_file("/boot/config/shares/$share.cfg");
+    if ( $shareCfg['shareInclude'] && $shareCfg['shareExclude'] ) {
+      $shareURL = str_replace(" ","+",$share);
+      addWarning("Share <font color='purple'><b>$share</b></font> is set for both included (".$shareCfg['shareInclude'].") and excluded (".$shareCfg['shareExclude'].") disks","While if you're careful this isn't a problem, there is absolutely no reason ever to specify BOTH included and excluded disks.  It is far easier and safer to only set either the included list or the excluded list.  Fix it here: ".addLinkButton("$share Settings","/Shares/Share?name=$shareURL"));
+    }
+  }
+}
+# Check for global share settings having both included and exluded disks set
+
+if ( is_file("/boot/config/share.cfg") ) {
+  $shareCfg = parse_ini_file("/boot/config/share.cfg");
+  if ( $shareCfg['shareUserInclude'] && $shareCfg['shareUserExclude'] ) {
+    addWarning("<font color='purple'><b>Global Share Settings</b></font> is set for both included (".$shareCfg['shareUserInclude'].") and excluded (".$shareCfg['shareUserExclude'].") disks","While if you're careful this isn't a problem, there is absolutely no reason ever to specify BOTH included and excluded disks.  It is far easier and safer to only set either the included list or the excluded list.  Fix it here: ".addLinkButton("Global Share Settings","/Settings/ShareSettings"));
+  }
+}
+
+# Check for shares having duplicated disks within included and excluded
+
+foreach ($shareList as $share) {
+  if ( is_file("/boot/config/shares/$share.cfg") ) {
+    $shareCfg = parse_ini_file("/boot/config/shares/$share.cfg"); 
+    if ( ! $shareCfg['shareInclude'] ) { continue; }
+    if ( ! $shareCfg['shareExclude'] ) { continue; }
+    $shareInclude = explode(",",$shareCfg['shareInclude']);
+    $shareExclude = explode(",",$shareCfg['shareExclude']);
+    foreach ($shareInclude as $included) {
+      foreach ($shareExclude as $excluded) {
+        if ( $included == $excluded ) {
+          $shareURL = str_replace(" ","+",$share);
+          addError("Share <font color='purple'><b>$share</b></font> has the same disk ($included) set to be both included and excluded","The same disk cannot be both included and excluded.  There is also no reason to ever set both the included and excluded disks for a share.  Use one or the other.  Fix it here:".addLinkButton("$share Settings","/Shares/Share?name=$shareURL"));
+        }  
+      }
+    }
+  }
+}
+
+# Check for having duplicated disks within global share included / excluded
+
+if ( is_file("/boot/config/share.cfg") ) {
+  $shareCfg = parse_ini_file("/boot/config/share.cfg");
+  if ( ( $shareCfg['shareUserExclude'] ) && ( $shareCfg['shareUserInclude'] ) ) {
+    $shareInclude = explode(",",$shareCfg['shareUserInclude']);
+    $shareExclude = explode(",",$shareCfg['shareUserExclude']);
+    foreach ($shareInclude as $included) {
+      foreach ($shareExclude as $excluded) {
+        if ( $included == $excluded ) {
+          $shareURL = str_replace(" ","+",$share);
+          addError("Share <font color='purple'><b>Global Share Settings</b></font> has the same disk ($included) set to be both included and excluded","The same disk cannot be both included and excluded.  There is also no reason to ever set both the included and excluded disks for a share.  Use one or the other.  Fix it here:".addLinkButton("Global Share Settings","/Settings/ShareSettings"));
+        }  
+      }
+    }
+  }
+}
+
+@unlink($filename);
+
+if ( ! $errors && ! $warnings ) {
   @unlink($fixPaths['errors']);
 } else {
-  writeJsonFile($fixPaths['errors'],$errors);
+  $allErrors['errors'] = $errors;
+  $allErrors['warnings'] = $warnings;
+  writeJsonFile($fixPaths['errors'],$allErrors);
 }
       
 ?>

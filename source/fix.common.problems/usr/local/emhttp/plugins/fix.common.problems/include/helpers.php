@@ -90,6 +90,7 @@ function findAppdata($volumes) {
 ############################################
 
 function logger($string) {
+  $string = str_replace("'","",$string);
   shell_exec("logger '$string'");
 }
 
@@ -114,4 +115,14 @@ function startsWith($haystack, $needle) {
   return $needle === "" || strripos($haystack, $needle, -strlen($haystack)) !== FALSE;
 }
 
+###############################################
+#                                             #
+# Helper function to download a URL to a file #
+#                                             #
+###############################################
+
+function download_url($url, $path = "", $bg = false){
+  exec("curl --max-time 60 --silent --insecure --location --fail ".($path ? " -o '$path' " : "")." $url ".($bg ? ">/dev/null 2>&1 &" : "2>/dev/null"), $out, $exit_code );
+  return ($exit_code === 0 ) ? implode("\n", $out) : false;
+}
 ?>

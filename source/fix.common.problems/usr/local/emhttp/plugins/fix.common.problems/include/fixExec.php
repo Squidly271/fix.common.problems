@@ -10,6 +10,7 @@ $communityPaths['autoUpdateSettings'] = "/boot/config/plugins/community.applicat
 $fixPaths['tempFiles'] = "/tmp/fix.common.problems";
 $fixPaths['errors'] = $fixPaths['tempFiles']."/errors.json";
 
+
 require_once("/usr/local/emhttp/plugins/fix.common.problems/include/helpers.php");
 
 function addError($description,$action) {
@@ -18,7 +19,7 @@ function addError($description,$action) {
 }
 
 function addLinkButton($buttonName,$link) {
-  $link = str_replacE("'","&quot;",$link);
+  $link = str_replace("'","&quot;",$link);
   return "<input type='button' value='$buttonName' onclick='window.location.href=&quot;$link&quot;'>";
 }
 function addButton($buttonName,$action) {
@@ -36,18 +37,31 @@ switch ($_POST['action']) {
         echo $line."<br>";
       }
     }
-    $errors = readJsonFile($fixPaths['errors']);
+    $allErrors = readJsonFile($fixPaths['errors']);
     
+    $errors = $allErrors['errors'];
+    echo "<table class='tablesorter'>";
+    echo "<thead><th>Error Found</th><th>Suggested Fix</th></thead>";    
     if ( ! $errors ) {
-      echo "No problems found";
+      echo "<tr><td>No errors found";
     } else {
-      echo "<table class='tablesorter'>";
-      echo "<thead><th>Error Found</th><th>Suggested Fix</th></thead>";
       foreach ($errors as $error) {
         echo "<tr><td width='40%'>".$error['error']."</td><td>".$error['suggestion']."</td></tr>";
       }
-      echo "</table>";
     }
+    echo "</table>";
+    echo "<table class='tablesorter'>";
+    echo "<thead><th>Warnings Found</th><th>Suggested Fix</th></thead>";
+    $warnings = $allErrors['warnings'];
+    if ( ! $warnings ) {
+      echo "<tr><td>No Warnings found";
+    } else {
+
+      foreach ($warnings as $warning) {
+        echo "<tr><td width='40%'>".$warning['error']."</td><td>".$warning['suggestion']."</td></tr>";
+      }
+    }
+    echo "</table>";
     break;
 }
 ?>

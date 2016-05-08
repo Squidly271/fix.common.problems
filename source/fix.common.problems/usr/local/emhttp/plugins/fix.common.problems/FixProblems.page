@@ -68,7 +68,7 @@ function moveToArray(share) {
 }
 
 $(function() {
-  myAlert("Scanning","Now Scanning your system for common problems.  This may take a minute","","",false,false,false,"warning");
+  myAlert("Scanning","Now Scanning your system for common problems.  This may take a minute.  All of your drives will spin up during this process.","","",false,false,false,"warning");
   $.post(URL,{action:'scan'},function(data) {
     if (data) {
       $("#settings").html(data);
