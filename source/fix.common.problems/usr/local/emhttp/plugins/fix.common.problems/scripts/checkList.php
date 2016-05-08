@@ -12,6 +12,7 @@ $checkList = "
 * Cache Only shares do not have files / folders stored outside the cache drive
 * Array Only shares do not have files / folders stored on the cache drive
 * Dynamix checking for plugin updates
+* Dynamix checking for docker updates
 * Community Applications Installed - Only because of its plugin auto update feature
 * Community Applications set to auto update itself
 * Dynamix WebUI set to auto update (via Community Applications)
@@ -42,6 +43,9 @@ $checkList = "
 * Check for shares with both included and excluded disks having overlaps
 * Check for global share settings both included and excluded disks set
 * Check for global share settings with included and excluded disks having overlaps
+* Check for docker containers having UD mounted volumes not being passed with slave option
+* Check for only supported file system types (reiserFS, xfs, btrfs) on array / cache devices
+* Check for flash drive formatted as fat32
 </strong>
 ";
 echo Markdown($checkList);

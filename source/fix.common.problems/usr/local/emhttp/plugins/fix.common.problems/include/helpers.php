@@ -125,4 +125,16 @@ function download_url($url, $path = "", $bg = false){
   exec("curl --max-time 60 --silent --insecure --location --fail ".($path ? " -o '$path' " : "")." $url ".($bg ? ">/dev/null 2>&1 &" : "2>/dev/null"), $out, $exit_code );
   return ($exit_code === 0 ) ? implode("\n", $out) : false;
 }
+
+###
+#
+# returns unRaid version
+#
+###
+
+function unRaidVersion() {
+  $unRaidVersion = parse_ini_file("/etc/unraid-version");
+  return $unRaidVersion['version'];
+}
+
 ?>

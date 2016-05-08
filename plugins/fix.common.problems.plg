@@ -2,8 +2,8 @@
 <!DOCTYPE PLUGIN [
 <!ENTITY name      "fix.common.problems">
 <!ENTITY author    "Andrew Zawadzki">
-<!ENTITY version   "2016.05.07a">
-<!ENTITY md5       "cde6afd91b634a7a907aef9f35de7f15">
+<!ENTITY version   "2016.05.08">
+<!ENTITY md5       "6fcc313cc9752bdaf44f410b11befa07">
 <!ENTITY launch    "Settings/FixProblems">
 <!ENTITY plugdir   "/usr/local/emhttp/plugins/&name;">
 <!ENTITY github    "Squidly271/fix.common.problems">
@@ -13,6 +13,9 @@
 <PLUGIN name="&name;" author="&author;" version="&version;" launch="&launch;" pluginURL="&pluginURL;">
 
 <CHANGES>
+###2016.05.08###
+- Add file system checks
+- checks for slave mode when using unassigned devices on 6.2
 ###2016.05.07a###
 - Separate errors into errors and warnings
 - More tests added

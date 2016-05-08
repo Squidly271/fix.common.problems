@@ -5,6 +5,7 @@ $fixPaths['dockerUpdateStatus'] = "/var/lib/docker/unraid-update-status.json";
 $fixPaths['tempFiles'] = "/tmp/fix.common.problems";
 $fixPaths['errors'] = $fixPaths['tempFiles']."/errors.json";
 $fixPaths['disks.ini'] = "/var/local/emhttp/disks.ini";
+#$fixPaths['disks.ini'] = "/tmp/GitHub/disks.ini";
 
 exec("mkdir -p ".$fixPaths['tempFiles']);
 
@@ -100,7 +101,15 @@ foreach ($shareList as $share) {
 # Check for Dynamix to perform plugin checks
     
 if ( ! is_file("/boot/config/plugins/dynamix/plugin-check.cron") ) {
-  addError("<font color='purple'><b>Plugin Update Check</b></font> not enabled",addLinkButton("Notification Settings","/Settings/Notifications"));
+  addError("<font color='purple'><b>Plugin Update Check</b></font> not enabled","Highly recommended to have dynamix check for plugin updates (including for the webUI".addLinkButton("Notification Settings","/Settings/Notifications"));
+}
+
+# Check for Dynamix to perform docker update checks
+
+if ( is_dir("/var/lib/docker/tmp") ) {
+  if ( ! is_file("/boot/config/plugins/dynamix/docker-update.cron") ) {
+    addWarning("<font color='purple'><b>Docker Update Check</b></font> not enabled","Recommended to enable update checks for docker applications".addLinkButton("Notification Settings","/Settings/Notifications"));
+  }
 }
 
 # Check for CA to auto update certain plugins
@@ -451,6 +460,45 @@ if ( is_file("/boot/config/share.cfg") ) {
     }
   }
 }
+
+# Check for UD assigned disks not being passed as slave to docker containers
+
+if ( is_dir("/var/lib/docker/tmp") ) {
+  if ( version_compare(unRaidVersion(),"6.2",">=") ) {
+    $DockerClient = new DockerClient();
+    $info = $DockerClient->getDockerContainers();
+    foreach ($info as $docker) {
+      if ( is_array($docker['Volumes']) ) {
+        foreach ($docker['Volumes'] as $volume) {
+          $volumePassed = explode(":",$volume);
+          if ( startsWith($volumePassed[0],"/mnt/disks/") ) {
+            if ( ! stripos($volumePassed[2],"slave") ) {
+              addError("Docker application <font color='purple'><b>".$docker['Name']."</b></font> has volumes being passed that are mounted by <em>Unassigned Devices</em>, but they are not mounted with the <font color='purple'>slave</font> option","To help with a trouble free experience with this application, you need to pass any volumes mounted with Unassigned Devices using the slave option.  Fix it here: ".addLinkButton("Docker","/Docker"));
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+# Check for only supported file system types
+
+$disks = parse_ini_file($fixPaths['disks.ini'],true);
+foreach ($disks as $disk) {
+  if ( ($disk['fsType'] != "reiserfs") && ($disk['fsType'] != "xfs") && ($disk['fsType'] != "btrfs") && ($disk['size'] != "0") && ($disk['fsType'] != "auto") ) {
+    if ( $disk['name'] == "flash" ) {
+      if ( $disk['fsType'] != "vfat" ) {
+        addError("unRaid <font color='purple'><b>USB Flash Drive</b></font> is not formatted as FAT32","Strange results can happen if the flash drive is not formatted as FAT32.  Note that if your flash drive is > 32Gig, you must jump through some hoops to format it as FAT32.  Seek assistance in the formums if this is the case");
+      } 
+    } else {
+      if ( ($disk['name'] != "parity") && ($disk['name'] != "parity2") ) {
+        addError("Disk <font color='purple'><b>".$disk['name']."</b></font> is formatted as ".$disk['fsType'],"The only supported file systems are ReiserFS, btrFS, XFS.  This error should only happen if you are setting up a new array and the disk already has data on it.  <font color='red'><b>Prior to with a fix, you should seek assistance in the forums as the disk may simply be unmountable.  Whatever you do, do not hit the format button on the unRaid main screen as you will then lose data");
+      }        
+    }
+  }
+}
+
 
 @unlink($filename);
 
