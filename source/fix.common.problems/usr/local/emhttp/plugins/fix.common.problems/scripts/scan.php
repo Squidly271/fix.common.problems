@@ -4,8 +4,8 @@ $communityPaths['autoUpdateSettings'] = "/boot/config/plugins/community.applicat
 $fixPaths['dockerUpdateStatus'] = "/var/lib/docker/unraid-update-status.json";
 $fixPaths['tempFiles'] = "/tmp/fix.common.problems";
 $fixPaths['errors'] = $fixPaths['tempFiles']."/errors.json";
-$fixPaths['disks.ini'] = "/var/local/emhttp/disks.ini";
-#$fixPaths['disks.ini'] = "/tmp/GitHub/disks.ini";
+#$fixPaths['disks.ini'] = "/var/local/emhttp/disks.ini";
+$fixPaths['disks.ini'] = "/tmp/GitHub/disks.ini";
 $fixPaths['settings'] = "/boot/config/plugins/fix.common.problems/settings.json";
 
 
@@ -17,7 +17,7 @@ require_once("/usr/local/emhttp/plugins/fix.common.problems/include/helpers.php"
 require_once("/usr/local/emhttp/plugins/dynamix.docker.manager/include/DockerClient.php");
 
 $fixSettings = readJsonFile($fixPaths['settings']);
-
+if ( ! $fixSettings['notifications'] ) { $fixSettings['notifications'] = "all"; }
 
 function addError($description,$action) {
   global $errors;
