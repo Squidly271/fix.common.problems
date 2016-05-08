@@ -2,8 +2,8 @@
 <!DOCTYPE PLUGIN [
 <!ENTITY name      "fix.common.problems">
 <!ENTITY author    "Andrew Zawadzki">
-<!ENTITY version   "2016.05.08">
-<!ENTITY md5       "6fcc313cc9752bdaf44f410b11befa07">
+<!ENTITY version   "2016.05.08a">
+<!ENTITY md5       "6791dbaf856dd420d58f43e9b463551f">
 <!ENTITY launch    "Settings/FixProblems">
 <!ENTITY plugdir   "/usr/local/emhttp/plugins/&name;">
 <!ENTITY github    "Squidly271/fix.common.problems">
@@ -13,18 +13,8 @@
 <PLUGIN name="&name;" author="&author;" version="&version;" launch="&launch;" pluginURL="&pluginURL;">
 
 <CHANGES>
-###2016.05.08###
-- Add file system checks
-- checks for slave mode when using unassigned devices on 6.2
-###2016.05.07a###
-- Separate errors into errors and warnings
-- More tests added
-
-###2016.05.07###
-Still beta, but an error in the code would prevent ALL errors from displaying in certain circumstances
-
-###2016.05.06###
-- Initial Beta Release
+###2016-05-08###
+- Initial Release
 </CHANGES>
 
 <!-- The 'pre-install' script. -->
@@ -44,6 +34,7 @@ The 'post-install' script
 -->
 <FILE Run="/bin/bash">
 <INLINE>
+/usr/local/emhttp/plugins/fix.common.problems/scripts/applyFrequency.php
 echo ""
 echo "----------------------------------------------------"
 echo " &name; has been installed."
@@ -61,6 +52,10 @@ The 'remove' script.
 <INLINE>
 removepkg &name;-&version;-x86_64-1
 rm -rf /usr/local/emhttp/plugins/fix.common.problems
+rm -f /etc/cron.hourly/fix.common.problems.sh
+rm -f /etc/cron.daily/fix.common.problems.sh
+rm -f /etc/cron.weekly/fix.common.problems.sh
+rm -f /etc/cron.monthly/fix.common.problems.sh
 </INLINE>
 </FILE> 
 </PLUGIN>

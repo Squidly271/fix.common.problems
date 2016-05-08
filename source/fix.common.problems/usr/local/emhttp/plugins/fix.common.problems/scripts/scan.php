@@ -6,11 +6,17 @@ $fixPaths['tempFiles'] = "/tmp/fix.common.problems";
 $fixPaths['errors'] = $fixPaths['tempFiles']."/errors.json";
 $fixPaths['disks.ini'] = "/var/local/emhttp/disks.ini";
 #$fixPaths['disks.ini'] = "/tmp/GitHub/disks.ini";
+$fixPaths['settings'] = "/boot/config/plugins/fix.common.problems/settings.json";
+
 
 exec("mkdir -p ".$fixPaths['tempFiles']);
 
+$disableNotifications = $argv[1];
+
 require_once("/usr/local/emhttp/plugins/fix.common.problems/include/helpers.php");
 require_once("/usr/local/emhttp/plugins/dynamix.docker.manager/include/DockerClient.php");
+
+$fixSettings = readJsonFile($fixPaths['settings']);
 
 
 function addError($description,$action) {
@@ -63,7 +69,7 @@ foreach ($shareList as $share) {
   if ( ! is_file("/boot/config/shares/$share.cfg") ) {
     if ( is_dir("/mnt/user0/$share") ) {
       $shareURL = str_replace(" ","+",$share);
-      addError("Share <b><font color='purple'>$share</font></b> is an implied <em>array-only</em> share, but files / folders exist on the cache","Set <b><em>Use Cache</em></b> appropriately, then rerun this analysis. ".addLinkButton("$share Settings","/Shares/Share?name=$shareURL"));
+      addWarning("Share <b><font color='purple'>$share</font></b> is an implied <em>array-only</em> share, but files / folders exist on the cache","Set <b><em>Use Cache</em></b> appropriately, then rerun this analysis. ".addLinkButton("$share Settings","/Shares/Share?name=$shareURL"));
     }
   }
 }
@@ -77,7 +83,7 @@ foreach ($shareList as $share) {
     if ( $shareCfg['shareUseCache'] == "only" ) {
       if (is_dir("/mnt/user0/$share") ) {
         $shareURL = str_replace(" ","+",$share);
-        addError("Share <b><font color='purple'>$share</font></b> set to <em>cache-only</em>, but files / folders exist on the array",addButton("Move Files To Cache","moveToCache('$share');")." or change the share's settings appropriately ".addLinkButton("$share Settings","/Shares/Share?name=$shareURL"));
+        addWarning("Share <b><font color='purple'>$share</font></b> set to <em>cache-only</em>, but files / folders exist on the array","You should change the share's settings appropriately ".addLinkButton("$share Settings","/Shares/Share?name=$shareURL")." or use the dolphin / krusader docker applications to move the offending files accordingly.  Note that there are some valid use cases for a set up like this.  In particular: <a href='https://lime-technology.com/forum/index.php?topic=40777.msg385753' target='_blank'>THIS</a>");
       }
     }
   }
@@ -92,7 +98,7 @@ foreach ($shareList as $share) {
     if ( $shareCfg['shareUseCache'] == "no" ) {
       if ( is_dir("/mnt/cache/$share") ) {
         $shareURL = str_replace(" ","+",$share);
-        addError("Share <b><font color='purple'>$share</font></b> set to <em>not use the cache</em>, but files / folders exist on the cache drive",addButton("Move Files To Array","moveToArray('$share');")." or change the share's settings appropriately ".addLinkButton("$share Settings","/Shares/Share?name=$shareURL"));
+        addWarning("Share <b><font color='purple'>$share</font></b> set to <em>not use the cache</em>, but files / folders exist on the cache drive","You should change the share's settings appropriately ".addLinkButton("$share Settings","/Shares/Share?name=$shareURL")."or use the dolphin / krusader docker applications to move the offending files accordingly.  Note that there are some valid use cases for a set up like this.  In particular: <a href='https://lime-technology.com/forum/index.php?topic=40777.msg385753' target='_blank'>THIS</a>");
       }
     }
   }
@@ -499,6 +505,17 @@ foreach ($disks as $disk) {
   }
 }
 
+# Check for unRaid's ftp server running
+
+unset($output);
+exec("cat /etc/inetd.conf | grep vsftpd",$output);
+foreach ($output as $line) {
+  if ($line[0] != "#") {
+    addWarning("unRaid's built in <font color='purple'><b>FTP server</b></font> is running","Opening up your unRaid server directly to the internet is an extremely bad idea. - You <b>will</b> get hacked.  If you require an FTP server running on your server, use one of the FTP docker applications instead.  They will be more secure than the built in one".addLinkButton("FTP Server Settings","/Settings/FTP")." If you are only using the built in FTP server locally on your network you can ignore this warning, but ensure that you have not forwarded any ports from your router to your server");
+    break;
+  }
+}
+
 
 @unlink($filename);
 
@@ -508,6 +525,28 @@ if ( ! $errors && ! $warnings ) {
   $allErrors['errors'] = $errors;
   $allErrors['warnings'] = $warnings;
   writeJsonFile($fixPaths['errors'],$allErrors);
-}
-      
+  if ( $errors ) {
+    foreach ($errors as $error) {
+      $message .= "**** ".strip_tags($error['error'])." ****   ";
+    }
+  }
+  if ( $warnings ) {
+    foreach ($warnings as $warning) {
+      $message .= "**** ".strip_tags($warning['error'])." ****   ";
+    }
+  }
+  if ( ! $disableNotifications ) {
+    if ( $errors ) {
+      if ( $fixSettings['notifications'] != "disabled" ) {
+        notify("Fix Common Problems","Errors have been found with your server.","Investigate at Settings / User Utilities / Fix Common Problems",$message,"alert");
+      }
+    } else {
+      if ( $warnings ) {
+        if ($fixSettings['notifications'] != "errors" ) {
+          notify("Fix Common Problems","Warnings have been found with your server.","Investigate at Settings / User Utilities / Fix Common Problems",$message,"warning");
+        } 
+      }
+    }
+  }
+}    
 ?>

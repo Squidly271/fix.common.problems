@@ -46,6 +46,7 @@ $checkList = "
 * Check for docker containers having UD mounted volumes not being passed with slave option
 * Check for only supported file system types (reiserFS, xfs, btrfs) on array / cache devices
 * Check for flash drive formatted as fat32
+* Check for built-in FTP server running
 </strong>
 ";
 echo Markdown($checkList);

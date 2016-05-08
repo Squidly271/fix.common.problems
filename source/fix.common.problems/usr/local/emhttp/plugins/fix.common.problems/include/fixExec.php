@@ -9,6 +9,7 @@
 $communityPaths['autoUpdateSettings'] = "/boot/config/plugins/community.applications/AutoUpdate.json";
 $fixPaths['tempFiles'] = "/tmp/fix.common.problems";
 $fixPaths['errors'] = $fixPaths['tempFiles']."/errors.json";
+$fixPaths['settings'] = "/boot/config/plugins/fix.common.problems/settings.json";
 
 
 require_once("/usr/local/emhttp/plugins/fix.common.problems/include/helpers.php");
@@ -31,7 +32,7 @@ $communityApplicationsInstalled = is_file("/var/log/plugins/community.applicatio
 
 switch ($_POST['action']) {
   case 'scan':
-    exec("/usr/local/emhttp/plugins/fix.common.problems/scripts/scan.php",$output);
+    exec("/usr/local/emhttp/plugins/fix.common.problems/scripts/scan.php 1",$output);
     if ($output) {
       foreach ($output as $line) {
         echo $line."<br>";
@@ -62,6 +63,12 @@ switch ($_POST['action']) {
       }
     }
     echo "</table>";
+    break;
+  case 'apply':
+    $settings['frequency'] =isset($_POST['frequency']) ? urldecode(($_POST['frequency'])) : "";
+    $settings['notifications'] = isset($_POST['notifications']) ? urldecode(($_POST['notifications'])) : "";
+    writeJsonFile($fixPaths['settings'],$settings);
+    exec("/usr/local/emhttp/plugins/fix.common.problems/scripts/applyFrequency.php");
     break;
 }
 ?>

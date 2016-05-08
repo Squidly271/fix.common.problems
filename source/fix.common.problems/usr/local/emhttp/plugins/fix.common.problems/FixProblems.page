@@ -11,6 +11,8 @@ Title="Fix Common Problems"
 
 $plugin = "fix.common.problems";
 
+$settings = json_decode(@file_get_contents("/boot/config/plugins/fix.common.problems/settings.json"),true);
+
 ?>
 <script>
 
@@ -68,6 +70,13 @@ function moveToArray(share) {
 }
 
 $(function() {
+  $("#frequency").val("<?=$settings['frequency']?>");
+  $("#notifications").val("<?=$settings['notifications']?>");
+
+  rescan();
+});
+
+function rescan() {
   myAlert("Scanning","Now Scanning your system for common problems.  This may take a minute.  All of your drives will spin up during this process.","","",false,false,false,"warning");
   $.post(URL,{action:'scan'},function(data) {
     if (data) {
@@ -75,9 +84,57 @@ $(function() {
       myCloseAlert();
     }
   });
-});
+}
+
+function enableApply() {
+  $("#applyButton").prop("disabled",false);
+}
+
+function apply() {
+  var frequency = $("#frequency").val();
+  var notifications = $("#notifications").val();
+  $.post(URL,{action:'apply',frequency:frequency,notifications:notifications});
+  $("#applyButton").prop("disabled",true);
+}
 
 </script>
+<div  style='width:40%;align:left;'>
+<table>
+<tr>
+  <td><b>Frequency to run background checks</b></td>
+  <td><select id='frequency' onchange='enableApply();'>
+        <option value='disabled'>Disabled</option>
+        <option value='hourly'>Hourly</option>
+        <option value='daily'>Daily</option>
+        <option value='weekly'>Weekly</option>
+        <option value='monthly'>Monthly</option>
+      </select>
+  </td>
+</tr>
+<tr>
+  <td><b>Send notifications on errors?</b></td>
+  <td><select id='notifications' onchange='enableApply();'>
+        <option value='disabled'>Disabled</option>
+        <option value='all'>All errors / Warnings</option>
+        <option value='errors'>Errors Only</option>
+      </select>
+  </td>
+</tr>
+</table>
+</div>
+
+> <b>Frequency to run background checks</b> - Set to how often you would like this plugin to automatically scan your system for errors and warnings.
+> Note that during the checks, all of your disks will spin up.
+> <b>Send notifications on errors</b> determines under what circumstances the plugin will notify you through unRaid's notification system of any issues
+
+
+<input type='button' id='applyButton' value='Apply' onclick='apply();' disabled><input type='button' value='Rescan' onclick='rescan();'><input type='button' onclick='done();' value='Done'><br>
+
 <span id='settings'></span>
 
 <center><input type='button' value='What is checked' onclick='checkList();'></center>
+
+<center>
+<b>For assistance with any of the errors / warnings displayed here, plesae post a new topic in <a href='http://lime-technology.com/forum/index.php?board=71.0' target='_blank'>General Support</a></b><br>
+<b>For assistance with the plugin, including requests for additional checks, false positives, etc please post <a href='http://lime-technology.com/forum/index.php?topic=48972.0' target='_blank'>HERE</a></b>
+</center>
