@@ -47,6 +47,9 @@ $checkList = "
 * Check for only supported file system types (reiserFS, xfs, btrfs) on array / cache devices
 * Check for flash drive formatted as fat32
 * Check for built-in FTP server running
+* Check for destination set for Alert level notifications
+* Check for destination set for Warning level notifications 
+& Check for email server and recipient addresses set if email notifications are selected
 </strong>
 ";
 echo Markdown($checkList);

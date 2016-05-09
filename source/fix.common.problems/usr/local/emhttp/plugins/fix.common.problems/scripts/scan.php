@@ -493,6 +493,9 @@ if ( is_dir("/var/lib/docker/tmp") ) {
 $disks = parse_ini_file($fixPaths['disks.ini'],true);
 foreach ($disks as $disk) {
   if ( ($disk['fsType'] != "reiserfs") && ($disk['fsType'] != "xfs") && ($disk['fsType'] != "btrfs") && ($disk['size'] != "0") && ($disk['fsType'] != "auto") ) {
+    if ( ( startsWith($disk['name'],"cache") ) && ( $disk['name'] != "cache" ) ) {
+      continue;
+    }
     if ( $disk['name'] == "flash" ) {
       if ( $disk['fsType'] != "vfat" ) {
         addError("unRaid <font color='purple'><b>USB Flash Drive</b></font> is not formatted as FAT32","Strange results can happen if the flash drive is not formatted as FAT32.  Note that if your flash drive is > 32Gig, you must jump through some hoops to format it as FAT32.  Seek assistance in the formums if this is the case");
@@ -507,20 +510,40 @@ foreach ($disks as $disk) {
 
 # Check for unRaid's ftp server running
 
-/* unset($output);
+unset($output);
 exec("cat /etc/inetd.conf | grep vsftpd",$output);
 foreach ($output as $line) {
   if ($line[0] != "#") {
-    addWarning("unRaid's built in <font color='purple'><b>FTP server</b></font> is running","Opening up your unRaid server directly to the internet is an extremely bad idea. - You <b>will</b> get hacked.  If you require an FTP server running on your server, use one of the FTP docker applications instead.  They will be more secure than the built in one".addLinkButton("FTP Server Settings","/Settings/FTP")." If you are only using the built in FTP server locally on your network you can ignore this warning, but ensure that you have not forwarded any ports from your router to your server");
+    if ( is_file("/boot/config/vsftpd.user_list") ) {
+      addWarning("unRaid's built in <font color='purple'><b>FTP server</b></font> is running","Opening up your unRaid server directly to the internet is an extremely bad idea. - You <b>will</b> get hacked.  If you require an FTP server running on your server, use one of the FTP docker applications instead.  They will be more secure than the built in one".addLinkButton("FTP Server Settings","/Settings/FTP")." If you are only using the built in FTP server locally on your network you can ignore this warning, but ensure that you have not forwarded any ports from your router to your server.  Note that there is a bug in unRaid 6.1.9 and 6.2b21 where if you disable the service, it will come back alive after a reboot.  This check is looking at whether you have users authenticated to use the ftp server");
+    }
     break;
   }
-} */
-
-if ( is_file("/boot/config/vsftpd.user_list") ) {
-  addWarning("unRaid's built in <font color='purple'><b>FTP server</b></font> is running","Opening up your unRaid server directly to the internet is an extremely bad idea. - You <b>will</b> get hacked.  If you require an FTP server running on your server, use one of the FTP docker applications instead.  They will be more secure than the built in one".addLinkButton("FTP Server Settings","/Settings/FTP")." If you are only using the built in FTP server locally on your network you can ignore this warning, but ensure that you have not forwarded any ports from your router to your server.  Note that there is a bug in unRaid 6.1.9 and 6.2b21 where if you disable the service, it will come back alive after a reboot.  This check is looking at whether you have users authenticated to use the ftp server");
-
 }
 
+# Check for destination for Alert levels notifications
+
+$dynamixSettings = parse_ini_file("/boot/config/plugins/dynamix/dynamix.cfg",true);
+
+if ( $dynamixSettings['notify']['alert'] == "0" ) {
+  addWarning("No destination (browser / email / agents set for <font color='purple'><b>Alert level notifications</b></font>","Without a destination set for alerts, you will not know if any issue requiring your immediate attention happens on your server.  Fix it here:".addLinkButton("Notification Settings","/Settings/Notifications"));
+}
+# Check for destination for Warning level notifications
+
+if ( $dynamixSettings['notify']['warning'] == "0" ) {
+ addWarning("No destination (browser / email / agents set for <font color='purple'><b>Warning level notifications</b></font>","Without a destination set for alerts, you will not know if any issue requiring your attention happens on your server.  Fix it here:".addLinkButton("Notification Settings","/Settings/Notifications"));
+}
+
+# Check for destination email address
+
+$notificationsSet = $dynamixSettings['notify']['normal'] | $dynamixSettings['notify']['warning'] | $dynamixSettings['notify']['alert'];
+$emailSelected = ($notificationsSet & 2) == 2;
+
+if ( $emailSelected ) {
+  if ( ( ! $dynamixSettings['ssmtp']['RcptTo'] ) || ( ! $dynamixSettings['ssmtp']['server'] ) ) {
+    addWarning("<font color='purple'><b>Email</b></font> selected as a notification destination, but not properly configured","Either deselect email as a destination for notifications or properly configure it here: ".addLinkButton("Notification Settings","/Settings/Notifications")."  Note That this test does NOT test to see if you can actually send mail or not");
+  }
+}
 
 @unlink($filename);
 
