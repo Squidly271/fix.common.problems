@@ -1,13 +1,24 @@
 #!/usr/bin/php
 <?PHP
-$communityPaths['autoUpdateSettings'] = "/boot/config/plugins/community.applications/AutoUpdate.json";
-$fixPaths['dockerUpdateStatus'] = "/var/lib/docker/unraid-update-status.json";
-$fixPaths['tempFiles'] = "/tmp/fix.common.problems";
-$fixPaths['errors'] = $fixPaths['tempFiles']."/errors.json";
-$fixPaths['disks.ini'] = "/var/local/emhttp/disks.ini";
-#$fixPaths['disks.ini'] = "/tmp/GitHub/disks.ini";
-$fixPaths['settings'] = "/boot/config/plugins/fix.common.problems/settings.json";
 
+###############################################################
+#                                                             #
+# Fix Common Problems copyright 2015-2016, Andrew Zawadzki    #
+#                                                             #
+###############################################################
+
+
+$communityPaths['autoUpdateSettings'] = "/boot/config/plugins/community.applications/AutoUpdate.json";
+$fixPaths['dockerUpdateStatus']       = "/var/lib/docker/unraid-update-status.json";
+$fixPaths['tempFiles']                = "/tmp/fix.common.problems";
+$fixPaths['errors']                   = $fixPaths['tempFiles']."/errors.json";
+$fixPaths['disks.ini']                = "/var/local/emhttp/disks.ini";
+#$fixPaths['disks.ini']               = "/tmp/GitHub/disks.ini";                   # ONLY REMOVE COMMENT FOR TESTING
+$fixPaths['settings']                 = "/boot/config/plugins/fix.common.problems/settings.json";
+$fixPaths['moderation']               = $fixPaths['tempFiles']."/moderation.json";          /* json file that has all of the moderation */
+$fixPaths['moderationURL']            = "https://raw.githubusercontent.com/Squidly271/Community-Applications-Moderators/master/Moderation.json";
+$fixPaths['application-feed']         = "http://tools.linuxserver.io/unraid-docker-templates.json";
+$fixPaths['templates']                = $fixPaths['tempFiles']."/templates.json";
 
 exec("mkdir -p ".$fixPaths['tempFiles']);
 
@@ -37,6 +48,16 @@ function addWarning($description,$action) {
   logger("Fix Common Problems: Warning: ".strip_tags($description));
   logger("Fix Common Problems: Suggestion: ".strip_tags($action));
   $warnings[] = $newWarning;
+}
+
+function addOther($description,$action) {
+  global $otherWarnings;
+  
+  $newWarning['error'] = "$description";
+  $newWarning['suggestion'] = $action;
+  logger("Fix Common Problems: Other Warning: ".strip_tags($description));
+  logger("Fix Common Problems: Suggestion: ".strip_tags($action));
+  $otherWarnings[] = $newWarning;
 }
 
 function addLinkButton($buttonName,$link) {
@@ -398,6 +419,8 @@ if (intval($actualTime) > 24377381 ) { # current time as of this code being writ
     addWarning("Your server's <font color='purple'><b>current time</b></font> differs from the actual time by more than 5 minutes.  Currently out by approximately <font color='purple'>$timeDifference minutes</font>","Either set your date / time manually, or set up the server to use an NTP server to automatically update the date and time".addLinkButton("Date and Time Settings","/Settings/DateTime"));  
   }
 }
+@unlink($filename);
+
 
 # Check for scheduled parity checks
 
@@ -518,6 +541,10 @@ foreach ($output as $line) {
       addWarning("unRaid's built in <font color='purple'><b>FTP server</b></font> is running","Opening up your unRaid server directly to the internet is an extremely bad idea. - You <b>will</b> get hacked.  If you require an FTP server running on your server, use one of the FTP docker applications instead.  They will be more secure than the built in one".addLinkButton("FTP Server Settings","/Settings/FTP")." If you are only using the built in FTP server locally on your network you can ignore this warning, but ensure that you have not forwarded any ports from your router to your server.  Note that there is a bug in unRaid 6.1.9 and 6.2b21 where if you disable the service, it will come back alive after a reboot.  This check is looking at whether you have users authenticated to use the ftp server");
     }
     break;
+  } else {
+    if ( is_file("/boot/config/vsftpd.user_list") ) {
+      addWarning("unRaid's built in <font color='purple'><b>FTP server</b></font> is currently disabled, but users are defined","There is a bug within 6.1.9 and 6.2 beta 21 where after the server is reset, the FTP server will be automatically re-enabled regardless if you want it to be or not.  Remove the users here".addLinkButton("FTP Settings","/Settings/FTP"));
+    }
   }
 }
 
@@ -545,13 +572,70 @@ if ( $emailSelected ) {
   }
 }
 
-@unlink($filename);
+# Check for blacklisted plugins installed
+
+download_url($fixPaths['moderationURL'],$fixPaths['moderation']);
+
+$caModeration = readJsonFile($fixPaths['moderation']);
+if ( $caModeration ) {
+  $pluginList = array_diff(scandir("/var/log/plugins"),array(".",".."));
+  foreach ($pluginList as $plugin) {
+    if ( ! is_file("/var/log/plugins/$plugin") ) {
+      continue;
+    }
+    $pluginURL = exec("/usr/local/emhttp/plugins/dynamix.plugin.manager/scripts/plugin pluginURL /var/log/plugins/$plugin");
+    if ( $caModeration[$pluginURL]['Blacklist'] ) {
+      addError("Blacklisted plugin <font color='purple'><b>$plugin</b></font>","This plugin has been blacklisted and should no longer be used due to the following reason(s): <font color='purple'><em><b>".$caModeration[$pluginURL]['ModeratorComment']."</b></em></font>  You should remove this plugin as its continued installation may cause adverse effects on your server.".addLinkButton("Plugins","/Plugins"));
+    }
+  }
+} else {
+  addOther("Could not check for blacklisted plugins","The download of the blacklist failed");
+}
+@unlink($fixPaths['moderation']);
+
+# Check for non CA known plugins
+
+download_url($fixPaths['application-feed'],$fixPaths['templates']);
+$pluginList = array_diff(scandir("/var/log/plugins"),array(".",".."));
+$templates = readJsonFile($fixPaths['templates']);
+
+if ( is_array($templates['applist']) ) {
+  foreach ($templates['applist'] as $template) {
+    if ($template['Plugin']) {
+      $allPlugins[] = $template;
+    }
+  }
+ 
+  foreach ($pluginList as $plugin) {
+    if ( is_file("/boot/config/plugins/$plugin") ) {
+      if ( ( $plugin == "fix.common.problems.plg") || ( $plugin == "dynamix.plg" ) || ($plugin == "unRAIDServer.plg") || ($plugin == "community.applications.plg") ) {
+        continue;
+      }
+      $pluginURL = exec("/usr/local/emhttp/plugins/dynamix.plugin.manager/scripts/plugin pluginURL /var/log/plugins/$plugin");
+      $flag = false;
+      foreach ($allPlugins as $checkPlugin) {
+        if ( $plugin == basename($checkPlugin['PluginURL']) ) {
+          $flag = true;
+          break;
+        }
+      }
+      if ( ! $flag ) {
+        addWarning("The plugin <font color='purple'><b>$plugin</b></font> is not known to Community Applications and is possibly incompatible with your server","As a <em>general</em> rule, if the plugin is not known to Community Applications, then it is not compatible with your server.  It is recommended to uninstall this plugin ".addLinkButton("Plugins","/Plugins"));
+      }
+    }
+  }
+} else {
+  addOther("Could not perform unknown plugins installed checks","The download of the application feed failed.");
+}
+@unlink($fixPaths['templates']);
+
 
 if ( ! $errors && ! $warnings ) {
   @unlink($fixPaths['errors']);
 } else {
   $allErrors['errors'] = $errors;
   $allErrors['warnings'] = $warnings;
+  $allErrors['other'] = $otherWarnings;
   writeJsonFile($fixPaths['errors'],$allErrors);
   if ( $errors ) {
     foreach ($errors as $error) {
