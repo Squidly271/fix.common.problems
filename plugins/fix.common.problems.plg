@@ -2,8 +2,8 @@
 <!DOCTYPE PLUGIN [
 <!ENTITY name      "fix.common.problems">
 <!ENTITY author    "Andrew Zawadzki">
-<!ENTITY version   "2016.05.09">
-<!ENTITY md5       "0d90b5bbe5fd6c8d27012fa8784963f8">
+<!ENTITY version   "2016.05.10">
+<!ENTITY md5       "f7ae96a47c54d539b946443a41036543">
 <!ENTITY launch    "Settings/FixProblems">
 <!ENTITY plugdir   "/usr/local/emhttp/plugins/&name;">
 <!ENTITY github    "Squidly271/fix.common.problems">
@@ -13,6 +13,10 @@
 <PLUGIN name="&name;" author="&author;" version="&version;" launch="&launch;" pluginURL="&pluginURL;">
 
 <CHANGES>
+###2016-05-10###
+- Further enhance FTP checks
+- Add installed plugin compatibility tests
+
 ###2016-05-09###
 - Fix cache pool invalid file system
 - Add notification checks

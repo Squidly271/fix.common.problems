@@ -138,6 +138,6 @@ function apply() {
 <center><input type='button' value='What is checked' onclick='checkList();'></center>
 
 <center>
-<b>For assistance with any of the errors / warnings displayed here, plesae post a new topic in <a href='http://lime-technology.com/forum/index.php?board=71.0' target='_blank'>General Support</a></b><br>
+<b>For assistance with any of the errors / warnings displayed here, please post a new topic in <a href='http://lime-technology.com/forum/index.php?board=71.0' target='_blank'>General Support</a></b><br>
 <b>For assistance with the plugin, including requests for additional checks, false positives, etc please post <a href='http://lime-technology.com/forum/index.php?topic=48972.0' target='_blank'>HERE</a></b>
 </center>

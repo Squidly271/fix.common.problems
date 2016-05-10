@@ -52,7 +52,7 @@ function randomFile($basePath) {
 ##################################################################
 
 function readJsonFile($filename) {
-  return json_decode(@file_get_contents($filename),true);
+  return @json_decode(@file_get_contents($filename),true);
 }
 
 function writeJsonFile($filename,$jsonArray) {
@@ -135,6 +135,20 @@ function download_url($url, $path = "", $bg = false){
 function unRaidVersion() {
   $unRaidVersion = parse_ini_file("/etc/unraid-version");
   return $unRaidVersion['version'];
+}
+
+###############################################
+#                                             #
+# Search array for a particular key and value #
+# returns the index number of the array       #
+# return value === false if not found         #
+#                                             #
+###############################################
+
+function searchArray($array,$key,$value) {
+  $result = array_search($value, array_column($array, $key));
+  
+  return $result;
 }
 
 ?>

@@ -50,6 +50,8 @@ $checkList = "
 * Check for destination set for Alert level notifications
 * Check for destination set for Warning level notifications 
 & Check for email server and recipient addresses set if email notifications are selected
+* Check for plugins installed being blacklisted
+* Check for plugins installed not being known to Community Applications (implies incompatible)
 </strong>
 ";
 echo Markdown($checkList);

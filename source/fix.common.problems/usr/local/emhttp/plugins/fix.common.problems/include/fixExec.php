@@ -42,7 +42,7 @@ switch ($_POST['action']) {
     
     $errors = $allErrors['errors'];
     echo "<table class='tablesorter'>";
-    echo "<thead><th>Error Found</th><th>Suggested Fix</th></thead>";    
+    echo "<thead><th>Errors Found</th><th>Suggested Fix</th></thead>";    
     if ( ! $errors ) {
       echo "<tr><td>No errors found";
     } else {
@@ -63,6 +63,16 @@ switch ($_POST['action']) {
       }
     }
     echo "</table>";
+
+    $others = $allErrors['other'];
+    if ( $others ) {
+      echo "<table class='tablesorter'>";
+      echo "<thead><th>Other Comments</th><th></th></thead>";
+      foreach ($others as $other) {
+        echo"<tr><td width='40%'>".$other['error']."</td><td>".$other['suggestion']."</td></tr>";      
+      }
+      echo "</table>";
+    }
     break;
   case 'apply':
     $settings['frequency'] =isset($_POST['frequency']) ? urldecode(($_POST['frequency'])) : "";
