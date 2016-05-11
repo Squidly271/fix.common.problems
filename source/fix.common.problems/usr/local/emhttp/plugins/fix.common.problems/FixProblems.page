@@ -15,6 +15,7 @@ $settings = json_decode(@file_get_contents("/boot/config/plugins/fix.common.prob
 
 if ( ! $settings['notifications'] ) { $settings['notifications'] = "all"; }
 if ( ! $settings['frequency'] ) { $settings['frequency'] = "disabled"; }
+if ( ! $settings['disableSpinUp'] ) { $settings['disableSpinUp'] = "false"; }
 
 ?>
 <script>
@@ -75,6 +76,7 @@ function moveToArray(share) {
 $(function() {
   $("#frequency").val("<?=$settings['frequency']?>");
   $("#notifications").val("<?=$settings['notifications']?>");
+  $("#disableSpinUp").val("<?=$settings['disableSpinUp']?>");
 
   rescan();
 });
@@ -96,7 +98,9 @@ function enableApply() {
 function apply() {
   var frequency = $("#frequency").val();
   var notifications = $("#notifications").val();
-  $.post(URL,{action:'apply',frequency:frequency,notifications:notifications});
+  var disableSpinUp = $("#disableSpinUp").val();
+  
+  $.post(URL,{action:'apply',frequency:frequency,notifications:notifications,disableSpinUp:disableSpinUp});
   $("#applyButton").prop("disabled",true);
 }
 
@@ -122,6 +126,13 @@ function apply() {
         <option value='errors'>Errors Only</option>
       </select>
   </td>
+</tr>
+<tr>
+  <td><b>Avoid spinning up disks for tests?</b></td>
+  <td><select id='disableSpinUp' onchange='enableApply();'>
+    <option value='false'>Always perform tests (recommended)</option>
+    <option value='true'>Skip tests on spun down disks</option>
+  </select></td>
 </tr>
 </table>
 </div>

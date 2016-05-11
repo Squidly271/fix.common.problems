@@ -29,6 +29,7 @@ require_once("/usr/local/emhttp/plugins/dynamix.docker.manager/include/DockerCli
 
 $fixSettings = readJsonFile($fixPaths['settings']);
 if ( ! $fixSettings['notifications'] ) { $fixSettings['notifications'] = "all"; }
+if ( ! $fixSettings['disableSpinUp'] ) { $fixSettings['disableSpinUp'] = "false"; }
 
 function addError($description,$action) {
   global $errors;
@@ -187,8 +188,15 @@ if ( $pingReturn ) {
 # Check for inability to write to drives
     
 $availableDrives = array_diff(scandir("/mnt/"),array(".","..","user","user0","disks"));
+$disksIni = parse_ini_file($fixPaths['disks.ini'],true);
     
 foreach ($availableDrives as $drive) {
+  if ( $fixSettings['disableSpinUp'] == "true" ) {
+    if ( stripos($disksIni[$drive]['color'],"blink") ) {
+      $spunDown .= " $drive ";
+      continue;
+    }
+  }
   $filename = randomFile("/mnt/$drive");
     
   @file_put_contents($filename,"test");
@@ -199,6 +207,10 @@ foreach ($availableDrives as $drive) {
   }
   @unlink($filename);
 }
+if ( $spunDown ) {
+        addOther("Disk(s) <font color='purple'><b>$spunDown</b></font> are spun down.  Skipping write check","Disk spin up avoidance is enabled within this plugin's settings.");
+}
+
 $filename = randomFile("/boot");
 @file_put_contents($filename,"test");
 $result = @file_get_contents($filename);
@@ -408,7 +420,7 @@ if ( is_dir("/") ) {
 
 # Check if the server's time is out to lunch
 
-$filename = randomFile("/tmp");
+$filename = randomFile("/tmp/fix.common.problems");
 download_url("http://currentmillis.com/time/minutes-since-unix-epoch.php",$filename);
 $actualTime = @file_get_contents($filename);
 if (intval($actualTime) > 24377381 ) { # current time as of this code being written as a check for complete download_url
@@ -589,7 +601,7 @@ if ( $caModeration ) {
     }
   }
 } else {
-  addOther("Could not check for blacklisted plugins","The download of the blacklist failed");
+  addOther("Could not check for <font color='purple'><b>blacklisted</b></font> plugins","The download of the blacklist failed");
 }
 @unlink($fixPaths['moderation']);
 
@@ -625,12 +637,67 @@ if ( is_array($templates['applist']) ) {
     }
   }
 } else {
-  addOther("Could not perform unknown plugins installed checks","The download of the application feed failed.");
+  addOther("Could not perform <font color='purple'><b>unknown plugins</b></font> installed checks","The download of the application feed failed.");
 }
 @unlink($fixPaths['templates']);
 
+# check for docker applications installed but with changed container ports from what the author specified
 
-if ( ! $errors && ! $warnings ) {
+$dockerClient = new DockerClient();
+$info = $dockerClient->getDockerContainers();
+
+if ( is_array($templates['applist']) ) {
+  $allApps = $templates['applist'];
+
+  foreach ($info as $dockerInstalled) {
+    $dockerImage = $dockerInstalled['Image'];
+    foreach ($allApps as $app) {
+      if ( ($app['Repository'] === str_replace(":latest","",$dockerImage) ) || ($app['Repository'] === $dockerImage) ) {
+        $mode = strtolower($app['Networking']['Mode']);
+        if ( $mode == "host" ) { continue;}
+        if ( ! is_array($app['Networking']['Publish'][0]['Port']) ) { continue; }
+ 
+        $allPorts = $app['Networking']['Publish'][0]['Port'];
+
+        foreach ($allPorts as $port) {
+          $flag = false;
+          foreach ($dockerInstalled['Ports'] as $containerPort) {
+            if ( $containerPort['PrivatePort'] == $port['ContainerPort']) {
+              $flag = true;
+              break;
+            }
+          }
+          if ( ! $flag ) {
+            addError("Docker Application <font color='purple'><b>".$dockerInstalled['Name'].", Container Port ".$port['ContainerPort']."</b></font> not found or changed on installed application","When changing ports on a docker container, you should only ever modify the <font color='purple'>HOST</font> port, as the application in question will expect the container port to remain the same as what the template author dictated.  Fix this here: ".addLinkButton("Docker","/Docker"));
+          }
+        }
+      }
+    }
+  
+  }
+} else {
+  addOther("Could not perform <font color='purple'><b>docker application port</b></font> tests","The download of the application feed failed.");
+}
+
+###################################################################
+#                                                                 #
+# Execute any custom scripts at /boot/fix.common.problems/scripts #
+#                                                                 #
+###################################################################
+
+$allScripts = array_diff(scandir("/boot/config/plugins/fix.common.problems/scripts"),array(".",".."));
+
+foreach ($allScripts as $script) {
+  if ( $script == "sample.php" ) { 
+    continue;
+  }
+  if ( is_executable("/boot/config/plugins/fix.common.problems/scripts/$script") ) {
+    exec("/boot/config/plugins/fix.common.problems/scripts/$script");
+  }
+}
+
+
+if ( ! $errors && ! $warnings && ! $otherWarnings ) {
   @unlink($fixPaths['errors']);
 } else {
   $allErrors['errors'] = $errors;

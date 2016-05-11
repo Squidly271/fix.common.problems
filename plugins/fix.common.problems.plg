@@ -2,8 +2,8 @@
 <!DOCTYPE PLUGIN [
 <!ENTITY name      "fix.common.problems">
 <!ENTITY author    "Andrew Zawadzki">
-<!ENTITY version   "2016.05.10">
-<!ENTITY md5       "f7ae96a47c54d539b946443a41036543">
+<!ENTITY version   "2016.05.10a">
+<!ENTITY md5       "1468f6ea0d1a3489cd2f9eb5777335ca">
 <!ENTITY launch    "Settings/FixProblems">
 <!ENTITY plugdir   "/usr/local/emhttp/plugins/&name;">
 <!ENTITY github    "Squidly271/fix.common.problems">
@@ -13,6 +13,11 @@
 <PLUGIN name="&name;" author="&author;" version="&version;" launch="&launch;" pluginURL="&pluginURL;">
 
 <CHANGES>
+###2016.05-10###
+- Added in ability for user defined scripts to run
+- Ability to only check spun up disks for problems
+- Check installed docker apps for changed container ports
+
 ###2016-05-10###
 - Further enhance FTP checks
 - Add installed plugin compatibility tests
@@ -43,7 +48,10 @@ The 'post-install' script
 -->
 <FILE Run="/bin/bash">
 <INLINE>
+rm -f $(ls /boot/config/plugins/&name;/&name;*.txz 2>/dev/null|grep -v '&version;')
 /usr/local/emhttp/plugins/fix.common.problems/scripts/applyFrequency.php
+mkdir -p /boot/fix.common.problems/scripts/
+cp /usr/local/emhttp/plugins/fix.common.problems/scripts/sample.php /boot/fix.common.problems/scripts/sample.php
 echo ""
 echo "----------------------------------------------------"
 echo " &name; has been installed."

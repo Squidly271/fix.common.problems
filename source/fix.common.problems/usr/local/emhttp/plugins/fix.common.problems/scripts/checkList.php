@@ -52,6 +52,7 @@ $checkList = "
 & Check for email server and recipient addresses set if email notifications are selected
 * Check for plugins installed being blacklisted
 * Check for plugins installed not being known to Community Applications (implies incompatible)
+* Check for docker applications installed and users changing Container ports from author defaults
 </strong>
 ";
 echo Markdown($checkList);
