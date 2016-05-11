@@ -643,40 +643,41 @@ if ( is_array($templates['applist']) ) {
 
 # check for docker applications installed but with changed container ports from what the author specified
 
-$dockerClient = new DockerClient();
-$info = $dockerClient->getDockerContainers();
+if ( is_dir("/var/lib/docker/tmp") ) {
+  $dockerClient = new DockerClient();
+  $info = $dockerClient->getDockerContainers();
 
-if ( is_array($templates['applist']) ) {
-  $allApps = $templates['applist'];
+  if ( is_array($templates['applist']) ) {
+    $allApps = $templates['applist'];
 
-  foreach ($info as $dockerInstalled) {
-    $dockerImage = $dockerInstalled['Image'];
-    foreach ($allApps as $app) {
-      if ( ($app['Repository'] === str_replace(":latest","",$dockerImage) ) || ($app['Repository'] === $dockerImage) ) {
-        $mode = strtolower($app['Networking']['Mode']);
-        if ( $mode == "host" ) { continue;}
-        if ( ! is_array($app['Networking']['Publish'][0]['Port']) ) { continue; }
+    foreach ($info as $dockerInstalled) {
+      $dockerImage = $dockerInstalled['Image'];
+      foreach ($allApps as $app) {
+        if ( ($app['Repository'] === str_replace(":latest","",$dockerImage) ) || ($app['Repository'] === $dockerImage) ) {
+          $mode = strtolower($app['Networking']['Mode']);
+          if ( $mode == "host" ) { continue;}
+          if ( ! is_array($app['Networking']['Publish'][0]['Port']) ) { continue; }
  
-        $allPorts = $app['Networking']['Publish'][0]['Port'];
+          $allPorts = $app['Networking']['Publish'][0]['Port'];
 
-        foreach ($allPorts as $port) {
-          $flag = false;
-          foreach ($dockerInstalled['Ports'] as $containerPort) {
-            if ( $containerPort['PrivatePort'] == $port['ContainerPort']) {
-              $flag = true;
-              break;
+          foreach ($allPorts as $port) {
+            $flag = false;
+            foreach ($dockerInstalled['Ports'] as $containerPort) {
+              if ( $containerPort['PrivatePort'] == $port['ContainerPort']) {
+                $flag = true;
+                break;
+              }
             }
-          }
-          if ( ! $flag ) {
-            addError("Docker Application <font color='purple'><b>".$dockerInstalled['Name'].", Container Port ".$port['ContainerPort']."</b></font> not found or changed on installed application","When changing ports on a docker container, you should only ever modify the <font color='purple'>HOST</font> port, as the application in question will expect the container port to remain the same as what the template author dictated.  Fix this here: ".addLinkButton("Docker","/Docker"));
+            if ( ! $flag ) {
+              addError("Docker Application <font color='purple'><b>".$dockerInstalled['Name'].", Container Port ".$port['ContainerPort']."</b></font> not found or changed on installed application","When changing ports on a docker container, you should only ever modify the <font color='purple'>HOST</font> port, as the application in question will expect the container port to remain the same as what the template author dictated.  Fix this here: ".addLinkButton("Docker","/Docker"));
+            }
           }
         }
       }
     }
-  
+  } else {
+    addOther("Could not perform <font color='purple'><b>docker application port</b></font> tests","The download of the application feed failed.");
   }
-} else {
-  addOther("Could not perform <font color='purple'><b>docker application port</b></font> tests","The download of the application feed failed.");
 }
 
 ###################################################################
