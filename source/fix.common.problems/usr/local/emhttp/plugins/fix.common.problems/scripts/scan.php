@@ -368,7 +368,7 @@ if ( $dockerRunning ) {
 
 # Check for docker application's config folders pointed at /mnt/user
 
-if ( dockerRunning ) {
+if ( $dockerRunning ) {
   $DockerClient = new DockerClient();
   $info = $DockerClient->getDockerContainers();
 

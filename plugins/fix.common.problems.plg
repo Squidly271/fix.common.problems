@@ -2,8 +2,8 @@
 <!DOCTYPE PLUGIN [
 <!ENTITY name      "fix.common.problems">
 <!ENTITY author    "Andrew Zawadzki">
-<!ENTITY version   "2016.05.12">
-<!ENTITY md5       "cce939283add788c5c6608bf48751b2f">
+<!ENTITY version   "2016.05.13">
+<!ENTITY md5       "93156cac9c15c1a6d00bb82fd8b8f13e">
 <!ENTITY launch    "Settings/FixProblems">
 <!ENTITY plugdir   "/usr/local/emhttp/plugins/&name;">
 <!ENTITY github    "Squidly271/fix.common.problems">
@@ -13,7 +13,7 @@
 <PLUGIN name="&name;" author="&author;" version="&version;" launch="&launch;" pluginURL="&pluginURL;">
 
 <CHANGES>
-###2016.05-12###
+###2016.05-13###
 - Added in ad blocker checking (thx bonienl)
 - Added in illegal character checks in share names
 - Fixed bug preventing some docker checks from running
