@@ -20,6 +20,11 @@ $fixPaths['moderationURL']            = "https://raw.githubusercontent.com/Squid
 $fixPaths['application-feed']         = "http://tools.linuxserver.io/unraid-docker-templates.json";
 $fixPaths['templates']                = $fixPaths['tempFiles']."/templates.json";
 
+$autoUpdateOverride              = is_file("/boot/config/plugins/fix.common.problems/autoupdate-warning");
+$developerMode                   = is_file("/boot/config/plugins/fix.common.problems/developer");
+$communityApplicationsInstalled  = is_file("/var/log/plugins/community.applications.plg");
+$dockerRunning                   = is_dir("/var/lib/docker/tmp");
+
 exec("mkdir -p ".$fixPaths['tempFiles']);
 
 $disableNotifications = $argv[1];
@@ -76,7 +81,6 @@ function addButton($buttonName,$action) {
 
 
 
-$communityApplicationsInstalled = is_file("/var/log/plugins/community.applications.plg");
 
 if ( is_dir("/mnt/user") ) {
   $shareList = array_diff(scandir("/mnt/user"),array(".",".."));
@@ -129,12 +133,17 @@ foreach ($shareList as $share) {
 # Check for Dynamix to perform plugin checks
     
 if ( ! is_file("/boot/config/plugins/dynamix/plugin-check.cron") ) {
-  addError("<font color='purple'><b>Plugin Update Check</b></font> not enabled","Highly recommended to have dynamix check for plugin updates (including for the webUI".addLinkButton("Notification Settings","/Settings/Notifications"));
+  if ( $autoUpdateOverride ) {
+    $func = "addWarning";
+  } else {
+    $func = "addError";
+  }
+  $func("<font color='purple'><b>Plugin Update Check</b></font> not enabled","Highly recommended to have dynamix check for plugin updates (including for the webUI".addLinkButton("Notification Settings","/Settings/Notifications"));
 }
 
 # Check for Dynamix to perform docker update checks
 
-if ( is_dir("/var/lib/docker/tmp") ) {
+if ( $dockerRunning ) {
   if ( ! is_file("/boot/config/plugins/dynamix/docker-update.cron") ) {
     addWarning("<font color='purple'><b>Docker Update Check</b></font> not enabled","Recommended to enable update checks for docker applications".addLinkButton("Notification Settings","/Settings/Notifications"));
   }
@@ -152,7 +161,12 @@ if ( $communityApplicationsInstalled ) {
       addWarning("<font color='purple'><b>Dynamix WebUI</b></font> not set to auto update</font>",addLinkButton("Auto Update Settings","/Settings/AutoUpdate")."Recommended to enable auto updates for this plugin to minimize GUI problems");
     }
     if ( $autoUpdateSettings['fix.common.problems.plg'] != "true" ) {
-      addError("This plugin <font color='purple'><b>(Fix Common Problems)</b></font> not set to auto update</font>",addLinkButton("Auto Update Settings","/Settings/AutoUpdate")."Recommended to enable auto updates for this plugin to enable further problem solving / fixes");
+      if ( $autoUpdateOverride ) {
+        $func = "addWarning";
+      } else {
+        $func = "addError";
+      }
+      $func("This plugin <font color='purple'><b>(Fix Common Problems)</b></font> not set to auto update</font>",addLinkButton("Auto Update Settings","/Settings/AutoUpdate")."Recommended to enable auto updates for this plugin to enable further problem solving / fixes");
     }
   }
 } else {
@@ -220,7 +234,7 @@ if ( $result != "test" ) {
 }
 @unlink($filename);
 
-if ( is_dir("/var/lib/docker/tmp") ) {
+if ( $dockerRunning ) {
   $filename = randomFile("/var/lib/docker/tmp");
   @file_put_contents($filename,"test");
   $result = @file_get_contents($filename);
@@ -340,7 +354,7 @@ if ( is_dir("/boot/packages") ) {
 
 # Check if docker containers not updated
 
-if ( is_file("/var/lib/docker/tmp") ) {
+if ( $dockerRunning ) {
   $DockerClient = new DockerClient();
   $info = $DockerClient->getDockerContainers();
   $updateStatus = readJsonFile($fixPaths['dockerUpdateStatus']);
@@ -354,7 +368,7 @@ if ( is_file("/var/lib/docker/tmp") ) {
 
 # Check for docker application's config folders pointed at /mnt/user
 
-if ( is_file("/var/lib/docker/tmp") ) {
+if ( dockerRunning ) {
   $DockerClient = new DockerClient();
   $info = $DockerClient->getDockerContainers();
 
@@ -385,7 +399,7 @@ if ( $used > 80 ) {
 # Check for docker image getting full
 
 unset($output);
-if ( is_dir("/var/lib/docker/tmp") ) {
+if ( $dockerRunning ) {
   exec("df /var/lib/docker",$output);
   $statusLine = preg_replace('!\s+!', ' ', $output[1]);
   $status = explode(" ",$statusLine);
@@ -504,7 +518,7 @@ if ( is_file("/boot/config/share.cfg") ) {
 
 # Check for UD assigned disks not being passed as slave to docker containers
 
-if ( is_dir("/var/lib/docker/tmp") ) {
+if ( $dockerRunning ) {
   if ( version_compare(unRaidVersion(),"6.2",">=") ) {
     $DockerClient = new DockerClient();
     $info = $DockerClient->getDockerContainers();
@@ -608,42 +622,45 @@ if ( $caModeration ) {
 # Check for non CA known plugins
 
 download_url($fixPaths['application-feed'],$fixPaths['templates']);
-$pluginList = array_diff(scandir("/var/log/plugins"),array(".",".."));
 $templates = readJsonFile($fixPaths['templates']);
 
-if ( is_array($templates['applist']) ) {
-  foreach ($templates['applist'] as $template) {
-    if ($template['Plugin']) {
-      $allPlugins[] = $template;
-    }
-  }
- 
-  foreach ($pluginList as $plugin) {
-    if ( is_file("/boot/config/plugins/$plugin") ) {
-      if ( ( $plugin == "fix.common.problems.plg") || ( $plugin == "dynamix.plg" ) || ($plugin == "unRAIDServer.plg") || ($plugin == "community.applications.plg") ) {
-        continue;
+if ( ! $developerMode ) {
+  $pluginList = array_diff(scandir("/var/log/plugins"),array(".",".."));
+
+  if ( is_array($templates['applist']) ) {
+    foreach ($templates['applist'] as $template) {
+      if ($template['Plugin']) {
+        $allPlugins[] = $template;
       }
-      $pluginURL = exec("/usr/local/emhttp/plugins/dynamix.plugin.manager/scripts/plugin pluginURL /var/log/plugins/$plugin");
-      $flag = false;
-      foreach ($allPlugins as $checkPlugin) {
-        if ( $plugin == basename($checkPlugin['PluginURL']) ) {
-          $flag = true;
-          break;
+    }
+ 
+    foreach ($pluginList as $plugin) {
+      if ( is_file("/boot/config/plugins/$plugin") ) {
+        if ( ( $plugin == "fix.common.problems.plg") || ( $plugin == "dynamix.plg" ) || ($plugin == "unRAIDServer.plg") || ($plugin == "community.applications.plg") ) {
+          continue;
+        }
+        $pluginURL = exec("/usr/local/emhttp/plugins/dynamix.plugin.manager/scripts/plugin pluginURL /var/log/plugins/$plugin");
+        $flag = false;
+        foreach ($allPlugins as $checkPlugin) {
+          if ( $plugin == basename($checkPlugin['PluginURL']) ) {
+            $flag = true;
+            break;
+          }
+        }
+        if ( ! $flag ) {
+          addWarning("The plugin <font color='purple'><b>$plugin</b></font> is not known to Community Applications and is possibly incompatible with your server","As a <em>general</em> rule, if the plugin is not known to Community Applications, then it is not compatible with your server.  It is recommended to uninstall this plugin ".addLinkButton("Plugins","/Plugins"));
         }
       }
-      if ( ! $flag ) {
-        addWarning("The plugin <font color='purple'><b>$plugin</b></font> is not known to Community Applications and is possibly incompatible with your server","As a <em>general</em> rule, if the plugin is not known to Community Applications, then it is not compatible with your server.  It is recommended to uninstall this plugin ".addLinkButton("Plugins","/Plugins"));
-      }
     }
+  } else {
+    addOther("Could not perform <font color='purple'><b>unknown plugins</b></font> installed checks","The download of the application feed failed.");
   }
-} else {
-  addOther("Could not perform <font color='purple'><b>unknown plugins</b></font> installed checks","The download of the application feed failed.");
+  @unlink($fixPaths['templates']);
 }
-@unlink($fixPaths['templates']);
 
 # check for docker applications installed but with changed container ports from what the author specified
 
-if ( is_dir("/var/lib/docker/tmp") ) {
+if ( $dockerRunning ) {
   $dockerClient = new DockerClient();
   $info = $dockerClient->getDockerContainers();
 
@@ -679,6 +696,50 @@ if ( is_dir("/var/lib/docker/tmp") ) {
     addOther("Could not perform <font color='purple'><b>docker application port</b></font> tests","The download of the application feed failed.");
   }
 }
+
+# test for illegal characters in share names
+
+$shares = array_diff(scandir("/mnt/user"),array(".",".."));
+
+foreach ($shares as $share) {
+  if ( strpos($share, '\\') != false ) {
+    addError("Share <font color='purple'><b>$share</b></font> contains <font color='purple'>the \\ character</font> which is an illegal character on Windows systems.","You may run into issues with Windows and/or other programs attempting to access this share.  You will most likely have to use the command prompt in order to rectify this error.  Ask for assistance on the unRaid forums");
+  }
+  if ( strpos($share,"/") != false ) {
+    addError("Share <font color='purple'><b>$share</b></font> contains <font color='purple'>the / character</font> which is an illegal character on Windows / Linux systems.","You may run into issues with Windows and/or other programs attempting to access this share.  You will most likely have to use the command prompt in order to rectify this error.  Ask for assistance on the unRaid forums.  You probably also have some disk corruption, as this folder should be impossible to create");
+  }
+  if ( strpos($share,":") ) {
+    addError("Share <font color='purple'><b>$share</b></font> contains <font color='purple'>the : character</font> which is an illegal character on Windows / MAC systems.","You will most likely have to use the command prompt in order to rectify this error.  Ask for assistance on the unRaid forums");
+  }
+  if ( strpos($share,"*") != false ) {
+    addError("Share <font color='purple'><b>$share</b></font> contains <font color='purple'>the * character</font> which is an illegal character on Windows systems.","You may also run into issues with non-Windows systems when using this character.  You will most likely have to use the command prompt in order to rectify this error.  Ask for assistance on the unRaid forums");
+  }
+  if ( strpos($share,"?") != false ) {
+    addError("Share <font color='purple'><b>$share</b></font> contains <font color='purple'>the ? character</font> which is an illegal character on Windows systems.","You may run into issues with Windows and/or other programs attempting to access this share.  You will most likely have to use the command prompt in order to rectify this error.  Ask for assistance on the unRaid forums");
+  }
+  if ( strpos($share,'"') != false ) {
+    addError("Share <font color='purple'><b>$share</b></font> contains <font color='purple'>the \" character</font> which is an illegal character on Windows systems.","You may run into issues with Windows and/or other programs attempting to access this share.  You will most likely have to use the command prompt in order to rectify this error.  Ask for assistance on the unRaid forums");
+  }
+  if ( strpos($share,"<") != false ) {
+    addError("Share <font color='purple'><b>$share</b></font> contains <font color='purple'>the < character</font> which is an illegal character on Windows systems.","You may run into issues with Windows and/or other programs attempting to access this share  You may also run into issues with non-Windows systems when using this character.  You will most likely have to use the command prompt in order to rectify this error.  Ask for assistance on the unRaid forums");
+  }
+  if ( strpos($share,">") != false ) {
+    addError("Share <font color='purple'><b>$share</b></font> contains <font color='purple'>the > character</font> which is an illegal character on Windows systems.","You may run into issues with Windows and/or other programs attempting to access this share.  You will most likely have to use the command prompt in order to rectify this error.  Ask for assistance on the unRaid forums");
+  }
+  if ( strpos($share,"|") != false ) {
+    addError("Share <font color='purple'><b>$share</b></font> contains <font color='purple'>the | character</font> which is an illegal character on Windows systems.","You may run into issues with Windows and/or other programs attempting to access this share.  You will most likely have to use the command prompt in order to rectify this error.  Ask for assistance on the unRaid forums");
+  }
+  if ( trim($share) == "" ) {
+    addError("Share <font color='purple'><b>\"$share\"</b></font> contains <font color='purple'>only spaces</font> which is illegal Windows systems.","You may run into issues with Windows and/or other programs attempting to access this share/  You will most likely have to use the command prompt in order to rectify this error.  Ask for assistance on the unRaid forums");
+  }
+  if ( substr($share, -1) == "." ) {
+    addError("Share <font color='purple'><b>$share</b></font> ends with <font color='purple'>the . character</font> which is an illegal character to end a file / folder name  on Windows systems.","You may run into issues with Windows and/or other programs attempting to access this share.  You will most likely have to use the command prompt in order to rectify this error.  Ask for assistance on the unRaid forums");
+  }
+  if ( ! ctype_print($share) ) {
+    addError("Share <font color='purple'><b>$share</b></font> contains <font color='purple'>control character</font> which should be illegal characters on any OS.","You may run into issues with programs attempting to access this share.  You will most likely have to use the command prompt in order to rectify this error.  Ask for assistance on the unRaid forums");
+  }
+}
+
 
 ###################################################################
 #                                                                 #

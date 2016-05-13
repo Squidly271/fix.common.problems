@@ -47,31 +47,7 @@ function myCloseAlert() {
 function checkList() {
   openBox('/plugins/fix.common.problems/scripts/checkList.php',"What Is Checked?",550,550);
 }
-function moveToCache(share) {
-  swal({
-    title: "Are You Sure?",
-    text: "Are you sure you want to move all files from the cache-only share <em><b><font color='red'>"+share+"</font></b></em> from the array to the cache drive?  This function is currently disabled",
-    type: "warning",
-    html: true,
-    allowOutsideClick: true,
-    showConfirmButton: true,
-    showCancelButton: true,
-    closeOnConfirm: true
-  });
-}
 
-function moveToArray(share) {
-  swal({
-    title: "Are You Sure?",
-    text: "Are you sure you want to move all files from the array-only share <em><b><font color='red'>"+share+"</font></b></em> from the cache drive to the array?  This function is currently disabled",
-    type: "warning",
-    html: true,
-    allowOutsideClick: true,
-    showConfirmButton: true,
-    showCancelButton: true,
-    closeOnConfirm: true
-  });
-}
 
 $(function() {
   $("#frequency").val("<?=$settings['frequency']?>");
@@ -86,7 +62,11 @@ function rescan() {
   $.post(URL,{action:'scan'},function(data) {
     if (data) {
       $("#settings").html(data);
-      myCloseAlert();
+      if ($('.adsitem').length==0 || $('.adsitem').css('display')=='none') {
+        myAlert("Ad Blocker Detected","Ad blockers under certain circumstances can interfere with the displaying of information from unRaid.  You will need to &quot;white-list&quot; your server with your ad blocker program.","","",false,false,true,"error");   
+      } else {
+        myCloseAlert();
+      }
     }
   });
 }
@@ -152,3 +132,4 @@ function apply() {
 <b>For assistance with any of the errors / warnings displayed here, please post a new topic in <a href='http://lime-technology.com/forum/index.php?board=71.0' target='_blank'>General Support</a></b><br>
 <b>For assistance with the plugin, including requests for additional checks, false positives, etc please post <a href='http://lime-technology.com/forum/index.php?topic=48972.0' target='_blank'>HERE</a></b>
 </center>
+<div class="adsitem"></div>
