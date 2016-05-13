@@ -93,7 +93,7 @@ if ( is_dir("/mnt/user") ) {
 foreach ($shareList as $share) {
   if ( startsWith($share,".") ) { continue; }
   if ( ! is_file("/boot/config/shares/$share.cfg") ) {
-    if ( is_dir("/mnt/user0/$share") ) {
+    if ( is_dir("/mnt/cache/$share") ) {
       $shareURL = str_replace(" ","+",$share);
       addWarning("Share <b><font color='purple'>$share</font></b> is an implied <em>array-only</em> share, but files / folders exist on the cache","Set <b><em>Use Cache</em></b> appropriately, then rerun this analysis. ".addLinkButton("$share Settings","/Shares/Share?name=$shareURL"));
     }
@@ -678,6 +678,7 @@ if ( $dockerRunning ) {
           $allPorts = $app['Networking']['Publish'][0]['Port'];
 
           foreach ($allPorts as $port) {
+            if ( ! $port['ContainerPort'] ) { continue; }
             $flag = false;
             foreach ($dockerInstalled['Ports'] as $containerPort) {
               if ( $containerPort['PrivatePort'] == $port['ContainerPort']) {
