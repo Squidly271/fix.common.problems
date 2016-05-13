@@ -13,6 +13,11 @@
 <PLUGIN name="&name;" author="&author;" version="&version;" launch="&launch;" pluginURL="&pluginURL;">
 
 <CHANGES>
+###2016.05-12###
+- Added in ad blocker checking (thx bonienl)
+- Added in illegal character checks in share names
+- Fixed bug preventing some docker checks from running
+
 ###2016.05-10b###
 - Added in ability for user defined scripts to run
 - Ability to only check spun up disks for problems
