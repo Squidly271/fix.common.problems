@@ -2,8 +2,8 @@
 <!DOCTYPE PLUGIN [
 <!ENTITY name      "fix.common.problems">
 <!ENTITY author    "Andrew Zawadzki">
-<!ENTITY version   "2016.05.13">
-<!ENTITY md5       "93156cac9c15c1a6d00bb82fd8b8f13e">
+<!ENTITY version   "2016.05.13a">
+<!ENTITY md5       "ae494035a92cdda54e528dfa605f8949">
 <!ENTITY launch    "Settings/FixProblems">
 <!ENTITY plugdir   "/usr/local/emhttp/plugins/&name;">
 <!ENTITY github    "Squidly271/fix.common.problems">
@@ -13,12 +13,23 @@
 <PLUGIN name="&name;" author="&author;" version="&version;" launch="&launch;" pluginURL="&pluginURL;">
 
 <CHANGES>
+###2016-05-13a###
+- Removed check for control characters in filenames
+- Added Checks for dockers not running in same network mode as what author intended
+- Added in checks for HPA
+- Added in checks for illegal suffixes on cachefloor settings
+- Added in checks for cache floor larger than cache drive
+- Added in checks for cache free space less than cache floor
+- Added in check for array started
+- Fix false positive for implied array only files on cache
+- Fix false positive if docker container had no ports in template
+
 ###2016.05-13###
 - Added in ad blocker checking (thx bonienl)
 - Added in illegal character checks in share names
 - Fixed bug preventing some docker checks from running
 
-###2016.05-10b###
+###2016-05-10b###
 - Added in ability for user defined scripts to run
 - Ability to only check spun up disks for problems
 - Check installed docker apps for changed container ports

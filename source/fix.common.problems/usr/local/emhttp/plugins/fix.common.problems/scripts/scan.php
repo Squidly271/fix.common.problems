@@ -19,6 +19,7 @@ $fixPaths['moderation']               = $fixPaths['tempFiles']."/moderation.json
 $fixPaths['moderationURL']            = "https://raw.githubusercontent.com/Squidly271/Community-Applications-Moderators/master/Moderation.json";
 $fixPaths['application-feed']         = "http://tools.linuxserver.io/unraid-docker-templates.json";
 $fixPaths['templates']                = $fixPaths['tempFiles']."/templates.json";
+$fixPaths['var.ini']                   = "/var/local/emhttp/var.ini";
 
 $autoUpdateOverride              = is_file("/boot/config/plugins/fix.common.problems/autoupdate-warning");
 $developerMode                   = is_file("/boot/config/plugins/fix.common.problems/developer");
@@ -86,6 +87,7 @@ if ( is_dir("/mnt/user") ) {
   $shareList = array_diff(scandir("/mnt/user"),array(".",".."));
 } else {
   $shareList = array();
+  addError("Array is not started","Most (but not all) require the array to be started in order to run.  There may be more errors / warnings than what is listed here");
 }
 
 # Check for implied array only but files / folders on cache
@@ -222,7 +224,7 @@ foreach ($availableDrives as $drive) {
   @unlink($filename);
 }
 if ( $spunDown ) {
-        addOther("Disk(s) <font color='purple'><b>$spunDown</b></font> are spun down.  Skipping write check","Disk spin up avoidance is enabled within this plugin's settings.");
+  addOther("Disk(s) <font color='purple'><b>$spunDown</b></font> are spun down.  Skipping write check","Disk spin up avoidance is enabled within this plugin's settings.");
 }
 
 $filename = randomFile("/boot");
@@ -569,7 +571,7 @@ foreach ($output as $line) {
     break;
   } else {
     if ( is_file("/boot/config/vsftpd.user_list") ) {
-      addWarning("unRaid's built in <font color='purple'><b>FTP server</b></font> is currently disabled, but users are defined","There is a bug within 6.1.9 and 6.2 beta 21 where after the server is reset, the FTP server will be automatically re-enabled regardless if you want it to be or not.  Remove the users here".addLinkButton("FTP Settings","/Settings/FTP"));
+      addWarning("unRaid's built in <font color='purple'><b>FTP server</b></font> is currently disabled, but users are defined","There is a &quot;feature&quot; within 6.1.9 and 6.2 beta 21 where after the server is reset, the FTP server will be automatically re-enabled regardless if you want it to be or not.  Remove the users here".addLinkButton("FTP Settings","/Settings/FTP"));
     }
   }
 }
@@ -659,6 +661,7 @@ if ( ! $developerMode ) {
 }
 
 # check for docker applications installed but with changed container ports from what the author specified
+# concurrently check for docker applications running in a different network mode than what the template specifies
 
 if ( $dockerRunning ) {
   $dockerClient = new DockerClient();
@@ -670,8 +673,12 @@ if ( $dockerRunning ) {
     foreach ($info as $dockerInstalled) {
       $dockerImage = $dockerInstalled['Image'];
       foreach ($allApps as $app) {
+        $support = $app['Support'] ? $app['Support'] : $app['Forum'];
         if ( ($app['Repository'] === str_replace(":latest","",$dockerImage) ) || ($app['Repository'] === $dockerImage) ) {
           $mode = strtolower($app['Networking']['Mode']);
+          if ( $mode != strtolower($dockerInstalled['NetworkMode']) ) {
+            addError("Docker Application <font color='purple'><b>".$dockerInstalled['Name']."</b></font> is currently set up to run in <font color='purple'><b>".$dockerInstalled['NetworkMode']."</b></font> mode","The template for this application specifies that the application should run in $mode mode.  <a href='$support' target='_blank'>Application Support Thread</a>  ".addLinkButton("Docker","/Docker"));
+          }
           if ( $mode == "host" ) { continue;}
           if ( ! is_array($app['Networking']['Publish'][0]['Port']) ) { continue; }
  
@@ -687,7 +694,7 @@ if ( $dockerRunning ) {
               }
             }
             if ( ! $flag ) {
-              addError("Docker Application <font color='purple'><b>".$dockerInstalled['Name'].", Container Port ".$port['ContainerPort']."</b></font> not found or changed on installed application","When changing ports on a docker container, you should only ever modify the <font color='purple'>HOST</font> port, as the application in question will expect the container port to remain the same as what the template author dictated.  Fix this here: ".addLinkButton("Docker","/Docker"));
+              addError("Docker Application <font color='purple'><b>".$dockerInstalled['Name'].", Container Port ".$port['ContainerPort']."</b></font> not found or changed on installed application","When changing ports on a docker container, you should only ever modify the <font color='purple'>HOST</font> port, as the application in question will expect the container port to remain the same as what the template author dictated.  Fix this here: ".addLinkButton("Docker","/Docker")."<a href='$support' target='_blank'>Application Support Thread</a>");
             }
           }
         }
@@ -700,9 +707,8 @@ if ( $dockerRunning ) {
 
 # test for illegal characters in share names
 
-$shares = array_diff(scandir("/mnt/user"),array(".",".."));
 
-foreach ($shares as $share) {
+foreach ($shareList as $share) {
   if ( strpos($share, '\\') != false ) {
     addError("Share <font color='purple'><b>$share</b></font> contains <font color='purple'>the \\ character</font> which is an illegal character on Windows systems.","You may run into issues with Windows and/or other programs attempting to access this share.  You will most likely have to use the command prompt in order to rectify this error.  Ask for assistance on the unRaid forums");
   }
@@ -736,11 +742,97 @@ foreach ($shares as $share) {
   if ( substr($share, -1) == "." ) {
     addError("Share <font color='purple'><b>$share</b></font> ends with <font color='purple'>the . character</font> which is an illegal character to end a file / folder name  on Windows systems.","You may run into issues with Windows and/or other programs attempting to access this share.  You will most likely have to use the command prompt in order to rectify this error.  Ask for assistance on the unRaid forums");
   }
-  if ( ! ctype_print($share) ) {
+# control characters in file names are a standard part of OSX
+/*   if ( ! ctype_print($share) ) {
     addError("Share <font color='purple'><b>$share</b></font> contains <font color='purple'>control character</font> which should be illegal characters on any OS.","You may run into issues with programs attempting to access this share.  You will most likely have to use the command prompt in order to rectify this error.  Ask for assistance on the unRaid forums");
+  } */
+}
+
+# check for HPA (addOther if on data drives, addError if parity disk)
+
+$disks = parse_ini_file($fixPaths['disks.ini'],true);
+$description = "";
+$suggestion = "";
+
+foreach ($disks as $disk) {
+  if ( ! $disk['device'] ) { continue; }
+  if ( $disk['name'] == "flash" ) { continue; }
+  $deviceID = $disk['device'];
+  
+  $command = "/sbin/hdparm -N /dev/$deviceID";
+  $output = exec($command);
+
+  if ( strpos($output,"enabled") ) {
+    if ( $disk['name'] == "parity" ) {
+      $func = "addError";
+    } else {
+      $func = "addOther";
+    }
+    $func("Disk <font color='purple'><b>".$disk['name']."</b></font> has an HPA partition enabled on it","If this is your parity disk, then you <b>must</b> remove the HPA partition, because its presence will impact the ability (<b>as in you may not be able to do it</b>) rebuild a disabled drive and/or expand your array.  It is not so important if this is present on a data/cache disk.  See assistance on unRaid's forums for help with the commands to fix this issue.  <a href='http://lime-technology.com/wiki/index.php/UnRAID_Topical_Index#HPA' target='_blank'>Sample of forum posts</a>  This issue mainly affects hard drives that are currently installed in, or have been in a system with a Gigabyte motherboard");
   }
 }
 
+
+
+# Check for flash drive filling up
+
+$flashFree = disk_free_space("/boot");
+$flashAvail = disk_total_space("/boot");
+
+$percentage = ($flashFree / $flashAvail) * 100;
+
+if ( $percentage < 10 ) {
+  addWarning("<font color='purple'><b>Flash Drive</b></font> is > 90% full","As very little information is stored on the flash drive in a properly configured system, you may have an improperly configured application which is storing an excessive amount of data onto the flash drive.  On a properly configured system with no extraneous files on the flash drive, it should only use at most 1G");
+}
+
+# Check for improper entry into cacheFloor Settings
+
+$vars = parse_ini_file($fixPaths['var.ini']);
+$suffix = strtolower(preg_replace('/[0-9]+/', '', $vars['shareCacheFloor']));
+
+if ( ( $suffix!= "" ) && ($suffix != "kb") && ($suffix != "mb") && ($suffix != "gb") && ($suffix != "tb") ) {
+  addError("An improper suffix <font color='purple'><b>$suffix</b></font> was use in the cache floor settings","The only valid suffixes allowed are KB, MB, GB, TB.  Fix it here: ".addLinkButton("Global Share Settings","/Settings/ShareSettings"));
+}
+
+# Check for cache drive exceeding its floor space ( and cache floor larger than cache drive )
+
+if ( is_dir("/mnt/cache") ) {
+  $vars = parse_ini_file($fixPaths['var.ini']);
+  $cacheFloor = $vars['shareCacheFloor'];
+
+  $cacheFloorSuffix = strtolower(preg_replace('/[0-9]+/', '', $vars['shareCacheFloor']));
+  $cacheFloor = str_replace($cacheFloorSuffix,"",$cacheFloor);
+  
+  switch ( $cacheFloorSuffix ) {
+    case "":
+      $multiplier = 1024;
+      break;
+    case "kb":
+      $multiplier = 1000;
+      break;
+    case "mb":
+      $multiplier = 1000000;
+      break;
+    case "gb":
+      $multiplier = 1000000000;
+      break;
+    case "tb":
+      $multiplier = 1000000000000;
+      break;
+  }
+  $cacheFloor = $cacheFloor * $multiplier;
+  $cacheFree = disk_free_space("/mnt/cache");
+  $cacheSize = disk_total_space("/mnt/cache");
+
+  if ( $cacheFloor > $cacheSize ) {
+    addError("<font color='purple'><b>Cache Floor Size</b></font> (calculated to $cacheFloor bytes) is larger than your cache drive ($cacheSize bytes)","Change your cache floor settings here: ".addLinkButton("Global Share Settings","/Settings/ShareSettings"));
+  } else {
+    if ( $cacheFree < $cacheFloor ) {
+      addWarning("<font color='purple'><b>Cache Disk</b></font> free space is less than the cache floor setting","All writes to your cache enabled shares are being redirected to your array.  If this is a transient situation, you can ignore this, otherwise adjust your cache floor settings here:".addLinkButton("Global Share Settings","/Settings/ShareSettings")." or adjust the frequency of the mover running:".addLinkButton("Scheduler Settings","/Settings/Scheduler")." or purchase a larger cache drive");
+    }
+  }
+  
+}
 
 ###################################################################
 #                                                                 #

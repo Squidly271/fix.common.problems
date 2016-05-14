@@ -55,6 +55,11 @@ $checkList = "
 * Check for docker applications installed and users changing Container ports from author default
 * Check for ad blocker's interfering with unRaid
 * Check for illegal characters in share names
+* Check for docker applications not running in the network mode template author specifies
+* Check for HPA on drives  (Error on parity, other warning for all other drives)
+* Check for illegal suffixes on cacheFloor settings
+* Check for cache free space less than cacheFloor
+* Check for cache floor greater than cache total space
 </strong>
 ";
 echo Markdown($checkList);
