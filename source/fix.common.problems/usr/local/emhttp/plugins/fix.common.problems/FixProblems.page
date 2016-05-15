@@ -44,6 +44,79 @@ function myAlert(description,textdescription,textimage,imagesize, outsideClick, 
 function myCloseAlert() {
   swal.close();
 }
+
+function ignoreError(error) {
+  swal({
+    title: "Ignore Error?",
+    text: "Are you sure you want to ignore this error:<br><font color='red'><b>"+error+"</b></font><br>As a <em>general rule</em> this is not recommended unless you are absolutely sure about this",
+    showConfirmButton: true,
+    showCancelButton: true,
+    closeOnConfirm: false,
+    type: "warning",
+    html: true
+  },
+  function() {
+    $.post(URL,{action:"ignoreError",error:error});
+      swal({
+        title: "Ignored!",
+        text: "On future scans, <font color='green'><b>"+error+"</b></font> will not generate a warning or an error",
+        showConfirmButton: true,
+        showCancelButton: false,
+        closeOnConfirm: true,
+        html: true,
+        type: "success"
+      });
+  });
+}
+
+function readdError(error) {
+  swal({
+    title: "Readd This Error?",
+    text: "Are you sure you want to begin scanning for this error again:<br><font color='red'><b>"+error+"</b></font>",
+    showConfirmButton: true,
+    showCancelButton: true,
+    closeOnConfirm: false,
+    type: "warning",
+    html: true
+  },
+  function() {
+    $.post(URL,{action:"readdError",error:error});
+      swal({
+        title: "Ignored!",
+        text: "On future scans, <font color='red'><b>"+error+"</b></font> will generate either a warning or an error",
+        showConfirmButton: true,
+        showCancelButton: false,
+        closeOnConfirm: true,
+        html: true,
+        type: "success"
+      });
+  });
+}
+
+function readdAll() {
+  swal({
+    title: "Re-Add All Errors?",
+    text: "Are you sure you want to set all of the current ignored errors back to generating errors / warnings?",
+    showConfirmButton: true,
+    showCancelButton: true,
+    closeOnConfirm: false,
+    type: "warning",
+    html: true
+  },
+  function() {
+    $.post(URL,{action:"readdAll"});
+      swal({
+        title: "Re-Added",
+        text: "On future scans, all errors / warnings found will generate an error / warning",
+        showConfirmButton: true,
+        showCancelButton: false,
+        closeOnConfirm: true,
+        html: true,
+        type: "success"
+      });
+  });
+}
+
 function checkList() {
   openBox('/plugins/fix.common.problems/scripts/checkList.php',"What Is Checked?",550,550);
 }

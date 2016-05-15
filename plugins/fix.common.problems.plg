@@ -2,8 +2,8 @@
 <!DOCTYPE PLUGIN [
 <!ENTITY name      "fix.common.problems">
 <!ENTITY author    "Andrew Zawadzki">
-<!ENTITY version   "2016.05.13a">
-<!ENTITY md5       "ae494035a92cdda54e528dfa605f8949">
+<!ENTITY version   "2016.05.14">
+<!ENTITY md5       "05db5bfa42093beac747c81fbb928920">
 <!ENTITY launch    "Settings/FixProblems">
 <!ENTITY plugdir   "/usr/local/emhttp/plugins/&name;">
 <!ENTITY github    "Squidly271/fix.common.problems">
@@ -13,6 +13,10 @@
 <PLUGIN name="&name;" author="&author;" version="&version;" launch="&launch;" pluginURL="&pluginURL;">
 
 <CHANGES>
+###2016-05-14###
+- Fix (hopefully) false positive HPA when using Areca controllers
+- Added ability to ignore certain errors / warnings
+
 ###2016-05-13a###
 - Removed check for control characters in filenames
 - Added Checks for dockers not running in same network mode as what author intended

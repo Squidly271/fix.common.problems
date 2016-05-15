@@ -10,6 +10,7 @@ $communityPaths['autoUpdateSettings'] = "/boot/config/plugins/community.applicat
 $fixPaths['tempFiles'] = "/tmp/fix.common.problems";
 $fixPaths['errors'] = $fixPaths['tempFiles']."/errors.json";
 $fixPaths['settings'] = "/boot/config/plugins/fix.common.problems/settings.json";
+$fixPaths['ignoreList'] = "/boot/config/plugins/fix.common.problems/ignoreList.json";
 
 
 require_once("/usr/local/emhttp/plugins/fix.common.problems/include/helpers.php");
@@ -30,6 +31,10 @@ function addButton($buttonName,$action) {
 
 $communityApplicationsInstalled = is_file("/var/log/plugins/community.applications.plg");
 
+function displayErrors() {
+
+}
+
 switch ($_POST['action']) {
   case 'scan':
     exec("/usr/local/emhttp/plugins/fix.common.problems/scripts/scan.php 1",$output);
@@ -38,28 +43,31 @@ switch ($_POST['action']) {
         echo $line."<br>";
       }
     }
-    $allErrors = readJsonFile($fixPaths['errors']);
+
+      $allErrors = readJsonFile($fixPaths['errors']);
     
     $errors = $allErrors['errors'];
     echo "<table class='tablesorter'>";
-    echo "<thead><th>Errors Found</th><th>Suggested Fix</th></thead>";    
+    echo "<thead><th>Errors Found</th><th>Suggested Fix</th><th></th></thead>";    
     if ( ! $errors ) {
-      echo "<tr><td>No errors found";
+      echo "<tr><td><b>No errors found";
     } else {
+
       foreach ($errors as $error) {
-        echo "<tr><td width='40%'>".$error['error']."</td><td>".$error['suggestion']."</td></tr>";
+        echo "<tr><td width='40%'>".$error['error']."</td><td>".$error['suggestion']."</td>";
+        echo "<td><input type='button' value='Ignore Error' onclick='ignoreError(&quot;".strip_tags($error['error'])."&quot;);';></td></tr>";
       }
     }
     echo "</table>";
     echo "<table class='tablesorter'>";
-    echo "<thead><th>Warnings Found</th><th>Suggested Fix</th></thead>";
+    echo "<thead><th>Warnings Found</th><th>Suggested Fix</th><th></th><th></th></thead>";
     $warnings = $allErrors['warnings'];
     if ( ! $warnings ) {
-      echo "<tr><td>No Warnings found";
+      echo "<tr><td><b>No Warnings found";
     } else {
-
       foreach ($warnings as $warning) {
-        echo "<tr><td width='40%'>".$warning['error']."</td><td>".$warning['suggestion']."</td></tr>";
+        echo "<tr><td width='40%'>".$warning['error']."</td><td>".$warning['suggestion']."</td>";
+        echo "<td><input type='button' value='Ignore Warning' onclick='ignoreError(&quot;".strip_tags($warning['error'])."&quot;);';></td></tr>";
       }
     }
     echo "</table>";
@@ -67,12 +75,25 @@ switch ($_POST['action']) {
     $others = $allErrors['other'];
     if ( $others ) {
       echo "<table class='tablesorter'>";
-      echo "<thead><th>Other Comments</th><th></th></thead>";
+      echo "<thead><th>Other Comments</th><th>Comments</th></thead>";
       foreach ($others as $other) {
-        echo"<tr><td width='40%'>".$other['error']."</td><td>".$other['suggestion']."</td></tr>";      
+        echo "<tr><td width='40%'>".$other['error']."</td><td>".$other['suggestion']."</td></tr>";      
       }
       echo "</table>";
     }
+    $ignored = $allErrors['ignored'];
+    if ( $ignored ) {
+      echo "<table class='tablesorter'>";
+      echo "<thead><th>Ignored Errors</th><th>Suggested Fix</th><th></th></thead>";
+      foreach ($ignored as $ignore) {
+        echo "<tr><td width='40%'>".$ignore['error']."</td><td>".$ignore['suggestion']."</td>";
+        echo "<td><input type='button' value='ReAdd Error' onclick='readdError(&quot;".strip_tags($ignore['error'])."&quot;);';></td></tr>";
+      }
+      echo "</table>";
+      echo "<center>";
+      echo "<input type='button' value='ReAdd ALL Errors' onclick='readdAll();'>";
+    }
+    
     break;
   case 'apply':
     $settings['frequency'] =isset($_POST['frequency']) ? urldecode(($_POST['frequency'])) : "";
@@ -82,5 +103,21 @@ switch ($_POST['action']) {
     writeJsonFile($fixPaths['settings'],$settings);
     exec("/usr/local/emhttp/plugins/fix.common.problems/scripts/applyFrequency.php");
     break;
+  case 'ignoreError':
+    $ignore = isset($_POST['error']) ? urldecode(($_POST['error'])) : "";
+    $ignoreList = readJsonFile($fixPaths['ignoreList']);
+    $ignoreList[$ignore] = "true";
+    writeJsonFile($fixPaths['ignoreList'],$ignoreList);
+    break;
+  case 'readdError':
+    $ignore = isset($_POST['error']) ? urldecode(($_POST['error'])) : "";
+    $ignoreList = readJsonFile($fixPaths['ignoreList']);
+    unset($ignoreList[$ignore]);
+    writeJsonFile($fixPaths['ignoreList'],$ignoreList);
+    break;
+  case 'readdAll':
+    @unlink($fixPaths['ignoreList']);
+    break;
+    
 }
 ?>

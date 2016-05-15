@@ -20,6 +20,8 @@ $fixPaths['moderationURL']            = "https://raw.githubusercontent.com/Squid
 $fixPaths['application-feed']         = "http://tools.linuxserver.io/unraid-docker-templates.json";
 $fixPaths['templates']                = $fixPaths['tempFiles']."/templates.json";
 $fixPaths['var.ini']                   = "/var/local/emhttp/var.ini";
+$fixPaths['ignoreList'] = "/boot/config/plugins/fix.common.problems/ignoreList.json";
+
 
 $autoUpdateOverride              = is_file("/boot/config/plugins/fix.common.problems/autoupdate-warning");
 $developerMode                   = is_file("/boot/config/plugins/fix.common.problems/developer");
@@ -34,27 +36,39 @@ require_once("/usr/local/emhttp/plugins/fix.common.problems/include/helpers.php"
 require_once("/usr/local/emhttp/plugins/dynamix.docker.manager/include/DockerClient.php");
 
 $fixSettings = readJsonFile($fixPaths['settings']);
+$ignoreList = readJsonFile($fixPaths['ignoreList']);
+
 if ( ! $fixSettings['notifications'] ) { $fixSettings['notifications'] = "all"; }
 if ( ! $fixSettings['disableSpinUp'] ) { $fixSettings['disableSpinUp'] = "false"; }
 
 function addError($description,$action) {
-  global $errors;
+  global $errors, $ignoreList, $ignored;
 
   $newError['error'] = "<font color='red'>$description</font>";
   $newError['suggestion'] = $action;
   logger("Fix Common Problems: Error: ".strip_tags($description));
   logger("Fix Common Problems: Suggestion:".strip_tags($action));
-  $errors[] = $newError;
+  
+  if ( $ignoreList[strip_tags($description)] ) {
+    $ignored[] = $newError;
+  } else {
+    $errors[] = $newError;
+  }
 }
 
 function addWarning($description,$action) {
-  global $warnings;
+  global $warnings, $ignoreList, $ignored;
   
   $newWarning['error'] = "$description";
   $newWarning['suggestion'] = $action;
   logger("Fix Common Problems: Warning: ".strip_tags($description));
   logger("Fix Common Problems: Suggestion: ".strip_tags($action));
-  $warnings[] = $newWarning;
+  
+  if ( $ignoreList[strip_tags($description)] ) {
+    $ignored[] = $newWarning;
+  } else {
+    $warnings[] = $newWarning;
+  }
 }
 
 function addOther($description,$action) {
@@ -759,16 +773,20 @@ foreach ($disks as $disk) {
   if ( $disk['name'] == "flash" ) { continue; }
   $deviceID = $disk['device'];
   
-  $command = "/sbin/hdparm -N /dev/$deviceID";
-  $output = exec($command);
-
-  if ( strpos($output,"enabled") ) {
-    if ( $disk['name'] == "parity" ) {
-      $func = "addError";
-    } else {
-      $func = "addOther";
-    }
-    $func("Disk <font color='purple'><b>".$disk['name']."</b></font> has an HPA partition enabled on it","If this is your parity disk, then you <b>must</b> remove the HPA partition, because its presence will impact the ability (<b>as in you may not be able to do it</b>) rebuild a disabled drive and/or expand your array.  It is not so important if this is present on a data/cache disk.  See assistance on unRaid's forums for help with the commands to fix this issue.  <a href='http://lime-technology.com/wiki/index.php/UnRAID_Topical_Index#HPA' target='_blank'>Sample of forum posts</a>  This issue mainly affects hard drives that are currently installed in, or have been in a system with a Gigabyte motherboard");
+  $command = "/sbin/hdparm -N /dev/$deviceID 2>&1";
+  unset($output);
+  exec($command,$output);
+  foreach ($output as $line) {
+    if ( strpos($line,"bad/missing") ) { break; }
+    if ( strpos($line,"HPA is enabled") ) {
+      if ( $disk['name'] == "parity" ) {
+        $func = "addError";
+      } else {
+        $func = "addOther";
+      }
+      $func("Disk <font color='purple'><b>".$disk['name']."</b></font> has an HPA partition enabled on it","If this is your parity disk, then you <b>must</b> remove the HPA partition, because its presence will impact the ability (<b>as in you may not be able to do it</b>) rebuild a disabled drive and/or expand your array.  It is not so important if this is present on a data/cache disk.  See assistance on unRaid's forums for help with the commands to fix this issue.  <a href='http://lime-technology.com/wiki/index.php/UnRAID_Topical_Index#HPA' target='_blank'>Sample of forum posts</a>  This issue mainly affects hard drives that are currently installed in, or have been in a system with a Gigabyte motherboard");
+      break;
+    }  
   }
 }
 
@@ -858,6 +876,8 @@ if ( ! $errors && ! $warnings && ! $otherWarnings ) {
   $allErrors['errors'] = $errors;
   $allErrors['warnings'] = $warnings;
   $allErrors['other'] = $otherWarnings;
+  $allErrors['ignored'] = $ignored;
+  
   writeJsonFile($fixPaths['errors'],$allErrors);
   if ( $errors ) {
     foreach ($errors as $error) {
