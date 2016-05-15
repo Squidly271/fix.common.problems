@@ -6,34 +6,11 @@
 #                                                             #
 ###############################################################
 
-$communityPaths['autoUpdateSettings'] = "/boot/config/plugins/community.applications/AutoUpdate.json";
-$fixPaths['tempFiles'] = "/tmp/fix.common.problems";
-$fixPaths['errors'] = $fixPaths['tempFiles']."/errors.json";
-$fixPaths['settings'] = "/boot/config/plugins/fix.common.problems/settings.json";
-$fixPaths['ignoreList'] = "/boot/config/plugins/fix.common.problems/ignoreList.json";
-
-
+require_once("/usr/local/emhttp/plugins/fix.common.problems/include/paths.php");
 require_once("/usr/local/emhttp/plugins/fix.common.problems/include/helpers.php");
 
-function addError($description,$action) {
-  global $errors;
-  $errors .= "<tr><td><font color='red'>$description</font></td><td>$action</td></tr>";
-}
 
-function addLinkButton($buttonName,$link) {
-  $link = str_replace("'","&quot;",$link);
-  return "<input type='button' value='$buttonName' onclick='window.location.href=&quot;$link&quot;'>";
-}
-function addButton($buttonName,$action) {
-  $action = str_replace("'","&quot;",$action);
-  return "<input type='button' value='$buttonName' onclick='$action'>";
-}
 
-$communityApplicationsInstalled = is_file("/var/log/plugins/community.applications.plg");
-
-function displayErrors() {
-
-}
 
 switch ($_POST['action']) {
   case 'scan':

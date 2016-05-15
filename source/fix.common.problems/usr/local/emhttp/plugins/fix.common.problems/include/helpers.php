@@ -6,6 +6,86 @@
 ###############################################################
 
 require_once("/usr/local/emhttp/plugins/dynamix/include/Wrappers.php");
+require_once("/usr/local/emhttp/plugins/fix.common.problems/include/paths.php");
+
+#############################
+#                           #
+# Adds an error to the list #
+#                           #
+#############################
+
+function addError($description,$action) {
+  global $errors, $ignoreList, $ignored;
+
+  $newError['error'] = "<font color='red'>$description</font>";
+  $newError['suggestion'] = $action;
+  logger("Fix Common Problems: Error: ".strip_tags($description));
+  logger("Fix Common Problems: Suggestion:".strip_tags($action));
+  if ( $ignoreList[strip_tags($description)] ) {
+    $ignored[] = $newError;
+  } else {
+    $errors[] = $newError;
+  }
+}
+
+#############################
+#                           #
+# Add a warning to the list #
+#                           #
+#############################
+
+function addWarning($description,$action) {
+  global $warnings, $ignoreList, $ignored;
+  
+  $newWarning['error'] = "$description";
+  $newWarning['suggestion'] = $action;
+  logger("Fix Common Problems: Warning: ".strip_tags($description));
+  logger("Fix Common Problems: Suggestion: ".strip_tags($action));
+  
+  if ( $ignoreList[strip_tags($description)] ) {
+    $ignored[] = $newWarning;
+  } else {
+    $warnings[] = $newWarning;
+  }
+}
+
+#####################################
+#                                   #
+# Adds an other comment to the list #
+#                                   #
+#####################################
+
+function addOther($description,$action) {
+  global $otherWarnings;
+  
+  $newWarning['error'] = "$description";
+  $newWarning['suggestion'] = $action;
+  logger("Fix Common Problems: Other Warning: ".strip_tags($description));
+  logger("Fix Common Problems: Suggestion: ".strip_tags($action));
+  $otherWarnings[] = $newWarning;
+}
+
+############################################
+#                                          #
+# Adds a button with a link attached to it #
+#                                          #
+############################################
+
+function addLinkButton($buttonName,$link) {
+  $link = str_replace("'","&quot;",$link);
+  return "<input type='button' value='$buttonName' onclick='window.location.href=&quot;$link&quot;'>";
+}
+
+########################################
+#                                      #
+# Adds a button with a javascript link #
+#                                      #
+########################################
+
+function addButton($buttonName,$action) {
+  $action = str_replace("'","&quot;",$action);
+  return "<input type='button' value='$buttonName' onclick='$action'>";
+}
 
 ###########################################################################
 #                                                                         #
@@ -126,11 +206,11 @@ function download_url($url, $path = "", $bg = false){
   return ($exit_code === 0 ) ? implode("\n", $out) : false;
 }
 
-###
-#
-# returns unRaid version
-#
-###
+##########################
+#                        #
+# returns unRaid version #
+#                        #
+##########################
 
 function unRaidVersion() {
   $unRaidVersion = parse_ini_file("/etc/unraid-version");
