@@ -27,7 +27,7 @@ switch ($_POST['action']) {
     echo "<table class='tablesorter'>";
     echo "<thead><th>Errors Found</th><th>Suggested Fix</th><th></th></thead>";    
     if ( ! $errors ) {
-      echo "<tr><td><b>No errors found";
+      echo "<tr><td><b><img src='https://raw.githubusercontent.com/Squidly271/fix.common.problems/master/images/happy.png' width='5%'>  No errors found";
     } else {
 
       foreach ($errors as $error) {
@@ -37,10 +37,10 @@ switch ($_POST['action']) {
     }
     echo "</table>";
     echo "<table class='tablesorter'>";
-    echo "<thead><th>Warnings Found</th><th>Suggested Fix</th><th></th><th></th></thead>";
+    echo "<thead><th>Warnings Found</th><th>Suggested Fix</th><th></th></thead>";
     $warnings = $allErrors['warnings'];
     if ( ! $warnings ) {
-      echo "<tr><td><b>No Warnings found";
+      echo "<tr><td><b><img src='https://raw.githubusercontent.com/Squidly271/fix.common.problems/master/images/happy.png' width='5%'>  No Warnings found";
     } else {
       foreach ($warnings as $warning) {
         echo "<tr><td width='40%'>".$warning['error']."</td><td>".$warning['suggestion']."</td>";
