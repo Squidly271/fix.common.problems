@@ -196,9 +196,13 @@ function writeToDriveTest() {
   $result = @file_get_contents($filename);
 
   if ( $result != "test" ) {
-    addError("Unable to write to <font color='purple'><b>flash drive</b>","Drive mounted read-only or completely full.  Begin Investigation Here: ".addLinkButton("unRaid Main","/Main"));
+    addError("Unable to write to <font color='purple'><b>flash drive</b>","Drive mounted read-only or completely full.  Begin Investigation Here: ".addLinkButton("unRaid Main","/Main")." Note: failing this test will also mean that you will be unable to perform a clean shutdown of your server");
   }
   @unlink($filename);
+# Toss the reset check flag on the the flash drive
+  if ( is_dir("/mnt/user") ) {
+    @file_put_contents($fixPaths['uncleanRebootFlag'],"just a flag file to determine if unclean shutdowns occur");
+  }
 
   if ( $dockerRunning ) {
     $filename = randomFile("/var/lib/docker/tmp");
@@ -686,10 +690,8 @@ function blacklistedPluginsInstalled() {
 
 function unknownPluginInstalled() {
   global $fixPaths, $fixSettings, $autoUpdateOverride, $developerMode, $communityApplicationsInstalled, $dockerRunning, $ignoreList, $shareList;
-  
-  download_url($fixPaths['application-feed'],$fixPaths['templates']);
-  $templates = readJsonFile($fixPaths['templates']);
 
+  $templates = readJsonFile($fixPaths['templates']);
   if ( ! $developerMode ) {
     $pluginList = array_diff(scandir("/var/log/plugins"),array(".",".."));
 
@@ -930,4 +932,14 @@ function sharePermission() {
     }
   }
 }
+
+function uncleanReboot() {
+  global $fixPaths, $fixSettings, $autoUpdateOverride, $developerMode, $communityApplicationsInstalled, $dockerRunning, $ignoreList, $shareList;
+
+  if ( is_file($fixPaths['uncleanReboot']) ) {
+    addError("<font color='purple'><b>unclean shutdown</b></font> detected of your server",addButton("Acknowledge Error","acknowledgeUncleanReboot();")."Your server has performed an unclean shutdown.  You need to investigate adding a UPS (if this was due to a power failure) or if one is already present, properly setting up its settings".addLinkButton("UPS Settings","/Settings/UPSsettings")."  If this is a recurring issue (ie: random resets / crashes, etc) then you should run memtest from unRaid's boot menu for <b>at least</b> one complete pass.  If there are no memory issues, then you might want to look at putting this plugin into <b>troubleshooting mode</b> before posting for support on the unRaid forums.  Note: if you do not acknowledge this error you will continually get this notification.");
+  }
+}
   
+
+?>

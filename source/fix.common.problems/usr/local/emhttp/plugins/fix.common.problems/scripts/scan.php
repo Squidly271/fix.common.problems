@@ -33,7 +33,23 @@ $ignoreList = readJsonFile($fixPaths['ignoreList']);
 if ( ! $fixSettings['notifications'] ) { $fixSettings['notifications'] = "all"; }
 if ( ! $fixSettings['disableSpinUp'] ) { $fixSettings['disableSpinUp'] = "false"; }
 
+# download updated appfeed if necessary
 
+if ( is_file($fixPaths['templates']) ) {
+  $templates = readJsonFile($fixPaths['templates']);
+  $updatedTime = $templates['last_updated_timestamp'];
+  $tempFile = randomFile("/tmp/fix.common.problems");
+  download_url($fixPaths['application-feed-last-updated'],$tempFile);
+  $newList = readJsonFile($tempFile);
+  @unlink($tempFile);
+  if ( $newList['last_updated_timestamp'] != $templates['last_updated_timestamp'] ) {
+    download_url($fixPaths['application-feed'],$fixPaths['templates']);
+    $templates = readJsonFile($fixPaths['templates']);
+  }
+} else {
+  download_url($fixPaths['application-feed'],$fixPaths['templates']);
+  $templates = readJsonFile($fixPaths['templates']);
+}
 
 
 # start main
@@ -80,6 +96,7 @@ HPApresent();
 flashDriveFull();
 cacheFloorTests();
 sharePermission();
+uncleanReboot();
 
 
 ###################################################################

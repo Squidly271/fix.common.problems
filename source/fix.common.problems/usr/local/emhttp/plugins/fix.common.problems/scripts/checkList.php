@@ -60,6 +60,8 @@ $checkList = "
 * Check for illegal suffixes on cacheFloor settings
 * Check for cache free space less than cacheFloor
 * Check for cache floor greater than cache total space
+* Check for permissions of 0777 on shares
+* Check for unclean shutdowns of server
 </strong>
 ";
 echo Markdown($checkList);
