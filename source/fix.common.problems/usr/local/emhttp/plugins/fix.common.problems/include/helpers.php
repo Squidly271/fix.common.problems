@@ -84,7 +84,8 @@ function addLinkButton($buttonName,$link) {
 
 function addButton($buttonName,$action) {
   $action = str_replace("'","&quot;",$action);
-  return "<input type='button' value='$buttonName' onclick='$action'>";
+  $id = mt_rand();
+  return "<input type='button' id='$id' value='$buttonName' onclick='$action'>";
 }
 
 ###########################################################################

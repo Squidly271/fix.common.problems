@@ -95,6 +95,9 @@ switch ($_POST['action']) {
   case 'readdAll':
     @unlink($fixPaths['ignoreList']);
     break;
-    
+  
+  case 'acknowledgeUncleanReboot':
+    @unlink("/tmp/fix.common.problems/resetCheckFlag");
+    break;
 }
 ?>

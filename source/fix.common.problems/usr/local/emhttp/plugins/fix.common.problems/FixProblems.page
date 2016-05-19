@@ -155,6 +155,11 @@ function rescan() {
     }
   });
 }
+function acknowledgeUncleanReboot(button)
+{
+  $.post(URL,{action:'acknowledgeUncleanReboot'});
+  $("#"+button).hide();
+}
 
 function enableApply() {
   $("#applyButton").prop("disabled",false);
@@ -202,12 +207,14 @@ function apply() {
 </table>
 </div>
 
-> <b>Frequency to run background checks</b> - Set to how often you would like this plugin to automatically scan your system for errors and warnings.
-> Note that during the checks, all of your disks will spin up.
-> <b>Send notifications on errors</b> determines under what circumstances the plugin will notify you through unRaid's notification system of any issues
-
+> <b>Frequency to run background checks</b> - Set to how often you would like this plugin to automatically scan your system for errors and warnings.<br>
+> Note that during the checks, all of your disks will spin up.<br>
+> <b>Send notifications on errors</b> determines under what circumstances the plugin will notify you through unRaid's notification system of any issues<br>
+> <b> Avoid spinning up disks for tests</b> Will try and avoid certain tests on disks (notably the write check) that unRaid thinks are currently spun down<br>
 
 <input type='button' id='applyButton' value='Apply' onclick='apply();' disabled><input type='button' value='Rescan' onclick='rescan();'><input type='button' onclick='done();' value='Done'><span style='float:right'><input type='button' value='Troubleshooting Mode' onclick='troubleshoot();'></span><br><br>
+> Troubleshooting mode will add start a process to continually save your syslog, automatically run diagnostics every half hour, and run a subset of these tests every ten minutes.  Useful for diagnosing random crashes, etc.
+
 <span id='settings'></span>
 
 <center><input type='button' value='What is checked' onclick='checkList();'></center>

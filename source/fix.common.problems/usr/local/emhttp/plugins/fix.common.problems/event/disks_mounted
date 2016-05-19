@@ -1,4 +1,5 @@
 #!/bin/bash
 
+mkdir -p /tmp/fix.common.problems
 cp /boot/config/plugins/fix.common.problems/resetCheckFlag /tmp/fix.common.problems/resetCheckFlag > /dev/null 2>&1
 /usr/local/emhttp/plugins/fix.common.problems/scripts/scan.php
