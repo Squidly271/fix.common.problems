@@ -403,6 +403,7 @@ function dockerConfigUserShare() {
 
 function varLogFilled() {
   global $fixPaths, $fixSettings, $autoUpdateOverride, $developerMode, $communityApplicationsInstalled, $dockerRunning, $ignoreList, $shareList;
+  global $troubleshooting;
   
   unset($output);
   exec("df /var/log",$output);
@@ -410,6 +411,10 @@ function varLogFilled() {
   $status = explode(" ",$statusLine);
   $used = str_replace("%","",$status[4]);
 
+  if ( $troubleshooting ) {
+    logger("Fix Common Problems: /var/log currently $used % full");
+  }
+  
   if ( $used > 80 ) {
     addError("<font color='purple'><b>/var/log</b></font> is getting full (currently <font color='purple'>$used % </font>used)","Either your server has an extremely long uptime, or your syslog could be potentially being spammed with error messages.  A reboot of your server will at least temporarily solve this problem, but ideally you should seek assistance in the forums and post your ".addLinkButton("Diagnostics","/Tools/Diagnostics"));
   } else {
@@ -445,6 +450,7 @@ function dockerImageFull() {
 
 function rootfsFull() {
   global $fixPaths, $fixSettings, $autoUpdateOverride, $developerMode, $communityApplicationsInstalled, $dockerRunning, $ignoreList, $shareList;
+  global $troubleshooting;
   
   unset($output);
   if ( is_dir("/") ) {
@@ -453,6 +459,10 @@ function rootfsFull() {
     $status = explode(" ",$statusLine);
     $used = str_replace("%","",$status[4]);
 
+    if ( $troubleshooting ) {
+      logger("Fix Common Problems: rootfs (/) currently $used % full");
+    }
+    
     if ( $used > 90 ) {
       addError("<font color='purple'><b>Rootfs</b></font> file is getting full (currently <font color='purple'>$used % </font>used)","Possibly an application is storing excessive amount of data in /tmp.  Seek assistance on the forums and post your ".addLinkButton("Diagnostics","/Tools/Diagnostics"));
     } else {

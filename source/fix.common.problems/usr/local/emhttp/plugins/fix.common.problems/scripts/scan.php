@@ -21,7 +21,15 @@ exec("mkdir -p ".$fixPaths['tempFiles']);
 #                                                                                                                #
 ##################################################################################################################
 
-$disableNotifications            = $argv[1];
+if ( $argv[1] == "troubleshoot" ) {
+  $troubleshooting = true;
+  logger("Fix Common Problems: Troubleshooting scan running");
+  $uptime = exec("uptime");
+  logger("Fix Common Problems: Uptime: $uptime");
+} else {
+  $disableNotifications = $argv[1];
+}
+
 $autoUpdateOverride              = is_file("/boot/config/plugins/fix.common.problems/autoupdate-warning");
 $developerMode                   = is_file("/boot/config/plugins/fix.common.problems/developer");
 $communityApplicationsInstalled  = is_file("/var/log/plugins/community.applications.plg");
@@ -54,50 +62,53 @@ if ( is_file($fixPaths['templates']) ) {
 
 # start main
 
-
-isArrayStarted();
-impliedArrayFilesOnCache();
-cacheOnlyFilesOnArray();
-arrayOnlyFilesOnCache();
-pluginUpdateCheck();
-dockerUpdateCheck();
-autoUpdateCheck();
-sameShareDifferentCase();
-powerdownInstalled();
-outsideCommunication();   
-writeToDriveTest();
-dockerImageOnDiskShare();
-dockerAppdataCacheOnly();
-disabledDisksPresent();
-missingDisksPresent();
-readErrorsPresent();      
-fileSystemErrors();
-SSDinArray();
-pluginsUpToDate();
-incompatiblePackagesPresent();
-dockerUpToDate();
-dockerConfigUserShare();
-varLogFilled();
-dockerImageFull();
-rootfsFull();
-dateTimeOK();
-scheduledParityChecks();
-shareIncludeExcludeSet();
-shareIncludeExcludeSameDisk();
-UDmountedSlaveMode();
-supportedFileSystemCheck();
-FTPrunning();
-checkNotifications();
-blacklistedPluginsInstalled();
-unknownPluginInstalled();
-dockerAppsChangedPorts();
-illegalShareName();
-HPApresent();
-flashDriveFull();
-cacheFloorTests();
-sharePermission();
-uncleanReboot();
-
+if ( $troubleshooting ) {
+  varLogFilled();
+  rootfsFull();
+} else {
+  isArrayStarted();
+  impliedArrayFilesOnCache();
+  cacheOnlyFilesOnArray();
+  arrayOnlyFilesOnCache();
+  pluginUpdateCheck();
+  dockerUpdateCheck();
+  autoUpdateCheck();
+  sameShareDifferentCase();
+  powerdownInstalled();
+  outsideCommunication();   
+  writeToDriveTest();
+  dockerImageOnDiskShare();
+  dockerAppdataCacheOnly();
+  disabledDisksPresent();
+  missingDisksPresent();
+  readErrorsPresent();      
+  fileSystemErrors();
+  SSDinArray();
+  pluginsUpToDate();
+  incompatiblePackagesPresent();
+  dockerUpToDate();
+  dockerConfigUserShare();
+  varLogFilled();
+  dockerImageFull();
+  rootfsFull();
+  dateTimeOK();
+  scheduledParityChecks();
+  shareIncludeExcludeSet();
+  shareIncludeExcludeSameDisk();
+  UDmountedSlaveMode();
+  supportedFileSystemCheck();
+  FTPrunning();
+  checkNotifications();
+  blacklistedPluginsInstalled();
+  unknownPluginInstalled();
+  dockerAppsChangedPorts();
+  illegalShareName();
+#  HPApresent();
+  flashDriveFull();
+  cacheFloorTests();
+  sharePermission();
+  uncleanReboot();
+}
 
 ###################################################################
 #                                                                 #

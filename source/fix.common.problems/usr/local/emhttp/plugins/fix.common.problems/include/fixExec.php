@@ -25,25 +25,25 @@ switch ($_POST['action']) {
     
     $errors = $allErrors['errors'];
     echo "<table class='tablesorter'>";
-    echo "<thead><th>Errors Found</th><th>Suggested Fix</th><th></th></thead>";    
+    echo "<thead><th width='25%'>Errors Found</th><th width='60%'>Suggested Fix</th><th></th></thead>";    
     if ( ! $errors ) {
       echo "<tr><td><b><img src='https://raw.githubusercontent.com/Squidly271/fix.common.problems/master/images/happy_face.gif' width='10%'>  No errors found";
     } else {
 
       foreach ($errors as $error) {
-        echo "<tr><td width='40%'>".$error['error']."</td><td>".$error['suggestion']."</td>";
+        echo "<tr><td>".$error['error']."</td><td>".$error['suggestion']."</td>";
         echo "<td><input type='button' value='Ignore Error' onclick='ignoreError(&quot;".strip_tags($error['error'])."&quot;);';></td></tr>";
       }
     }
     echo "</table>";
     echo "<table class='tablesorter'>";
-    echo "<thead><th>Warnings Found</th><th>Suggested Fix</th><th></th></thead>";
+    echo "<thead><th width='25%'>Warnings Found</th><th width='60%'>Suggested Fix</th><th></th></thead>";
     $warnings = $allErrors['warnings'];
     if ( ! $warnings ) {
       echo "<tr><td><b><img src='https://raw.githubusercontent.com/Squidly271/fix.common.problems/master/images/happy_face.gif' width='10%'>  No Warnings found";
     } else {
       foreach ($warnings as $warning) {
-        echo "<tr><td width='40%'>".$warning['error']."</td><td>".$warning['suggestion']."</td>";
+        echo "<tr><td>".$warning['error']."</td><td>".$warning['suggestion']."</td>";
         echo "<td><input type='button' value='Ignore Warning' onclick='ignoreError(&quot;".strip_tags($warning['error'])."&quot;);';></td></tr>";
       }
     }
@@ -52,18 +52,18 @@ switch ($_POST['action']) {
     $others = $allErrors['other'];
     if ( $others ) {
       echo "<table class='tablesorter'>";
-      echo "<thead><th>Other Comments</th><th>Comments</th></thead>";
+      echo "<thead><th width='25%'>Other Comments</th><th width='60%'>Comments</th><th></thead>";
       foreach ($others as $other) {
-        echo "<tr><td width='40%'>".$other['error']."</td><td>".$other['suggestion']."</td></tr>";      
+        echo "<tr><td>".$other['error']."</td><td>".$other['suggestion']."</td></tr>";      
       }
       echo "</table>";
     }
     $ignored = $allErrors['ignored'];
     if ( $ignored ) {
       echo "<table class='tablesorter'>";
-      echo "<thead><th>Ignored Errors</th><th>Suggested Fix</th><th></th></thead>";
+      echo "<thead><th width='25%'>Ignored Errors</th><th width='60%'>Suggested Fix</th><th></th></thead>";
       foreach ($ignored as $ignore) {
-        echo "<tr><td width='40%'>".$ignore['error']."</td><td>".$ignore['suggestion']."</td>";
+        echo "<tr><td>".$ignore['error']."</td><td>".$ignore['suggestion']."</td>";
         echo "<td><input type='button' value='ReAdd Error' onclick='readdError(&quot;".strip_tags($ignore['error'])."&quot;);';></td></tr>";
       }
       echo "</table>";
@@ -98,6 +98,11 @@ switch ($_POST['action']) {
   
   case 'acknowledgeUncleanReboot':
     @unlink("/tmp/fix.common.problems/resetCheckFlag");
+    break;
+    
+  case 'troubleshoot':
+    file_put_contents("/tmp/fix.common.problems/troubleshoot","troubleshooting mode");
+    exec("/usr/local/emhttp/plugins/fix.common.problems/scripts/starttail.sh");
     break;
 }
 ?>
