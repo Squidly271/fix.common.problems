@@ -937,7 +937,7 @@ function sharePermission() {
   if ( ! is_dir("/mnt/user/$share") ) { continue; }
     $sharePermission = substr(sprintf("%o",fileperms("/mnt/user/$share")),-4);
     
-    if ( ( $sharePermission != "0777" ) && ( $sharePermission != "0755" ) ) {
+    if ( $sharePermission != "0777" ) {
       addWarning("Share <font color='purple'><b>$share</b></font> has non-standard permissions set","The permission on the share is currently set to <b>$sharePermission</b> (standard permissions are <b>0777</b>).  You may have trouble accessing this share locally and/or over the network due to this issue.  You should run the ".addLinkButton("New Permissions","/Tools/NewPerms")."tool to fix this issue");
     }
   }
