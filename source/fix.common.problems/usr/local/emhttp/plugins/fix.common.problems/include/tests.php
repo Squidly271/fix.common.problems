@@ -941,7 +941,7 @@ function sharePermission() {
     $sharePermission = substr(sprintf("%o",fileperms("/mnt/user/$share")),-4);
     
     if ( $sharePermission != "0777" ) {
-      addWarning("Share <font color='purple'><b>$share</b></font> has non-standard permissions set","The permission on the share is currently set to <b>$sharePermission</b> (standard permissions are <b>0777</b>).  You may have trouble accessing this share locally and/or over the network due to this issue.  You should run the ".addLinkButton("New Permissions","/Tools/NewPerms")."tool to fix this issue");
+      addWarning("Share <font color='purple'><b>$share</b></font> has non-standard permissions set","The permission on the share is currently set to <b>$sharePermission</b> (standard permissions are <b>0777</b>).  You may have trouble accessing this share locally and/or over the network due to this issue.  You should run the ".addLinkButton("New Permissions","/Tools/NewPerms")."tool to fix this issue.  (Don't know what these numbers mean?  Look <a href='http://permissions-calculator.org/decode/' target='_blank'>HERE</a>");
     }
   }
 }
@@ -953,6 +953,38 @@ function uncleanReboot() {
     addError("<font color='purple'><b>unclean shutdown</b></font> detected of your server",addButton("Acknowledge Error","acknowledgeUncleanReboot(this.id);")."Your server has performed an unclean shutdown.  You need to investigate adding a UPS (if this was due to a power failure) or if one is already present, properly setting up its settings".addLinkButton("UPS Settings","/Settings/UPSsettings")."  If this is a recurring issue (ie: random resets / crashes, etc) then you should run memtest from unRaid's boot menu for <b>at least</b> one complete pass.  If there are no memory issues, then you might want to look at putting this plugin into <b>troubleshooting mode</b> before posting for support on the unRaid forums.  Note: if you do not acknowledge this error you will continually get this notification.");
   }
 }
+
+function checkForHack() {
+  global $fixPaths, $fixSettings, $autoUpdateOverride, $developerMode, $communityApplicationsInstalled, $dockerRunning, $ignoreList, $shareList;
+
+  $varLog = array_diff(scandir($fixPaths['syslogPath']),array(".",".."));
   
+  foreach ($varLog as $syslog) {
+    if ( startsWith($syslog,"syslog") ) {
+      exec('cat '.$fixPaths['syslogPath'].'/'.$syslog.' | grep "Failed password for "',$output);
+      exec('cat '.$fixPaths['syslogPath'].'/'.$syslog.' | grep "invalid password for "',$output);
+    }
+  }
+  foreach ($output as $line) {
+    $split = explode(" ",$line);
+    $month = $split[0];
+    $day = $split[1];
+    $errors[$month]['Month'] = $month;
+    $errors[$month][$day]['Day'] = $day;
+    $errors[$month][$day][] = $line;
+  }
+  if ( ! is_array($errors) ) { return; }
+  foreach ($errors as $errorMonth) {
+    $currentMonth = $errorMonth['Month'];
+    foreach ($errorMonth as $errorDay) {
+      if ( is_array($errorDay) ) {
+        $currentDay = $errorDay['Day'];
+        if ( count($errorDay) > $fixSettings['hacksPerDay'] ) {
+          addError("<font size='3'>Possible <font color='purple'><b>Hack Attempt</b></font> on $currentMonth $currentDay</font>","On $currentMonth $currentDay there were <b>".count($errorDay)."</b> invalid login attempts.  This could either be yourself attempting to login to your server (SSH / Telnet) with the wrong user or password, or <b>you could be actively be the victim of hack attacks</b>.  A common cause of this would be placing your server within your router's DMZ, or improperly forwarding ports.  <font color='red'><b>This is a major issue and needs to be addressed IMMEDIATELY</b></font>");
+        }
+      }
+    }
+  }
+}
 
 ?>

@@ -63,6 +63,7 @@ $ignoreList = readJsonFile($fixPaths['ignoreList']);
 
 if ( ! $fixSettings['notifications'] ) { $fixSettings['notifications'] = "all"; }
 if ( ! $fixSettings['disableSpinUp'] ) { $fixSettings['disableSpinUp'] = "false"; }
+if ( ! $fixSettings['hacksPerDay'] ) { $fixSettings['hacksPerDay'] = 10; }
 
 # download updated appfeed if necessary
 
@@ -131,6 +132,7 @@ if ( $troubleshooting ) {
   cacheFloorTests();
   sharePermission();
   uncleanReboot();
+  checkForHack();
 }
 
 ###################################################################

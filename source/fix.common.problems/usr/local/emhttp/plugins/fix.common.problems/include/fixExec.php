@@ -76,6 +76,7 @@ switch ($_POST['action']) {
     $settings['frequency'] =isset($_POST['frequency']) ? urldecode(($_POST['frequency'])) : "";
     $settings['notifications'] = isset($_POST['notifications']) ? urldecode(($_POST['notifications'])) : "";
     $settings['disableSpinUp'] = isset($_POST['disableSpinUp']) ? urldecode(($_POST['disableSpinUp'])) : "";
+    $settings['hacksPerDay'] = isset($_POST['hacksPerDay']) ? urldecode(($_POST['hacksPerDay'])) : "";
     
     writeJsonFile($fixPaths['settings'],$settings);
     exec("/usr/local/emhttp/plugins/fix.common.problems/scripts/applyFrequency.php");

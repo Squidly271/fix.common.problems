@@ -62,12 +62,13 @@ $checkList = "
 * Check for illegal suffixes on cacheFloor settings
 * Check for cache free space less than cacheFloor
 * Check for cache floor greater than cache total space
-* Check for permissions of 0777 or 0755 on shares
+* Check for permissions of 0777 on shares
 * Check for unclean shutdowns of server
+* Checks for Hack Attacks on your server
 
 <h2>Troubleshooting Mode</h2>
 
-Every 10 Minutes:
+<b>Every 10 Minutes</b>
 
 * var/log filling up
 * rootfs filling up
@@ -75,7 +76,7 @@ Every 10 Minutes:
 * logs free memory
 * logs ps aux (CPU % > 0)
 
-Every 30 Minutes:
+<b>Every 30 Minutes</b>
 
 * runs unRaid diagnostics
 </strong>

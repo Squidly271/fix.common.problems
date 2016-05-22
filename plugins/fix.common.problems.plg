@@ -2,8 +2,8 @@
 <!DOCTYPE PLUGIN [
 <!ENTITY name      "fix.common.problems">
 <!ENTITY author    "Andrew Zawadzki">
-<!ENTITY version   "2016.05.19">
-<!ENTITY md5       "4c1c2c0c8c4b96f3cf1adcb050c42e59">
+<!ENTITY version   "2016.05.22">
+<!ENTITY md5       "87353a89720538f5f4debd2c4c49ef0f">
 <!ENTITY launch    "Settings/FixProblems">
 <!ENTITY plugdir   "/usr/local/emhttp/plugins/&name;">
 <!ENTITY github    "Squidly271/fix.common.problems">
@@ -13,6 +13,12 @@
 <PLUGIN name="&name;" author="&author;" version="&version;" launch="&launch;" pluginURL="&pluginURL;">
 
 <CHANGES>
+###2016-05-22###
+- Fix array non started error when not using user shares
+- Add in ps aux logging to troubleshooting mode
+- Add in free memory logging to troubleshooting mode
+- Add in hack attack detection
+
 ###2016-05-19###
 - Added in troubleshooting mode
 - Checks for wrong permissions on shares

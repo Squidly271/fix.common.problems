@@ -16,6 +16,7 @@ $settings = json_decode(@file_get_contents("/boot/config/plugins/fix.common.prob
 if ( ! $settings['notifications'] ) { $settings['notifications'] = "all"; }
 if ( ! $settings['frequency'] ) { $settings['frequency'] = "disabled"; }
 if ( ! $settings['disableSpinUp'] ) { $settings['disableSpinUp'] = "false"; }
+if ( ! $settings['hacksPerDay'] ) { $settings['hacksPerDay'] = 10; }
 
 if ( is_file("/tmp/fix.common.problems/troubleshoot") ) { $troubleshoot = true; }
 
@@ -154,6 +155,7 @@ $(function() {
   $("#frequency").val("<?=$settings['frequency']?>");
   $("#notifications").val("<?=$settings['notifications']?>");
   $("#disableSpinUp").val("<?=$settings['disableSpinUp']?>");
+  $("#hacksPerDay").val("<?=$settings['hacksPerDay']?>");
 
   if ( "<?=$troubleshoot?>" ) {
     $("#troubleshoot").prop("disabled",true);
@@ -190,8 +192,9 @@ function apply() {
   var frequency = $("#frequency").val();
   var notifications = $("#notifications").val();
   var disableSpinUp = $("#disableSpinUp").val();
+  var hacksPerDay = $("#hacksPerDay").val();
   
-  $.post(URL,{action:'apply',frequency:frequency,notifications:notifications,disableSpinUp:disableSpinUp});
+  $.post(URL,{action:'apply',frequency:frequency,notifications:notifications,disableSpinUp:disableSpinUp,hacksPerDay:hacksPerDay});
   $("#applyButton").prop("disabled",true);
 }
 
@@ -224,6 +227,10 @@ function apply() {
     <option value='false'>Always perform tests (recommended)</option>
     <option value='true'>Skip tests on spun down disks</option>
   </select></td>
+</tr>
+<tr>
+  <td><b>Number of allowed invalid logins per day:</b></td>
+  <td><input type='number' id='hacksPerDay' onchange='enableApply();'></td>
 </tr>
 </table>
 </div>
