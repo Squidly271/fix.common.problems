@@ -15,6 +15,7 @@ function isArrayStarted() {
     $shareList = array();
     $unRaidVars = parse_ini_file($fixPaths['var.ini']);
     if ( $unRaidVars['mdState'] != "STARTED" ) {
+      addError("Array is not started","Most (but not all) tests require the array to be started in order to run.  There may be more errors / warnings than what is listed here");
     }
   }
 }
