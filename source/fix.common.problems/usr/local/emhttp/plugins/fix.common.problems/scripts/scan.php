@@ -26,6 +26,29 @@ if ( $argv[1] == "troubleshoot" ) {
   logger("Fix Common Problems: Troubleshooting scan running");
   $uptime = exec("uptime");
   logger("Fix Common Problems: Uptime: $uptime");
+  unset($output);
+  exec("free",$output);
+  foreach ($output as $line) {
+    logger("Fix Common Problems: $line");
+  }
+
+  logger("Fix Common Problems: ps aux output (only CPU % > 0)");  
+  unset($output);
+  exec("ps aux",$output);
+  logger($output[0]);
+  unset($output[0]);
+
+  foreach ($output as $line) {
+    $statusLine = preg_replace('!\s+!', ' ', $line);
+    $test = explode(" ",$statusLine);
+
+    if ( $test[2] > 0 ) {
+      logger("Fix Common Problems: $line");
+    }
+  }
+
+
+  
 } else {
   $disableNotifications = $argv[1];
 }

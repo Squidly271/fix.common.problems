@@ -8,6 +8,8 @@
 require_once("/usr/local/emhttp/plugins/dynamix/include/Markdown.php");
 
 $checkList = "
+<h2> Normal Scans </h2>
+
 * Implied Cache Only shares do not have files / folders stored outside the cache drive
 * Cache Only shares do not have files / folders stored outside the cache drive
 * Array Only shares do not have files / folders stored on the cache drive
@@ -62,6 +64,20 @@ $checkList = "
 * Check for cache floor greater than cache total space
 * Check for permissions of 0777 or 0755 on shares
 * Check for unclean shutdowns of server
+
+<h2>Troubleshooting Mode</h2>
+
+Every 10 Minutes:
+
+* var/log filling up
+* rootfs filling up
+* logs sysload
+* logs free memory
+* logs ps aux (CPU % > 0)
+
+Every 30 Minutes:
+
+* runs unRaid diagnostics
 </strong>
 ";
 echo Markdown($checkList);

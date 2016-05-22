@@ -13,7 +13,9 @@ function isArrayStarted() {
     $shareList = array_diff(scandir("/mnt/user"),array(".",".."));
   } else {
     $shareList = array();
-    addError("Array is not started","Most (but not all) require the array to be started in order to run.  There may be more errors / warnings than what is listed here");
+    $unRaidVars = parse_ini_file($fixPaths['var.ini']);
+    if ( $unRaidVars['mdState'] != "STARTED" ) {
+    }
   }
 }
 
