@@ -1176,7 +1176,7 @@ function checkWebUI() {
   global $fixPaths, $fixSettings, $autoUpdateOverride, $developerMode, $communityApplicationsInstalled, $dockerRunning, $ignoreList, $shareList, $unRaidVersion;
 
   $templates = readJsonFile($fixPaths['templates']);
-  
+  if ( ! $dockerRunning ) { return; }
   $dockerClient = new DockerClient();
   $dockerTemplates = new DockerTemplates();
   $info = $dockerClient->getDockerContainers();
