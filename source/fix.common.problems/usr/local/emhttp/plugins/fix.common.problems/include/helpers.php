@@ -270,7 +270,6 @@ function readXmlFile($xmlfile) {
     $o['Description'] = preg_replace('#\[([^\]]*)\]#', '<$1>', $o['Description']);
   } else {
     $o['Description'] = $doc->getElementsByTagName( "Description" )->item(0)->nodeValue;
-    $o['Description'] = fixDescription($o['Description']);
   }
   $o['Plugin']      = $doc->getElementsByTagName( "Plugin" ) ->item(0)->nodeValue;
   $o['PluginURL']   = $doc->getElementsByTagName( "PluginURL" ) ->item(0)->nodeValue;
