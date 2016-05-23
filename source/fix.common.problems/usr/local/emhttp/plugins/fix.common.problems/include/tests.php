@@ -1113,6 +1113,8 @@ function checkForHack() {
 function checkForModeration() {
   global $fixPaths, $fixSettings, $autoUpdateOverride, $developerMode, $communityApplicationsInstalled, $dockerRunning, $ignoreList, $shareList;
 
+  if ( ! $dockerRunning ) { return; }
+  
   $moderation = readJsonFile($fixPaths['moderation']);
   if ( ! is_array($moderation) ) { return; }
   
