@@ -2,8 +2,8 @@
 <!DOCTYPE PLUGIN [
 <!ENTITY name      "fix.common.problems">
 <!ENTITY author    "Andrew Zawadzki">
-<!ENTITY version   "2016.05.22">
-<!ENTITY md5       "87353a89720538f5f4debd2c4c49ef0f">
+<!ENTITY version   "2016.05.23">
+<!ENTITY md5       "f4cbff7ff846db35ab50ecbc29e73ce9">
 <!ENTITY launch    "Settings/FixProblems">
 <!ENTITY plugdir   "/usr/local/emhttp/plugins/&name;">
 <!ENTITY github    "Squidly271/fix.common.problems">
@@ -13,6 +13,12 @@
 <PLUGIN name="&name;" author="&author;" version="&version;" launch="&launch;" pluginURL="&pluginURL;">
 
 <CHANGES>
+###2016-05-23###
+- Only scan for errors when entering webpage if no errors already logged
+- Added in checks for moderated / blacklisted docker applications
+- Added in checks for plugins incompatible with your unraid version
+- Added in checks for changed webUI on docker apps
+
 ###2016-05-22###
 - Fix array non started error when not using user shares
 - Add in ps aux logging to troubleshooting mode

@@ -156,25 +156,46 @@ $(function() {
   $("#notifications").val("<?=$settings['notifications']?>");
   $("#disableSpinUp").val("<?=$settings['disableSpinUp']?>");
   $("#hacksPerDay").val("<?=$settings['hacksPerDay']?>");
+  
 
   if ( "<?=$troubleshoot?>" ) {
     $("#troubleshoot").prop("disabled",true);
     $("#troubleshoot").val("Troubleshooting running");
   }
   
-  rescan();
+  if ($('.adsitem').length==0 || $('.adsitem').css('display')=='none') {
+    myAlert("Ad Blocker Detected","Ad blockers under certain circumstances can interfere with the displaying of information from unRaid.  You will need to &quot;white-list&quot; your server with your ad blocker program.","","",false,false,true,"error");   
+  } else {
+    myCloseAlert();
+  }
+  $.post(URL,{action:'getTimeStamp'},function(data) {
+    if (data) {
+      if ( data == "*" ) {
+        rescan();
+      } else {
+        $.post(URL,{action:'displayErrors'}, function(errors) {
+          if (errors) {
+            $("#settings").html(errors);
+          }
+        });
+        $("#timestamp").html(data);
+      }
+    }
+  });
 });
 
 function rescan() {
   myAlert("Scanning","Now Scanning your system for common problems.  This may take a minute.  All of your drives will spin up during this process.","","",false,false,false,"warning");
   $.post(URL,{action:'scan'},function(data) {
     if (data) {
+      myCloseAlert();
       $("#settings").html(data);
-      if ($('.adsitem').length==0 || $('.adsitem').css('display')=='none') {
-        myAlert("Ad Blocker Detected","Ad blockers under certain circumstances can interfere with the displaying of information from unRaid.  You will need to &quot;white-list&quot; your server with your ad blocker program.","","",false,false,true,"error");   
-      } else {
-        myCloseAlert();
-      }
+      $.post(URL,{action:'getTimeStamp'}, function(timestamp) {
+        if (timestamp) {
+          $("#timestamp").html(timestamp);
+        }
+      });
+
     }
   });
 }
@@ -242,6 +263,8 @@ function apply() {
 
 <input type='button' id='applyButton' value='Apply' onclick='apply();' disabled><input type='button' value='Rescan' onclick='rescan();'><input type='button' onclick='done();' value='Done'><span style='float:right'><input type='button' id='troubleshoot' value='Troubleshooting Mode' onclick='troubleshoot();'></span><br><br>
 > Troubleshooting mode will add start a process to continually save your syslog, automatically run diagnostics every half hour, and run a subset of these tests every ten minutes.  Useful for diagnosing random crashes, etc.
+
+<center><b>Time of last scan: <span id='timestamp'></span></center>
 
 <span id='settings'></span>
 

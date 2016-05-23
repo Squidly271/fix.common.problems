@@ -64,9 +64,14 @@ $checkList = "
 * Check for cache floor greater than cache total space
 * Check for permissions of 0777 on shares
 * Check for unclean shutdowns of server
-* Checks for Hack Attacks on your server
+* Check for Hack Attacks on your server
+* Check for Moderated / Blacklisted docker applications
+* Check for plugins incompatible for your unRaid version
+* Check for changed webUI on docker applications
 
 <h2>Troubleshooting Mode</h2>
+
+* Continuously 'tails' syslog to /boot/logs/syslog.txt
 
 <b>Every 10 Minutes</b>
 

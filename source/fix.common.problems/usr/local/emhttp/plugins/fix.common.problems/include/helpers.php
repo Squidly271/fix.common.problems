@@ -218,18 +218,86 @@ function unRaidVersion() {
   return $unRaidVersion['version'];
 }
 
+#################################################################
+#                                                               #
+# checks the Min/Max version of an app against unRaid's version #
+# Returns: TRUE if it's valid to run, FALSE if not              #
+#                                                               #
+#################################################################
+
+function versionCheck($template) {
+  global $unRaidVersion;
+
+  if ( $template['MinVer'] ) {
+    if ( version_compare($template['MinVer'],$unRaidVersion) > 0 ) { return false; }
+  }
+
+  if ( $template['MaxVer'] ) {
+    if ( version_compare($template['MaxVer'],$unRaidVersion) < 0 ) { return false; }
+  }
+
+  return true;
+}
+
 ###############################################
 #                                             #
-# Search array for a particular key and value #
-# returns the index number of the array       #
-# return value === false if not found         #
+# Function to read a template XML to an array #
 #                                             #
 ###############################################
 
-function searchArray($array,$key,$value) {
-  $result = array_search($value, array_column($array, $key));
+function readXmlFile($xmlfile) {
+  $doc = new DOMDocument();
+  $doc->load($xmlfile);
+  if ( ! $doc ) { return false; }
+    $o['WebUI']       = $doc->getElementsByTagName( "WebUI" )->item(0)->nodeValue;
+
+  $o['Path']        = $xmlfile;
+  $o['Repository']  = stripslashes($doc->getElementsByTagName( "Repository" )->item(0)->nodeValue);
+  $o['Author']      = preg_replace("#/.*#", "", $o['Repository']);
+  $o['Name']        = stripslashes($doc->getElementsByTagName( "Name" )->item(0)->nodeValue);
+  $o['DockerHubName'] = strtolower($o['Name']);
+  $o['Beta']        = strtolower(stripslashes($doc->getElementsByTagName( "Beta" )->item(0)->nodeValue));
+  $o['Changes']     = $doc->getElementsByTagName( "Changes" )->item(0)->nodeValue;
+  $o['Date']        = $doc->getElementsByTagName( "Date" ) ->item(0)->nodeValue;
+  $o['Project']     = $doc->getElementsByTagName( "Project" ) ->item(0)->nodeValue;
+  $o['SortAuthor']  = $o['Author'];
+  $o['SortName']    = $o['Name'];
+  $o['MinVer']      = $doc->getElementsByTagName( "MinVer" ) ->item(0)->nodeValue;
+  $o['MaxVer']      = $doc->getElementsByTagName( "MaxVer" ) ->item(0)->nodeValue;
+  $o['Overview']    = $doc->getElementsByTagName("Overview")->item(0)->nodeValue;
+  if ( strlen($o['Overview']) > 0 ) {
+    $o['Description'] = stripslashes($doc->getElementsByTagName( "Overview" )->item(0)->nodeValue);
+    $o['Description'] = preg_replace('#\[([^\]]*)\]#', '<$1>', $o['Description']);
+  } else {
+    $o['Description'] = $doc->getElementsByTagName( "Description" )->item(0)->nodeValue;
+    $o['Description'] = fixDescription($o['Description']);
+  }
+  $o['Plugin']      = $doc->getElementsByTagName( "Plugin" ) ->item(0)->nodeValue;
+  $o['PluginURL']   = $doc->getElementsByTagName( "PluginURL" ) ->item(0)->nodeValue;
+  $o['PluginAuthor']= $doc->getElementsByTagName( "PluginAuthor" ) ->item(0)->nodeValue;
+
+# support both spellings
+  $o['Licence']     = $doc->getElementsByTagName( "License" ) ->item(0)->nodeValue;
+  $o['Licence']     = $doc->getElementsByTagName( "Licence" ) ->item(0)->nodeValue;
+  $o['Category']    = $doc->getElementsByTagName ("Category" )->item(0)->nodeValue;
+
+  if ( $o['Plugin'] ) {
+    $o['Author']     = $o['PluginAuthor'];
+    $o['Repository'] = $o['PluginURL'];
+    $o['Category']   .= " Plugins: ";
+    $o['SortAuthor'] = $o['Author'];
+    $o['SortName']   = $o['Name'];
+  }
+  $o['Description'] = preg_replace('#\[([^\]]*)\]#', '<$1>', $o['Description']);
+  $o['Overview']    = $doc->getElementsByTagName("Overview")->item(0)->nodeValue;
+
+  $o['Announcement'] = $Repo['forum'];
+  $o['Support']     = ($doc->getElementsByTagName( "Support" )->length ) ? $doc->getElementsByTagName( "Support" )->item(0)->nodeValue : $Repo['forum'];
+  $o['Support']     = $o['Support'];
+  $o['IconWeb']     = stripslashes($doc->getElementsByTagName( "Icon" )->item(0)->nodeValue);
   
-  return $result;
+  return $o;
 }
+
 
 ?>

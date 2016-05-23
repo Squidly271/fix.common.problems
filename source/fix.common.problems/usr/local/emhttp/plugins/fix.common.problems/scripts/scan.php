@@ -57,6 +57,8 @@ $autoUpdateOverride              = is_file("/boot/config/plugins/fix.common.prob
 $developerMode                   = is_file("/boot/config/plugins/fix.common.problems/developer");
 $communityApplicationsInstalled  = is_file("/var/log/plugins/community.applications.plg");
 $dockerRunning                   = is_dir("/var/lib/docker/tmp");
+$unRaidVersion                   = unRaidVersion();
+
 
 $fixSettings = readJsonFile($fixPaths['settings']);
 $ignoreList = readJsonFile($fixPaths['ignoreList']);
@@ -83,6 +85,8 @@ if ( is_file($fixPaths['templates']) ) {
   $templates = readJsonFile($fixPaths['templates']);
 }
 
+download_url($fixPaths['moderationURL'],$fixPaths['moderation']);
+
 
 # start main
 
@@ -90,6 +94,7 @@ if ( $troubleshooting ) {
   varLogFilled();
   rootfsFull();
 } else {
+  HPApresent();
   isArrayStarted();
   impliedArrayFilesOnCache();
   cacheOnlyFilesOnArray();
@@ -100,7 +105,6 @@ if ( $troubleshooting ) {
   sameShareDifferentCase();
   powerdownInstalled();
   outsideCommunication();   
-  writeToDriveTest();
   dockerImageOnDiskShare();
   dockerAppdataCacheOnly();
   disabledDisksPresent();
@@ -127,12 +131,15 @@ if ( $troubleshooting ) {
   unknownPluginInstalled();
   dockerAppsChangedPorts();
   illegalShareName();
-#  HPApresent();
+  writeToDriveTest();
   flashDriveFull();
   cacheFloorTests();
   sharePermission();
   uncleanReboot();
   checkForHack();
+  checkForModeration();
+  pluginNotCompatible();
+  checkWebUI();
 }
 
 ###################################################################

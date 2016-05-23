@@ -6,6 +6,28 @@
 #                                                             #
 ###############################################################
 
+/*
+
+With the exception of the following global variables, all functions / tests should be 100% self contained and not
+have any dependencies from another test
+
+$fixPaths                       - various static local / remote paths
+$fixSettings                    - the user defined settings for this plugin
+$autoUpdateOverride             - set if auto-update errors should generate a warning instead
+$developerMode                  - a flag to signal certain tests to not run when the user is a developer of various items for unRaid (so that they are not bugged)
+$communityApplicationsInstalled - True if CA is installed
+$dockerRunning                  - True if docker is running
+$ignoreList                     - List of errors which are currently ignored (can be safely ignored unless there's a very valid reason to not actually run the test if its ignored, as ignored items will not generate a notification)
+$shareList                      - List of unRaid's user shares
+$unRaidVersion                  - Currently installed version of unRaid
+*/
+
+###########################
+# Check for array started #
+###########################
+
+# NOTE: This sets the global variables $shareList so it needs to be run first of all the tests
+
 function isArrayStarted() {
   global $fixPaths, $fixSettings, $autoUpdateOverride, $developerMode, $communityApplicationsInstalled, $dockerRunning, $ignoreList, $shareList;
   
@@ -20,7 +42,9 @@ function isArrayStarted() {
   }
 }
 
-# Check for implied array only but files / folders on cache
+#############################################################
+# Check for implied array only but files / folders on cache #
+#############################################################
 
 function impliedArrayFilesOnCache() {
   global $fixPaths, $fixSettings, $autoUpdateOverride, $developerMode, $communityApplicationsInstalled, $dockerRunning, $ignoreList, $shareList;
@@ -36,7 +60,9 @@ function impliedArrayFilesOnCache() {
   }
 }
 
-# Check for cache only share, but files / folders on array
+############################################################
+# Check for cache only share, but files / folders on array #
+############################################################
 
 function cacheOnlyFilesOnArray() {
   global $fixPaths, $fixSettings, $autoUpdateOverride, $developerMode, $communityApplicationsInstalled, $dockerRunning, $ignoreList, $shareList;
@@ -56,7 +82,9 @@ function cacheOnlyFilesOnArray() {
   }
 }
 
-# Check for don't use cache, but files on cache drive
+#######################################################
+# Check for don't use cache, but files on cache drive #
+#######################################################
 
 function arrayOnlyFilesOnCache() {
   global $fixPaths, $fixSettings, $autoUpdateOverride, $developerMode, $communityApplicationsInstalled, $dockerRunning, $ignoreList, $shareList;
@@ -75,7 +103,10 @@ function arrayOnlyFilesOnCache() {
   }
 }
 
-# Check for Dynamix to perform plugin checks
+##############################################
+# Check for Dynamix to perform plugin checks #
+##############################################
+
 function pluginUpdateCheck() {    
   global $fixPaths, $fixSettings, $autoUpdateOverride, $developerMode, $communityApplicationsInstalled, $dockerRunning, $ignoreList, $shareList;
   
@@ -89,7 +120,9 @@ function pluginUpdateCheck() {
   }
 }
 
-# Check for Dynamix to perform docker update checks
+#####################################################
+# Check for Dynamix to perform docker update checks #
+#####################################################
 
 function dockerUpdateCheck() {
   global $fixPaths, $fixSettings, $autoUpdateOverride, $developerMode, $communityApplicationsInstalled, $dockerRunning, $ignoreList, $shareList;
@@ -101,7 +134,10 @@ function dockerUpdateCheck() {
   }
 }
 
-# Check for CA to auto update certain plugins
+###############################################
+# Check for CA to auto update certain plugins #
+###############################################
+
 function autoUpdateCheck() {
   global $fixPaths, $fixSettings, $autoUpdateOverride, $developerMode, $communityApplicationsInstalled, $dockerRunning, $ignoreList, $shareList;
   global $communityPaths;
@@ -129,7 +165,9 @@ function autoUpdateCheck() {
   }
 }
 
-# Check for shares spelled the same but with different case
+#############################################################
+# Check for shares spelled the same but with different case #
+#############################################################
 
 function sameShareDifferentCase() {    
   global $fixPaths, $fixSettings, $autoUpdateOverride, $developerMode, $communityApplicationsInstalled, $dockerRunning, $ignoreList, $shareList;
@@ -145,7 +183,10 @@ function sameShareDifferentCase() {
   }
 }
 
-# Check for powerdown plugin installed
+########################################
+# Check for powerdown plugin installed #
+########################################
+
 function powerdownInstalled() {    
   global $fixPaths, $fixSettings, $autoUpdateOverride, $developerMode, $communityApplicationsInstalled, $dockerRunning, $ignoreList, $shareList;
   
@@ -155,7 +196,10 @@ function powerdownInstalled() {
   }
 }
 
-# Check for communication to the outside world
+################################################
+# Check for communication to the outside world #
+################################################
+
 function outsideCommunication() { 
   global $fixPaths, $fixSettings, $autoUpdateOverride, $developerMode, $communityApplicationsInstalled, $dockerRunning, $ignoreList, $shareList;
   
@@ -165,7 +209,9 @@ function outsideCommunication() {
   }
 }
 
-# Check for inability to write to drives, flash, docker image
+###############################################################
+# Check for inability to write to drives, flash, docker image #
+###############################################################
 
 function writeToDriveTest() {    
   global $fixPaths, $fixSettings, $autoUpdateOverride, $developerMode, $communityApplicationsInstalled, $dockerRunning, $ignoreList, $shareList;
@@ -191,7 +237,7 @@ function writeToDriveTest() {
     @unlink($filename);
   }
   if ( $spunDown ) {
-    addOther("Disk(s) <font color='purple'><b>$spunDown</b></font> are spun down.  Skipping write check","Disk spin up avoidance is enabled within this plugin's settings.");
+    addOther("Disk(s) <font color='purple'><b>$spunDown</b></font> are spun down.  Skipping write check and HPA check","Disk spin up avoidance is enabled within this plugin's settings.");
   }
 
   $filename = randomFile("/boot");
@@ -219,7 +265,9 @@ function writeToDriveTest() {
   }
 }
 
-# check for default docker appdata location to be cache or directly on a disk_free_space
+###############################################################################
+# check for default docker appdata location to be cache or directly on a disk #
+###############################################################################
 
 function dockerImageOnDiskShare() {
   global $fixPaths, $fixSettings, $autoUpdateOverride, $developerMode, $communityApplicationsInstalled, $dockerRunning, $ignoreList, $shareList;
@@ -232,7 +280,10 @@ function dockerImageOnDiskShare() {
   }
 }
 
-# check for default docker appdata location to be cache only share
+####################################################################
+# check for default docker appdata location to be cache only share #
+####################################################################
+
 function dockerAppdataCacheOnly() {
   global $fixPaths, $fixSettings, $autoUpdateOverride, $developerMode, $communityApplicationsInstalled, $dockerRunning, $ignoreList, $shareList;
   
@@ -248,7 +299,9 @@ function dockerAppdataCacheOnly() {
   }
 }
 
-# look for disabled disks
+###########################
+# look for disabled disks #
+###########################
 
 function disabledDisksPresent() {
   global $fixPaths, $fixSettings, $autoUpdateOverride, $developerMode, $communityApplicationsInstalled, $dockerRunning, $ignoreList, $shareList;
@@ -262,7 +315,10 @@ function disabledDisksPresent() {
   }
 }
 
-# look for missing disks
+##########################
+# look for missing disks #
+##########################
+
 function missingDisksPresent() {
   global $fixPaths, $fixSettings, $autoUpdateOverride, $developerMode, $communityApplicationsInstalled, $dockerRunning, $ignoreList, $shareList;
   
@@ -276,7 +332,10 @@ function missingDisksPresent() {
   }
 }
 
-# look for read errors
+########################
+# look for read errors #
+########################
+
 function readErrorsPresent() {
   global $fixPaths, $fixSettings, $autoUpdateOverride, $developerMode, $communityApplicationsInstalled, $dockerRunning, $ignoreList, $shareList;
   
@@ -288,7 +347,9 @@ function readErrorsPresent() {
   }
 }
 
-# look for file system errors
+###############################
+# look for file system errors #
+###############################
 
 function fileSystemErrors() {
   global $fixPaths, $fixSettings, $autoUpdateOverride, $developerMode, $communityApplicationsInstalled, $dockerRunning, $ignoreList, $shareList;
@@ -301,7 +362,9 @@ function fileSystemErrors() {
   }
 }
 
-# look for SSD's within the Array
+###################################
+# look for SSD's within the Array #
+###################################
 
 function SSDinArray() {
   global $fixPaths, $fixSettings, $autoUpdateOverride, $developerMode, $communityApplicationsInstalled, $dockerRunning, $ignoreList, $shareList;
@@ -316,7 +379,9 @@ function SSDinArray() {
   }  
 }
 
-# look for plugins not up to date
+###################################
+# look for plugins not up to date #
+###################################
 
 function pluginsUpToDate() {
   global $fixPaths, $fixSettings, $autoUpdateOverride, $developerMode, $communityApplicationsInstalled, $dockerRunning, $ignoreList, $shareList;
@@ -343,7 +408,9 @@ function pluginsUpToDate() {
   }
 }
 
-# check for 32 bit packages in /boot/extra and /boot/packages
+###############################################################
+# check for 32 bit packages in /boot/extra and /boot/packages #
+###############################################################
 
 function incompatiblePackagesPresent() {
   global $fixPaths, $fixSettings, $autoUpdateOverride, $developerMode, $communityApplicationsInstalled, $dockerRunning, $ignoreList, $shareList;
@@ -366,7 +433,9 @@ function incompatiblePackagesPresent() {
   }
 }
 
-# Check if docker containers not updated
+##########################################
+# Check if docker containers not updated #
+##########################################
 
 function dockerUpToDate() {
   global $fixPaths, $fixSettings, $autoUpdateOverride, $developerMode, $communityApplicationsInstalled, $dockerRunning, $ignoreList, $shareList;
@@ -384,7 +453,9 @@ function dockerUpToDate() {
   }
 }
 
-# Check for docker application's config folders pointed at /mnt/user
+######################################################################
+# Check for docker application's config folders pointed at /mnt/user #
+######################################################################
 
 function dockerConfigUserShare() {
   global $fixPaths, $fixSettings, $autoUpdateOverride, $developerMode, $communityApplicationsInstalled, $dockerRunning, $ignoreList, $shareList;
@@ -402,7 +473,9 @@ function dockerConfigUserShare() {
   }
 }
 
-# Check for /var/log filling up
+#################################
+# Check for /var/log filling up #
+#################################
 
 function varLogFilled() {
   global $fixPaths, $fixSettings, $autoUpdateOverride, $developerMode, $communityApplicationsInstalled, $dockerRunning, $ignoreList, $shareList;
@@ -427,7 +500,9 @@ function varLogFilled() {
   }
 }
 
-# Check for docker image getting full
+#######################################
+# Check for docker image getting full #
+#######################################
 
 function dockerImageFull() {
   global $fixPaths, $fixSettings, $autoUpdateOverride, $developerMode, $communityApplicationsInstalled, $dockerRunning, $ignoreList, $shareList;
@@ -449,7 +524,9 @@ function dockerImageFull() {
   }
 }
 
-# Check for rootfs getting full
+#################################
+# Check for rootfs getting full #
+#################################
 
 function rootfsFull() {
   global $fixPaths, $fixSettings, $autoUpdateOverride, $developerMode, $communityApplicationsInstalled, $dockerRunning, $ignoreList, $shareList;
@@ -476,7 +553,9 @@ function rootfsFull() {
   }
 }
 
-# Check if the server's time is out to lunch
+##############################################
+# Check if the server's time is out to lunch #
+##############################################
 
 function dateTimeOK() {
   global $fixPaths, $fixSettings, $autoUpdateOverride, $developerMode, $communityApplicationsInstalled, $dockerRunning, $ignoreList, $shareList;
@@ -495,7 +574,9 @@ function dateTimeOK() {
   @unlink($filename);
 }
 
-# Check for scheduled parity checks
+#####################################
+# Check for scheduled parity checks #
+#####################################
 
 function scheduledParityChecks() {
   global $fixPaths, $fixSettings, $autoUpdateOverride, $developerMode, $communityApplicationsInstalled, $dockerRunning, $ignoreList, $shareList;
@@ -509,7 +590,9 @@ function scheduledParityChecks() {
   }
 }
 
-# Check for shares having both included and excluded disks set
+################################################################
+# Check for shares having both included and excluded disks set #
+################################################################
 
 function shareIncludeExcludeSet() {
   global $fixPaths, $fixSettings, $autoUpdateOverride, $developerMode, $communityApplicationsInstalled, $dockerRunning, $ignoreList, $shareList;
@@ -533,7 +616,9 @@ function shareIncludeExcludeSet() {
   }
 }
 
-# Check for shares having duplicated disks within included and excluded
+#########################################################################
+# Check for shares having duplicated disks within included and excluded #
+#########################################################################
 
 function shareIncludeExcludeSameDisk() {
   global $fixPaths, $fixSettings, $autoUpdateOverride, $developerMode, $communityApplicationsInstalled, $dockerRunning, $ignoreList, $shareList;
@@ -575,7 +660,9 @@ function shareIncludeExcludeSameDisk() {
   }
 }
 
-# Check for UD assigned disks not being passed as slave to docker containers
+##############################################################################
+# Check for UD assigned disks not being passed as slave to docker containers #
+##############################################################################
 
 function UDmountedSlaveMode() {
   global $fixPaths, $fixSettings, $autoUpdateOverride, $developerMode, $communityApplicationsInstalled, $dockerRunning, $ignoreList, $shareList;
@@ -600,7 +687,9 @@ function UDmountedSlaveMode() {
   }
 }
 
-# Check for only supported file system types
+##############################################
+# Check for only supported file system types #
+##############################################
 
 function supportedFileSystemCheck() {
   global $fixPaths, $fixSettings, $autoUpdateOverride, $developerMode, $communityApplicationsInstalled, $dockerRunning, $ignoreList, $shareList;
@@ -624,7 +713,9 @@ function supportedFileSystemCheck() {
   }
 }
 
-# Check for unRaid's ftp server running
+#########################################
+# Check for unRaid's ftp server running #
+#########################################
 
 function FTPrunning() {
   global $fixPaths, $fixSettings, $autoUpdateOverride, $developerMode, $communityApplicationsInstalled, $dockerRunning, $ignoreList, $shareList;
@@ -645,11 +736,12 @@ function FTPrunning() {
   }
 }
 
+########################################################
+# Check for destination for Alert levels notifications #
+########################################################
+
 function checkNotifications() {
   global $fixPaths, $fixSettings, $autoUpdateOverride, $developerMode, $communityApplicationsInstalled, $dockerRunning, $ignoreList, $shareList;
-  
- 
- # Check for destination for Alert levels notifications
 
   $dynamixSettings = parse_ini_file("/boot/config/plugins/dynamix/dynamix.cfg",true);
 
@@ -674,13 +766,13 @@ function checkNotifications() {
   }
 }
 
-# Check for blacklisted plugins installed
+###########################################
+# Check for blacklisted plugins installed #
+###########################################
 
 function blacklistedPluginsInstalled() {
   global $fixPaths, $fixSettings, $autoUpdateOverride, $developerMode, $communityApplicationsInstalled, $dockerRunning, $ignoreList, $shareList;
   
-  download_url($fixPaths['moderationURL'],$fixPaths['moderation']);
-
   $caModeration = readJsonFile($fixPaths['moderation']);
   if ( $caModeration ) {
     $pluginList = array_diff(scandir("/var/log/plugins"),array(".",".."));
@@ -696,10 +788,11 @@ function blacklistedPluginsInstalled() {
   } else {
     addOther("Could not check for <font color='purple'><b>blacklisted</b></font> plugins","The download of the blacklist failed");
   }
-  @unlink($fixPaths['moderation']);
 }
 
-# Check for non CA known plugins
+##################################
+# Check for non CA known plugins #
+##################################
 
 function unknownPluginInstalled() {
   global $fixPaths, $fixSettings, $autoUpdateOverride, $developerMode, $communityApplicationsInstalled, $dockerRunning, $ignoreList, $shareList;
@@ -738,9 +831,10 @@ function unknownPluginInstalled() {
   }
 }
 
-
-# check for docker applications installed but with changed container ports from what the author specified
-# concurrently check for docker applications running in a different network mode than what the template specifies
+###################################################################################################################
+# check for docker applications installed but with changed container ports from what the author specified         #
+# concurrently check for docker applications running in a different network mode than what the template specifies #
+###################################################################################################################
 
 function dockerAppsChangedPorts() {
   global $fixPaths, $fixSettings, $autoUpdateOverride, $developerMode, $communityApplicationsInstalled, $dockerRunning, $ignoreList, $shareList;
@@ -789,7 +883,9 @@ function dockerAppsChangedPorts() {
   }
 }
 
-# test for illegal characters in share names
+##############################################
+# test for illegal characters in share names #
+##############################################
 
 function illegalShareName() {
   global $fixPaths, $fixSettings, $autoUpdateOverride, $developerMode, $communityApplicationsInstalled, $dockerRunning, $ignoreList, $shareList;
@@ -835,7 +931,9 @@ function illegalShareName() {
   }
 }
 
-# check for HPA (addOther if on data drives, addError if parity disk)
+#######################################################################
+# check for HPA (addOther if on data drives, addError if parity disk) #
+#######################################################################
 
 function HPApresent() {
   global $fixPaths, $fixSettings, $autoUpdateOverride, $developerMode, $communityApplicationsInstalled, $dockerRunning, $ignoreList, $shareList;
@@ -845,8 +943,14 @@ function HPApresent() {
   foreach ($disks as $disk) {
     if ( ! $disk['device'] ) { continue; }
     if ( $disk['name'] == "flash" ) { continue; }
-    $deviceID = $disk['device'];
   
+    if ( $fixSettings['disableSpinUp'] == "true" ) {
+      if ( stripos($disk['color'],"blink") ) {
+        continue;
+      }
+    }
+    $deviceID = $disk['device'];
+
     $command = "/sbin/hdparm -N /dev/$deviceID 2>&1";
     unset($output);
     exec($command,$output);
@@ -865,7 +969,9 @@ function HPApresent() {
   }
 }
 
-# Check for flash drive filling up
+####################################
+# Check for flash drive filling up #
+####################################
 
 function flashDriveFull() {
   global $fixPaths, $fixSettings, $autoUpdateOverride, $developerMode, $communityApplicationsInstalled, $dockerRunning, $ignoreList, $shareList;
@@ -880,7 +986,9 @@ function flashDriveFull() {
   }
 }
 
-# Check for improper entry into cacheFloor Settings
+#####################################################
+# Check for improper entry into cacheFloor Settings #
+#####################################################
 
 function cacheFloorTests() {
   global $fixPaths, $fixSettings, $autoUpdateOverride, $developerMode, $communityApplicationsInstalled, $dockerRunning, $ignoreList, $shareList;
@@ -932,6 +1040,9 @@ function cacheFloorTests() {
   }
 }
 
+####################################################
+# Check for standard permissions of 0777 on shares #
+####################################################
 
 function sharePermission() {
   global $fixPaths, $fixSettings, $autoUpdateOverride, $developerMode, $communityApplicationsInstalled, $dockerRunning, $ignoreList, $shareList;
@@ -946,6 +1057,10 @@ function sharePermission() {
   }
 }
 
+###############################
+# Check for unclean shutdowns #
+###############################
+
 function uncleanReboot() {
   global $fixPaths, $fixSettings, $autoUpdateOverride, $developerMode, $communityApplicationsInstalled, $dockerRunning, $ignoreList, $shareList;
 
@@ -953,6 +1068,10 @@ function uncleanReboot() {
     addError("<font color='purple'><b>unclean shutdown</b></font> detected of your server",addButton("Acknowledge Error","acknowledgeUncleanReboot(this.id);")."Your server has performed an unclean shutdown.  You need to investigate adding a UPS (if this was due to a power failure) or if one is already present, properly setting up its settings".addLinkButton("UPS Settings","/Settings/UPSsettings")."  If this is a recurring issue (ie: random resets / crashes, etc) then you should run memtest from unRaid's boot menu for <b>at least</b> one complete pass.  If there are no memory issues, then you might want to look at putting this plugin into <b>troubleshooting mode</b> before posting for support on the unRaid forums.  Note: if you do not acknowledge this error you will continually get this notification.");
   }
 }
+
+##########################
+# Check for hack attacks #
+##########################
 
 function checkForHack() {
   global $fixPaths, $fixSettings, $autoUpdateOverride, $developerMode, $communityApplicationsInstalled, $dockerRunning, $ignoreList, $shareList;
@@ -980,11 +1099,110 @@ function checkForHack() {
       if ( is_array($errorDay) ) {
         $currentDay = $errorDay['Day'];
         if ( count($errorDay) > $fixSettings['hacksPerDay'] ) {
-          addError("<font size='3'>Possible <font color='purple'><b>Hack Attempt</b></font> on $currentMonth $currentDay</font>","On $currentMonth $currentDay there were <b>".count($errorDay)."</b> invalid login attempts.  This could either be yourself attempting to login to your server (SSH / Telnet) with the wrong user or password, or <b>you could be actively be the victim of hack attacks</b>.  A common cause of this would be placing your server within your router's DMZ, or improperly forwarding ports.  <font color='red'><b>This is a major issue and needs to be addressed IMMEDIATELY</b></font>");
+          addError("<font size='3'>Possible <font color='purple'><b>Hack Attempt</b></font> on $currentMonth $currentDay</font>","On $currentMonth $currentDay there were <b>".count($errorDay)."</b> invalid login attempts.  This could either be yourself attempting to login to your server (SSH / Telnet) with the wrong user or password, or <b>you could be actively be the victim of hack attacks</b>.  A common cause of this would be placing your server within your router's DMZ, or improperly forwarding ports.  <font color='red'><b><h2>This is a major issue and needs to be addressed IMMEDIATELY</h2></b></font>NOTE: Because this check is done against the logged entries in the syslog, the only way to clear it is to either increase the number of allowed invalid logins per day (if determined that it is not a hack attempt) or to reset your server.  It is not recommended under any circumstance to ignore this error");
         }
       }
     }
   }
 }
+
+#####################################################
+# Checks for moderation / blacklists on docker apps #
+#####################################################
+
+function checkForModeration() {
+  global $fixPaths, $fixSettings, $autoUpdateOverride, $developerMode, $communityApplicationsInstalled, $dockerRunning, $ignoreList, $shareList;
+
+  $moderation = readJsonFile($fixPaths['moderation']);
+  if ( ! is_array($moderation) ) { return; }
+  
+  $dockerClient = new DockerClient();
+  $info = $dockerClient->getDockerContainers();
+  
+  foreach ( $info as $dockerApp ) {
+    $image = $dockerApp['Image'];
+    $Repository = explode(":",$image);
+    
+    unset($comments);
+    if ( $moderation[$image]['ModeratorComment'] ) {
+      $comments = $moderation[$image];
+    }
+    if ( $moderation[$Repository[0]]['ModeratorComment'] ) {
+      $comments = $moderation[$Repository[0]];
+    }
+    if ( ! $comments ) {
+      continue;
+    }
+    if ( $comments['Blacklist'] ) {
+      addWarning("Docker application <font color='purple'><b>".$dockerApp['Name']."</b></font> has moderator comments listed","<font color='purple'><b>".$dockerApp['Name']."</b></font> (".$dockerApp['Image'].") has the following comments: <font color='purple'>".$comments['ModeratorComment']."</font>  Additionally, this application has been blacklisted from Community Applications for that reason.");
+    } else {
+      addOther("Docker application <font color='purple'><b>".$dockerApp['Name']."</b></font> has moderator comments listed","<font color='purple'><b>".$dockerApp['Name']."</b></font> (".$dockerApp['Image'].") has the following comments: <font color='purple'>".$comments['ModeratorComment']."</font>");
+    }
+  }
+}
+
+###########################################################
+# Checks for plugins listed in CA as being not compatible #
+###########################################################
+
+function pluginNotCompatible() {
+  global $fixPaths, $fixSettings, $autoUpdateOverride, $developerMode, $communityApplicationsInstalled, $dockerRunning, $ignoreList, $shareList, $unRaidVersion;
+  
+  $installedPlugins = array_diff(scandir("/var/log/plugins"),array(".",".."));
+  $templates = readJsonFile($fixPaths['templates']);
+  $allApps = $templates['applist'];
+  
+  foreach ($installedPlugins as $plugin) {
+    $pluginURL = exec("/usr/local/emhttp/plugins/dynamix.plugin.manager/scripts/plugin pluginURL /var/log/plugins/$plugin");
+
+    foreach ( $allApps as $app ) {
+      if ( $app['Plugin'] ) {
+        if ( $app['PluginURL'] == $pluginURL ) {
+          if ( ! versionCheck($app) ) {
+            addWarning("<font color='purple'><b>$plugin</b></font> Not Compatible with unRaid version $unRaidVersion","The author of the plugin template (<font color='purple'><b>$pluginURL</b></font>) has specified that this plugin is incompatible with your version of unRaid ($unRaidVersion).  You should uninstall the plugin here:".addLinkButton("Plugins","/Plugins"));
+          }
+          break;
+        }
+      }      
+    }
+  }
+}
+
+##########################################
+# Check for differences in webUI entries #
+##########################################
+
+function checkWebUI() {
+  global $fixPaths, $fixSettings, $autoUpdateOverride, $developerMode, $communityApplicationsInstalled, $dockerRunning, $ignoreList, $shareList, $unRaidVersion;
+
+  $templates = readJsonFile($fixPaths['templates']);
+  
+  $dockerClient = new DockerClient();
+  $dockerTemplates = new DockerTemplates();
+  $info = $dockerClient->getDockerContainers();
+  $myTemplates = $dockerTemplates->getAllInfo();
+    
+  foreach ($info as $dockerApp) {
+    foreach ($templates['applist'] as $template) {
+      $image = $dockerApp['Image'];
+      $Repository = explode(":",$image);
+      
+      if ( ( $image == $template['Repository'] ) || ( $Repository[0] == $template['Repository'] ) ) {
+        $userTemplate = readXmlFile($myTemplates[$dockerApp['Name']]['template']);
+        $templateWebUI = $userTemplate['WebUI'];
+        if ( is_array($template['WebUI']) ) {
+          $defaultUI = $templateWebUI;   # IE: no UI was specified
+        } else {
+          $defaultUI = $template['WebUI'];
+        }
+        if ( $templateWebUI != $defaultUI ) {
+          addWarning("Docker application <font color='purple'><b>".$dockerApp['Name']."</b></font> does not have the same webUI interface as what the template author specified","The webUI the author specified is <font color='purple'>$defaultUI</font> and the webUI you are using is <font color='purple'>$templateWebUI</font>.  If you are specifying an absolute port (IE: <b>PORT:xxxx</b> is missing from your specified webUI address, then you will have issues should you ever have to change the host port on the docker applications's settings.  In the same vein, specifying an absolute IP address in the webUI will cause issues should your server's IP address ever change.  Note that the PORT:xxxx refers to the <b>Container's</b> port, not the host port.  There may however be perfectly valid reasons to change the default webUI entry on the application.  You can fix this problem here:".addLinkButton("Docker","/Docker"));
+        }
+        break;
+      }
+    }
+  }
+}
+
 
 ?>
