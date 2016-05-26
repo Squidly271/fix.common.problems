@@ -17,6 +17,8 @@ require_once("/usr/local/emhttp/plugins/fix.common.problems/include/paths.php");
 function addError($description,$action) {
   global $errors, $ignoreList, $ignored;
 
+  $originalDescription = $description;
+  $description = str_replace("'","&#39;",$description);
   $newError['error'] = "<font color='red'>$description</font>";
   $newError['suggestion'] = $action;
   logger("Fix Common Problems: Error: ".strip_tags($description));
@@ -37,12 +39,14 @@ function addError($description,$action) {
 function addWarning($description,$action) {
   global $warnings, $ignoreList, $ignored;
   
+  $originalDescription = $description;
+  $description = str_replace("'","&#39;",$description);
   $newWarning['error'] = "$description";
   $newWarning['suggestion'] = $action;
   logger("Fix Common Problems: Warning: ".strip_tags($description));
   logger("Fix Common Problems: Suggestion: ".strip_tags($action));
   
-  if ( $ignoreList[strip_tags($description)] ) {
+  if ( $ignoreList[strip_tags($originalDescription)] ) {
     $ignored[] = $newWarning;
   } else {
     $warnings[] = $newWarning;
@@ -57,7 +61,8 @@ function addWarning($description,$action) {
 
 function addOther($description,$action) {
   global $otherWarnings;
-  
+
+  $description = str_replace("'","&#39;",$description);
   $newWarning['error'] = "$description";
   $newWarning['suggestion'] = $action;
   logger("Fix Common Problems: Other Warning: ".strip_tags($description));

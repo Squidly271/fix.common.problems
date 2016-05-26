@@ -48,10 +48,10 @@ function myCloseAlert() {
   swal.close();
 }
 
-function ignoreError(error) {
+function ignoreError(error,type) {
   swal({
-    title: "Ignore Error?",
-    text: "Are you sure you want to ignore this error:<br><font color='red'><b>"+error+"</b></font><br>As a <em>general rule</em> this is not recommended unless you are absolutely sure about this",
+    title: "Ignore "+type+"?",
+    text: "Are you sure you want to ignore this "+type+":<br><font color='red'><b>"+error+"</b></font><br>As a <em>general rule</em> this is not recommended unless you are absolutely sure about this",
     showConfirmButton: true,
     showCancelButton: true,
     closeOnConfirm: false,
@@ -62,7 +62,7 @@ function ignoreError(error) {
     $.post(URL,{action:"ignoreError",error:error});
       swal({
         title: "Ignored!",
-        text: "On future scans, <font color='green'><b>"+error+"</b></font> will not generate a warning or an error",
+        text: "On future scans, <font color='green'><b>"+error+"</b></font> will not generate a "+type+".  This will still however be logged in the syslog.",
         showConfirmButton: true,
         showCancelButton: false,
         closeOnConfirm: true,

@@ -22,7 +22,7 @@ function displayErrors() {
   } else {
     foreach ($errors as $error) {
       echo "<tr><td>".$error['error']."</td><td>".$error['suggestion']."</td>";
-      echo "<td><input type='button' value='Ignore Error' onclick='ignoreError(&quot;".strip_tags($error['error'])."&quot;);';></td></tr>";
+      echo "<td><input type='button' value='Ignore Error' onclick='ignoreError(&quot;".strip_tags($error['error'])."&quot;,&quot;error&quot;);';></td></tr>";
     }
   }
   echo "</table>";
@@ -34,7 +34,7 @@ function displayErrors() {
   } else {
     foreach ($warnings as $warning) {
       echo "<tr><td>".$warning['error']."</td><td>".$warning['suggestion']."</td>";
-      echo "<td><input type='button' value='Ignore Warning' onclick='ignoreError(&quot;".strip_tags($warning['error'])."&quot;);';></td></tr>";
+      echo "<td><input type='button' value='Ignore Warning' onclick='ignoreError(&quot;".strip_tags($warning['error'])."&quot;,&quot;warning&quot;);';></td></tr>";
     }
   }
   echo "</table>";
@@ -50,7 +50,7 @@ function displayErrors() {
   $ignored = $allErrors['ignored'];
   if ( $ignored ) {
     echo "<table class='tablesorter'>";
-    echo "<thead><th width='25%'>Ignored Errors</th><th width='60%'>Suggested Fix</th><th></th></thead>";
+    echo "<thead><th width='25%'>Ignored Errors & Warnings</th><th width='60%'>Suggested Fix</th><th></th></thead>";
     foreach ($ignored as $ignore) {
       echo "<tr><td>".$ignore['error']."</td><td>".$ignore['suggestion']."</td>";
       echo "<td><input type='button' value='Monitor Warning / Error' onclick='readdError(&quot;".strip_tags($ignore['error'])."&quot;);';></td></tr>";
