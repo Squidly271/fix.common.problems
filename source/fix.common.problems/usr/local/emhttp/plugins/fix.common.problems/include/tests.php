@@ -158,7 +158,7 @@ function autoUpdateCheck() {
         if ( $autoUpdateOverride ) {
           $func = "addWarning";
         } else {
-          $func = "addError";
+          $func = "addWarning";
         }
         $func("This plugin <font color='purple'><b>(Fix Common Problems)</b></font> not set to auto update</font>",addLinkButton("Auto Update Settings","/Settings/AutoUpdate")."Recommended to enable auto updates for this plugin to enable further problem solving / fixes");
       }
@@ -1200,7 +1200,7 @@ function checkWebUI() {
         } else {
           $defaultUI = $template['WebUI'];
         }
-        if ( $templateWebUI != $defaultUI ) {
+        if ( htmlspecialchars($templateWebUI) != htmlspecialchars($defaultUI) ) {
           addWarning("Docker application <font color='purple'><b>".$dockerApp['Name']."</b></font> does not have the same webUI interface as what the template author specified","The webUI the author specified is <font color='purple'>$defaultUI</font> and the webUI you are using is <font color='purple'>$templateWebUI</font>.  If you are specifying an absolute port (IE: <b>PORT:xxxx</b> is missing from your specified webUI address, then you will have issues should you ever have to change the host port on the docker applications's settings.  In the same vein, specifying an absolute IP address in the webUI will cause issues should your server's IP address ever change.  Note that the PORT:xxxx refers to the <b>Container's</b> port, not the host port.  There may however be perfectly valid reasons to change the default webUI entry on the application.  You can fix this problem here:".addLinkButton("Docker","/Docker"));
         }
         break;
