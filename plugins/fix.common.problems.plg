@@ -2,8 +2,8 @@
 <!DOCTYPE PLUGIN [
 <!ENTITY name      "fix.common.problems">
 <!ENTITY author    "Andrew Zawadzki">
-<!ENTITY version   "2016.05.23c">
-<!ENTITY md5       "eea548be95b55462f97be0c5c5f688c5">
+<!ENTITY version   "2016.05.26">
+<!ENTITY md5       "a29236c44387dc1fdeb84b3aaa2cf56e">
 <!ENTITY launch    "Settings/FixProblems">
 <!ENTITY plugdir   "/usr/local/emhttp/plugins/&name;">
 <!ENTITY github    "Squidly271/fix.common.problems">
@@ -13,6 +13,13 @@
 <PLUGIN name="&name;" author="&author;" version="&version;" launch="&launch;" pluginURL="&pluginURL;">
 
 <CHANGES>
+###2016-05-26###
+- Fix webUI changes detection if special characters present
+- Downgrade fix common problems and CA not set to auto update to be warnings
+- More forgiving determination of cache only shares (and files on array)
+- Fix not being able to ignore if ' present in description
+- Fix some wording inconsistencies with ignore pop up
+
 ###2016-05-23###
 - Only scan for errors when entering webpage if no errors already logged
 - Added in checks for moderated / blacklisted docker applications
