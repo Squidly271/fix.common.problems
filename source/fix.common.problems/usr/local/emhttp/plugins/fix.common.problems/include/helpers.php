@@ -22,7 +22,7 @@ function addError($description,$action) {
   $newError['error'] = "<font color='red'>$description</font>";
   $newError['suggestion'] = $action;
   logger("Fix Common Problems: Error: ".strip_tags($description));
-  logger("Fix Common Problems: Suggestion:".strip_tags($action));
+#  logger("Fix Common Problems: Suggestion:".strip_tags($action));
   if ( $ignoreList[strip_tags($description)] ) {
     $ignored[] = $newError;
   } else {
@@ -44,7 +44,7 @@ function addWarning($description,$action) {
   $newWarning['error'] = "$description";
   $newWarning['suggestion'] = $action;
   logger("Fix Common Problems: Warning: ".strip_tags($description));
-  logger("Fix Common Problems: Suggestion: ".strip_tags($action));
+#  logger("Fix Common Problems: Suggestion: ".strip_tags($action));
   
   if ( $ignoreList[strip_tags($originalDescription)] ) {
     $ignored[] = $newWarning;
@@ -66,7 +66,7 @@ function addOther($description,$action) {
   $newWarning['error'] = "$description";
   $newWarning['suggestion'] = $action;
   logger("Fix Common Problems: Other Warning: ".strip_tags($description));
-  logger("Fix Common Problems: Suggestion: ".strip_tags($action));
+#  logger("Fix Common Problems: Suggestion: ".strip_tags($action));
   $otherWarnings[] = $newWarning;
 }
 
