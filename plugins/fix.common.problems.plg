@@ -96,6 +96,7 @@ rm -f $(ls /boot/config/plugins/&name;/&name;*.txz 2>/dev/null|grep -v '&version
 /usr/local/emhttp/plugins/fix.common.problems/scripts/applyFrequency.php
 mkdir -p /boot/config/plugins/fix.common.problems/scripts/
 cp /usr/local/emhttp/plugins/fix.common.problems/scripts/sample.php /boot/config/plugins/fix.common.problems/scripts/sample.php
+rm -rf /tmp/fix.common.problems/errors.json
 echo ""
 echo "----------------------------------------------------"
 echo " &name; has been installed."
