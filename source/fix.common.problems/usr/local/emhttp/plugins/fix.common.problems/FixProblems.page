@@ -48,7 +48,7 @@ function myCloseAlert() {
   swal.close();
 }
 
-function ignoreError(error,type) {
+function ignoreError(error,type,button) {
   swal({
     title: "Ignore "+type+"?",
     text: "Are you sure you want to ignore this "+type+":<br><font color='red'><b>"+error+"</b></font><br>As a <em>general rule</em> this is not recommended unless you are absolutely sure about this",
@@ -69,10 +69,12 @@ function ignoreError(error,type) {
         html: true,
         type: "success"
       });
+      $("#"+button).prop("disabled",true);
+      $("#"+button).prop("value","Ignored");
   });
 }
 
-function readdError(error) {
+function readdError(error,button) {
   swal({
     title: "Readd This Error?",
     text: "Are you sure you want to begin scanning for this error again:<br><font color='red'><b>"+error+"</b></font>",
@@ -93,7 +95,9 @@ function readdError(error) {
         html: true,
         type: "success"
       });
-  });
+      $("#"+button).prop("disabled",true);
+      $("#"+button).prop("value","Monitored");
+    });
 }
 
 function readdAll() {

@@ -2,8 +2,8 @@
 <!DOCTYPE PLUGIN [
 <!ENTITY name      "fix.common.problems">
 <!ENTITY author    "Andrew Zawadzki">
-<!ENTITY version   "2016.05.27">
-<!ENTITY md5       "479b92aaddb5ebc212e44330efd0143e">
+<!ENTITY version   "2016.05.28">
+<!ENTITY md5       "d89697410ca668cfa1467c2bc45807b0">
 <!ENTITY launch    "Settings/FixProblems">
 <!ENTITY plugdir   "/usr/local/emhttp/plugins/&name;">
 <!ENTITY github    "Squidly271/fix.common.problems">
@@ -13,6 +13,9 @@
 <PLUGIN name="&name;" author="&author;" version="&version;" launch="&launch;" pluginURL="&pluginURL;">
 
 <CHANGES>
+###2016-05-28###
+- Fix some logging issues
+
 ###2016-05-26###
 - Fix webUI changes detection if special characters present
 - Downgrade fix common problems and CA not set to auto update to be warnings

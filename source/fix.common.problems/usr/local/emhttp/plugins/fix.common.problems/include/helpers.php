@@ -21,12 +21,13 @@ function addError($description,$action) {
   $description = str_replace("'","&#39;",$description);
   $newError['error'] = "<font color='red'>$description</font>";
   $newError['suggestion'] = $action;
-  logger("Fix Common Problems: Error: ".strip_tags($description));
-#  logger("Fix Common Problems: Suggestion:".strip_tags($action));
+  
   if ( $ignoreList[strip_tags($description)] ) {
     $ignored[] = $newError;
+    logger("Fix Common Problems: Error: ".strip_tags($description),true);
   } else {
     $errors[] = $newError;
+    logger("Fix Common Problems: Error: ".strip_tags($description),false);
   }
 }
 
@@ -43,13 +44,13 @@ function addWarning($description,$action) {
   $description = str_replace("'","&#39;",$description);
   $newWarning['error'] = "$description";
   $newWarning['suggestion'] = $action;
-  logger("Fix Common Problems: Warning: ".strip_tags($description));
-#  logger("Fix Common Problems: Suggestion: ".strip_tags($action));
   
   if ( $ignoreList[strip_tags($originalDescription)] ) {
     $ignored[] = $newWarning;
+    logger("Fix Common Problems: Warning: ".strip_tags($description),true);
   } else {
     $warnings[] = $newWarning;
+    logger("Fix Common Problems: Warning: ".strip_tags($description),false);
   }
 }
 
@@ -66,7 +67,6 @@ function addOther($description,$action) {
   $newWarning['error'] = "$description";
   $newWarning['suggestion'] = $action;
   logger("Fix Common Problems: Other Warning: ".strip_tags($description));
-#  logger("Fix Common Problems: Suggestion: ".strip_tags($action));
   $otherWarnings[] = $newWarning;
 }
 
@@ -175,9 +175,12 @@ function findAppdata($volumes) {
 #                                          #
 ############################################
 
-function logger($string) {
-  $string = str_replace("'","",$string);
-  shell_exec("logger '$string'");
+function logger($string,$ignored = false) {
+  if ( $ignored ) {
+    $string .= " ** Ignored";
+  }
+  $string = htmlspecialchars_decode($string, ENT_QUOTES); 
+  shell_exec('logger "'.$string.'"');
 }
 
 ###########################################
