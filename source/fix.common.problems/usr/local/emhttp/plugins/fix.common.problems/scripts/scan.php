@@ -36,7 +36,7 @@ if ( $argv[1] == "troubleshoot" ) {
   logger("Fix Common Problems: ps aux output (only CPU % > 0)");  
   unset($output);
   exec("ps aux",$output);
-  logger($output[0]);
+  logger("Fix Common Problems: ".$output[0]);
   unset($output[0]);
 
   foreach ($output as $line) {
