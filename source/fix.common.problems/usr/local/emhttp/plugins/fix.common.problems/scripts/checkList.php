@@ -68,6 +68,8 @@ $checkList = "
 * Check for Moderated / Blacklisted docker applications
 * Check for plugins incompatible for your unRaid version
 * Check for changed webUI on docker applications
+* Check for cache only shares, but no cache drive
+* Check for user shares named the same as a disk share
 
 <h2>Troubleshooting Mode</h2>
 

@@ -15,6 +15,7 @@ function displayErrors() {
   $allErrors = readJsonFile($fixPaths['errors']);
     
   $errors = $allErrors['errors'];
+
   echo "<table class='tablesorter'>";
   echo "<thead><th width='25%'>Errors Found</th><th width='60%'>Suggested Fix</th><th></th></thead>";    
   if ( ! $errors ) {
@@ -111,7 +112,7 @@ switch ($_POST['action']) {
       $errorTimeStamp = date("l F dS  g:i A",filemtime("/tmp/fix.common.problems/errors.json"));
       echo $errorTimeStamp;
     } else {
-      echo "*";
+      echo "*".date("l F dS  g:i A");
     }
     break;
   case 'displayErrors':

@@ -959,6 +959,8 @@ function HPApresent() {
     exec($command,$output);
     foreach ($output as $line) {
       if ( strpos($line,"bad/missing") ) { break; }
+      if ( strpos($line,"questionable") ) { break; }
+      if ( strpos($line,"incorrect") ) { break; }
       if ( strpos($line,"HPA is enabled") ) {
         if ( $disk['name'] == "parity" ) {
           $func = "addError";
@@ -1201,6 +1203,8 @@ function checkWebUI() {
           $defaultUI = $template['WebUI'];
         }
         $defaultUI = trim($defaultUI);
+        $defaultUI     = str_replace("&amp;","&",$defaultUI);
+        $templateWebUI = str_replace("&amp;","&",$templateWebUI);
         if ( htmlspecialchars($templateWebUI) != htmlspecialchars($defaultUI) ) {
           addWarning("Docker application <font color='purple'><b>".$dockerApp['Name']."</b></font> does not have the same webUI interface as what the template author specified","The webUI the author specified is <font color='purple'>$defaultUI</font> and the webUI you are using is <font color='purple'>$templateWebUI</font>.  If you are specifying an absolute port (IE: <b>PORT:xxxx</b> is missing from your specified webUI address, then you will have issues should you ever have to change the host port on the docker applications's settings.  In the same vein, specifying an absolute IP address in the webUI will cause issues should your server's IP address ever change.  Note that the PORT:xxxx refers to the <b>Container's</b> port, not the host port.  There may however be perfectly valid reasons to change the default webUI entry on the application.  You can fix this problem here:".addLinkButton("Docker","/Docker"));
         }
@@ -1210,5 +1214,39 @@ function checkWebUI() {
   }
 }
 
+###################################################
+# Check for cache only shares, but no cache drive #
+###################################################
 
+function cacheOnlyNoCache() {
+  global $fixPaths, $fixSettings, $autoUpdateOverride, $developerMode, $communityApplicationsInstalled, $dockerRunning, $ignoreList, $shareList, $unRaidVersion;
+
+  if ( is_dir("/mnt/cache") ) { return; }
+  foreach ($shareList as $share) {
+    if ( ! is_file("/boot/config/shares/$share.cfg") ) {
+      continue;
+    }
+    $shareCfg = parse_ini_file("/boot/config/shares/$share.cfg");
+    if ( $shareCfg['shareUseCache'] == "only" ){
+      addError("Share <font color='purple'><b>$share</b></font> set to use cache only, but the cache drive is not present","Setting a share to be cache-only, but without a cache drive present can have unpredictable results at best, and in some cases can prevent proper operation of any application attempting to use that share.  Fix it here:".addLinkButton("$share Settings","/Shares/Share?name=$share")."  Alternatively, depending upon your version of unRaid, you may have to manually delete this file: <b>/config/shares/$share.cfg</b> from the flash drive to fix this issue");
+    }   
+  }
+}
+
+################################################
+# Check for sharenames the same as a disk name #
+################################################
+
+function shareNameSameAsDiskName() {
+  global $fixPaths, $fixSettings, $autoUpdateOverride, $developerMode, $communityApplicationsInstalled, $dockerRunning, $ignoreList, $shareList, $unRaidVersion;
+
+  $disks = parse_ini_file($fixPaths['disks.ini'],true);
+
+  foreach ($disks as $disk) {
+    if ( $disk['name'] == "parity" ) { continue; }
+    if ( is_dir("/mnt/user/".$disk['name']) ) {
+      addError("Share <font color='purple'><b>".$disk['name']."</b></font> is identically named to a <b>disk share</b>","While there *may be* (doubtful) valid use cases for having a share named identically to a disk share, this is only going to cause some confusion as if disk shares are enabled, then you will have duplicated share names, and possibly if disk shares are not enabled, then you might not be able to gain access to the share.  This is usually caused by moving the contents of one disk to another (XFS Conversion?) and an improperly placed <b>slash</b>.  The solution is to move the contents of the user share named ".$disk['name']." to be placed within a validly named share.  Ask for assistance on the forums for guidance on doing this.");
+    }
+  }  
+}
 ?>

@@ -2,8 +2,8 @@
 <!DOCTYPE PLUGIN [
 <!ENTITY name      "fix.common.problems">
 <!ENTITY author    "Andrew Zawadzki">
-<!ENTITY version   "2016.05.28a">
-<!ENTITY md5       "c4b7e7348db297ef15fc5e578f02ea90">
+<!ENTITY version   "2016.05.29">
+<!ENTITY md5       "c513a781be0645346f98e1d639328158">
 <!ENTITY launch    "Settings/FixProblems">
 <!ENTITY plugdir   "/usr/local/emhttp/plugins/&name;">
 <!ENTITY github    "Squidly271/fix.common.problems">
@@ -13,6 +13,13 @@
 <PLUGIN name="&name;" author="&author;" version="&version;" launch="&launch;" pluginURL="&pluginURL;">
 
 <CHANGES>
+###2016-05-29###
+- Finally fix Crashplan webUI issues
+- Check for sharenames same as disknames
+- Check for cacheonly shares but not cache drive
+- Add exception for NVMe drives showing HPA
+- Fix scan time aberration if no errors found
+
 ###2016-05-28###
 - Fix some logging issues
 

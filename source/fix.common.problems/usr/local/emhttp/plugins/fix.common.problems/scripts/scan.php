@@ -141,6 +141,8 @@ if ( $troubleshooting ) {
   checkForModeration();
   pluginNotCompatible();
   checkWebUI();
+  cacheOnlyNoCache();
+  shareNameSameAsDiskName();
 }
 
 ###################################################################
