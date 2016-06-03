@@ -1249,4 +1249,19 @@ function shareNameSameAsDiskName() {
     }
   }  
 }
+
+#############################################
+# Check for no CPU scaling driver installed #
+#############################################
+
+function noCPUscaling() {
+  global $fixPaths, $fixSettings, $autoUpdateOverride, $developerMode, $communityApplicationsInstalled, $dockerRunning, $ignoreList, $shareList, $unRaidVersion;
+
+  $output = exec("cpufreq-info -d");
+  $output = trim($output);
+  
+  if ( ! $output ) {
+    addOther("CPU possibly will not throttle down frequency at idle","Your CPU is running constantly at 100% and will not throttle down when it's idle (to save heat / power).  This is because there is currently no CPU Scaling Driver Installed.  Seek assistance on the unRaid forums with this issue");
+  }
+}
 ?>

@@ -143,6 +143,7 @@ if ( $troubleshooting ) {
   checkWebUI();
   cacheOnlyNoCache();
   shareNameSameAsDiskName();
+  noCPUscaling();
 }
 
 ###################################################################

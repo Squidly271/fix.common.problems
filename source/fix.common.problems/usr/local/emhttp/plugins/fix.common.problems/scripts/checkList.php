@@ -70,6 +70,7 @@ $checkList = "
 * Check for changed webUI on docker applications
 * Check for cache only shares, but no cache drive
 * Check for user shares named the same as a disk share
+* Check for CPU Scaling Driver installed
 
 <h2>Troubleshooting Mode</h2>
 
