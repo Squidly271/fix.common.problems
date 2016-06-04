@@ -208,7 +208,7 @@ function outsideCommunication() {
   
   exec("ping -c 2 github.com",$dontCare,$pingReturn);
   if ( $pingReturn ) {
-    addError("Unable to communicate with GitHub.com","Reset your modem / router or try again later, or set your ".addLinkButton("DNS Settings","/Settings/NetworkSettings")." to 8.8.8.8 and 8.8.4.4");
+    addError("Unable to communicate with GitHub.com","Reset your modem / router or try again later, or set your ".addLinkButton("DNS Settings","/Settings/NetworkSettings")." to 8.8.8.8 and 8.8.4.4  Also make sure that you have a Gateway address set up (Your Router's IP address)");
   }
 }
 
@@ -1062,7 +1062,7 @@ function sharePermission() {
     $sharePermission = substr(sprintf("%o",fileperms("/mnt/user/$share")),-4);
     
     if ( $sharePermission != "0777" ) {
-      addWarning("Share <font color='purple'><b>$share</b></font> has non-standard permissions set","The permission on the share is currently set to <b>$sharePermission</b> (standard permissions are <b>0777</b>).  You may have trouble accessing this share locally and/or over the network due to this issue.  You should run the ".addLinkButton("New Permissions","/Tools/NewPerms")."tool to fix this issue.  (Don't know what these numbers mean?  Look <a href='http://permissions-calculator.org/decode/' target='_blank'>HERE</a>");
+      addWarning("Share <font color='purple'><b>$share</b></font> has non-standard permissions set","The permission on the share is currently set to <b>$sharePermission</b> (standard permissions are <b>0777</b>).  You may have trouble accessing this share locally and/or over the network due to this issue.  You should run the ".addLinkButton("New Permissions","/Tools/DockerSafeNewPerms")."tool to fix this issue.  (Don't know what these numbers mean?  Look <a href='http://permissions-calculator.org/decode/' target='_blank'>HERE</a>  NOTE that if this is your appdata share then you will need to manually run the command to fix this.  Ask for assistance on the forums");
     }
   }
 }

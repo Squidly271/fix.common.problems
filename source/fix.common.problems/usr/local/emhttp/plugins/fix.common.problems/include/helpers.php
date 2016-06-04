@@ -323,5 +323,48 @@ function readXmlFile($xmlfile) {
   return $o;
 }
 
+#########################################################
+#                                                       #
+# Returns an array of all of the appdata shares present #
+#                                                       #
+#########################################################
+
+function getAppData() {
+  $dockerRunning = is_dir("/var/lib/docker/tmp");
+  $excludedShares = array();
+  
+  if ( $dockerRunning ) {
+    $DockerClient = new DockerClient();
+    $info = $DockerClient->getDockerContainers();
+
+    foreach ($info as $docker) {
+      $appData = findAppData($docker['Volumes']);
+      if ( ! $appData ) {
+        continue;
+      }
+      $appData = str_replace("/mnt/cache/","/mnt/user/",$appData);
+      $appData = str_replace("/mnt/user/","",$appData);
+      $pathinfo = explode("/",$appData);
+      $excludedShares[$pathinfo[0]] = $pathinfo[0];
+    }
+  }  
+  $dockerOptions = @parse_ini_file("/boot/config/docker.cfg");
+  $sharename = $dockerOptions['DOCKER_APP_CONFIG_PATH'];
+  if ( $sharename ) {
+    $sharename = str_replace("/mnt/cache/","",$sharename);
+    $sharename = str_replace("/mnt/user/","",$sharename);
+    $pathinfo = explode("/",$sharename);
+    $excludedShares[$pathinfo[0]] = $pathinfo[0];
+  }
+  
+  if ( is_file("/boot/config/plugins/community.applications/BackupOptions.json") ) {
+    $backupOptions = readJsonFile("/boot/config/plugins/community.applications/BackupOptions.json");
+    $backupDestination = $backupOptions['destinationShare'];
+    $backupShare = explode("/",$backupDestination);
+    $excludedShares[$backupShare[0]] = $backupShare[0]." (Community Applications Backup Appdata Destination)";
+  }
+
+  return $excludedShares;  
+}
 
 ?>

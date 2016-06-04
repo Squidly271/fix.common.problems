@@ -1,0 +1,55 @@
+Menu="UNRAID-OS"
+Title="New Permissions<br>(Docker Safe)"
+Icon="keys.png"
+Type="xmenu"
+---
+<?
+###############################################################
+#                                                             #
+# Fix Common Problems copyright 2015-2016, Andrew Zawadzki    #
+#                                                             #
+###############################################################
+
+$plugin = "fix.common.problems";
+
+?>
+<script>
+var URL = "/plugins/<?=$plugin?>/include/newpermissions.php";
+
+$(function() {
+  $.post(URL,{action:'showExcluded'}, function(data) {
+    if (data) {
+      $("#excluded").html(data);
+    }
+  });
+});
+</script>
+
+This utility will restore standard unRaid permissions to all shares and files without touching any of the <b>APPDATA</b> shares for docker applications.
+
+(Many times, a docker application has specific requirements for its ownership / permissions on the files contained within its appdata, and the standard New Permissions tool will change these, possibly rendering the docker application inoperable.)
+
+<b>You should use this tool in case a misconfigured docker application (notably CouchPotato or Sonarr / SickBeard) has written media files to your array with the wrong permissions, and you find yourself unable to modify / delete those files.</b>
+
+This utility starts a background process that goes to each of your data disks and cache disk and changes file and directory ownership to nobody/users (i.e., uid/gid to 99/100), and sets permissions as follows:
+<pre><code>
+For directories:
+  drwxrwxrwx
+
+For read/write files:
+  -rw-rw-rw-
+
+For readonly files:
+  -r--r--r--
+  </code>  </pre>
+  The following shares will <b>NOT</b> be touched:
+  
+<span id='excluded'></span>
+(If you have a specific need to have another folder excluded, then you should either use the standard <b>New Permissions</b> utility or run the appropriate commands manually)
+
+Clicking Start will open another window and start the background process. Closing the window before completion will terminate the background process - so don't do that. This process can take a long time if you have many files.  During this time, the webUI will be unavailable.  If you do close the pop up window, the current folder in progress will be finished before the webUI is responsive again.
+
+<font color='red'>If you have a <b>preclear</b> in progress, do not run this utility (or the regular new permissions utility) as the process will appear to hang until the preclear is finished (due to the new permissions utility running the <b>sync</b> command)
+
+<input type='button' id='start_button' value='Start' disabled onclick='openBox("/plugins/fix.common.problems/scripts/newperms.sh","Docker Safe New Permissions",490,430);'> <input type='button' value='Done' onclick='done();'> <input type='checkbox' onclick='$("#start_button").prop("disabled",!this.checked);'> <small>Yes I want to do this</small>
+
