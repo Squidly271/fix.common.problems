@@ -51,7 +51,7 @@ $checkList = "
 * Check for built-in FTP server running
 * Check for destination set for Alert level notifications
 * Check for destination set for Warning level notifications 
-& Check for email server and recipient addresses set if email notifications are selected
+* Check for email server and recipient addresses set if email notifications are selected
 * Check for plugins installed being blacklisted
 * Check for plugins installed not being known to Community Applications (implies incompatible)
 * Check for docker applications installed and users changing Container ports from author default
@@ -71,6 +71,7 @@ $checkList = "
 * Check for cache only shares, but no cache drive
 * Check for user shares named the same as a disk share
 * Check for CPU Scaling Driver installed
+* Check for extra parameters set via Repository section instead of Extra Parameters Section (docker Apps)
 
 <h2>Troubleshooting Mode</h2>
 

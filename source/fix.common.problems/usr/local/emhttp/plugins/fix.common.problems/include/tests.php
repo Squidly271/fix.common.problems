@@ -1264,4 +1264,26 @@ function noCPUscaling() {
     addOther("CPU possibly will not throttle down frequency at idle","Your CPU is running constantly at 100% and will not throttle down when it's idle (to save heat / power).  This is because there is currently no CPU Scaling Driver Installed.  Seek assistance on the unRaid forums with this issue");
   }
 }
+
+#################################################################################
+# Check for extra parameters within Repository (deprecated way of doing things) #
+#################################################################################
+
+function extraParamInRepository() {
+  global $fixPaths, $fixSettings, $autoUpdateOverride, $developerMode, $communityApplicationsInstalled, $dockerRunning, $ignoreList, $shareList, $unRaidVersion;
+
+  $dockerTemplates = new DockerTemplates();
+  $info = $dockerTemplates->getAllInfo();
+  
+  foreach ($info as $container) {
+    if ( is_file($container['template']) ) {
+      $xmlTemplate = readXmlFile($container['template']);
+      
+      $repository = trim($xmlTemplate['Repository']);
+      if ( strpos($repository," ") ) {
+        addWarning("Docker application <font color='purple'><b>".$xmlTemplate['Name']."</b></font> appears to have extra parameters contained within its <b>Repository</b> entry","Adding extra parameters by including them in the repository (eg: --cpuset-cpus) is deprecated, and may impact the ability of dockerMan to correctly manage your application (eg: unable to update, etc).  The proper way to add extra parameters is through the <b>Extra Parameters</b> section when you edit the container (you will have to hit Advanced Settings)  Fix this here: ".addLinkButton("Edit ".$xmlTemplate['Name'],"/Docker/UpdateContainer?xmlTemplate=edit:".$container['template']));
+      }
+    }
+  }
+}
 ?>

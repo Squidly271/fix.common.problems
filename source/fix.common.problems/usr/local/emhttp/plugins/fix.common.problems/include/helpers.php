@@ -15,7 +15,7 @@ require_once("/usr/local/emhttp/plugins/fix.common.problems/include/paths.php");
 #############################
 
 function addError($description,$action) {
-  global $errors, $ignoreList, $ignored;
+  global $errors, $ignoreList, $ignored, $fixSettings;
 
   $originalDescription = $description;
   $description = str_replace("'","&#39;",$description);
@@ -24,7 +24,9 @@ function addError($description,$action) {
   
   if ( $ignoreList[strip_tags($description)] ) {
     $ignored[] = $newError;
-    logger("Fix Common Problems: Error: ".strip_tags($description),true);
+    if ( $fixSettings['logIgnored'] == "yes" ) {
+      logger("Fix Common Problems: Error: ".strip_tags($description),true);
+    }
   } else {
     $errors[] = $newError;
     logger("Fix Common Problems: Error: ".strip_tags($description),false);
@@ -38,7 +40,7 @@ function addError($description,$action) {
 #############################
 
 function addWarning($description,$action) {
-  global $warnings, $ignoreList, $ignored;
+  global $warnings, $ignoreList, $ignored, $fixSettings;
   
   $originalDescription = $description;
   $description = str_replace("'","&#39;",$description);
@@ -47,7 +49,9 @@ function addWarning($description,$action) {
   
   if ( $ignoreList[strip_tags($originalDescription)] ) {
     $ignored[] = $newWarning;
-    logger("Fix Common Problems: Warning: ".strip_tags($description),true);
+    if ( $fixSettings['logIgnored'] == "yes" ) {
+      logger("Fix Common Problems: Warning: ".strip_tags($description),true);
+    }
   } else {
     $warnings[] = $newWarning;
     logger("Fix Common Problems: Warning: ".strip_tags($description),false);
@@ -61,13 +65,21 @@ function addWarning($description,$action) {
 #####################################
 
 function addOther($description,$action) {
-  global $otherWarnings;
+  global $otherWarnings, $ignoreList, $ignored, $fixSettings;
 
+  $originalDescription = $description;
   $description = str_replace("'","&#39;",$description);
   $newWarning['error'] = "$description";
   $newWarning['suggestion'] = $action;
-  logger("Fix Common Problems: Other Warning: ".strip_tags($description));
-  $otherWarnings[] = $newWarning;
+  if ( $ignoreList[strip_tags($originalDescription)] ) {
+    $ignored[] = $newWarning;
+    if ( $fixSettings['logIgnored'] == "yes" ) {
+      logger("Fix Common Problems: Warning: ".strip_tags($description),true);
+    }
+  } else {
+    logger("Fix Common Problems: Other Warning: ".strip_tags($description));
+    $otherWarnings[] = $newWarning;
+  }
 }
 
 ############################################

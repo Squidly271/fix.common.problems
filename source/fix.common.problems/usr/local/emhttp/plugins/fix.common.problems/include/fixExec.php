@@ -44,7 +44,8 @@ function displayErrors() {
     echo "<table class='tablesorter'>";
     echo "<thead><th width='25%'>Other Comments</th><th width='60%'>Comments</th><th></thead>";
     foreach ($others as $other) {
-      echo "<tr><td>".$other['error']."</td><td>".$other['suggestion']."</td></tr>";      
+      echo "<tr><td>".$other['error']."</td><td>".$other['suggestion']."</td>";      
+      echo "<td><input type='button' id='".mt_rand()."' value='Ignore Comment' onclick='ignoreError(&quot;".strip_tags($other['error'])."&quot;,&quot;other comment&quot;,this.id);'></td></tr>";
     }
     echo "</table>";
   }
@@ -78,6 +79,7 @@ switch ($_POST['action']) {
     $settings['notifications'] = isset($_POST['notifications']) ? urldecode(($_POST['notifications'])) : "";
     $settings['disableSpinUp'] = isset($_POST['disableSpinUp']) ? urldecode(($_POST['disableSpinUp'])) : "";
     $settings['hacksPerDay'] = isset($_POST['hacksPerDay']) ? urldecode(($_POST['hacksPerDay'])) : "";
+    $settings['logIgnored'] = isset($_POST['logIgnored']) ? urldecode(($_POST['logIgnored'])) : "";
     
     writeJsonFile($fixPaths['settings'],$settings);
     exec("/usr/local/emhttp/plugins/fix.common.problems/scripts/applyFrequency.php");

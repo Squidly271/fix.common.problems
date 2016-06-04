@@ -17,6 +17,7 @@ if ( ! $settings['notifications'] ) { $settings['notifications'] = "all"; }
 if ( ! $settings['frequency'] ) { $settings['frequency'] = "disabled"; }
 if ( ! $settings['disableSpinUp'] ) { $settings['disableSpinUp'] = "false"; }
 if ( ! $settings['hacksPerDay'] ) { $settings['hacksPerDay'] = 10; }
+if ( ! $settings['logIgnored']) { $settings['logIgnored'] = "yes"; }
 
 if ( is_file("/tmp/fix.common.problems/troubleshoot") ) { $troubleshoot = true; }
 
@@ -160,7 +161,7 @@ $(function() {
   $("#notifications").val("<?=$settings['notifications']?>");
   $("#disableSpinUp").val("<?=$settings['disableSpinUp']?>");
   $("#hacksPerDay").val("<?=$settings['hacksPerDay']?>");
-  
+  $("#logIgnored").val("<?=$settings['logIgnored']?>");
 
   if ( "<?=$troubleshoot?>" ) {
     $("#troubleshoot").prop("disabled",true);
@@ -219,8 +220,9 @@ function apply() {
   var notifications = $("#notifications").val();
   var disableSpinUp = $("#disableSpinUp").val();
   var hacksPerDay = $("#hacksPerDay").val();
+  var logIgnored = $("#logIgnored").val();
   
-  $.post(URL,{action:'apply',frequency:frequency,notifications:notifications,disableSpinUp:disableSpinUp,hacksPerDay:hacksPerDay});
+  $.post(URL,{action:'apply',logIgnored:logIgnored,frequency:frequency,notifications:notifications,disableSpinUp:disableSpinUp,hacksPerDay:hacksPerDay});
   $("#applyButton").prop("disabled",true);
 }
 
@@ -257,6 +259,13 @@ function apply() {
 <tr>
   <td><b>Number of allowed invalid logins per day:</b></td>
   <td><input type='number' id='hacksPerDay' onchange='enableApply();'></td>
+</tr>
+<tr>
+  <td><b>Log Ignored Errors/Warnings?</b></td>
+  <td><select id='logIgnored' onchange='enableApply();'>
+    <option value='yes'>Yes (Recommended)</option>
+    <option value='no'>No</option>
+  </td>
 </tr>
 </table>
 </div>

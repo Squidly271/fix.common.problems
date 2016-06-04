@@ -67,6 +67,7 @@ $ignoreList = readJsonFile($fixPaths['ignoreList']);
 if ( ! $fixSettings['notifications'] ) { $fixSettings['notifications'] = "all"; }
 if ( ! $fixSettings['disableSpinUp'] ) { $fixSettings['disableSpinUp'] = "false"; }
 if ( ! $fixSettings['hacksPerDay'] ) { $fixSettings['hacksPerDay'] = 10; }
+if ( ! $fixSettings['logIgnored']) { $fixSettings['logIgnored'] = "yes"; }
 
 # download updated appfeed if necessary
 
@@ -144,8 +145,12 @@ if ( $troubleshooting ) {
   cacheOnlyNoCache();
   shareNameSameAsDiskName();
   noCPUscaling();
+  extraParamInRepository();
 }
 
+if ( $ignored && ( $fixSettings['logIgnored'] != "yes") ) {
+  logger("Fix Common Problems: Ignored errors / warnings / other comments found, but not logged per user settings");
+}
 ###################################################################
 #                                                                 #
 # Execute any custom scripts at /boot/fix.common.problems/scripts #
@@ -164,7 +169,7 @@ foreach ($allScripts as $script) {
 }
 
 
-if ( ! $errors && ! $warnings && ! $otherWarnings ) {
+if ( ! $errors && ! $warnings && ! $otherWarnings && ! $ignored ) {
   @unlink($fixPaths['errors']);
 } else {
   $allErrors['errors'] = $errors;
