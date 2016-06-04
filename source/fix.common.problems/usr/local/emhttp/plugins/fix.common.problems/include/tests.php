@@ -1272,6 +1272,8 @@ function noCPUscaling() {
 function extraParamInRepository() {
   global $fixPaths, $fixSettings, $autoUpdateOverride, $developerMode, $communityApplicationsInstalled, $dockerRunning, $ignoreList, $shareList, $unRaidVersion;
 
+  if ( ! $dockerRunning ) { return; }
+  
   $dockerTemplates = new DockerTemplates();
   $info = $dockerTemplates->getAllInfo();
   

@@ -2,8 +2,8 @@
 <!DOCTYPE PLUGIN [
 <!ENTITY name      "fix.common.problems">
 <!ENTITY author    "Andrew Zawadzki">
-<!ENTITY version   "2016.05.29">
-<!ENTITY md5       "c513a781be0645346f98e1d639328158">
+<!ENTITY version   "2016.06.03">
+<!ENTITY md5       "d4545c776964042dd5e27ce5c1559e56">
 <!ENTITY launch    "Settings/FixProblems">
 <!ENTITY plugdir   "/usr/local/emhttp/plugins/&name;">
 <!ENTITY github    "Squidly271/fix.common.problems">
@@ -13,6 +13,11 @@
 <PLUGIN name="&name;" author="&author;" version="&version;" launch="&launch;" pluginURL="&pluginURL;">
 
 <CHANGES>
+###2016-06-03###
+- Add in driver check for CPU throttling
+- Check docker apps for improper setting (wrong section) of extra parameters
+- Ability to not log ignored entries
+
 ###2016-05-29###
 - Finally fix Crashplan webUI issues
 - Check for sharenames same as disknames
