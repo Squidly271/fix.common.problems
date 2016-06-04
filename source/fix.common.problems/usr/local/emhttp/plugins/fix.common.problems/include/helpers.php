@@ -74,7 +74,7 @@ function addOther($description,$action) {
   if ( $ignoreList[strip_tags($originalDescription)] ) {
     $ignored[] = $newWarning;
     if ( $fixSettings['logIgnored'] == "yes" ) {
-      logger("Fix Common Problems: Warning: ".strip_tags($description),true);
+      logger("Fix Common Problems: Other Warning: ".strip_tags($description),true);
     }
   } else {
     logger("Fix Common Problems: Other Warning: ".strip_tags($description));
@@ -113,9 +113,9 @@ function addButton($buttonName,$action) {
 
 function checkPluginUpdate($filename) {
   $filename = basename($filename);
-  $installedVersion = exec("/usr/local/emhttp/plugins/dynamix.plugin.manager/scripts/plugin version /var/log/plugins/$filename");
+  $installedVersion = pluginVersion("/var/log/plugins/$filename");
   if ( is_file("/tmp/plugins/$filename") ) {
-    $upgradeVersion = exec("/usr/local/emhttp/plugins/dynamix.plugin.manager/scripts/plugin version /tmp/plugins/$filename");
+    $upgradeVersion = pluginVersion("/tmp/plugins/$filename");
   } else {
     $upgradeVersion = "0";
   }
@@ -124,6 +124,11 @@ function checkPluginUpdate($filename) {
   } else {
     return false;
   }
+}
+
+function pluginVersion($fullPath) {
+  $version = exec("/usr/local/emhttp/plugins/dynamix.plugin.manager/scripts/plugin version $fullPath");
+  return $version;
 }
 
 ###################################################################################
