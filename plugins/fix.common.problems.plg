@@ -2,7 +2,7 @@
 <!DOCTYPE PLUGIN [
 <!ENTITY name      "fix.common.problems">
 <!ENTITY author    "Andrew Zawadzki">
-<!ENTITY version   "2016.06.11">
+<!ENTITY version   "2016.06.11a">
 <!ENTITY md5       "1ac5e2e0f97b2f785d16947cec93a7e9">
 <!ENTITY launch    "Settings/FixProblems">
 <!ENTITY plugdir   "/usr/local/emhttp/plugins/&name;">
@@ -15,6 +15,7 @@
 <CHANGES>
 ###2016-06-11###
 - Better appdata determination
+- More forgiving determination of cache only shares on array
 
 ###2016-06-04a###
 - Add in a Docker Safe New Permissions utility (Tools Tab)

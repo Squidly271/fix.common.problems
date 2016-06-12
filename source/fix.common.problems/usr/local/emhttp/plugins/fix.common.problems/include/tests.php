@@ -98,8 +98,11 @@ function arrayOnlyFilesOnCache() {
       $shareCfg = parse_ini_file("/boot/config/shares/$share.cfg");
       if ( $shareCfg['shareUseCache'] == "no" ) {
         if ( is_dir("/mnt/cache/$share") ) {
-          $shareURL = str_replace(" ","+",$share);
-          addWarning("Share <b><font color='purple'>$share</font></b> set to <em>not use the cache</em>, but files / folders exist on the cache drive","You should change the share's settings appropriately ".addLinkButton("$share Settings","/Shares/Share?name=$shareURL")."or use the dolphin / krusader docker applications to move the offending files accordingly.  Note that there are some valid use cases for a set up like this.  In particular: <a href='https://lime-technology.com/forum/index.php?topic=40777.msg385753' target='_blank'>THIS</a>");
+          $contents = array_diff(scandir("/mnt/cache/$share"),array(".",".."));
+          if ( ! empty($contents) ) {
+            $shareURL = str_replace(" ","+",$share);
+            addWarning("Share <b><font color='purple'>$share</font></b> set to <em>not use the cache</em>, but files / folders exist on the cache drive","You should change the share's settings appropriately ".addLinkButton("$share Settings","/Shares/Share?name=$shareURL")."or use the dolphin / krusader docker applications to move the offending files accordingly.  Note that there are some valid use cases for a set up like this.  In particular: <a href='https://lime-technology.com/forum/index.php?topic=40777.msg385753' target='_blank'>THIS</a>");
+          }            
         }
       }
     }
