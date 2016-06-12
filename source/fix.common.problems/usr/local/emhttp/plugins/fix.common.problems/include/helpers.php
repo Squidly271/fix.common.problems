@@ -172,12 +172,20 @@ function writeJsonFile($filename,$jsonArray) {
 
 function findAppdata($volumes) {
   $path = false;
+  $dockerOptions = @parse_ini_file("/boot/config/docker.cfg");
+  $defaultShareName = basename($dockerOptions['DOCKER_APP_CONFIG_PATH']);
+  $shareName = str_replace("/mnt/user/","",$defaultShareName);
+  $shareName = str_replace("/mnt/cache/","",$defaultShareName);
+  if ( ! is_file("/boot/config/shares/$shareName.cfg") ) { 
+    $shareName = "****";
+  }
+  file_put_contents("/tmp/test",$defaultShareName);
   if ( is_array($volumes) ) {
     foreach ($volumes as $volume) {
       $temp = explode(":",$volume);
       $testPath = strtolower($temp[1]);
     
-      if (startsWith($testPath,"/config") ) {
+      if ( (startsWith($testPath,"/config")) || (startsWith($temp[0],"/mnt/user/$shareName")) || (startsWith($temp[0],"/mnt/cache/$shareName")) ) {
         $path = $temp[0];
         break;
       }
