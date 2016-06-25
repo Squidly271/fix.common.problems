@@ -2,8 +2,8 @@
 <!DOCTYPE PLUGIN [
 <!ENTITY name      "fix.common.problems">
 <!ENTITY author    "Andrew Zawadzki">
-<!ENTITY version   "2016.06.11a">
-<!ENTITY md5       "562fa55480bc043db4034fdea0f9c882">
+<!ENTITY version   "2016.06.24">
+<!ENTITY md5       "b1bfecb1eb4af00f64ed9798e01e3f73">
 <!ENTITY launch    "Settings/FixProblems">
 <!ENTITY plugdir   "/usr/local/emhttp/plugins/&name;">
 <!ENTITY github    "Squidly271/fix.common.problems">
@@ -13,6 +13,9 @@
 <PLUGIN name="&name;" author="&author;" version="&version;" launch="&launch;" pluginURL="&pluginURL;">
 
 <CHANGES>
+###2016-06-24###
+- Add in Extended Checks On Files / Folders
+
 ###2016-06-11###
 - Better appdata determination
 - More forgiving determination of cache only shares on array

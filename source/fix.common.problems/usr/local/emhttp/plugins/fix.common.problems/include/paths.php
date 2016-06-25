@@ -26,5 +26,8 @@ $fixPaths['uncleanReboot']              = $fixPaths['tempFiles']."/resetCheckFla
 $fixPaths['uncleanRebootFlag']          = $fixPaths['flashPath']."/resetCheckFlag";
 $fixPaths['application-feed-last-updated'] = "http://tools.linuxserver.io/unraid-docker-templates.json?last_updated=1";
 $fixPaths['troubleshoot']               = $fixPaths['tempFiles']."/troubleshoot";
+$fixPaths['extendedStatus']             = $fixPaths['tempFiles']."/extendedStatus";
+$fixPaths['extendedPID']                = $fixPaths['tempFiles']."/extendedPID";
+$fixPaths['extendedLog']                = $fixPaths['tempFiles']."/extendedLog";
 
 ?>

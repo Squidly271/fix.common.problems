@@ -21,6 +21,9 @@ if ( ! $settings['logIgnored']) { $settings['logIgnored'] = "yes"; }
 
 if ( is_file("/tmp/fix.common.problems/troubleshoot") ) { $troubleshoot = true; }
 
+if ( is_dir("/mnt/user") ) {
+  $userEnabled = "true";
+}
 ?>
 <script>
 
@@ -124,6 +127,19 @@ function readdAll() {
       });
   });
 }
+function extendedTest() {
+  swal({
+    title: "Run Extended Tests?",
+    text: "This will start a background process which will check all of your files for permission problems, duplicates, and other errors.<br><br>You will receive a notification when complete",
+    showConfirmButton: true,
+    showCancelButton: true,
+    closeOnConfirm: true,
+    html: true,
+    type: "warning"
+  }, function() {
+    $.post(URL,{action:'runExtended'});
+  });
+}
 
 function troubleshoot() {
   swal({
@@ -157,6 +173,15 @@ function checkList() {
 
 
 $(function() {
+  if ( "<?=$userEnabled?>" == "true" ) {
+    $("#userOnly").show();
+    setInterval(function() {
+    checkExtended();
+    }, 1000);
+  } else {
+    $("#userOnly").hide();
+  }
+  
   $("#frequency").val("<?=$settings['frequency']?>");
   $("#notifications").val("<?=$settings['notifications']?>");
   $("#disableSpinUp").val("<?=$settings['disableSpinUp']?>");
@@ -188,9 +213,16 @@ $(function() {
     }
   });
 });
+function checkExtended() {
+  $.post(URL,{action:'checkExtendedStatus'},function(data) {
+    if (data) {
+      $("#extendedStatus").html(data);
+    }
+  });
+}
 
 function rescan() {
-  myAlert("Scanning","Now Scanning your system for common problems.  This may take a minute.  All of your drives will spin up during this process.","","",false,false,false,"warning");
+  myAlert("Scanning","Now Scanning your system for common problems.  This may take a minute.","","",false,false,false,"warning");
   $.post(URL,{action:'scan'},function(data) {
     if (data) {
       myCloseAlert();
@@ -278,6 +310,10 @@ function apply() {
 <input type='button' id='applyButton' value='Apply' onclick='apply();' disabled><input type='button' value='Rescan' onclick='rescan();'><input type='button' onclick='done();' value='Done'><span style='float:right'><input type='button' id='troubleshoot' value='Troubleshooting Mode' onclick='troubleshoot();'></span><br><br>
 > Troubleshooting mode will add start a process to continually save your syslog, automatically run diagnostics every half hour, and run a subset of these tests every ten minutes.  Useful for diagnosing random crashes, etc.
 
+<span id='userOnly'>
+<input type='button' id='extendedTest' value='Run Extended Test' onclick='extendedTest();'><input type='button' value='View Results' id='extendedLog' onclick='openBox("/plugins/fix.common.problems/scripts/showExtendedLog.sh","Extended Test Results",550,550)';> <font color='red'>Status:</font> <font color='green'> <span id='extendedStatus'></span></font>
+> Extended tests will perform more tests on every file in the array.
+</span>
 <center><b>Time of last scan: <span id='timestamp'></span></center></b>
 
 <span id='settings'></span>

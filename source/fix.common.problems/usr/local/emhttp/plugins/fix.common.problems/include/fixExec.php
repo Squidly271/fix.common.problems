@@ -120,5 +120,25 @@ switch ($_POST['action']) {
   case 'displayErrors':
     displayErrors();
     break;
+  
+  case 'checkExtendedStatus':
+    $status = @file_get_contents($fixPaths['extendedStatus']);
+    $running = is_file($fixPaths['extendedPID']);
+    $o = "";
+    if ( $running ) {
+      $o .= "$status<script>$('#extendedTest').prop('disabled',true);</script>";
+      $o .= "<script>$('#extendedLog').prop('disabled',true);</script>";
+    } else {
+      $o .= "Not Running <script>$('#extendedTest').prop('disabled',false);</script>";
+      if ( $status ) {
+        $o .= "<script>$('#extendedLog').prop('disabled',false);</script>";
+      } else {
+        $o .= "<script>$('#extendedLog').prop('disabled',true);</script>";
+      }
+    }
+    echo $o;
+    break;
+  case 'runExtended':
+    exec("/usr/local/emhttp/plugins/fix.common.problems/scripts/startExtended.sh");
 }
 ?>
