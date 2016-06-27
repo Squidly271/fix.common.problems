@@ -2,8 +2,8 @@
 <!DOCTYPE PLUGIN [
 <!ENTITY name      "fix.common.problems">
 <!ENTITY author    "Andrew Zawadzki">
-<!ENTITY version   "2016.06.24">
-<!ENTITY md5       "b1bfecb1eb4af00f64ed9798e01e3f73">
+<!ENTITY version   "2016.06.26">
+<!ENTITY md5       "180ed5d406dc2bc855dc230870f0ddf2">
 <!ENTITY launch    "Settings/FixProblems">
 <!ENTITY plugdir   "/usr/local/emhttp/plugins/&name;">
 <!ENTITY github    "Squidly271/fix.common.problems">
@@ -13,6 +13,9 @@
 <PLUGIN name="&name;" author="&author;" version="&version;" launch="&launch;" pluginURL="&pluginURL;">
 
 <CHANGES>
+###2016-06-26###
+- Suppress error on port checks if docker is bridge mode and no ports defined
+
 ###2016-06-24###
 - Add in Extended Checks On Files / Folders
 

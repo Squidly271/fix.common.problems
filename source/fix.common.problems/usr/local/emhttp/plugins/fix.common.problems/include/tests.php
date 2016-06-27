@@ -868,7 +868,8 @@ function dockerAppsChangedPorts() {
               addError("Docker Application <font color='purple'><b>".$dockerInstalled['Name']."</b></font> is currently set up to run in <font color='purple'><b>".$dockerInstalled['NetworkMode']."</b></font> mode","The template for this application specifies that the application should run in $mode mode.  <a href='$support' target='_blank'>Application Support Thread</a>  ".addLinkButton("Docker","/Docker"));
             }
             if ( $mode == "host" ) { continue;}
-            if ( ! is_array($app['Networking']['Publish'][0]['Port']) ) { continue; }
+
+            if ( ! @is_array($app['Networking']['Publish'][0]['Port']) ) { continue; }
  
             $allPorts = $app['Networking']['Publish'][0]['Port'];
 
