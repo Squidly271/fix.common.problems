@@ -3,8 +3,17 @@
 
 require_once("/usr/local/emhttp/plugins/fix.common.problems/include/helpers.php");
 require_once("/usr/local/emhttp/plugins/dynamix.docker.manager/include/DockerClient.php");
+require_once("/usr/local/emhttp/plugins/fix.common.problems/include/paths.php");
 
 $excludedShares = getAppData();
+$settings = readJsonFile($fixPaths['settings']);
+    
+if ( $settings['excludedPerms'] ) {
+  $exclude = explode(",",$settings['excludedPerms']);
+  foreach ($exclude as $excluded) {
+    $excludedShares[$excluded] = $excluded;
+  }
+}
 
 $disks = parse_ini_file("/var/local/emhttp/disks.ini", true);
 

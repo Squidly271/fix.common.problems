@@ -2,18 +2,29 @@
 
 require_once("/usr/local/emhttp/plugins/dynamix.docker.manager/include/DockerClient.php");
 require_once("/usr/local/emhttp/plugins/fix.common.problems/include/helpers.php");
+require_once("/usr/local/emhttp/plugins/fix.common.problems/include/paths.php");
 
 
 
 switch ($_POST['action']) {
   case "showExcluded":
     $excludedShares = getAppData();
+    $settings = readJsonFile($fixPaths['settings']);
+    
+    if ( $settings['excludedPerms'] ) {
+      $exclude = explode(",",$settings['excludedPerms']);
+      foreach ($exclude as $excluded) {
+        $excludedShares[$excluded] = $excluded;
+      }
+    }
   
     if ( empty($excludedShares) ) {
-      echo "No shares will be excluded";
-    }
+      echo "<font color='red'>No shares will be excluded</font>";
+    } 
     foreach ($excludedShares as $share) {
-      echo "<b>$share</b><br>";
+      echo "<font color='red'><b>$share</b></font><br>";
     }
+    echo "<br>";
+    break;
 }
  ?>

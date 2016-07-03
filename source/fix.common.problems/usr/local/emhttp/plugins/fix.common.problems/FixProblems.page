@@ -25,6 +25,7 @@ if ( is_dir("/mnt/user") ) {
   $userEnabled = "true";
 }
 ?>
+<script src="/webGui/javascript/jquery.filetree.js"></script>
 <script>
 
 var URL = "/plugins/<?=$plugin?>/include/fixExec.php";
@@ -182,11 +183,19 @@ $(function() {
     $("#userOnly").hide();
   }
   
+  $("#excludedFoldersList").fileTree({
+    root: "/mnt/user",
+    multiSelect: true,
+    filter: "HIDE_FILES_FILTER",
+    folderEvent: "nothing"
+  });
+  
   $("#frequency").val("<?=$settings['frequency']?>");
   $("#notifications").val("<?=$settings['notifications']?>");
   $("#disableSpinUp").val("<?=$settings['disableSpinUp']?>");
   $("#hacksPerDay").val("<?=$settings['hacksPerDay']?>");
   $("#logIgnored").val("<?=$settings['logIgnored']?>");
+  $("#excludedPerms").val("<?=$settings['excludedPerms']?>");
 
   if ( "<?=$troubleshoot?>" ) {
     $("#troubleshoot").prop("disabled",true);
@@ -242,6 +251,24 @@ function acknowledgeUncleanReboot(button)
   $.post(URL,{action:'acknowledgeUncleanReboot'});
   $("#"+button).hide();
 }
+function excludeSelected() {
+				$el = $( "#excludedFoldersList input:checked" );
+
+				if( $el.length === 0 )
+				{
+					checked = "";
+				}
+				else {
+					var checked = $el
+						.map(function() {
+							return $(this).parent().find('a:first').text();
+						})
+						.get()
+						.join(',');
+						}
+    $("#excludedPerms").val(checked);
+    enableApply();
+}
 
 function enableApply() {
   $("#applyButton").prop("disabled",false);
@@ -253,13 +280,18 @@ function apply() {
   var disableSpinUp = $("#disableSpinUp").val();
   var hacksPerDay = $("#hacksPerDay").val();
   var logIgnored = $("#logIgnored").val();
+  var excludedPerms = $("#excludedPerms").val();
   
-  $.post(URL,{action:'apply',logIgnored:logIgnored,frequency:frequency,notifications:notifications,disableSpinUp:disableSpinUp,hacksPerDay:hacksPerDay});
+  $.post(URL,{action:'apply',excludedPerms:excludedPerms,logIgnored:logIgnored,frequency:frequency,notifications:notifications,disableSpinUp:disableSpinUp,hacksPerDay:hacksPerDay});
   $("#applyButton").prop("disabled",true);
 }
 
 </script>
-<div  style='width:40%;align:left;'>
+<style>
+.fileTree{width:305px;max-height:150px;overflow:scroll;position:absolute;z-index:100;display:none;}
+</style>
+<link type="text/css" rel="stylesheet" href="/webGui/styles/jquery.filetree.css">
+<div  style='width:600px;float:left;'>
 <table>
 <tr>
   <td><b>Frequency to run background checks</b></td>
@@ -300,6 +332,10 @@ function apply() {
   </td>
 </tr>
 </table>
+</div><div style='margin-left:540px;'>
+<b>Permission Test/Fix Excluded On: <input type='text' id='excludedPerms'</input><br><font color='purple'>(Docker Appdata Folders and CA backup Destination is automatically excluded)</font><br>
+<center><input type='button' value='Exclude Selected' onclick='excludeSelected();'></center>
+<div id='excludedFoldersList' style='margin-left:240px;width:305px;max-height:150px;overflow:scroll;'></div><br>
 </div>
 
 > <b>Frequency to run background checks</b> - Set to how often you would like this plugin to automatically scan your system for errors and warnings.<br>

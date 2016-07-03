@@ -42,10 +42,9 @@ For read/write files:
 For readonly files:
   -r--r--r--
   </code>  </pre>
-  The following shares will <b>NOT</b> be touched:
+  The following shares will <b>NOT</b> be touched: <font color='purple'>Additional shares can be excluded <a href='/Settings/FixProblems'>HERE</a></font>
   
 <span id='excluded'></span>
-(If you have a specific need to have another folder excluded, then you should either use the standard <b>New Permissions</b> utility or run the appropriate commands manually)
 
 Clicking Start will open another window and start the background process. Closing the window before completion will terminate the background process - so don't do that. This process can take a long time if you have many files.  During this time, the webUI will be unavailable.  If you do close the pop up window, the current folder in progress will be finished before the webUI is responsive again.
 

@@ -126,6 +126,14 @@ file_put_contents($fixPaths['extendedPID'],getmypid());
 
 notify("Fix Common Problems","Extended Tests Beginning","","","normal");
 $excludedDirectory = getAppData();
+$settings = readJsonFile($fixPaths['settings']);
+if ( $settings['excludedPerms'] ) {
+  $exclude = explode(",",$settings['excludedPerms']);
+  foreach ($exclude as $excluded) {
+    $excludedDirectory[$excluded] = $excluded;
+  }
+}
+
 if ( ! empty($excludedDirectory) ) {
   echoResult("<b>The following user shares will be excluded from the permissions tests:</b>\n\n");
   foreach ($excludedDirectory as $share) {
