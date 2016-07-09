@@ -136,7 +136,7 @@ if ( $troubleshooting ) {
   writeToDriveTest();
   flashDriveFull();
   cacheFloorTests();
-  sharePermission();
+#  sharePermission();
   uncleanReboot();
   checkForHack();
   checkForModeration();

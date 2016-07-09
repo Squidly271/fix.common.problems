@@ -1167,9 +1167,7 @@ function pluginNotCompatible() {
   $installedPlugins = array_diff(scandir("/var/log/plugins"),array(".",".."));
   $templates = readJsonFile($fixPaths['templates']);
   $allApps = $templates['applist'];
-  if ( ! is_array($allApps) ) {
-    $allApps = array();
-  }
+  
   foreach ($installedPlugins as $plugin) {
     $pluginURL = exec("/usr/local/emhttp/plugins/dynamix.plugin.manager/scripts/plugin pluginURL /var/log/plugins/$plugin");
 
