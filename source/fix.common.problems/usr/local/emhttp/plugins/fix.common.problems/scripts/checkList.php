@@ -25,7 +25,7 @@ $checkList = "
 * Ability to write a file to the flash drive
 * Ability to write a file to the docker image
 * Similar named shares only differing by case (eg: MyShare and myshare)
-* Default appdata storage location is set to /mnt/cache/....
+* Default appdata storage location is set to /mnt/cache/.... (skipped 6.2-rc3+)
 * Default appdata storage location is a cache only share
 * Look for disabled disks
 * Look for missing disks
@@ -35,7 +35,7 @@ $checkList = "
 * Check if plugins are up to date (and ignore if autoupdate settings are enabled in CA)
 * Check for 32 bit packages in /boot/extra and /boot/packages
 * Check for docker applications updates available
-* Check individual docker application's /config mappings set to /mnt/user (should be /mnt/cache)
+* Check individual docker application's /config mappings set to /mnt/user (should be /mnt/cache) (skipped 6.2-rc3+)
 * Check for /var/log greater than 50% full
 * Check for tmpfs greater than 75 % full
 * Check for docker image file greater than 80% full

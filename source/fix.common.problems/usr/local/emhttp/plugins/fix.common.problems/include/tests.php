@@ -276,7 +276,9 @@ function writeToDriveTest() {
 ###############################################################################
 
 function dockerImageOnDiskShare() {
-  global $fixPaths, $fixSettings, $autoUpdateOverride, $developerMode, $communityApplicationsInstalled, $dockerRunning, $ignoreList, $shareList;
+  global $fixPaths, $fixSettings, $autoUpdateOverride, $developerMode, $communityApplicationsInstalled, $dockerRunning, $ignoreList, $shareList, $unRaidVersion;
+  
+  if ( version_compare($unRaidVersion,"6.2.0-rc3",">=") ) { return; }
   
   if ( is_dir("/mnt/cache") ) {
     $dockerOptions = @parse_ini_file("/boot/config/docker.cfg");
@@ -469,7 +471,10 @@ function dockerUpToDate() {
 ######################################################################
 
 function dockerConfigUserShare() {
-  global $fixPaths, $fixSettings, $autoUpdateOverride, $developerMode, $communityApplicationsInstalled, $dockerRunning, $ignoreList, $shareList;
+  global $fixPaths, $fixSettings, $autoUpdateOverride, $developerMode, $communityApplicationsInstalled, $dockerRunning, $ignoreList, $shareList, $unRaidVersion;
+
+  if ( version_compare($unRaidVersion,"6.2.0-rc3",">=") ) { return; }
+
   
   if ( $dockerRunning ) {
     $DockerClient = new DockerClient();

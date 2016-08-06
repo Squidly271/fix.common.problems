@@ -2,8 +2,8 @@
 <!DOCTYPE PLUGIN [
 <!ENTITY name      "fix.common.problems">
 <!ENTITY author    "Andrew Zawadzki">
-<!ENTITY version   "2016.07.08">
-<!ENTITY md5       "9e1a93f471e26d0ec66f5945b45775ed">
+<!ENTITY version   "2016.08.06">
+<!ENTITY md5       "f538596aaa731463392a6d3085f39460">
 <!ENTITY launch    "Settings/FixProblems">
 <!ENTITY plugdir   "/usr/local/emhttp/plugins/&name;">
 <!ENTITY github    "Squidly271/fix.common.problems">
@@ -13,6 +13,9 @@
 <PLUGIN name="&name;" author="&author;" version="&version;" launch="&launch;" pluginURL="&pluginURL;">
 
 <CHANGES>
+###2016-08-06###
+- Skip appdata tests within /mnt/user on 6.2-rc3+
+
 ###2016-07-08###
 - Relegate permission tests to strictly the extended tests
 - Fix error on plugin checks if appfeed unable to download
