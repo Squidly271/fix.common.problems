@@ -2,8 +2,8 @@
 <!DOCTYPE PLUGIN [
 <!ENTITY name      "fix.common.problems">
 <!ENTITY author    "Andrew Zawadzki">
-<!ENTITY version   "2016.08.06">
-<!ENTITY md5       "f538596aaa731463392a6d3085f39460">
+<!ENTITY version   "2016.08.20">
+<!ENTITY md5       "e3f70b7246cf61cffe6dd359090e46ee">
 <!ENTITY launch    "Settings/FixProblems">
 <!ENTITY plugdir   "/usr/local/emhttp/plugins/&name;">
 <!ENTITY github    "Squidly271/fix.common.problems">
@@ -13,6 +13,9 @@
 <PLUGIN name="&name;" author="&author;" version="&version;" launch="&launch;" pluginURL="&pluginURL;">
 
 <CHANGES>
+###2016-08-20###
+- Suppress error messages if unable to download the application feed
+
 ###2016-08-06###
 - Skip appdata tests within /mnt/user on 6.2-rc3+
 
