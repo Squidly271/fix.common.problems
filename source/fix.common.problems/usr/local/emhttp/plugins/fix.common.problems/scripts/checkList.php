@@ -39,7 +39,6 @@ $checkList = "
 * Check for /var/log greater than 50% full
 * Check for tmpfs greater than 75 % full
 * Check for docker image file greater than 80% full
-* Check for Date and Time to be within 5 minutes of current
 * Check for scheduled parity checks
 * Check for shares with included and excluded disks both set
 * Check for shares with both included and excluded disks having overlaps

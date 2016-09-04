@@ -2,8 +2,8 @@
 <!DOCTYPE PLUGIN [
 <!ENTITY name      "fix.common.problems">
 <!ENTITY author    "Andrew Zawadzki">
-<!ENTITY version   "2016.08.20">
-<!ENTITY md5       "e3f70b7246cf61cffe6dd359090e46ee">
+<!ENTITY version   "2016.09.04">
+<!ENTITY md5       "3c19d2280d885481bfc4fd9c3d4885a0">
 <!ENTITY launch    "Settings/FixProblems">
 <!ENTITY plugdir   "/usr/local/emhttp/plugins/&name;">
 <!ENTITY github    "Squidly271/fix.common.problems">
@@ -13,6 +13,9 @@
 <PLUGIN name="&name;" author="&author;" version="&version;" launch="&launch;" pluginURL="&pluginURL;">
 
 <CHANGES>
+###2016-09-04###
+- Remove date / time check as external source continually has intermittent problems (ie: too many false positives).  Will investigate other solutions in the future
+
 ###2016-08-20###
 - Suppress error messages if unable to download the application feed
 
