@@ -92,7 +92,7 @@ function readdError(error,button) {
   function() {
     $.post(URL,{action:"readdError",error:error});
       swal({
-        title: "Ignored!",
+        title: "Added!",
         text: "On future scans, <font color='red'><b>"+error+"</b></font> will generate either a warning or an error",
         showConfirmButton: true,
         showCancelButton: false,
@@ -203,7 +203,9 @@ $(function() {
   }
   
   if ($('.adsitem').length==0 || $('.adsitem').css('display')=='none') {
-    myAlert("Ad Blocker Detected","Ad blockers under certain circumstances can interfere with the displaying of information from unRaid.  You will need to &quot;white-list&quot; your server with your ad blocker program.","","",false,false,true,"error");   
+/*     myAlert("Ad Blocker Detected","Ad blockers under certain circumstances can interfere with the displaying of information from unRaid.  You will need to &quot;white-list&quot; your server with your ad blocker program.","","",false,false,true,"error");   
+ */
+  alert("Ad blocker detected.  Ad blockers can interfere with the GUI of unRaid, and it is recommended to whitelist your server in the ad-blocker settings");
   } else {
     myCloseAlert();
   }
@@ -231,6 +233,7 @@ function checkExtended() {
 }
 
 function rescan() {
+  $("#extendedStatus").html("Scanning...");
   myAlert("Scanning","Now Scanning your system for common problems.  This may take a minute.","","",false,false,false,"warning");
   $.post(URL,{action:'scan'},function(data) {
     if (data) {

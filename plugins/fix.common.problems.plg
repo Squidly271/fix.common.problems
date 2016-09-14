@@ -2,8 +2,8 @@
 <!DOCTYPE PLUGIN [
 <!ENTITY name      "fix.common.problems">
 <!ENTITY author    "Andrew Zawadzki">
-<!ENTITY version   "2016.09.04">
-<!ENTITY md5       "3c19d2280d885481bfc4fd9c3d4885a0">
+<!ENTITY version   "2016.09.13">
+<!ENTITY md5       "33823dcb2eb4b0476ae7a21c1b81162d">
 <!ENTITY launch    "Settings/FixProblems">
 <!ENTITY plugdir   "/usr/local/emhttp/plugins/&name;">
 <!ENTITY github    "Squidly271/fix.common.problems">
@@ -13,6 +13,11 @@
 <PLUGIN name="&name;" author="&author;" version="&version;" launch="&launch;" pluginURL="&pluginURL;">
 
 <CHANGES>
+###2016-09-13###
+- Old school alert for ad-blocker detection (solves a race condition)
+- Faster downloads of application feed
+- Downgrade powerdown not installed to warning
+
 ###2016-09-04###
 - Remove date / time check as external source continually has intermittent problems (ie: too many false positives).  Will investigate other solutions in the future
 

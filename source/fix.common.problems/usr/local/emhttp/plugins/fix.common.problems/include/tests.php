@@ -198,7 +198,7 @@ function powerdownInstalled() {
   
   if ( ! is_file("/var/log/plugins/powerdown-x86_64.plg") ) {
     $suggestion = $communityApplicationsInstalled ? "Install either through ".addLinkButton("Community Applications","/Apps")." or via" : "";
-    addError("<font color='purple'><b>Powerdown</b></font> plugin not installed","Highly recommended to install this plugin.  Install via $suggestion the instructions <a href='http://lime-technology.com/forum/index.php?topic=31735.0' target='_blank'>HERE</a>");
+    addWarning("<font color='purple'><b>Powerdown</b></font> plugin not installed","Highly recommended to install this plugin.  Install via $suggestion the instructions <a href='http://lime-technology.com/forum/index.php?topic=31735.0' target='_blank'>HERE</a>");
   }
 }
 
@@ -823,7 +823,8 @@ function unknownPluginInstalled() {
           $allPlugins[] = $template;
         }
       }
-       foreach ($pluginList as $plugin) {
+      if ( ! $allPlugins ) { return; }
+      foreach ($pluginList as $plugin) {
         if ( is_file("/boot/config/plugins/$plugin") ) {
           if ( ( $plugin == "fix.common.problems.plg") || ( $plugin == "dynamix.plg" ) || ($plugin == "unRAIDServer.plg") || ($plugin == "community.applications.plg") ) {
             continue;
