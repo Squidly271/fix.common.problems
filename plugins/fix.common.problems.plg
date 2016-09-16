@@ -2,8 +2,8 @@
 <!DOCTYPE PLUGIN [
 <!ENTITY name      "fix.common.problems">
 <!ENTITY author    "Andrew Zawadzki">
-<!ENTITY version   "2016.09.15">
-<!ENTITY md5       "4b574f3e31ff90f474500b3376719552">
+<!ENTITY version   "2016.09.15a">
+<!ENTITY md5       "1e7b24c863351cd65c1421fe01a6d53b">
 <!ENTITY launch    "Settings/FixProblems">
 <!ENTITY plugdir   "/usr/local/emhttp/plugins/&name;">
 <!ENTITY github    "Squidly271/fix.common.problems">
@@ -15,6 +15,7 @@
 <CHANGES>
 ###2016-0-15###
 - Fix docker appdata tests on 6.2
+- Powerdown not installed will not generate a warning on 6.2+
 
 ###2016-09-13###
 - Old school alert for ad-blocker detection (solves a race condition)

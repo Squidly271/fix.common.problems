@@ -194,8 +194,9 @@ function sameShareDifferentCase() {
 ########################################
 
 function powerdownInstalled() {    
-  global $fixPaths, $fixSettings, $autoUpdateOverride, $developerMode, $communityApplicationsInstalled, $dockerRunning, $ignoreList, $shareList;
-  
+  global $fixPaths, $fixSettings, $autoUpdateOverride, $developerMode, $communityApplicationsInstalled, $dockerRunning, $ignoreList, $shareList, $unRaidVersion;
+
+  if ( version_compare($unRaidVersion,"6.1.9",">=") ) { return; }  
   if ( ! is_file("/var/log/plugins/powerdown-x86_64.plg") ) {
     $suggestion = $communityApplicationsInstalled ? "Install either through ".addLinkButton("Community Applications","/Apps")." or via" : "";
     addWarning("<font color='purple'><b>Powerdown</b></font> plugin not installed","Highly recommended to install this plugin.  Install via $suggestion the instructions <a href='http://lime-technology.com/forum/index.php?topic=31735.0' target='_blank'>HERE</a>");
