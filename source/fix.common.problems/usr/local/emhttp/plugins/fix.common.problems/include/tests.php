@@ -278,7 +278,7 @@ function writeToDriveTest() {
 function dockerImageOnDiskShare() {
   global $fixPaths, $fixSettings, $autoUpdateOverride, $developerMode, $communityApplicationsInstalled, $dockerRunning, $ignoreList, $shareList, $unRaidVersion;
   
-  if ( version_compare($unRaidVersion,"6.2.0-rc3",">=") ) { return; }
+  if ( version_compare($unRaidVersion,"6.2.0-rc3",">=") || version_compare($unRaidVersion,"6.2",">=") ) { return; }
   
   if ( is_dir("/mnt/cache") ) {
     $dockerOptions = @parse_ini_file("/boot/config/docker.cfg");
@@ -300,7 +300,7 @@ function dockerAppdataCacheOnly() {
     $sharename = basename($dockerOptions['DOCKER_APP_CONFIG_PATH']);
     if ( is_file("/boot/config/shares/$sharename.cfg") ) {
       $shareSettings = parse_ini_file("/boot/config/shares/$sharename.cfg");
-      if ( $shareSettings['shareUseCache'] != "only" ) {
+      if ( ( $shareSettings['shareUseCache'] != "only" ) && ( $shareSettings['shareUseCache'] != "prefer" ) ) {
         addError("<font color='purple'><b>Default docker appdata</b></font> location is not a cache-only share","If the appdata share is not set to be cache-only, then the mover program will cause your docker applications to become inoperable when it runs.  Alternatively, if the appdata share is not constrained to a single disk, then docker applications may not run correctly.  Fix it via ".addLinkButton("$sharename Settings","/Shares/Share?name=$sharename"));
       }
     }
@@ -473,7 +473,7 @@ function dockerUpToDate() {
 function dockerConfigUserShare() {
   global $fixPaths, $fixSettings, $autoUpdateOverride, $developerMode, $communityApplicationsInstalled, $dockerRunning, $ignoreList, $shareList, $unRaidVersion;
 
-  if ( version_compare($unRaidVersion,"6.2.0-rc3",">=") ) { return; }
+  if ( version_compare($unRaidVersion,"6.2.0-rc3",">=") || version_compare($unRaidVersion,"6.2",">=") ) { return; }
 
   
   if ( $dockerRunning ) {
