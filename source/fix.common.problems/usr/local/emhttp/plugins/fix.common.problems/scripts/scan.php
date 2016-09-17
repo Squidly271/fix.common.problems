@@ -7,6 +7,7 @@
 #                                                             #
 ###############################################################
 
+$_SERVER['DOCUMENT_ROOT'] = "/usr/local/emhttp";
 
 require_once("/usr/local/emhttp/plugins/fix.common.problems/include/paths.php");
 require_once("/usr/local/emhttp/plugins/fix.common.problems/include/helpers.php");

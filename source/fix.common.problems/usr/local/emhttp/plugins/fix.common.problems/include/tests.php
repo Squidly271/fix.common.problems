@@ -154,9 +154,6 @@ function autoUpdateCheck() {
       if ( $autoUpdateSettings['community.applications.plg'] != "true" ) {
         addWarning("<font color='purple'><b>Community Applications</b></font> not set to auto update</font>",addLinkButton("Auto Update Settings","/Settings/AutoUpdate")."Recommended to enable auto updates for this plugin to minimize issues with applications");
       }
-      if ( $autoUpdateSettings['dynamix.plg'] != "true" ) {
-        addWarning("<font color='purple'><b>Dynamix WebUI</b></font> not set to auto update</font>",addLinkButton("Auto Update Settings","/Settings/AutoUpdate")."Recommended to enable auto updates for this plugin to minimize GUI problems");
-      }
       if ( $autoUpdateSettings['fix.common.problems.plg'] != "true" ) {
         if ( $autoUpdateOverride ) {
           $func = "addWarning";
