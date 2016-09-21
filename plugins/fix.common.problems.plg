@@ -2,8 +2,8 @@
 <!DOCTYPE PLUGIN [
 <!ENTITY name      "fix.common.problems">
 <!ENTITY author    "Andrew Zawadzki">
-<!ENTITY version   "2016.09.17">
-<!ENTITY md5       "f9c09ecd63d025a76dadf31cb7a2ab6a">
+<!ENTITY version   "2016.09.21">
+<!ENTITY md5       "41a643c30aa65000fa6662f4de5afe63">
 <!ENTITY launch    "Settings/FixProblems">
 <!ENTITY plugdir   "/usr/local/emhttp/plugins/&name;">
 <!ENTITY github    "Squidly271/fix.common.problems">
@@ -13,7 +13,7 @@
 <PLUGIN name="&name;" author="&author;" version="&version;" launch="&launch;" pluginURL="&pluginURL;">
 
 <CHANGES>
-###2016-0-15###
+###2016-09-15###
 - Fix docker appdata tests on 6.2
 - Powerdown not installed will not generate a warning on 6.2+
 

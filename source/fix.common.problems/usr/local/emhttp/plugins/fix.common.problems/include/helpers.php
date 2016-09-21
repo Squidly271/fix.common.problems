@@ -7,6 +7,7 @@
 
 require_once("/usr/local/emhttp/plugins/dynamix/include/Wrappers.php");
 require_once("/usr/local/emhttp/plugins/fix.common.problems/include/paths.php");
+require_once("/usr/local/emhttp/plugins/dynamix.plugin.manager/include/PluginHelpers.php");
 
 #############################
 #                           #
@@ -111,19 +112,27 @@ function addButton($buttonName,$action) {
 #                                                                         #
 ###########################################################################
 
+
+
 function checkPluginUpdate($filename) {
+  global $unRaidVersion;
+  
   $filename = basename($filename);
-  $installedVersion = pluginVersion("/var/log/plugins/$filename");
+  $installedVersion = plugin("version","/var/log/plugins/$filename");
   if ( is_file("/tmp/plugins/$filename") ) {
-    $upgradeVersion = pluginVersion("/tmp/plugins/$filename");
+    $upgradeVersion = plugin("version","/tmp/plugins/$filename");
   } else {
     $upgradeVersion = "0";
   }
   if ( $installedVersion < $upgradeVersion ) {
-    return true;
-  } else {
-    return false;
+    $unRaid = plugin("unRAID","/tmp/plugins/$filename");
+    if ( $unRaid === false || version_compare($unRaidVersion['version'],$unRaid,">=") ) {
+      return true;
+    } else {
+      return false;
+    }
   }
+  return false;
 }
 
 function pluginVersion($fullPath) {
