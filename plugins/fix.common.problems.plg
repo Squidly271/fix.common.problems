@@ -2,8 +2,8 @@
 <!DOCTYPE PLUGIN [
 <!ENTITY name      "fix.common.problems">
 <!ENTITY author    "Andrew Zawadzki">
-<!ENTITY version   "2016.09.21">
-<!ENTITY md5       "41a643c30aa65000fa6662f4de5afe63">
+<!ENTITY version   "2016.09.23">
+<!ENTITY md5       "6b47482408ccbe14e98dfa8a55d6827d">
 <!ENTITY launch    "Settings/FixProblems">
 <!ENTITY plugdir   "/usr/local/emhttp/plugins/&name;">
 <!ENTITY github    "Squidly271/fix.common.problems">
@@ -13,6 +13,10 @@
 <PLUGIN name="&name;" author="&author;" version="&version;" launch="&launch;" pluginURL="&pluginURL;">
 
 <CHANGES>
+###2016-09-23###
+- Adjust FCP for new CA settings organization
+- Ignore dynamix webUI update warnings on different OS versions
+
 ###2016-09-15###
 - Fix docker appdata tests on 6.2
 - Powerdown not installed will not generate a warning on 6.2+

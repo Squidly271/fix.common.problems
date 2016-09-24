@@ -150,6 +150,10 @@ function autoUpdateCheck() {
   
   if ( $communityApplicationsInstalled ) {
     $autoUpdateSettings = readJsonFile($communityPaths['autoUpdateSettings']);
+    if ( ! $autoUpdateSettings ) {
+      $autoUpdateSettings['community.applications.plg'] = "true";
+      $autoUpdateSettings['fix.common.problems.plg'] = "true";
+    }
     if ( $autoUpdateSettings['Global'] != "true" ) {
       if ( $autoUpdateSettings['community.applications.plg'] != "true" ) {
         addWarning("<font color='purple'><b>Community Applications</b></font> not set to auto update</font>",addLinkButton("Auto Update Settings","/Settings/AutoUpdate")."Recommended to enable auto updates for this plugin to minimize issues with applications");
