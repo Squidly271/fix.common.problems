@@ -150,7 +150,7 @@ function autoUpdateCheck() {
   
   if ( $communityApplicationsInstalled ) {
     $autoUpdateSettings = readJsonFile($communityPaths['autoUpdateSettings']);
-    if ( ! $autoUpdateSettings ) {
+    if ( ! $autoUpdateSettings) {
       $autoUpdateSettings['community.applications.plg'] = "true";
       $autoUpdateSettings['fix.common.problems.plg'] = "true";
     }

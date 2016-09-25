@@ -107,6 +107,7 @@ function scanDirectory($directory) {
         $testPath = str_replacE("/mnt/user/","/mnt/".$disk['name']."/","$directory/$entry");
         if ( is_file($testPath) ) {
           $count = $count + 1;
+          
         }
       }
       if ( $count > 1 ) {
@@ -123,6 +124,7 @@ if ( ! is_dir("/mnt/user") ) {
 }
 
 file_put_contents($fixPaths['extendedPID'],getmypid());
+@unlink($fixPaths['extendedLog']);
 
 notify("Fix Common Problems","Extended Tests Beginning","","","normal");
 $excludedDirectory = getAppData();
