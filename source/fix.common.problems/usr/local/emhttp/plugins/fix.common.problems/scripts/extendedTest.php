@@ -46,15 +46,16 @@ function scanDirectory($directory) {
       echoResult("Processing $directory/$entry\n");
       file_put_contents($fixPaths['extendedStatus'],"Processing $directory/$entry");
     }
-    if ( illegalCharacter($entry) ) {
-      $errors['illegal'][] = "$directory/$entry";
-    }
 
     $testing = str_replace("/mnt/user/","","$directory/$entry");
     $share = explode("/",$testing);
     
 
     if ( ! $excludedDirectory[$share[0]] ) {
+      if ( illegalCharacter($entry) ) {
+        $errors['illegal'][] = "$directory/$entry";
+      }
+
       if ( is_file("$directory/$entry") || is_dir("$directory/$entry") ) {
         $fileOwner = fileowner("$directory/$entry");
         $fileGroup = filegroup("$directory/$entry");
