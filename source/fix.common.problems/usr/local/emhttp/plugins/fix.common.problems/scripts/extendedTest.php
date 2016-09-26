@@ -104,15 +104,16 @@ function scanDirectory($directory) {
     } else {
       $totalFile = $totalFile + 1;
       $count = 0;
+      unset($dupeDisk);
       foreach ($disks as $disk) {
         $testPath = str_replacE("/mnt/user/","/mnt/".$disk['name']."/","$directory/$entry");
         if ( is_file($testPath) ) {
           $count = $count + 1;
-          
+          $dupeDisk .= " ".$disk['name'];
         }
       }
       if ( $count > 1 ) {
-        $errors['dupe'][] = "$directory/$entry";
+        $errors['dupe'][] = "$directory/$entry  $dupeDisk";
       }
     }
   }

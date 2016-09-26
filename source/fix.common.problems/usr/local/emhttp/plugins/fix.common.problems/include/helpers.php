@@ -126,7 +126,7 @@ function checkPluginUpdate($filename) {
   }
   if ( $installedVersion < $upgradeVersion ) {
     $unRaid = plugin("unRAID","/tmp/plugins/$filename");
-    if ( $unRaid === false || version_compare($unRaidVersion['version'],$unRaid,">=") ) {
+    if ( $unRaid === false || version_compare($unRaidVersion,$unRaid,">=") ) {
       return true;
     } else {
       return false;

@@ -2,8 +2,8 @@
 <!DOCTYPE PLUGIN [
 <!ENTITY name      "fix.common.problems">
 <!ENTITY author    "Andrew Zawadzki">
-<!ENTITY version   "2016.09.23">
-<!ENTITY md5       "6b47482408ccbe14e98dfa8a55d6827d">
+<!ENTITY version   "2016.09.25">
+<!ENTITY md5       "9b555e9fb7e4316445603be0148854c6">
 <!ENTITY launch    "Settings/FixProblems">
 <!ENTITY plugdir   "/usr/local/emhttp/plugins/&name;">
 <!ENTITY github    "Squidly271/fix.common.problems">
@@ -13,6 +13,12 @@
 <PLUGIN name="&name;" author="&author;" version="&version;" launch="&launch;" pluginURL="&pluginURL;">
 
 <CHANGES>
+###2016-09-25###
+- Exclude illegal character name tests from appdata/CA backup folders
+- Itemize disks duplicate files found on
+- Delete extended logs at start of tests
+- Update plugin version checks to honour OS version
+
 ###2016-09-23###
 - Adjust FCP for new CA settings organization
 - Ignore dynamix webUI update warnings on different OS versions
