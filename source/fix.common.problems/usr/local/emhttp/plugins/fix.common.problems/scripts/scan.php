@@ -145,6 +145,7 @@ if ( $troubleshooting ) {
   shareNameSameAsDiskName();
   noCPUscaling();
   extraParamInRepository();
+  multipleKey();
 }
 
 if ( $ignored && ( $fixSettings['logIgnored'] != "yes") ) {

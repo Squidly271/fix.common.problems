@@ -303,7 +303,7 @@ function dockerAppdataCacheOnly() {
     if ( is_file("/boot/config/shares/$sharename.cfg") ) {
       $shareSettings = parse_ini_file("/boot/config/shares/$sharename.cfg");
       if ( ( $shareSettings['shareUseCache'] != "only" ) && ( $shareSettings['shareUseCache'] != "prefer" ) ) {
-        addError("<font color='purple'><b>Default docker appdata</b></font> location is not a cache-only share","If the appdata share is not set to be cache-only, then the mover program will cause your docker applications to become inoperable when it runs.  Alternatively, if the appdata share is not constrained to a single disk, then docker applications may not run correctly.  Fix it via ".addLinkButton("$sharename Settings","/Shares/Share?name=$sharename"));
+        addError("<font color='purple'><b>Default docker appdata</b></font> location is not a cache-only share","If the appdata share is not set to be cache-only, then the mover program will cause your docker applications to become inoperable when it runs (6.1.x). Under 6.2, this setting should not affect the operation of the application, but it will definitely impact significantly the performance of the application.  Fix it via ".addLinkButton("$sharename Settings","/Shares/Share?name=$sharename"));
       }
     }
   }
@@ -1305,6 +1305,19 @@ function extraParamInRepository() {
         addWarning("Docker application <font color='purple'><b>".$xmlTemplate['Name']."</b></font> appears to have extra parameters contained within its <b>Repository</b> entry","Adding extra parameters by including them in the repository (eg: --cpuset-cpus) is deprecated, and may impact the ability of dockerMan to correctly manage your application (eg: unable to update, etc).  The proper way to add extra parameters is through the <b>Extra Parameters</b> section when you edit the container (you will have to hit Advanced Settings)  Fix this here: ".addLinkButton("Edit ".$xmlTemplate['Name'],"/Docker/UpdateContainer?xmlTemplate=edit:".$container['template']));
       }
     }
+  }
+}
+
+#####################################################
+# Checks for multiple .key files on the flash drive #
+#####################################################
+
+function multipleKey() {
+  global $fixPaths, $fixSettings, $autoUpdateOverride, $developerMode, $communityApplicationsInstalled, $dockerRunning, $ignoreList, $shareList, $unRaidVersion;
+
+  exec("ls -al /boot/config/*.key",$keyfiles);
+  if (count($keyfiles) > 1) {
+    addWarning("Multiple registration keys found","While unRaid will operate with multiple .key (registration files) within the config folder on the flash drive (ie: For simplicity sake you have multiple valid registrations and are storing them all within the config folder, you will run into problems if you ever need to transfer one of the registrations to another USB stick, as unRaid will not know which registration file to transfer, and the incorrect registration may get blacklisted.  You should investigate and determine which key belongs to which USB stick and only have that particular key on that stick");  
   }
 }
 ?>

@@ -71,6 +71,7 @@ $checkList = "
 * Check for user shares named the same as a disk share
 * Check for CPU Scaling Driver installed
 * Check for extra parameters set via Repository section instead of Extra Parameters Section (docker Apps)
+* Check for multiple registration key files stored on the flash drive
 
 <h2>Troubleshooting Mode</h2>
 
