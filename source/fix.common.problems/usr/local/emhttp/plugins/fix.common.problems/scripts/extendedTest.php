@@ -146,7 +146,7 @@ if ( ! empty($excludedDirectory) ) {
   echoResult("\n");
 }
 
-$disks = parse_ini_file("/var/local/emhttp/disks.ini",true);
+$disks = my_parse_ini_file("/var/local/emhttp/disks.ini",true);
 scanDirectory("/mnt/user");
 
 if ( ! is_array($errors) ) {

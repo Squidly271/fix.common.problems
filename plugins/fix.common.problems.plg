@@ -2,8 +2,8 @@
 <!DOCTYPE PLUGIN [
 <!ENTITY name      "fix.common.problems">
 <!ENTITY author    "Andrew Zawadzki">
-<!ENTITY version   "2016.10.09">
-<!ENTITY md5       "da9009f775f0fbef55e1a0769a64306a">
+<!ENTITY version   "2016.10.27">
+<!ENTITY md5       "27b3d689ecbc3466b81a5d3ae010eb8d">
 <!ENTITY launch    "Settings/FixProblems">
 <!ENTITY plugdir   "/usr/local/emhttp/plugins/&name;">
 <!ENTITY github    "Squidly271/fix.common.problems">
@@ -13,6 +13,9 @@
 <PLUGIN name="&name;" author="&author;" version="&version;" launch="&launch;" pluginURL="&pluginURL;">
 
 <CHANGES>
+###2016-10-27###
+- Fix possible future issue with 6.3 and unRaid including comments within .cfg files
+
 ###2016-10-09###
 - Change some wording around
 - Add in test for multiple registration keys on a flash drive

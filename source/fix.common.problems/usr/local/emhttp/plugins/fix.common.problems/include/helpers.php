@@ -9,6 +9,21 @@ require_once("/usr/local/emhttp/plugins/dynamix/include/Wrappers.php");
 require_once("/usr/local/emhttp/plugins/fix.common.problems/include/paths.php");
 require_once("/usr/local/emhttp/plugins/dynamix.plugin.manager/include/PluginHelpers.php");
 
+
+####################################################################################################
+#                                                                                                  #
+# 2 Functions because unRaid includes comments in .cfg files starting with # in violation of PHP 7 #
+#                                                                                                  #
+####################################################################################################
+
+function my_parse_ini_file($file,$mode=false,$scanner_mode=INI_SCANNER_NORMAL) {
+  return parse_ini_string(preg_replace('/^#.*\\n/m', "", @file_get_contents($file)),$mode,$scanner_mode);
+}
+
+function my_parse_ini_string($string, $mode=false,$scanner_mode=INI_SCANNER_NORMAL) {
+  return parse_ini_string(preg_replace('/^#.*\\n/m', "", $string),$mode,$scanner_mode);
+}
+
 #############################
 #                           #
 # Adds an error to the list #
@@ -181,7 +196,7 @@ function writeJsonFile($filename,$jsonArray) {
 
 function findAppdata($volumes) {
   $path = false;
-  $dockerOptions = @parse_ini_file("/boot/config/docker.cfg");
+  $dockerOptions = @my_parse_ini_file("/boot/config/docker.cfg");
   $defaultShareName = basename($dockerOptions['DOCKER_APP_CONFIG_PATH']);
   $shareName = str_replace("/mnt/user/","",$defaultShareName);
   $shareName = str_replace("/mnt/cache/","",$defaultShareName);
@@ -256,7 +271,7 @@ function download_url($url, $path = "", $bg = false){
 ##########################
 
 function unRaidVersion() {
-  $unRaidVersion = parse_ini_file("/etc/unraid-version");
+  $unRaidVersion = my_parse_ini_file("/etc/unraid-version");
   return $unRaidVersion['version'];
 }
 
@@ -365,7 +380,7 @@ function getAppData() {
       $excludedShares[$pathinfo[0]] = $pathinfo[0];
     }
   }  
-  $dockerOptions = @parse_ini_file("/boot/config/docker.cfg");
+  $dockerOptions = @my_parse_ini_file("/boot/config/docker.cfg");
   $sharename = $dockerOptions['DOCKER_APP_CONFIG_PATH'];
   if ( $sharename ) {
     $sharename = str_replace("/mnt/cache/","",$sharename);

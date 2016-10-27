@@ -35,7 +35,7 @@ function isArrayStarted() {
     $shareList = array_diff(scandir("/mnt/user"),array(".",".."));
   } else {
     $shareList = array();
-    $unRaidVars = parse_ini_file($fixPaths['var.ini']);
+    $unRaidVars = my_parse_ini_file($fixPaths['var.ini']);
     if ( $unRaidVars['mdState'] != "STARTED" ) {
       addError("Array is not started","Most (but not all) tests require the array to be started in order to run.  There may be more errors / warnings than what is listed here");
     }
@@ -71,7 +71,7 @@ function cacheOnlyFilesOnArray() {
   foreach ($shareList as $share) {
     if ( startsWith($share,".") ) { continue; }
     if ( is_file("/boot/config/shares/$share.cfg") ) {
-      $shareCfg = parse_ini_file("/boot/config/shares/$share.cfg");
+      $shareCfg = my_parse_ini_file("/boot/config/shares/$share.cfg");
       if ( $shareCfg['shareUseCache'] == "only" ) {
         if (is_dir("/mnt/user0/$share") ) {
           $contents = array_diff(scandir("/mnt/user0/$share"),array(".",".."));
@@ -95,7 +95,7 @@ function arrayOnlyFilesOnCache() {
   foreach ($shareList as $share) {
     if ( startsWith($share,".") ) { continue; }
     if ( is_file("/boot/config/shares/$share.cfg") ) {
-      $shareCfg = parse_ini_file("/boot/config/shares/$share.cfg");
+      $shareCfg = my_parse_ini_file("/boot/config/shares/$share.cfg");
       if ( $shareCfg['shareUseCache'] == "no" ) {
         if ( is_dir("/mnt/cache/$share") ) {
           $contents = array_diff(scandir("/mnt/cache/$share"),array(".",".."));
@@ -225,7 +225,7 @@ function writeToDriveTest() {
   global $fixPaths, $fixSettings, $autoUpdateOverride, $developerMode, $communityApplicationsInstalled, $dockerRunning, $ignoreList, $shareList;
   
   $availableDrives = array_diff(scandir("/mnt/"),array(".","..","user","user0","disks"));
-  $disksIni = parse_ini_file($fixPaths['disks.ini'],true);
+  $disksIni = my_parse_ini_file($fixPaths['disks.ini'],true);
     
   foreach ($availableDrives as $drive) {
     if ( $fixSettings['disableSpinUp'] == "true" ) {
@@ -283,7 +283,7 @@ function dockerImageOnDiskShare() {
   if ( version_compare($unRaidVersion,"6.2.0-rc3",">=") || version_compare($unRaidVersion,"6.2",">=") ) { return; }
   
   if ( is_dir("/mnt/cache") ) {
-    $dockerOptions = @parse_ini_file("/boot/config/docker.cfg");
+    $dockerOptions = @my_parse_ini_file("/boot/config/docker.cfg");
     if ( startsWith($dockerOptions['DOCKER_APP_CONFIG_PATH'],"/mnt/user/") ) {
       addWarning("<font color='purple'><b>docker appdata location</b></font> is stored within /mnt/user","Many (if not most) docker applications will have issues (weird results, not starting, etc) if their appdata is stored within a user share.  You should constrain the appdata share to a <b>single</b>disk or to the cache drive.  This is true even if the appdata share is a <em>Cache-Only</em> share.  Change the default here: ".addLinkButton("Docker Settings","/Settings/DockerSettings"));
     }
@@ -298,10 +298,10 @@ function dockerAppdataCacheOnly() {
   global $fixPaths, $fixSettings, $autoUpdateOverride, $developerMode, $communityApplicationsInstalled, $dockerRunning, $ignoreList, $shareList;
   
   if ( is_dir("/mnt/cache") ) {
-    $dockerOptions = @parse_ini_file("/boot/config/docker.cfg");
+    $dockerOptions = @my_parse_ini_file("/boot/config/docker.cfg");
     $sharename = basename($dockerOptions['DOCKER_APP_CONFIG_PATH']);
     if ( is_file("/boot/config/shares/$sharename.cfg") ) {
-      $shareSettings = parse_ini_file("/boot/config/shares/$sharename.cfg");
+      $shareSettings = my_parse_ini_file("/boot/config/shares/$sharename.cfg");
       if ( ( $shareSettings['shareUseCache'] != "only" ) && ( $shareSettings['shareUseCache'] != "prefer" ) ) {
         addError("<font color='purple'><b>Default docker appdata</b></font> location is not a cache-only share","If the appdata share is not set to be cache-only, then the mover program will cause your docker applications to become inoperable when it runs (6.1.x). Under 6.2, this setting should not affect the operation of the application, but it will definitely impact significantly the performance of the application.  Fix it via ".addLinkButton("$sharename Settings","/Shares/Share?name=$sharename"));
       }
@@ -316,7 +316,7 @@ function dockerAppdataCacheOnly() {
 function disabledDisksPresent() {
   global $fixPaths, $fixSettings, $autoUpdateOverride, $developerMode, $communityApplicationsInstalled, $dockerRunning, $ignoreList, $shareList;
   
-  $disks = parse_ini_file($fixPaths['disks.ini'],true);
+  $disks = my_parse_ini_file($fixPaths['disks.ini'],true);
 
   foreach ($disks as $disk) {
     if ( startsWith($disk['status'],'DISK_DSBL') ) {
@@ -332,7 +332,7 @@ function disabledDisksPresent() {
 function missingDisksPresent() {
   global $fixPaths, $fixSettings, $autoUpdateOverride, $developerMode, $communityApplicationsInstalled, $dockerRunning, $ignoreList, $shareList;
   
-  $disks = parse_ini_file($fixPaths['disks.ini'],true);
+  $disks = my_parse_ini_file($fixPaths['disks.ini'],true);
   foreach ($disks as $disk) {
     if ( ( $disk['status'] == "DISK_NP") || ( $disk['status'] == "DISK_NP_DSBL" ) ) {
       if ( $disk['id'] ) {
@@ -349,7 +349,7 @@ function missingDisksPresent() {
 function readErrorsPresent() {
   global $fixPaths, $fixSettings, $autoUpdateOverride, $developerMode, $communityApplicationsInstalled, $dockerRunning, $ignoreList, $shareList;
   
-  $disks = parse_ini_file($fixPaths['disks.ini'],true);
+  $disks = my_parse_ini_file($fixPaths['disks.ini'],true);
   foreach ($disks as $disk) {
     if ( $disk['numErrors'] ) {
       addError("<font color='purple'><b>".$disk['name']." (".$disk['id'].")</b></font> has read errors","If the disk has not been disabled, then unRaid has successfully rewritten the contents of the offending sectors back to the hard drive.  It would be a good idea to look at the S.M.A.R.T. Attributes for the drive in questionBegin Investigation Here: ".addLinkButton($disk['name']." Settings","/Main/Device?name=".$disk['name']));
@@ -364,7 +364,7 @@ function readErrorsPresent() {
 function fileSystemErrors() {
   global $fixPaths, $fixSettings, $autoUpdateOverride, $developerMode, $communityApplicationsInstalled, $dockerRunning, $ignoreList, $shareList;
   
-  $disks = parse_ini_file($fixPaths['disks.ini'],true);
+  $disks = my_parse_ini_file($fixPaths['disks.ini'],true);
   foreach ( $disks as $disk ) {
     if ( $disk['fsError'] ) {
       addError("<font color='purple'><b>".$disk['name']." (".$disk['id'].")</b></font> has file system errors (".$disk['fsError'].")","If the disk if XFS / REISERFS, stop the array, restart the Array in Maintenance mode, and run the file system checks.  If the disk is BTRFS, then just run the file system checks".addLinkButton("unRaid Main","/Main")."<b>If the disk is listed as being unmountable, and it has data on it, whatever you do do not hit the format button.  Seek assistance <a href='http://lime-technology.com/forum/index.php?board=71.0' target='_blank'>HERE</a>");
@@ -379,7 +379,7 @@ function fileSystemErrors() {
 function SSDinArray() {
   global $fixPaths, $fixSettings, $autoUpdateOverride, $developerMode, $communityApplicationsInstalled, $dockerRunning, $ignoreList, $shareList;
   
-  $disks = parse_ini_file($fixPaths['disks.ini'],true);
+  $disks = my_parse_ini_file($fixPaths['disks.ini'],true);
   foreach ( $disks as $disk ) {
     if ( $disk['rotational'] == "0" ) {
       if ( startsWith($disk['name'],"disk") ) {
@@ -600,7 +600,7 @@ function scheduledParityChecks() {
   global $fixPaths, $fixSettings, $autoUpdateOverride, $developerMode, $communityApplicationsInstalled, $dockerRunning, $ignoreList, $shareList;
   
   if ( is_file("/boot/config/plugins/dynamix/dynamix.cfg") ) {
-    $dynamixSettings = parse_ini_file("/boot/config/plugins/dynamix/dynamix.cfg",true);
+    $dynamixSettings = my_parse_ini_file("/boot/config/plugins/dynamix/dynamix.cfg",true);
   
     if ( $dynamixSettings['parity']['mode'] == "0" ) {
       addWarning("Scheduled <font color='purple'><b>Parity Checks</b></font> are not enabled","It is highliy recommended to schedule parity checks for your system (most users choose monthly).  This is so that you know if unRaid has the ability to rebuild a failed drive if it needs to.  Set the schedule here: ".addLinkButton("Scheduler","/Settings/Scheduler"));
@@ -617,7 +617,7 @@ function shareIncludeExcludeSet() {
   
   foreach ($shareList as $share) {
     if ( is_file("/boot/config/shares/$share.cfg") ) {
-      $shareCfg = parse_ini_file("/boot/config/shares/$share.cfg");
+      $shareCfg = my_parse_ini_file("/boot/config/shares/$share.cfg");
       if ( $shareCfg['shareInclude'] && $shareCfg['shareExclude'] ) {
         $shareURL = str_replace(" ","+",$share);
         addWarning("Share <font color='purple'><b>$share</b></font> is set for both included (".$shareCfg['shareInclude'].") and excluded (".$shareCfg['shareExclude'].") disks","While if you're careful this isn't a problem, there is absolutely no reason ever to specify BOTH included and excluded disks.  It is far easier and safer to only set either the included list or the excluded list.  Fix it here: ".addLinkButton("$share Settings","/Shares/Share?name=$shareURL"));
@@ -627,7 +627,7 @@ function shareIncludeExcludeSet() {
   # Check for global share settings having both included and exluded disks set
 
   if ( is_file("/boot/config/share.cfg") ) {
-    $shareCfg = parse_ini_file("/boot/config/share.cfg");
+    $shareCfg = my_parse_ini_file("/boot/config/share.cfg");
     if ( $shareCfg['shareUserInclude'] && $shareCfg['shareUserExclude'] ) {
       addWarning("<font color='purple'><b>Global Share Settings</b></font> is set for both included (".$shareCfg['shareUserInclude'].") and excluded (".$shareCfg['shareUserExclude'].") disks","While if you're careful this isn't a problem, there is absolutely no reason ever to specify BOTH included and excluded disks.  It is far easier and safer to only set either the included list or the excluded list.  Fix it here: ".addLinkButton("Global Share Settings","/Settings/ShareSettings"));
     }
@@ -643,7 +643,7 @@ function shareIncludeExcludeSameDisk() {
   
   foreach ($shareList as $share) {
     if ( is_file("/boot/config/shares/$share.cfg") ) {
-      $shareCfg = parse_ini_file("/boot/config/shares/$share.cfg"); 
+      $shareCfg = my_parse_ini_file("/boot/config/shares/$share.cfg"); 
       if ( ! $shareCfg['shareInclude'] ) { continue; }
       if ( ! $shareCfg['shareExclude'] ) { continue; }
       $shareInclude = explode(",",$shareCfg['shareInclude']);
@@ -662,7 +662,7 @@ function shareIncludeExcludeSameDisk() {
 # Check for having duplicated disks within global share included / excluded
 
   if ( is_file("/boot/config/share.cfg") ) {
-    $shareCfg = parse_ini_file("/boot/config/share.cfg");
+    $shareCfg = my_parse_ini_file("/boot/config/share.cfg");
     if ( ( $shareCfg['shareUserExclude'] ) && ( $shareCfg['shareUserInclude'] ) ) {
       $shareInclude = explode(",",$shareCfg['shareUserInclude']);
       $shareExclude = explode(",",$shareCfg['shareUserExclude']);
@@ -712,7 +712,7 @@ function UDmountedSlaveMode() {
 function supportedFileSystemCheck() {
   global $fixPaths, $fixSettings, $autoUpdateOverride, $developerMode, $communityApplicationsInstalled, $dockerRunning, $ignoreList, $shareList;
   
-  $disks = parse_ini_file($fixPaths['disks.ini'],true);
+  $disks = my_parse_ini_file($fixPaths['disks.ini'],true);
   foreach ($disks as $disk) {
     if ( ($disk['fsType'] != "reiserfs") && ($disk['fsType'] != "xfs") && ($disk['fsType'] != "btrfs") && ($disk['size'] != "0") && ($disk['fsType'] != "auto") ) {
       if ( ( startsWith($disk['name'],"cache") ) && ( $disk['name'] != "cache" ) ) {
@@ -761,7 +761,7 @@ function FTPrunning() {
 function checkNotifications() {
   global $fixPaths, $fixSettings, $autoUpdateOverride, $developerMode, $communityApplicationsInstalled, $dockerRunning, $ignoreList, $shareList;
 
-  $dynamixSettings = parse_ini_file("/boot/config/plugins/dynamix/dynamix.cfg",true);
+  $dynamixSettings = my_parse_ini_file("/boot/config/plugins/dynamix/dynamix.cfg",true);
 
   if ( $dynamixSettings['notify']['alert'] == "0" ) {
     addWarning("No destination (browser / email / agents set for <font color='purple'><b>Alert level notifications</b></font>","Without a destination set for alerts, you will not know if any issue requiring your immediate attention happens on your server.  Fix it here:".addLinkButton("Notification Settings","/Settings/Notifications"));
@@ -958,7 +958,7 @@ function illegalShareName() {
 function HPApresent() {
   global $fixPaths, $fixSettings, $autoUpdateOverride, $developerMode, $communityApplicationsInstalled, $dockerRunning, $ignoreList, $shareList;
   
-  $disks = parse_ini_file($fixPaths['disks.ini'],true);
+  $disks = my_parse_ini_file($fixPaths['disks.ini'],true);
 
   foreach ($disks as $disk) {
     if ( ! $disk['device'] ) { continue; }
@@ -1015,7 +1015,7 @@ function flashDriveFull() {
 function cacheFloorTests() {
   global $fixPaths, $fixSettings, $autoUpdateOverride, $developerMode, $communityApplicationsInstalled, $dockerRunning, $ignoreList, $shareList;
   
-  $vars = parse_ini_file($fixPaths['var.ini']);
+  $vars = my_parse_ini_file($fixPaths['var.ini']);
   $suffix = strtolower(preg_replace('/[0-9]+/', '', $vars['shareCacheFloor']));
 
   if ( ( $suffix!= "" ) && ($suffix != "kb") && ($suffix != "mb") && ($suffix != "gb") && ($suffix != "tb") ) {
@@ -1025,7 +1025,7 @@ function cacheFloorTests() {
 # Check for cache drive exceeding its floor space ( and cache floor larger than cache drive )
 
   if ( is_dir("/mnt/cache") ) {
-    $vars = parse_ini_file($fixPaths['var.ini']);
+    $vars = my_parse_ini_file($fixPaths['var.ini']);
     $cacheFloor = $vars['shareCacheFloor'];
 
     $cacheFloorSuffix = strtolower(preg_replace('/[0-9]+/', '', $vars['shareCacheFloor']));
@@ -1245,7 +1245,7 @@ function cacheOnlyNoCache() {
     if ( ! is_file("/boot/config/shares/$share.cfg") ) {
       continue;
     }
-    $shareCfg = parse_ini_file("/boot/config/shares/$share.cfg");
+    $shareCfg = my_parse_ini_file("/boot/config/shares/$share.cfg");
     if ( $shareCfg['shareUseCache'] == "only" ){
       addError("Share <font color='purple'><b>$share</b></font> set to use cache only, but the cache drive is not present","Setting a share to be cache-only, but without a cache drive present can have unpredictable results at best, and in some cases can prevent proper operation of any application attempting to use that share.  Fix it here:".addLinkButton("$share Settings","/Shares/Share?name=$share")."  Alternatively, depending upon your version of unRaid, you may have to manually delete this file: <b>/config/shares/$share.cfg</b> from the flash drive to fix this issue");
     }   
@@ -1259,7 +1259,7 @@ function cacheOnlyNoCache() {
 function shareNameSameAsDiskName() {
   global $fixPaths, $fixSettings, $autoUpdateOverride, $developerMode, $communityApplicationsInstalled, $dockerRunning, $ignoreList, $shareList, $unRaidVersion;
 
-  $disks = parse_ini_file($fixPaths['disks.ini'],true);
+  $disks = my_parse_ini_file($fixPaths['disks.ini'],true);
 
   foreach ($disks as $disk) {
     if ( $disk['name'] == "parity" ) { continue; }
