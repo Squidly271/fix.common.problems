@@ -146,6 +146,7 @@ if ( $troubleshooting ) {
   noCPUscaling();
   extraParamInRepository();
   multipleKey();
+  inotifyToolsNerdPack();
 }
 
 if ( $ignored && ( $fixSettings['logIgnored'] != "yes") ) {

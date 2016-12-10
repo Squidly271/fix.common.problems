@@ -1320,4 +1320,29 @@ function multipleKey() {
     addWarning("Multiple registration keys found","While unRaid will operate with multiple .key (registration files) within the config folder on the flash drive (ie: For simplicity sake you have multiple valid registrations and are storing them all within the config folder, you will run into problems if you ever need to transfer one of the registrations to another USB stick, as unRaid will not know which registration file to transfer, and the incorrect registration may get blacklisted.  You should investigate and determine which key belongs to which USB stick and only have that particular key on that stick");  
   }
 }
+
+#################################################################
+# Checks for NerdPack installing inotifytools on unRaid 6.3RC6+ #
+#################################################################
+function inotifyToolsNerdPack() {
+  global $fixPaths, $fixSettings, $autoUpdateOverride, $developerMode, $communityApplicationsInstalled, $dockerRunning, $ignoreList, $shareList, $unRaidVersion;
+
+  if ( version_compare($unRaidVersion,"6.3.0-rc6", "<") ) {
+    return;
+  }
+  $nerdPackCFG = @parse_ini_file("/boot/config/plugins/NerdPack/NerdPack.cfg");
+  if ( ! $nerdPackCFG ) {
+    return;
+  }
+  $cfgEntries = array_keys($nerdPackCFG);
+  
+  foreach ($cfgEntries as $cfg) {
+    if ( ! startsWith($cfg,"inotify-tools") ) {
+      continue;
+    }
+    if ( $nerdPackCFG[$cfg] == "yes" ) {
+      addWarning("<font color='purple'>inotify-tools</font> set to install","inotify-tools is set to be installed by the NerdPack plugin.  This package is now included in unRaid 6.3RC6+, and NerdPack should be set to not install it.  Fix this here: ".addLinkButton("NerdPack Settings","/Settings/NerdPack"));
+    }
+  }
+}
 ?>
