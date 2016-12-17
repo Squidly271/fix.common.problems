@@ -46,6 +46,12 @@ if ( $argv[1] == "troubleshoot" ) {
       logger("Fix Common Problems: $line");
     }
   }
+  unset($output);
+  exec("sensors -A",$output);
+  logger("Fix Common Problems: Sensors output:");
+  foreach ($output as $line) {
+    logger("Fix Common Problems: ".escapeshellarg($line));
+  }
 
 
   
