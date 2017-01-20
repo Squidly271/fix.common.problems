@@ -389,8 +389,8 @@ function getAppData() {
     $excludedShares[$pathinfo[0]] = $pathinfo[0];
   }
   
-  if ( is_file("/boot/config/plugins/community.applications/BackupOptions.json") ) {
-    $backupOptions = readJsonFile("/boot/config/plugins/community.applications/BackupOptions.json");
+  if ( is_file("/boot/config/plugins/ca.backup/BackupOptions.json") ) {
+    $backupOptions = readJsonFile("/boot/config/plugins/ca.backup/BackupOptions.json");
     $backupDestination = $backupOptions['destinationShare'];
     $backupShare = explode("/",$backupDestination);
     $excludedShares[$backupShare[0]] = $backupShare[0]." (Community Applications Backup Appdata Destination)";
