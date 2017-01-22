@@ -153,6 +153,7 @@ if ( $troubleshooting ) {
   extraParamInRepository();
   multipleKey();
   inotifyToolsNerdPack();
+  outOfMemory();
 }
 
 if ( $ignored && ( $fixSettings['logIgnored'] != "yes") ) {

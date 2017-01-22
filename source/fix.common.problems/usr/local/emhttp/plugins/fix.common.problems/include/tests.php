@@ -1091,6 +1091,22 @@ function uncleanReboot() {
   }
 }
 
+##################################
+# Check for out of memory errors #
+##################################
+
+function outOfMemory() {
+  global $fixPaths, $fixSettings, $autoUpdateOverride, $developerMode, $communityApplicationsInstalled, $dockerRunning, $ignoreList, $shareList;
+
+  $output = exec("cat /var/log/syslog | grep -i 'Out of memory'");
+  if ( is_file($fixPaths['OOMacknowledge']) ) {
+    return;
+  }
+  if ($output) {
+    addError("<font color='purple'><b>Out Of Memory</b></font> errors detected on your server",addButton("Acknowledge Error","acknowledgeOOM(this.id);")."Your server has run out of memory, and processes (potentially required) are being killed off.  You should post your diagnostics and ask for assistance on the unRaid forums");
+  }
+}  
+
 ##########################
 # Check for hack attacks #
 ##########################

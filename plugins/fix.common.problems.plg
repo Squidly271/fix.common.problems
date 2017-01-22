@@ -2,8 +2,8 @@
 <!DOCTYPE PLUGIN [
 <!ENTITY name      "fix.common.problems">
 <!ENTITY author    "Andrew Zawadzki">
-<!ENTITY version   "2017.01.19">
-<!ENTITY md5       "56c7fc6b2e3c7116bd79a749a470a2e0">
+<!ENTITY version   "2017.01.21">
+<!ENTITY md5       "5b6b8b5940fcd28731c71f25d72754b4">
 <!ENTITY launch    "Settings/FixProblems">
 <!ENTITY plugdir   "/usr/local/emhttp/plugins/&name;">
 <!ENTITY github    "Squidly271/fix.common.problems">
@@ -13,6 +13,9 @@
 <PLUGIN name="&name;" author="&author;" version="&version;" launch="&launch;" pluginURL="&pluginURL;">
 
 <CHANGES>
+###2017-01-21###
+- Added: Check for out of memory errors
+
 ###2017-01-19###
 - Fixed: Do not change permissions on CA Appdata Backup Destinations
 

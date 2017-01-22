@@ -65,6 +65,9 @@ function displayErrors() {
 
 
 switch ($_POST['action']) {
+  case 'acknowledgeOOM':
+    file_put_contents($fixPaths['OOMacknowledge'],"OOM Errors Acknowledged");
+    break;
   case 'scan':
     exec("/usr/local/emhttp/plugins/fix.common.problems/scripts/scan.php 1",$output);
     if ($output) {

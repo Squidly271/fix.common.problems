@@ -73,6 +73,7 @@ $checkList = "
 * Check for extra parameters set via Repository section instead of Extra Parameters Section (docker Apps)
 * Check for multiple registration key files stored on the flash drive
 * Check for NerdPack set to install inotify-tools on 6.3.0-rc6+
+* Check for Out Of Memory errors
 
 <h2>Troubleshooting Mode</h2>
 

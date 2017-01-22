@@ -29,5 +29,5 @@ $fixPaths['troubleshoot']               = $fixPaths['tempFiles']."/troubleshoot"
 $fixPaths['extendedStatus']             = $fixPaths['tempFiles']."/extendedStatus";
 $fixPaths['extendedPID']                = $fixPaths['tempFiles']."/extendedPID";
 $fixPaths['extendedLog']                = $fixPaths['tempFiles']."/extendedLog";
-
+$fixPaths['OOMacknowledge']             = $fixPaths['tempFiles']."/OOMFlag";
 ?>

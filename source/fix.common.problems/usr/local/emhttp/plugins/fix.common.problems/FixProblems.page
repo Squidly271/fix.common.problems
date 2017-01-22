@@ -254,6 +254,12 @@ function acknowledgeUncleanReboot(button)
   $.post(URL,{action:'acknowledgeUncleanReboot'});
   $("#"+button).hide();
 }
+
+function acknowledgeOOM(button) {
+  $.post(URL,{action:'acknowledgeOOM'});
+  $("#"+button).hide();
+}
+
 function excludeSelected() {
 				$el = $( "#excludedFoldersList input:checked" );
 
