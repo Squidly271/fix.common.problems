@@ -1,5 +1,5 @@
 Menu="UNRAID-OS"
-Title="New Permissions<br>(Docker Safe)"
+Title="Docker Safe New Perms"
 Icon="keys.png"
 Type="xmenu"
 ---

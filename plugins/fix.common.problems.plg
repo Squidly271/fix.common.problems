@@ -2,8 +2,8 @@
 <!DOCTYPE PLUGIN [
 <!ENTITY name      "fix.common.problems">
 <!ENTITY author    "Andrew Zawadzki">
-<!ENTITY version   "2017.01.21">
-<!ENTITY md5       "5b6b8b5940fcd28731c71f25d72754b4">
+<!ENTITY version   "2017.01.24">
+<!ENTITY md5       "27bd63a9f19e21721412b3c9a3acee3d">
 <!ENTITY launch    "Settings/FixProblems">
 <!ENTITY plugdir   "/usr/local/emhttp/plugins/&name;">
 <!ENTITY github    "Squidly271/fix.common.problems">
@@ -13,6 +13,9 @@
 <PLUGIN name="&name;" author="&author;" version="&version;" launch="&launch;" pluginURL="&pluginURL;">
 
 <CHANGES>
+###2017-01-24###
+- Change New Permissions tool's name for better compatibility
+
 ###2017-01-21###
 - Added: Check for out of memory errors
 
