@@ -74,6 +74,7 @@ $checkList = "
 * Check for multiple registration key files stored on the flash drive
 * Check for NerdPack set to install inotify-tools on 6.3.0-rc6+
 * Check for Out Of Memory errors
+* Check for Call Traces (should handle Kernel Oops, General Protection Faults, and the like)
 
 <h2>Troubleshooting Mode</h2>
 
@@ -86,6 +87,7 @@ $checkList = "
 * logs sysload
 * logs free memory
 * logs ps aux (CPU % > 0)
+* logs the output from sensors
 
 <b>Every 30 Minutes</b>
 

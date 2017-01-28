@@ -260,6 +260,11 @@ function acknowledgeOOM(button) {
   $("#"+button).hide();
 }
 
+function acknowledgeTrace(button) {
+  $.post(URL,{action:'acknowledgeTrace'});
+  $("#"+button).hide();
+}
+
 function excludeSelected() {
 				$el = $( "#excludedFoldersList input:checked" );
 
@@ -300,6 +305,9 @@ function apply() {
 .fileTree{width:305px;max-height:150px;overflow:scroll;position:absolute;z-index:100;display:none;}
 </style>
 <link type="text/css" rel="stylesheet" href="/webGui/styles/jquery.filetree.css">
+
+<br><font color='purple'><b>Note that certain errors due to how they are found will have an "Acknowledge" button.  Clicking the acknowledge button will prevent Fix Common Problems from finding these certain errors until the next reboot<br><br></b></font>
+
 <div  style='width:600px;float:left;'>
 <table>
 <tr>
@@ -360,6 +368,7 @@ function apply() {
 > Extended tests will perform more tests on every file in the array.
 </span>
 <center><b>Time of last scan: <span id='timestamp'></span></center></b>
+
 
 <span id='settings'></span>
 

@@ -154,6 +154,7 @@ if ( $troubleshooting ) {
   multipleKey();
   inotifyToolsNerdPack();
   outOfMemory();
+  callTrace();
 }
 
 if ( $ignored && ( $fixSettings['logIgnored'] != "yes") ) {
