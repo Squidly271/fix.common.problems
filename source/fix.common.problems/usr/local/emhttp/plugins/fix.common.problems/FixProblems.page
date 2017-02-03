@@ -157,7 +157,7 @@ function troubleshoot() {
     $("#troubleshoot").prop("disabled",true);
     swal({
       title: "Troubleshooting Started",
-      text: "When uploading your diagnostics for review on the unRaid forums, remember to include <b>/logs/syslog.txt</b> from the flash drive, as it may contain further information that will not be present in the diagnostic files",
+      text: "When uploading your diagnostics for review on the unRaid forums, remember to include <b>/logs/FCPsyslog_tail.txt</b> from the flash drive, as it may contain further information that will not be present in the diagnostic files",
       html: true,
       showCancelButton: false,
       showConfirmButton: true,
