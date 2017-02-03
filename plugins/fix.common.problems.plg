@@ -2,8 +2,8 @@
 <!DOCTYPE PLUGIN [
 <!ENTITY name      "fix.common.problems">
 <!ENTITY author    "Andrew Zawadzki">
-<!ENTITY version   "2017.02.03">
-<!ENTITY md5       "a3f20591ddcb098e420ac7d7d9d7b349">
+<!ENTITY version   "2017.02.03a">
+<!ENTITY md5       "b5e0801bd22abd5bcd1745a443393776">
 <!ENTITY launch    "Settings/FixProblems">
 <!ENTITY plugdir   "/usr/local/emhttp/plugins/&name;">
 <!ENTITY github    "Squidly271/fix.common.problems">
@@ -13,6 +13,9 @@
 <PLUGIN name="&name;" author="&author;" version="&version;" launch="&launch;" pluginURL="&pluginURL;">
 
 <CHANGES>
+###2017-02-03a###
+- Fix typo detailing where to find troubleshooting logs
+
 ###2017-02-03###
 - Change file name of syslog in troubleshooting mode for better clarity
 
