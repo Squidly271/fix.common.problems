@@ -827,6 +827,7 @@ function unknownPluginInstalled() {
       }
       if ( ! $allPlugins ) { return; }
       foreach ($pluginList as $plugin) {
+        
         if ( is_file("/boot/config/plugins/$plugin") ) {
           if ( ( $plugin == "fix.common.problems.plg") || ( $plugin == "dynamix.plg" ) || ($plugin == "unRAIDServer.plg") || ($plugin == "community.applications.plg") ) {
             continue;
@@ -834,6 +835,9 @@ function unknownPluginInstalled() {
           $pluginURL = exec("/usr/local/emhttp/plugins/dynamix.plugin.manager/scripts/plugin pluginURL /var/log/plugins/$plugin");
           $flag = false;
           foreach ($allPlugins as $checkPlugin) {
+            if ( is_array($checkPlugin['PluginURL']) ) {                  # due to coppit
+              $checkPlugin['PluginURL'] = $checkPlugin['PluginURL'][1];
+            }
             if ( $plugin == basename($checkPlugin['PluginURL']) ) {
               $flag = true;
               break;
