@@ -75,6 +75,7 @@ $checkList = "
 * Check for NerdPack set to install inotify-tools on 6.3.0-rc6+
 * Check for Out Of Memory errors
 * Check for Call Traces (should handle Kernel Oops, General Protection Faults, and the like)
+* Check for MCE errors
 
 <h2>Troubleshooting Mode</h2>
 

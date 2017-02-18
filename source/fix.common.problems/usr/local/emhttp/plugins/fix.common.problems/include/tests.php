@@ -1111,6 +1111,22 @@ function outOfMemory() {
   }
 }  
 
+###############################
+# Check for out of mce errors #
+###############################
+
+function mceCheck() {
+  global $fixPaths, $fixSettings, $autoUpdateOverride, $developerMode, $communityApplicationsInstalled, $dockerRunning, $ignoreList, $shareList;
+
+  $output = exec("cat /var/log/syslog | grep -i 'Machine check events logged'");
+  if ( is_file($fixPaths['MCEacknowledge']) ) {
+    return;
+  }
+  if ($output) {
+    addError("<font color='purple'><b>Machine Check Events</b></font> detected on your server",addButton("Acknowledge Error","acknowledgeMCE(this.id);")."Your server has detected hardware errors.  You should install mcelog via the NerdPack plugin, post your diagnostics and ask for assistance on the unRaid forums");
+  }
+}  
+
 #########################
 # Check for call traces #
 #########################

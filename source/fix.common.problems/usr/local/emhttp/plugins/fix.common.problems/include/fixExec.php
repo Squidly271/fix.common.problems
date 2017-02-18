@@ -13,6 +13,7 @@ function displayErrors() {
   global $fixPaths, $fixSettings, $autoUpdateOverride, $developerMode, $communityApplicationsInstalled, $dockerRunning, $ignoreList, $shareList;
 
   $allErrors = readJsonFile($fixPaths['errors']);
+  $ignoreList = readJsonFile($fixPaths['ignoreList']);
     
   $errors = $allErrors['errors'];
 
@@ -61,6 +62,15 @@ function displayErrors() {
     echo "<center>";
     echo "<input type='button' value='Monitor All Ignored' onclick='readdAll();'>";
   }
+  if ( $ignoreList ) {
+    echo "<table class='tablesorter'>";
+    echo "<thead><th width='85%'>All Ignored Errors & Warnings</th><th></th></thead>";
+    $ignores = array_keys($ignoreList);
+    foreach ($ignores as $ignore) {
+      echo "<tr><td><font color='purple'>$ignore</font></td><td><input type='button' id='".mt_rand()."' value='Monitor Warning / Error' onclick='readdError(&quot;$ignore&quot;,this.id);'</td></tr>";
+    }
+    echo "</table>";
+  }
 }
 
 
@@ -70,6 +80,9 @@ switch ($_POST['action']) {
     break;
   case 'acknowledgeTrace':
     file_put_contents($fixPaths['Traceacknowledge'],"Call Traces Acknowledged");
+    break;
+  case 'acknowledgeMCE':
+    file_put_contents($fixPaths['MCEacknowledge'],"MCE Acknowledged");
     break;
   case 'scan':
     exec("/usr/local/emhttp/plugins/fix.common.problems/scripts/scan.php 1",$output);

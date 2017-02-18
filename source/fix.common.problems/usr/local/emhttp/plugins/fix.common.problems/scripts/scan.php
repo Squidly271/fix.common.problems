@@ -155,6 +155,7 @@ if ( $troubleshooting ) {
   inotifyToolsNerdPack();
   outOfMemory();
   callTrace();
+  mceCheck();
 }
 
 if ( $ignored && ( $fixSettings['logIgnored'] != "yes") ) {

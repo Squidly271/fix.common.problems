@@ -31,4 +31,6 @@ $fixPaths['extendedPID']                = $fixPaths['tempFiles']."/extendedPID";
 $fixPaths['extendedLog']                = $fixPaths['tempFiles']."/extendedLog";
 $fixPaths['OOMacknowledge']             = $fixPaths['tempFiles']."/OOMFlag";
 $fixPaths['Traceacknowledge']           = $fixPaths['tempFiles']."/CallTraceFlag";
+$fixPaths['MCEacknowledge']           = $fixPaths['tempFiles']."/mceFlag";
+
 ?>

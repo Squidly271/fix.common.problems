@@ -265,6 +265,10 @@ function acknowledgeTrace(button) {
   $("#"+button).hide();
 }
 
+function acknowledgeMCE(button) {
+  $.post(URL,{action:'acknowledgeMCE'});
+  $("#"+button).hide();
+}
 function excludeSelected() {
 				$el = $( "#excludedFoldersList input:checked" );
 
@@ -306,8 +310,8 @@ function apply() {
 </style>
 <link type="text/css" rel="stylesheet" href="/webGui/styles/jquery.filetree.css">
 
-<br><font color='purple'><b>Note that certain errors due to how they are found will have an "Acknowledge" button.  Clicking the acknowledge button will prevent Fix Common Problems from finding these certain errors until the next reboot<br><br></b></font>
-
+<br><font color='purple'><b>Note that certain errors due to how they are found will have an "Acknowledge" button.  Clicking the acknowledge button will prevent Fix Common Problems from finding these certain errors until the next reboot<br></b></font>
+<font color='purple'><b>Errors / Warnings Listed are from the last <em>scheduled</em> scan.  Press Rescan to update with the current issues found<br></b></font><br>
 <div  style='width:600px;float:left;'>
 <table>
 <tr>
