@@ -2,8 +2,8 @@
 <!DOCTYPE PLUGIN [
 <!ENTITY name      "fix.common.problems">
 <!ENTITY author    "Andrew Zawadzki">
-<!ENTITY version   "2017.02.25">
-<!ENTITY md5       "cb744258895fa7dcd037dafa39cd22c3">
+<!ENTITY version   "2017.02.25a">
+<!ENTITY md5       "54ee4f4763a500d00c102d11adad321e">
 <!ENTITY launch    "Settings/FixProblems">
 <!ENTITY plugdir   "/usr/local/emhttp/plugins/&name;">
 <!ENTITY github    "Squidly271/fix.common.problems">
@@ -13,6 +13,9 @@
 <PLUGIN name="&name;" author="&author;" version="&version;" launch="&launch;" pluginURL="&pluginURL;">
 
 <CHANGES>
+###2017-02-25a###
+- Added: Check for non-system folders / files within /mnt
+
 ###2017-02-25###
 - Fixed: Don't follow symlinked directories on extended tests
 

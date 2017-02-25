@@ -76,6 +76,7 @@ $checkList = "
 * Check for Out Of Memory errors
 * Check for Call Traces (should handle Kernel Oops, General Protection Faults, and the like)
 * Check for MCE errors
+* Cehck for Files / Folders contained within /mnt (anything other than disk1,disk2, etc or cache or disks
 
 <h2>Troubleshooting Mode</h2>
 

@@ -234,11 +234,31 @@ function writeToDriveTest() {
         continue;
       }
     }
+    if ( is_file("/mnt/$drive") ) {
+      addError("File <font color='purple'>$drive</font> present within /mnt","Generally speaking, most times when files get created within /mnt it is a result of an improperly configured application.  This error may or may not cause issues for you");
+      continue;
+    }
+    $diskpos = strpos($drive,"disk");
+    if ( $diskpos !== false ) {
+      $validTest = str_replace("disk","",$drive);
+      if ( ! is_numeric($validTest) ) {
+        addError("Invalid folder <font color='purple'>$drive</font> contained within /mnt","Generally speaking, most times when other folders get created within /mnt it is a result of an improperly configured application.  This error may or may not cause issues for you");
+        continue;
+      }
+    }
+    $cachepos = strpos($drive,"cache");
+    if ( ($cachepos !== false) && ($drive != "cache") ) {
+      addError("Invalid folder <font color='purple'>$drive</font> contained within /mnt","Generally speaking, most times when other folders get created within /mnt it is a result of an improperly configured application.  This error may or may not cause issues for you");
+      continue;
+    }
+    if ( $diskpos === false && $drive != "cache" ) {
+      addError("Invalid folder <font color='purple'>$drive</font> contained within /mnt","Generally speaking, most times when other folders get created within /mnt it is a result of an improperly configured application.  This error may or may not cause issues for you");
+      continue;
+    }
     $filename = randomFile("/mnt/$drive");
     
     @file_put_contents($filename,"test");
     $result = @file_get_contents($filename);
-      
     if ( $result != "test" ) {
       addError("Unable to write to <font color='purple'>$drive","Drive mounted read-only or completely full.  Begin Investigation Here: ".addLinkButton("unRaid Main","/Main"));
     }
