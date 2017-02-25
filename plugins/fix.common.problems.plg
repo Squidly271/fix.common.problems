@@ -2,8 +2,8 @@
 <!DOCTYPE PLUGIN [
 <!ENTITY name      "fix.common.problems">
 <!ENTITY author    "Andrew Zawadzki">
-<!ENTITY version   "2017.02.18">
-<!ENTITY md5       "3f6cd9e0cd41a0de5dc0a59c1676465e">
+<!ENTITY version   "2017.02.25">
+<!ENTITY md5       "cb744258895fa7dcd037dafa39cd22c3">
 <!ENTITY launch    "Settings/FixProblems">
 <!ENTITY plugdir   "/usr/local/emhttp/plugins/&name;">
 <!ENTITY github    "Squidly271/fix.common.problems">
@@ -13,6 +13,9 @@
 <PLUGIN name="&name;" author="&author;" version="&version;" launch="&launch;" pluginURL="&pluginURL;">
 
 <CHANGES>
+###2017-02-25###
+- Fixed: Don't follow symlinked directories on extended tests
+
 ###2017-02-18###
 - Added: MCE Errors
 - Added: Ability re-add previously ignored (but not currently found) errors

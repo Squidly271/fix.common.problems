@@ -38,6 +38,10 @@ function echoResult($string) {
 function scanDirectory($directory) {
   global $disks, $errors, $excludedDirectory, $fixPaths, $totalDir, $totalFile;
   
+  echo $directory."\n";
+  if ( is_link($directory) ) { return; }
+/*   $symLinkTest = exec("file ".escapeshellarg($directory));
+  if ( strpos($symLinkTest,"symbolic link") ) { return; }; */
 #  if ( $directory == "/mnt/user/appdata" || $directory == "/mnt/user/Backups" ) { return; }
   $folderContents = array_diff(scandir($directory),array(".",".."));
   foreach ($folderContents as $entry) {
@@ -145,6 +149,7 @@ if ( ! empty($excludedDirectory) ) {
   }
   echoResult("\n");
 }
+print_r($excludedDirectory);
 
 $disks = my_parse_ini_file("/var/local/emhttp/disks.ini",true);
 scanDirectory("/mnt/user");
