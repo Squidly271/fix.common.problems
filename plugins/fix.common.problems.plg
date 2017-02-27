@@ -2,8 +2,8 @@
 <!DOCTYPE PLUGIN [
 <!ENTITY name      "fix.common.problems">
 <!ENTITY author    "Andrew Zawadzki">
-<!ENTITY version   "2017.02.25a">
-<!ENTITY md5       "54ee4f4763a500d00c102d11adad321e">
+<!ENTITY version   "2017.02.26">
+<!ENTITY md5       "cc40bbc75884ab14004ea3e94d02c5a6">
 <!ENTITY launch    "Settings/FixProblems">
 <!ENTITY plugdir   "/usr/local/emhttp/plugins/&name;">
 <!ENTITY github    "Squidly271/fix.common.problems">
@@ -13,6 +13,9 @@
 <PLUGIN name="&name;" author="&author;" version="&version;" launch="&launch;" pluginURL="&pluginURL;">
 
 <CHANGES>
+###2017-02-26###
+- Ignore RecycleBin folder within /mnt
+
 ###2017-02-25a###
 - Added: Check for non-system folders / files within /mnt
 

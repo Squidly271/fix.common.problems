@@ -224,7 +224,7 @@ function outsideCommunication() {
 function writeToDriveTest() {    
   global $fixPaths, $fixSettings, $autoUpdateOverride, $developerMode, $communityApplicationsInstalled, $dockerRunning, $ignoreList, $shareList;
   
-  $availableDrives = array_diff(scandir("/mnt/"),array(".","..","user","user0","disks"));
+  $availableDrives = array_diff(scandir("/mnt/"),array(".","..","user","user0","disks","RecycleBin"));
   $disksIni = my_parse_ini_file($fixPaths['disks.ini'],true);
     
   foreach ($availableDrives as $drive) {
