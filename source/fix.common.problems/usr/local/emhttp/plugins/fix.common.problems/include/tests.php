@@ -1143,7 +1143,17 @@ function mceCheck() {
     return;
   }
   if ($output) {
-    addError("<font color='purple'><b>Machine Check Events</b></font> detected on your server",addButton("Acknowledge Error","acknowledgeMCE(this.id);")."Your server has detected hardware errors.  You should install mcelog via the NerdPack plugin, post your diagnostics and ask for assistance on the unRaid forums");
+    addError("<font color='purple'><b>Machine Check Events</b></font> detected on your server",addButton("Acknowledge Error","acknowledgeMCE(this.id);")."Your server has detected hardware errors.  You should install mcelog via the NerdPack plugin, post your diagnostics and ask for assistance on the unRaid forums.  The output of mcelog (if installed) has been logged");
+    if ( is_file("/usr/sbin/mcelog") ) {
+      $filename = randomFile("/tmp");
+      exec("mcelog > $filename 2>&1",$mcelog);
+      $mcelog = explode("\n",file_get_contents($filename));
+      foreach ($mcelog as $line) {
+        logger($line);
+      }
+    } else {
+      logger("mcelog not installed");
+    }
   }
 }  
 
@@ -1417,4 +1427,42 @@ function inotifyToolsNerdPack() {
     }
   }
 }
+
+#######################################
+# Check for exhausted inotify watches #
+#######################################
+function inotifyExhausted() {
+  global $fixPaths, $fixSettings, $autoUpdateOverride, $developerMode, $communityApplicationsInstalled, $dockerRunning, $ignoreList, $shareList, $unRaidVersion;
+
+  if ( ! is_file("/usr/bin/inotifywatch") ) {
+    return;
+  }
+  
+  $filename = randomFile("/tmp");
+  file_put_contents($filename,"doesn't matter");
+  
+  $inotifyResult = passthru("inotifywatch $filename -t 1",$returnValue);
+  if ( $returnValue ) {
+    addWarning("Possibly out of <font color='purple'>inotify</font> watches","Many plugins (dynamix File Integrity, File Activity, Ransomware Protection and others utilize inotify watches to run.  Your system is returning an error when attempting to watch a file.  You may need to increase the maximum number of watches available (usually can be set within the plugin's settings");
+  }
+  @unlink($filename);
+}  
+
+################################
+# Check for IRQ x nobody cared #
+################################
+function nobodyCared() {
+  global $fixPaths, $fixSettings, $autoUpdateOverride, $developerMode, $communityApplicationsInstalled, $dockerRunning, $ignoreList, $shareList, $unRaidVersion;
+
+  $output = exec("cat /var/log/syslog | grep -i -o 'irq .* nobody cared'");
+  if ( $output ) {
+    addWarning("<font color='purple'>$output</font> found on your server","You should post your diagnostics and seek assistance from the forums before deciding to ignore this error.  The interrupts in use have been logged to assist in diagnosis");
+    exec("cat /proc/interrupts",$interrupts);
+    logger("Interrupts listed as being in use:");
+    foreach($interrupts as $line) {
+      logger($line);
+    }
+  }
+}
+    
 ?>

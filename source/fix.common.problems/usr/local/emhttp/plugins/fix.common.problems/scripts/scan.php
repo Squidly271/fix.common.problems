@@ -156,6 +156,8 @@ if ( $troubleshooting ) {
   outOfMemory();
   callTrace();
   mceCheck();
+  inotifyExhausted();
+  nobodyCared();
 }
 
 if ( $ignored && ( $fixSettings['logIgnored'] != "yes") ) {
