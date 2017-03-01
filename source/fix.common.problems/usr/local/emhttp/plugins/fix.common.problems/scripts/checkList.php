@@ -76,7 +76,9 @@ $checkList = "
 * Check for Out Of Memory errors
 * Check for Call Traces (should handle Kernel Oops, General Protection Faults, and the like)
 * Check for MCE errors
-* Cehck for Files / Folders contained within /mnt (anything other than disk1,disk2, etc or cache or disks
+* Check for Files / Folders contained within /mnt (anything other than disk1,disk2, etc or cache or disks
+* Check for exhaustion of inotify watches
+* Check for irq xx: nobody cared messages
 
 <h2>Troubleshooting Mode</h2>
 
