@@ -1441,7 +1441,7 @@ function inotifyExhausted() {
   $filename = randomFile("/tmp");
   file_put_contents($filename,"doesn't matter");
   
-  $inotifyResult = passthru("inotifywatch $filename -t 1",$returnValue);
+  $inotifyResult = passthru("inotifywatch $filename -t 1 > /dev/null 2>&1",$returnValue);
   if ( $returnValue ) {
     addWarning("Possibly out of <font color='purple'>inotify</font> watches","Many plugins (dynamix File Integrity, File Activity, Ransomware Protection and others utilize inotify watches to run.  Your system is returning an error when attempting to watch a file.  You may need to increase the maximum number of watches available (usually can be set within the plugin's settings");
   }
