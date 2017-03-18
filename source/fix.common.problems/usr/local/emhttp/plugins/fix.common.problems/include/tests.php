@@ -182,7 +182,7 @@ function sameShareDifferentCase() {
   foreach ( $shareList as $share ) {
     $dupShareList = array_diff(scandir("/mnt/user/"),array(".","..",$share));
     foreach ($dupShareList as $dup) {
-      if ( strtolower($share) == strtolower($dup) ) {
+      if ( strtolower($share) === strtolower($dup) ) {
         addError("Same share <font color='purple'>($share)</font> exists in a different case","This will confuse SMB shares.  Manual intervention required.  Use the dolphin / krusader docker app to combine the shares into one unified spelling");
         break;
       }

@@ -95,7 +95,7 @@ function scanDirectory($directory) {
       $count = 0;
       foreach ( $folderContents as $testContent) {
         if ( is_dir("$directory/$testContent") ) {
-          if ( (strtolower($testContent) == $origContent) ) {
+          if ( (strtolower($testContent) === $origContent) ) {
             $count = $count + 1;
           }
         }
