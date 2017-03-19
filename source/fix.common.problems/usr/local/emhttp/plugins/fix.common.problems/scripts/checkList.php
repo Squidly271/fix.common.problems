@@ -71,8 +71,7 @@ $checkList = "
 * Check for user shares named the same as a disk share
 * Check for CPU Scaling Driver installed
 * Check for extra parameters set via Repository section instead of Extra Parameters Section (docker Apps)
-* Check for multiple registration key files stored on the flash drive
-* Check for NerdPack set to install inotify-tools on 6.3.0-rc6+
+* Check for multiple registration key files stored on the flash drive (Excludes Trial keys)
 * Check for Out Of Memory errors
 * Check for Call Traces (should handle Kernel Oops, General Protection Faults, and the like)
 * Check for MCE errors

@@ -1397,7 +1397,10 @@ function extraParamInRepository() {
 function multipleKey() {
   global $fixPaths, $fixSettings, $autoUpdateOverride, $developerMode, $communityApplicationsInstalled, $dockerRunning, $ignoreList, $shareList, $unRaidVersion;
 
-  exec("ls -al /boot/config/*.key",$keyfiles);
+  exec("ls --file-type -1 /boot/config/*.key",$keyfiles);
+  if ( ( count($keyfiles) == 2 ) && ( ( $keyfiles[0] == "/boot/config/Trial.key" ) || ( $keyfiles[1] == "/boot/config/Trial.key" ) ) ) {
+    return;
+  }
   if (count($keyfiles) > 1) {
     addWarning("Multiple registration keys found","While unRaid will operate with multiple .key (registration files) within the config folder on the flash drive (ie: For simplicity sake you have multiple valid registrations and are storing them all within the config folder, you will run into problems if you ever need to transfer one of the registrations to another USB stick, as unRaid will not know which registration file to transfer, and the incorrect registration may get blacklisted.  You should investigate and determine which key belongs to which USB stick and only have that particular key on that stick");  
   }

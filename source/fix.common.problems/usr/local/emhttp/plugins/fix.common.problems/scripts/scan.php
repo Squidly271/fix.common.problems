@@ -152,7 +152,7 @@ if ( $troubleshooting ) {
   noCPUscaling();
   extraParamInRepository();
   multipleKey();
-  inotifyToolsNerdPack();
+#  inotifyToolsNerdPack();
   outOfMemory();
   callTrace();
   mceCheck();
