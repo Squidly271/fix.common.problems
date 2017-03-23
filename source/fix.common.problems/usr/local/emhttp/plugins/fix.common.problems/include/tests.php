@@ -454,7 +454,7 @@ function incompatiblePackagesPresent() {
     $files = array_diff(scandir("/boot/extra"),array(".",".."));
     foreach ($files as $file) {
       if ( strpos($file,"i386") || strpos($file,"i486") ) {
-        addError("Probable 32 Big package <font color='purple'><b>$file</b></font> found on the flash drive in the <b>extra</b> folder","32 Bit packages are incompatible with unRaid 6.x and need to be removed - Using your desktop, navigate to the <em>flash</em> share (extra folder) and delete the offending file");
+        addError("Probable 32 Bit package <font color='purple'><b>$file</b></font> found on the flash drive in the <b>extra</b> folder","32 Bit packages are incompatible with unRaid 6.x and need to be removed - Using your desktop, navigate to the <em>flash</em> share (extra folder) and delete the offending file");
       }
     }
   }
@@ -462,7 +462,7 @@ function incompatiblePackagesPresent() {
     $files = array_diff(scandir("/boot/packages"),array(".",".."));
     foreach ($files as $file) {
       if ( strpos($file,"i386") || strpos($file,"i486") ) {
-        addError("Probable 32 Big package <font color='purple'><b>$file</b></font> found on the flash drive in the <b>packages</b> folder","32 Bit packages are incompatible with unRaid 6.x and need to be removed - Using your desktop, navigate to the <em>flash</em> share (packages folder) and delete the offending file");
+        addError("Probable 32 Bit package <font color='purple'><b>$file</b></font> found on the flash drive in the <b>packages</b> folder","32 Bit packages are incompatible with unRaid 6.x and need to be removed - Using your desktop, navigate to the <em>flash</em> share (packages folder) and delete the offending file");
       }
     }
   }
@@ -821,6 +821,9 @@ function blacklistedPluginsInstalled() {
       $pluginURL = exec("/usr/local/emhttp/plugins/dynamix.plugin.manager/scripts/plugin pluginURL /var/log/plugins/$plugin");
       if ( $caModeration[$pluginURL]['Blacklist'] ) {
         addError("Blacklisted plugin <font color='purple'><b>$plugin</b></font>","This plugin has been blacklisted and should no longer be used due to the following reason(s): <font color='purple'><em><b>".$caModeration[$pluginURL]['ModeratorComment']."</b></em></font>  You should remove this plugin as its continued installation may cause adverse effects on your server.".addLinkButton("Plugins","/Plugins"));
+      }
+      if ( $caModeration[$pluginURL]['Deprecated'] ) {
+        addWarning("Deprecated plugin <font color='purple'><b>$plugin</b></font>","This plugin has been deprecate and should no longer be used due to the following reason(s): <font color='purple'><em><b>".$caModeration[$pluginURL]['ModeratorComment']."</b></em></font>  While this plugin should still be functional, it is no recommended to continue to use it.".addLinkButton("Plugins","/Plugins"));
       }
     }
   } else {
@@ -1241,6 +1244,10 @@ function checkForModeration() {
     }
     if ( $comments['Blacklist'] ) {
       addWarning("Docker application <font color='purple'><b>".$dockerApp['Name']."</b></font> has moderator comments listed","<font color='purple'><b>".$dockerApp['Name']."</b></font> (".$dockerApp['Image'].") has the following comments: <font color='purple'>".$comments['ModeratorComment']."</font>  Additionally, this application has been blacklisted from Community Applications for that reason.");
+      continue;
+    }
+    if ( $comments['Deprecated'] ) {
+      addWarning("Docker application <font color='purple'><b>".$dockerApp['Name']."</b></font> has moderator comments listed","<font color='purple'><b>".$dockerApp['Name']."</b></font> (".$dockerApp['Image'].") has the following comments: <font color='purple'>".$comments['ModeratorComment']."</font>  This application has been deprecated from Community Applications for that reason.  While still functional, it is no longer recommended to utilize it.");
     } else {
       addOther("Docker application <font color='purple'><b>".$dockerApp['Name']."</b></font> has moderator comments listed","<font color='purple'><b>".$dockerApp['Name']."</b></font> (".$dockerApp['Image'].") has the following comments: <font color='purple'>".$comments['ModeratorComment']."</font>");
     }

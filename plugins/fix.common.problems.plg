@@ -2,8 +2,8 @@
 <!DOCTYPE PLUGIN [
 <!ENTITY name      "fix.common.problems">
 <!ENTITY author    "Andrew Zawadzki">
-<!ENTITY version   "2017.03.19">
-<!ENTITY md5       "b897e358b0da33a9839a4b7bbfb1078b">
+<!ENTITY version   "2017.03.22">
+<!ENTITY md5       "2612b92779a01d4829b1c75925e059e2">
 <!ENTITY launch    "Settings/FixProblems">
 <!ENTITY plugdir   "/usr/local/emhttp/plugins/&name;">
 <!ENTITY github    "Squidly271/fix.common.problems">
@@ -13,6 +13,10 @@
 <PLUGIN name="&name;" author="&author;" version="&version;" launch="&launch;" pluginURL="&pluginURL;">
 
 <CHANGES>
+###2017-03-22##
+- Fix typos
+- Support CA's new method of blacklisting / deprecating apps
+
 ###2017-03-19###
 - Deprecate inotify install checks on 6.3
 - Don't flag multiple key errors if one of keys is Trial
