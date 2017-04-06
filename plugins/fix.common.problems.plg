@@ -2,8 +2,8 @@
 <!DOCTYPE PLUGIN [
 <!ENTITY name      "fix.common.problems">
 <!ENTITY author    "Andrew Zawadzki">
-<!ENTITY version   "2017.03.22">
-<!ENTITY md5       "2612b92779a01d4829b1c75925e059e2">
+<!ENTITY version   "2017.04.06">
+<!ENTITY md5       "5a6366bf5952d66f2bfb1ee20a913f5c">
 <!ENTITY launch    "Settings/FixProblems">
 <!ENTITY plugdir   "/usr/local/emhttp/plugins/&name;">
 <!ENTITY github    "Squidly271/fix.common.problems">
@@ -13,6 +13,9 @@
 <PLUGIN name="&name;" author="&author;" version="&version;" launch="&launch;" pluginURL="&pluginURL;">
 
 <CHANGES>
+###2017-04-06
+- Fixed Plugins not up to date, but set to autoupdate generating errors
+
 ###2017-03-22##
 - Fix typos
 - Support CA's new method of blacklisting / deprecating apps
