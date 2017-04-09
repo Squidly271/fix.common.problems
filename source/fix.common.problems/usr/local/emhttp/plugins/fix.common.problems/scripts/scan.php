@@ -158,6 +158,7 @@ if ( $troubleshooting ) {
   mceCheck();
   inotifyExhausted();
   nobodyCared();
+  reiserCache();
 }
 
 if ( $ignored && ( $fixSettings['logIgnored'] != "yes") ) {

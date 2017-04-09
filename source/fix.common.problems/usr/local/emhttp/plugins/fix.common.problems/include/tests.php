@@ -1474,5 +1474,15 @@ function nobodyCared() {
     }
   }
 }
-    
+############################################
+# Check for reiserfs formatted cache drive #
+############################################
+function reiserCache() {
+  global $fixPaths, $fixSettings, $autoUpdateOverride, $developerMode, $communityApplicationsInstalled, $dockerRunning, $ignoreList, $shareList, $unRaidVersion;
+
+  $disks = parse_ini_file("/var/local/emhttp/disks.ini",true);
+  if ( ($disks['cache']['fsType'] == "reiserfs") && ( ! $disks['cache']['rotational'] ) ) {
+    addWarning("<font color='purple'>SSD Cache Drive</font> formatted as reiserFS","You have an SSD cache drive which has been formatted as reiserFS.  ReiserFS does not support trim, so you will encounter performance issues.  You should convert the cache drive's format to XFS (or to BTRFS if you are planning a future cache-pool)");
+  }
+}
 ?>

@@ -9,6 +9,8 @@ Title="Fix Common Problems"
 #                                                             #
 ###############################################################
 
+require_once("/usr/local/emhttp/plugins/fix.common.problems/include/caCredits.php");
+
 $plugin = "fix.common.problems";
 
 $settings = json_decode(@file_get_contents("/boot/config/plugins/fix.common.problems/settings.json"),true);
@@ -304,12 +306,16 @@ function apply() {
   $("#applyButton").prop("disabled",true);
 }
 
+function showCredits() {
+  myAlert("Community Applications","<?=$caCredits?>","/plugins/<?=$plugin?>/images/fix.common.problems.png","96x96", true, false, true);
+}
+
 </script>
 <style>
 .fileTree{width:305px;max-height:150px;overflow:scroll;position:absolute;z-index:100;display:none;}
 </style>
 <link type="text/css" rel="stylesheet" href="/webGui/styles/jquery.filetree.css">
-
+<a style='float:right;cursor:pointer' onclick='showCredits();'>Credits</a>
 <br><font color='purple'><b>Note that certain errors due to how they are found will have an "Acknowledge" button.  Clicking the acknowledge button will prevent Fix Common Problems from finding these certain errors until the next reboot<br></b></font>
 <font color='purple'><b>Errors / Warnings Listed are from the last <em>scheduled</em> scan.  Press Rescan to update with the current issues found<br></b></font><br>
 <div  style='width:600px;float:left;'>
