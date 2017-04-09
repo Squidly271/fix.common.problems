@@ -2,8 +2,8 @@
 <!DOCTYPE PLUGIN [
 <!ENTITY name      "fix.common.problems">
 <!ENTITY author    "Andrew Zawadzki">
-<!ENTITY version   "2017.04.06">
-<!ENTITY md5       "5a6366bf5952d66f2bfb1ee20a913f5c">
+<!ENTITY version   "2017.04.09">
+<!ENTITY md5       "c5b7776efd63932ae7e10536948442a7">
 <!ENTITY launch    "Settings/FixProblems">
 <!ENTITY plugdir   "/usr/local/emhttp/plugins/&name;">
 <!ENTITY github    "Squidly271/fix.common.problems">
@@ -13,6 +13,9 @@
 <PLUGIN name="&name;" author="&author;" version="&version;" launch="&launch;" pluginURL="&pluginURL;">
 
 <CHANGES>
+###2017-04-09
+- Added check for SSD cache formatted as reiserFS (does not support trim)
+
 ###2017-04-06
 - Fixed Plugins not up to date, but set to autoupdate generating errors
 
