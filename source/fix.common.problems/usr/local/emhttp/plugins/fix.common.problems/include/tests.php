@@ -1485,4 +1485,16 @@ function reiserCache() {
     addWarning("<font color='purple'>SSD Cache Drive</font> formatted as reiserFS","You have an SSD cache drive which has been formatted as reiserFS.  ReiserFS does not support trim, so you will encounter performance issues.  You should convert the cache drive's format to XFS (or to BTRFS if you are planning a future cache-pool)");
   }
 }
+################################################
+# Check for SSD Cache, but not SSD trim plugin #
+################################################
+function SSDcacheNoTrim() {
+  global $fixPaths, $fixSettings, $autoUpdateOverride, $developerMode, $communityApplicationsInstalled, $dockerRunning, $ignoreList, $shareList, $unRaidVersion;
+
+  $disks = parse_ini_file("/var/local/emhttp/disks.ini",true);
+  if ( (! $disks['cache']['rotational']) && (! is_file("/var/log/plugins/dynamix.ssd.trim.plg")) ) {
+    addWarning("<font color='purple'>Dynamix SSD Trim Plugin</font> Not installed","Your cache drive is an SSD Drive, but you do not have the Dynamix SSD Trim plugin installed.  Your performance will suffer.  Install the plugin via the Apps Tab (Community Applications)");
+  }
+}    
+
 ?>

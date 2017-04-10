@@ -159,6 +159,7 @@ if ( $troubleshooting ) {
   inotifyExhausted();
   nobodyCared();
   reiserCache();
+  SSDcacheNoTrim();
 }
 
 if ( $ignored && ( $fixSettings['logIgnored'] != "yes") ) {

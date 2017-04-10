@@ -79,6 +79,7 @@ $checkList = "
 * Check for exhaustion of inotify watches
 * Check for irq xx: nobody cared messages
 * Check for SSD cache drive formatted as reiserFS (format does not support trim)
+* Check for SSD cache drive, but Dynamix SSD Trim not installed
 
 <h2>Troubleshooting Mode</h2>
 

@@ -6,7 +6,7 @@
 ###############################################################
 
 function getLineCount($directory) {
-  global $lineCount;
+  global $lineCount, $charCount;
 
   $allFiles = array_diff(scandir($directory),array(".",".."));
   foreach ($allFiles as $file) {
@@ -17,6 +17,7 @@ function getLineCount($directory) {
     $extension = pathinfo("$directory/$file",PATHINFO_EXTENSION);
     if ( $extension == "sh" || $extension == "php" || $extension == "page" ) {
       $lineCount = $lineCount + count(file("$directory/$file"));
+      $charCount = $charCount + filesize("$directory/$file");
     }
   }
 }
@@ -35,6 +36,6 @@ $caCredits = "
     <br><center><a href='https://forums.lime-technology.com/topic/47266-plugin-ca-fix-common-problems/' target='_blank'>Plugin Support Thread</a></center>
   ";
   getLineCount("/usr/local/emhttp/plugins/fix.common.problems");
-  $caCredits .= "<center>$lineCount Lines of code and counting!</center>";
+  $caCredits .= "<center>$lineCount Lines of code and counting! ($charCount characters)</center>";
   $caCredits = str_replace("\n","",$caCredits);
 ?>
