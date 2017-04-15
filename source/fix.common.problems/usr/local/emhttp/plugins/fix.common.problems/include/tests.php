@@ -1492,6 +1492,7 @@ function SSDcacheNoTrim() {
   global $fixPaths, $fixSettings, $autoUpdateOverride, $developerMode, $communityApplicationsInstalled, $dockerRunning, $ignoreList, $shareList, $unRaidVersion;
 
   $disks = parse_ini_file("/var/local/emhttp/disks.ini",true);
+  if ( ! is_array($disks['cache']) ) { return; }
   if ( (! $disks['cache']['rotational']) && (! is_file("/var/log/plugins/dynamix.ssd.trim.plg")) && ( $disks['cache']['status'] != "DISK_NP") ) {
     addWarning("<font color='purple'>Dynamix SSD Trim Plugin</font> Not installed","Your cache drive is an SSD Drive, but you do not have the Dynamix SSD Trim plugin installed.  Your performance will suffer.  Install the plugin via the Apps Tab (Community Applications)");
   }
