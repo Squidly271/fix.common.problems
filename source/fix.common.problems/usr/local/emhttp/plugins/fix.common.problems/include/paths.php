@@ -7,6 +7,8 @@
 ###############################################################
 
 $communityPaths['autoUpdateSettings']   = "/boot/config/plugins/ca.update.applications/AutoUpdateSettings.json";
+$communityPaths['dockerUpdateSettings'] = "/boot/config/plugins/ca.update.applications/DockerUpdateSettings.json";
+
 $fixPaths['dockerUpdateStatus']         = "/var/lib/docker/unraid-update-status.json";
 $fixPaths['tempFiles']                  = "/tmp/fix.common.problems";
 $fixPaths['flashPath']                  = "/boot/config/plugins/fix.common.problems";

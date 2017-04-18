@@ -114,7 +114,9 @@ function arrayOnlyFilesOnCache() {
 ##############################################
 
 function pluginUpdateCheck() {    
-  global $fixPaths, $fixSettings, $autoUpdateOverride, $developerMode, $communityApplicationsInstalled, $dockerRunning, $ignoreList, $shareList;
+  global $fixPaths, $communityPaths, $fixSettings, $autoUpdateOverride, $developerMode, $communityApplicationsInstalled, $dockerRunning, $ignoreList, $shareList;
+  
+  if ( is_file("/boot/config/plugins/ca.update.applications/plugin_update.cron") ) { return; }
   
   if ( ! is_file("/boot/config/plugins/dynamix/plugin-check.cron") ) {
     if ( $autoUpdateOverride ) {
@@ -131,7 +133,9 @@ function pluginUpdateCheck() {
 #####################################################
 
 function dockerUpdateCheck() {
-  global $fixPaths, $fixSettings, $autoUpdateOverride, $developerMode, $communityApplicationsInstalled, $dockerRunning, $ignoreList, $shareList;
+  global $fixPaths, $communityPaths, $fixSettings, $autoUpdateOverride, $developerMode, $communityApplicationsInstalled, $dockerRunning, $ignoreList, $shareList;
+
+  if ( is_file("/boot/config/plugins/ca.update.applications/docker_update.cron") ) { return; }
   
   if ( $dockerRunning ) {
     if ( ! is_file("/boot/config/plugins/dynamix/docker-update.cron") ) {
