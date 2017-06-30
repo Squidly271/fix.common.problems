@@ -160,6 +160,7 @@ if ( $troubleshooting ) {
   nobodyCared();
   reiserCache();
   SSDcacheNoTrim();
+  templateURLMissing();
 }
 
 if ( $ignored && ( $fixSettings['logIgnored'] != "yes") ) {

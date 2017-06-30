@@ -1502,4 +1502,52 @@ function SSDcacheNoTrim() {
   }
 }    
 
+##################################
+# Check for missing template URL #
+##################################
+function templateURLMissing() {
+  global $fixPaths, $fixSettings, $autoUpdateOverride, $developerMode, $communityApplicationsInstalled, $dockerRunning, $ignoreList, $shareList, $unRaidVersion;
+
+  function xml_decode($string) {
+    return strval(html_entity_decode($string, ENT_XML1, 'UTF-8'));
+  }
+
+  if ( $dockerRunning ) {
+    $templates = readJsonFile($fixPaths['templates']);
+    $dockerClient = new DockerClient();
+    $dockerTemplates = new DockerTemplates();
+    $info = $dockerClient->getDockerContainers();
+    $myTemplates = $dockerTemplates->getAllInfo();
+
+    if ( is_array($templates['applist']) ) {
+      $allApps = $templates['applist'];
+
+      foreach ($info as $dockerInstalled) {
+        $dockerImage = $dockerInstalled['Image'];
+        foreach ($allApps as $app) {
+          if (empty($app['TemplateURL'])) { continue; }
+          if ( ($app['Repository'] === str_replace(":latest","",$dockerImage) ) || ($app['Repository'] === $dockerImage) ) {
+            $name = $dockerInstalled['Name'];
+            $xmlfile = $myTemplates[$name]['template'];
+            $template = simplexml_load_file($xmlfile);
+            $template_url = xml_decode($template->TemplateURL);
+            $warning = null;
+            if (empty($template_url)) {
+              $warning = "Template URL for docker application <font color='purple'><b>".$dockerInstalled['Name']."</b></font> is missing.";
+            }
+            else if ($template_url !== $app['TemplateURL']) {
+              $warning = "Template URL for docker application <font color='purple'><b>".$dockerInstalled['Name']."</b></font> is not the as what the template author specified.";
+            }
+            if (!empty($warning)) {
+              addWarning($warning,  "The template URL the author specified is <font color='purple'>".$app['TemplateURL']."</font>. The template can be updated automatically with the correct URL. <input type='button' id='apply_fix' value='Apply Fix' onclick='openBox(\"/plugins/fix.common.problems/scripts/applyFix.php?cmd=templateURL&template=".$xmlfile."&url=".$app['TemplateURL']."\",\"Docker Application Template URL Fix\",490,430);'>");
+            }
+          }
+        }
+      }
+    } else {
+      addOther("Could not perform <font color='purple'><b>docker application port</b></font> tests","The download of the application feed failed.");
+    }
+  }
+}
+
 ?>
