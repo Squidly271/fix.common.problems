@@ -2,8 +2,8 @@
 <!DOCTYPE PLUGIN [
 <!ENTITY name      "fix.common.problems">
 <!ENTITY author    "Andrew Zawadzki">
-<!ENTITY version   "2017.04.17">
-<!ENTITY md5       "aededa66a19fdc83779772e2c7210b7f">
+<!ENTITY version   "2017.06.30">
+<!ENTITY md5       "38d58449c30ebd7b13bcd38a12757b35">
 <!ENTITY launch    "Settings/FixProblems">
 <!ENTITY plugdir   "/usr/local/emhttp/plugins/&name;">
 <!ENTITY github    "Squidly271/fix.common.problems">
@@ -13,6 +13,9 @@
 <PLUGIN name="&name;" author="&author;" version="&version;" launch="&launch;" pluginURL="&pluginURL;">
 
 <CHANGES>
+###2017-06-30
+- Added check for missing/different TemplateURL field in docker application's template
+
 ###2017-04-17
 - Fixed: Ignore Dynamix check for plugin / docker updates if CA Auto Update is set to check for updates
 
