@@ -2,7 +2,7 @@
 <!DOCTYPE PLUGIN [
 <!ENTITY name      "fix.common.problems">
 <!ENTITY author    "Andrew Zawadzki">
-<!ENTITY version   "2017.06.30">
+<!ENTITY version   "2017.07.03">
 <!ENTITY md5       "38d58449c30ebd7b13bcd38a12757b35">
 <!ENTITY launch    "Settings/FixProblems">
 <!ENTITY plugdir   "/usr/local/emhttp/plugins/&name;">
@@ -13,6 +13,9 @@
 <PLUGIN name="&name;" author="&author;" version="&version;" launch="&launch;" pluginURL="&pluginURL;">
 
 <CHANGES>
+###2017.07-30
+- Fix Permissions on executables
+
 ###2017-06-30
 - Added check for missing/different TemplateURL field in docker application's template
 
