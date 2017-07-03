@@ -13,7 +13,7 @@
 <PLUGIN name="&name;" author="&author;" version="&version;" launch="&launch;" pluginURL="&pluginURL;">
 
 <CHANGES>
-###2017.07-30
+###2017.07-03
 - Fix Permissions on executables
 
 ###2017-06-30
