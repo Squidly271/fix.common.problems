@@ -22,41 +22,41 @@ exec("mkdir -p ".$fixPaths['tempFiles']);
 
 logger("Fix Common Problems Version ".exec("/usr/local/emhttp/plugins/dynamix.plugin.manager/scripts/plugin version /var/log/plugins/fix.common.problems.plg"));
 if ( $argv[1] == "troubleshoot" ) {
-  $troubleshooting = true;
-  logger("Fix Common Problems: Troubleshooting scan running");
-  $uptime = exec("uptime");
-  logger("Fix Common Problems: Uptime: $uptime");
-  unset($output);
-  exec("free",$output);
-  foreach ($output as $line) {
-    logger("Fix Common Problems: $line");
-  }
+	$troubleshooting = true;
+	logger("Fix Common Problems: Troubleshooting scan running");
+	$uptime = exec("uptime");
+	logger("Fix Common Problems: Uptime: $uptime");
+	unset($output);
+	exec("free",$output);
+	foreach ($output as $line) {
+		logger("Fix Common Problems: $line");
+	}
 
-  logger("Fix Common Problems: ps aux output (only CPU % > 0)");  
-  unset($output);
-  exec("ps aux",$output);
-  logger("Fix Common Problems: ".$output[0]);
-  unset($output[0]);
+	logger("Fix Common Problems: ps aux output (only CPU % > 0)");
+	unset($output);
+	exec("ps aux",$output);
+	logger("Fix Common Problems: ".$output[0]);
+	unset($output[0]);
 
-  foreach ($output as $line) {
-    $statusLine = preg_replace('!\s+!', ' ', $line);
-    $test = explode(" ",$statusLine);
+	foreach ($output as $line) {
+		$statusLine = preg_replace('!\s+!', ' ', $line);
+		$test = explode(" ",$statusLine);
 
-    if ( $test[2] > 0 ) {
-      logger("Fix Common Problems: $line");
-    }
-  }
-  unset($output);
-  exec("sensors -A",$output);
-  logger("Fix Common Problems: Sensors output:");
-  foreach ($output as $line) {
-    logger("Fix Common Problems: ".escapeshellarg($line));
-  }
+		if ( $test[2] > 0 ) {
+			logger("Fix Common Problems: $line");
+		}
+	}
+	unset($output);
+	exec("sensors -A",$output);
+	logger("Fix Common Problems: Sensors output:");
+	foreach ($output as $line) {
+		logger("Fix Common Problems: ".escapeshellarg($line));
+	}
 
 
-  
+
 } else {
-  $disableNotifications = $argv[1];
+	$disableNotifications = $argv[1];
 }
 
 $autoUpdateOverride              = is_file("/boot/config/plugins/fix.common.problems/autoupdate-warning");
@@ -77,19 +77,19 @@ if ( ! $fixSettings['logIgnored']) { $fixSettings['logIgnored'] = "yes"; }
 # download updated appfeed if necessary
 
 if ( is_file($fixPaths['templates']) ) {
-  $templates = readJsonFile($fixPaths['templates']);
-  $updatedTime = $templates['last_updated_timestamp'];
-  $tempFile = randomFile("/tmp/fix.common.problems");
-  download_url($fixPaths['application-feed-last-updated'],$tempFile);
-  $newList = readJsonFile($tempFile);
-  @unlink($tempFile);
-  if ( $newList['last_updated_timestamp'] != $templates['last_updated_timestamp'] ) {
-    download_url($fixPaths['application-feed'],$fixPaths['templates']);
-    $templates = readJsonFile($fixPaths['templates']);
-  }
+	$templates = readJsonFile($fixPaths['templates']);
+	$updatedTime = $templates['last_updated_timestamp'];
+	$tempFile = randomFile("/tmp/fix.common.problems");
+	download_url($fixPaths['application-feed-last-updated'],$tempFile);
+	$newList = readJsonFile($tempFile);
+	@unlink($tempFile);
+	if ( $newList['last_updated_timestamp'] != $templates['last_updated_timestamp'] ) {
+		download_url($fixPaths['application-feed'],$fixPaths['templates']);
+		$templates = readJsonFile($fixPaths['templates']);
+	}
 } else {
-  download_url($fixPaths['application-feed'],$fixPaths['templates']);
-  $templates = readJsonFile($fixPaths['templates']);
+	download_url($fixPaths['application-feed'],$fixPaths['templates']);
+	$templates = readJsonFile($fixPaths['templates']);
 }
 
 download_url($fixPaths['moderationURL'],$fixPaths['moderation']);
@@ -98,73 +98,74 @@ download_url($fixPaths['moderationURL'],$fixPaths['moderation']);
 # start main
 
 if ( $troubleshooting ) {
-  varLogFilled();
-  rootfsFull();
+	varLogFilled();
+	rootfsFull();
 } else {
-  HPApresent();
-  isArrayStarted();
-  impliedArrayFilesOnCache();
-  cacheOnlyFilesOnArray();
-  arrayOnlyFilesOnCache();
-  pluginUpdateCheck();
-  dockerUpdateCheck();
-  autoUpdateCheck();
-  sameShareDifferentCase();
-  powerdownInstalled();
-  outsideCommunication();   
-  dockerImageOnDiskShare();
-  dockerAppdataCacheOnly();
-  disabledDisksPresent();
-  missingDisksPresent();
-  readErrorsPresent();      
-  fileSystemErrors();
-  SSDinArray();
-  pluginsUpToDate();
-  incompatiblePackagesPresent();
-  dockerUpToDate();
-  dockerConfigUserShare();
-  varLogFilled();
-  dockerImageFull();
-  rootfsFull();
+	HPApresent();
+	isArrayStarted();
+	impliedArrayFilesOnCache();
+	cacheOnlyFilesOnArray();
+	arrayOnlyFilesOnCache();
+	pluginUpdateCheck();
+	dockerUpdateCheck();
+	autoUpdateCheck();
+	sameShareDifferentCase();
+	powerdownInstalled();
+	outsideCommunication();
+	dockerImageOnDiskShare();
+	dockerAppdataCacheOnly();
+	disabledDisksPresent();
+	missingDisksPresent();
+	readErrorsPresent();
+	fileSystemErrors();
+	SSDinArray();
+	pluginsUpToDate();
+	incompatiblePackagesPresent();
+	dockerUpToDate();
+	dockerConfigUserShare();
+	varLogFilled();
+	dockerImageFull();
+	rootfsFull();
 #  dateTimeOK();
-  scheduledParityChecks();
-  shareIncludeExcludeSet();
-  shareIncludeExcludeSameDisk();
-  UDmountedSlaveMode();
-  supportedFileSystemCheck();
-  FTPrunning();
-  checkNotifications();
-  blacklistedPluginsInstalled();
-  unknownPluginInstalled();
-  dockerAppsChangedPorts();
-  illegalShareName();
-  writeToDriveTest();
-  flashDriveFull();
-  cacheFloorTests();
+	scheduledParityChecks();
+	shareIncludeExcludeSet();
+	shareIncludeExcludeSameDisk();
+	UDmountedSlaveMode();
+	supportedFileSystemCheck();
+	FTPrunning();
+	checkNotifications();
+	blacklistedPluginsInstalled();
+	unknownPluginInstalled();
+	dockerAppsChangedPorts();
+	illegalShareName();
+	writeToDriveTest();
+	flashDriveFull();
+	cacheFloorTests();
 #  sharePermission();
-  uncleanReboot();
-  checkForHack();
-  checkForModeration();
-  pluginNotCompatible();
-  checkWebUI();
-  cacheOnlyNoCache();
-  shareNameSameAsDiskName();
-  noCPUscaling();
-  extraParamInRepository();
-  multipleKey();
+	uncleanReboot();
+	checkForHack();
+	checkForModeration();
+	pluginNotCompatible();
+	checkWebUI();
+	cacheOnlyNoCache();
+	shareNameSameAsDiskName();
+	noCPUscaling();
+	extraParamInRepository();
+	multipleKey();
 #  inotifyToolsNerdPack();
-  outOfMemory();
-  callTrace();
-  mceCheck();
-  inotifyExhausted();
-  nobodyCared();
-  reiserCache();
-  SSDcacheNoTrim();
-  templateURLMissing();
+	outOfMemory();
+	callTrace();
+	mceCheck();
+	inotifyExhausted();
+	nobodyCared();
+	reiserCache();
+	SSDcacheNoTrim();
+	templateURLMissing();
+	marvelControllerTest();
 }
 
 if ( $ignored && ( $fixSettings['logIgnored'] != "yes") ) {
-  logger("Fix Common Problems: Ignored errors / warnings / other comments found, but not logged per user settings");
+	logger("Fix Common Problems: Ignored errors / warnings / other comments found, but not logged per user settings");
 }
 ###################################################################
 #                                                                 #
@@ -175,46 +176,46 @@ if ( $ignored && ( $fixSettings['logIgnored'] != "yes") ) {
 $allScripts = array_diff(scandir("/boot/config/plugins/fix.common.problems/scripts"),array(".",".."));
 
 foreach ($allScripts as $script) {
-  if ( $script == "sample.php" ) { 
-    continue;
-  }
-  if ( is_executable("/boot/config/plugins/fix.common.problems/scripts/$script") ) {
-    exec("/boot/config/plugins/fix.common.problems/scripts/$script");
-  }
+	if ( $script == "sample.php" ) {
+		continue;
+	}
+	if ( is_executable("/boot/config/plugins/fix.common.problems/scripts/$script") ) {
+		exec("/boot/config/plugins/fix.common.problems/scripts/$script");
+	}
 }
 
 
 if ( ! $errors && ! $warnings && ! $otherWarnings && ! $ignored ) {
-  @unlink($fixPaths['errors']);
+	@unlink($fixPaths['errors']);
 } else {
-  $allErrors['errors'] = $errors;
-  $allErrors['warnings'] = $warnings;
-  $allErrors['other'] = $otherWarnings;
-  $allErrors['ignored'] = $ignored;
-  
-  writeJsonFile($fixPaths['errors'],$allErrors);
-  if ( $errors ) {
-    foreach ($errors as $error) {
-      $message .= "**** ".strip_tags($error['error'])." ****   ";
-    }
-  }
-  if ( $warnings ) {
-    foreach ($warnings as $warning) {
-      $message .= "**** ".strip_tags($warning['error'])." ****   ";
-    }
-  }
-  if ( ! $disableNotifications ) {
-    if ( $errors ) {
-      if ( $fixSettings['notifications'] != "disabled" ) {
-        notify("Fix Common Problems","Errors have been found with your server.","Investigate at Settings / User Utilities / Fix Common Problems",$message,"alert");
-      }
-    } else {
-      if ( $warnings ) {
-        if ($fixSettings['notifications'] != "errors" ) {
-          notify("Fix Common Problems","Warnings have been found with your server.","Investigate at Settings / User Utilities / Fix Common Problems",$message,"warning");
-        } 
-      }
-    }
-  }
-}    
+	$allErrors['errors'] = $errors;
+	$allErrors['warnings'] = $warnings;
+	$allErrors['other'] = $otherWarnings;
+	$allErrors['ignored'] = $ignored;
+
+	writeJsonFile($fixPaths['errors'],$allErrors);
+	if ( $errors ) {
+		foreach ($errors as $error) {
+			$message .= "**** ".strip_tags($error['error'])." ****   ";
+		}
+	}
+	if ( $warnings ) {
+		foreach ($warnings as $warning) {
+			$message .= "**** ".strip_tags($warning['error'])." ****   ";
+		}
+	}
+	if ( ! $disableNotifications ) {
+		if ( $errors ) {
+			if ( $fixSettings['notifications'] != "disabled" ) {
+				notify("Fix Common Problems","Errors have been found with your server.","Investigate at Settings / User Utilities / Fix Common Problems",$message,"alert");
+			}
+		} else {
+			if ( $warnings ) {
+				if ($fixSettings['notifications'] != "errors" ) {
+					notify("Fix Common Problems","Warnings have been found with your server.","Investigate at Settings / User Utilities / Fix Common Problems",$message,"warning");
+				}
+			}
+		}
+	}
+}
 ?>

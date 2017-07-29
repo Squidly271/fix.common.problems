@@ -81,6 +81,7 @@ $checkList = "
 * Check for SSD cache drive formatted as reiserFS (format does not support trim)
 * Check for SSD cache drive, but Dynamix SSD Trim not installed
 * Check for missing/different TemplateURL field in docker application's template
+* Check for Marvel Based controller.
 
 <h2>Troubleshooting Mode</h2>
 

@@ -2,8 +2,8 @@
 <!DOCTYPE PLUGIN [
 <!ENTITY name      "fix.common.problems">
 <!ENTITY author    "Andrew Zawadzki">
-<!ENTITY version   "2017.07.03">
-<!ENTITY md5       "25c86f105f084db864c8895397e4969a">
+<!ENTITY version   "2017.07.28">
+<!ENTITY md5       "c48baa7b08f73d52220383af49603ef1">
 <!ENTITY launch    "Settings/FixProblems">
 <!ENTITY plugdir   "/usr/local/emhttp/plugins/&name;">
 <!ENTITY github    "Squidly271/fix.common.problems">
@@ -13,7 +13,10 @@
 <PLUGIN name="&name;" author="&author;" version="&version;" launch="&launch;" pluginURL="&pluginURL;">
 
 <CHANGES>
-###2017.07-03
+###2017-07-28
+- Add in warnings if Marvel Hard Drive controller found
+
+###2017-07-03
 - Fix Permissions on executables
 
 ###2017-06-30
