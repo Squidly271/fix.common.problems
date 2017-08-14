@@ -1468,9 +1468,11 @@ function inotifyExhausted() {
 function nobodyCared() {
 	global $fixPaths, $fixSettings, $autoUpdateOverride, $developerMode, $communityApplicationsInstalled, $dockerRunning, $ignoreList, $shareList, $unRaidVersion;
 
-	$output = exec("cat /var/log/syslog | grep -i -o 'irq .* nobody cared'");
-	if ( $output ) {
-		addWarning("<font color='purple'>$output</font> found on your server","You should post your diagnostics and seek assistance from the forums before deciding to ignore this error.  The interrupts in use have been logged to assist in diagnosis");
+	exec("cat /var/log/syslog | grep -i -o 'irq .* nobody cared'",$out);
+	if ( $out ) {
+		foreach ($out as $output) {
+			addWarning("<font color='purple'>$output</font> found on your server","You should post your diagnostics and seek assistance from the forums before deciding to ignore this error.  The interrupts in use have been logged to assist in diagnosis");
+		}
 		exec("cat /proc/interrupts",$interrupts);
 		logger("Interrupts listed as being in use:");
 		foreach($interrupts as $line) {

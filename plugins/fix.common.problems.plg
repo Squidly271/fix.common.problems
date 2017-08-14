@@ -2,8 +2,8 @@
 <!DOCTYPE PLUGIN [
 <!ENTITY name      "fix.common.problems">
 <!ENTITY author    "Andrew Zawadzki">
-<!ENTITY version   "2017.07.28">
-<!ENTITY md5       "c48baa7b08f73d52220383af49603ef1">
+<!ENTITY version   "2017.08.14">
+<!ENTITY md5       "b698ab9d5713dc7261051257d2b15021">
 <!ENTITY launch    "Settings/FixProblems">
 <!ENTITY plugdir   "/usr/local/emhttp/plugins/&name;">
 <!ENTITY github    "Squidly271/fix.common.problems">
@@ -13,6 +13,9 @@
 <PLUGIN name="&name;" author="&author;" version="&version;" launch="&launch;" pluginURL="&pluginURL;">
 
 <CHANGES>
+###2017-08-14
+- Display multiple IRQ disabled messages if found
+
 ###2017-07-28
 - Add in warnings if Marvel Hard Drive controller found
 
