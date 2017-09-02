@@ -3,7 +3,7 @@
 
 ###############################################################
 #                                                             #
-# Fix Common Problems copyright 2015-2016, Andrew Zawadzki    #
+# Fix Common Problems copyright 2015-2017, Andrew Zawadzki    #
 #                                                             #
 ###############################################################
 

@@ -2,8 +2,8 @@
 <!DOCTYPE PLUGIN [
 <!ENTITY name      "fix.common.problems">
 <!ENTITY author    "Andrew Zawadzki">
-<!ENTITY version   "2017.08.14">
-<!ENTITY md5       "b698ab9d5713dc7261051257d2b15021">
+<!ENTITY version   "2017.09.02">
+<!ENTITY md5       "4f0a6c9538b5c5b7c4cc68abc625409c">
 <!ENTITY launch    "Settings/FixProblems">
 <!ENTITY plugdir   "/usr/local/emhttp/plugins/&name;">
 <!ENTITY github    "Squidly271/fix.common.problems">
@@ -13,6 +13,9 @@
 <PLUGIN name="&name;" author="&author;" version="&version;" launch="&launch;" pluginURL="&pluginURL;">
 
 <CHANGES>
+###2017-09-02
+- Maintenance release
+
 ###2017-08-14
 - Display multiple IRQ disabled messages if found
 

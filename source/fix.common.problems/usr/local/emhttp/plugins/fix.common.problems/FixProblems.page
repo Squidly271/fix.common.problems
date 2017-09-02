@@ -5,7 +5,7 @@ Title="Fix Common Problems"
 <?
 ###############################################################
 #                                                             #
-# Fix Common Problems copyright 2015-2016, Andrew Zawadzki    #
+# Fix Common Problems copyright 2015-2017, Andrew Zawadzki    #
 #                                                             #
 ###############################################################
 
@@ -307,7 +307,7 @@ function apply() {
 }
 
 function showCredits() {
-  myAlert("Community Applications","<?=$caCredits?>","/plugins/<?=$plugin?>/images/fix.common.problems.png","96x96", true, false, true);
+  myAlert("Fix Common Problems","<?=$caCredits?>","/plugins/<?=$plugin?>/images/fix.common.problems.png","96x96", true, false, true);
 }
 
 </script>
