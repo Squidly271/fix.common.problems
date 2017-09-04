@@ -738,7 +738,7 @@ function supportedFileSystemCheck() {
 
 	$disks = my_parse_ini_file($fixPaths['disks.ini'],true);
 	foreach ($disks as $disk) {
-		if ( ($disk['fsType'] != "reiserfs") && ($disk['fsType'] != "xfs") && ($disk['fsType'] != "btrfs") && ($disk['size'] != "0") && ($disk['fsType'] != "auto") ) {
+		if ( ($disk['fsType'] != "reiserfs") && ($disk['fsType'] != "xfs") && ($disk['fsType'] != "btrfs") && ($disk['size'] != "0") && ($disk['fsType'] != "auto") && ($disk['fsType'] != "reiserfs") && ($disk['fsType'] != "xfs") && ($disk['fsType'] != "btrfs") && ($disk['fsType'] != "luks:reiserfs") && ($disk['fsType'] != "luks:xfs") && ($disk['fsType'] != "luks:btrfs")) {
 			if ( ( startsWith($disk['name'],"cache") ) && ( $disk['name'] != "cache" ) ) {
 				continue;
 			}
