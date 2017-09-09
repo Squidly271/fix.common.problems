@@ -1171,12 +1171,18 @@ function mceCheck() {
 function callTrace() {
 	global $fixPaths, $fixSettings, $autoUpdateOverride, $developerMode, $communityApplicationsInstalled, $dockerRunning, $ignoreList, $shareList;
 
-	$output = exec("cat /var/log/syslog | grep -i 'Call Trace:'");
-	if ( is_file($fixPaths['Traceacknowledge']) ) {
-		return;
-	}
-	if ($output) {
-		addError("<font color='purple'><b>Call Traces</b></font> found on your server",addButton("Acknowledge Error","acknowledgeTrace(this.id);")."Your server has issued one or more call traces.  This could be caused by a Kernel Issue, Bad Memory, etc.  You should post your diagnostics and ask for assistance on the unRaid forums");
+	$files = dirContents("/var/log");
+	foreach ($files as $file) {
+		if ( startsWith($file,"syslog") ) {
+			$output = exec("cat /var/log/$file | grep -i 'Call Trace:'");
+		  if ( is_file($fixPaths['Traceacknowledge']) ) {
+			  return;
+		  }
+			if ($output) {
+				addError("<font color='purple'><b>Call Traces</b></font> found on your server",addButton("Acknowledge Error","acknowledgeTrace(this.id);")."Your server has issued one or more call traces.  This could be caused by a Kernel Issue, Bad Memory, etc.  You should post your diagnostics and ask for assistance on the unRaid forums");
+				break;
+			}
+		}
 	}
 }
 

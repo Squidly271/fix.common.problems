@@ -127,8 +127,6 @@ function addButton($buttonName,$action) {
 #                                                                         #
 ###########################################################################
 
-
-
 function checkPluginUpdate($filename) {
   global $unRaidVersion;
   
@@ -399,4 +397,16 @@ function getAppData() {
   return $excludedShares;  
 }
 
+#############################################################
+#                                                           #
+# Helper function to return an array of directory contents. #
+# Returns an empty array if the directory does not exist    #
+#                                                           #
+#############################################################
+
+function dirContents($path) {
+	$dirContents = @scandir($path);
+	if ( ! $dirContents ) { $dirContents = array(); }
+	return array_diff($dirContents,array(".",".."));
+}
 ?>
