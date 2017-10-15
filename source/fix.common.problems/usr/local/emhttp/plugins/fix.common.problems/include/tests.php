@@ -1570,5 +1570,29 @@ function marvelControllerTest() {
 	}
 }
 
+function breadTest() {
+	global $fixPaths, $fixSettings, $autoUpdateOverride, $developerMode, $communityApplicationsInstalled, $dockerRunning, $ignoreList, $shareList, $unRaidVersion;
+
+	$syslogs = dirContents("/var/log");
+	foreach ($syslogs as $syslog) {
+		if ( startsWith($syslog,"syslog") ) {
+			$log = file("/var/log/$syslog");
+			foreach ($log as $logline) {
+				if ( strpos($logline,"Directory bread") ) {
+					if ( strpos($logline,"sda1") ) {
+						addError("<font color='purple'>Directory Bread Errors</font> found","Directory Bread errors have been found.  This usually means (assuming that your flash drive didn't physically come disconnected) that your flash drive has dropped offline.  The most common solution to this is to try a different USB controller for your flash drive (USB2<-->USB3)");
+						$foundFlag = true;
+						break;
+					}
+				}
+			}
+		}
+		if ( $foundFlag ) {
+			break;
+		}
+	}
+}	
+			
+
 
 ?>

@@ -162,6 +162,7 @@ if ( $troubleshooting ) {
 	SSDcacheNoTrim();
 	templateURLMissing();
 	marvelControllerTest();
+	breadTest();
 }
 
 if ( $ignored && ( $fixSettings['logIgnored'] != "yes") ) {

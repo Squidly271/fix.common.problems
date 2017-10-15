@@ -2,7 +2,7 @@
 <!DOCTYPE PLUGIN [
 <!ENTITY name      "fix.common.problems">
 <!ENTITY author    "Andrew Zawadzki">
-<!ENTITY version   "2017.09.09">
+<!ENTITY version   "2017.10.15">
 <!ENTITY md5       "729df2523c7d28217e589ab7705d39bb">
 <!ENTITY launch    "Settings/FixProblems">
 <!ENTITY plugdir   "/usr/local/emhttp/plugins/&name;">
@@ -13,6 +13,9 @@
 <PLUGIN name="&name;" author="&author;" version="&version;" launch="&launch;" pluginURL="&pluginURL;">
 
 <CHANGES>
+###2017-10-15
+- Check for directory bread errors (flash drive disconnected)
+
 ###2017-09-09
 - Scan all syslogs (including rotated) for call traces
 

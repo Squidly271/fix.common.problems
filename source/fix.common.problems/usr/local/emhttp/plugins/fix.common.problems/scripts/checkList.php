@@ -82,6 +82,7 @@ $checkList = "
 * Check for SSD cache drive, but Dynamix SSD Trim not installed
 * Check for missing/different TemplateURL field in docker application's template
 * Check for Marvel Based controller.
+* Check for Directory Bread's (ie: flash drive disconnected)
 
 <h2>Troubleshooting Mode</h2>
 
