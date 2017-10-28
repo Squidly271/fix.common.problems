@@ -23,7 +23,7 @@ exec("mkdir -p ".$fixPaths['tempFiles']);
 logger("Fix Common Problems Version ".exec("/usr/local/emhttp/plugins/dynamix.plugin.manager/scripts/plugin version /var/log/plugins/fix.common.problems.plg"));
 if ( $argv[1] == "troubleshoot" ) {
 	$troubleshooting = true;
-	logger("Fix Common Problems: Troubleshooting scan running");
+/* 	logger("Fix Common Problems: Troubleshooting scan running");
 	$uptime = exec("uptime");
 	logger("Fix Common Problems: Uptime: $uptime");
 	unset($output);
@@ -54,7 +54,7 @@ if ( $argv[1] == "troubleshoot" ) {
 	}
 
 
-
+ */
 } else {
 	$disableNotifications = $argv[1];
 }

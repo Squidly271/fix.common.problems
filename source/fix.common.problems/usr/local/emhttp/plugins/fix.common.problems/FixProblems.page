@@ -147,7 +147,7 @@ function extendedTest() {
 function troubleshoot() {
   swal({
     title: "Troubleshooting Mode",
-    text: "This is a special mode used generally to troubleshoot random lockups, resets, etc.<br><br>When running in this mode, a subset of the tests are performed every <b>10 minutes</b>, the syslog is <b>continually</b> captured to the flash drive, and a diagnostics dump is performed every <b>30 minutes</b><br><br><font color='red'>When posting for help in the forums, you should include both the diagnostics file and the syslog.txt file located within /boot/logs</font>.  <b>It will also be extremely helpful to include a screenshot (use your phone) of what appears on the local monitor when the crash / lockup occurs</b><br><br>Once started, the only way to abort this mode is by <b>restarting</b> your server",
+    text: "This is a special mode used generally to troubleshoot random lockups, resets, etc.<br><br>When running in this mode the syslog is <b>continually</b> captured to the flash drive, and a diagnostics dump is performed every <b>30 minutes</b><br><br><font color='red'>When posting for help in the forums, you should include both the diagnostics file and the syslog.txt file located within /boot/logs</font>.  <b>It will also be extremely helpful to include a screenshot (use your phone) of what appears on the local monitor when the crash / lockup occurs</b><br><br>Once started, the only way to abort this mode is by <b>restarting</b> your server",
     showConfirmButton: true,
     showCancelButton: true,
     html: true,
