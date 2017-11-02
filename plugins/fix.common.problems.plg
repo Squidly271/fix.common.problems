@@ -2,8 +2,8 @@
 <!DOCTYPE PLUGIN [
 <!ENTITY name      "fix.common.problems">
 <!ENTITY author    "Andrew Zawadzki">
-<!ENTITY version   "2017.10.28">
-<!ENTITY md5       "522711587d0d1a5e6d6dbf3251134974">
+<!ENTITY version   "2017.11.02">
+<!ENTITY md5       "f1f721afb6bae76d71ec01a29e604b95">
 <!ENTITY launch    "Settings/FixProblems">
 <!ENTITY plugdir   "/usr/local/emhttp/plugins/&name;">
 <!ENTITY github    "Squidly271/fix.common.problems">
@@ -13,6 +13,9 @@
 <PLUGIN name="&name;" author="&author;" version="&version;" launch="&launch;" pluginURL="&pluginURL;">
 
 <CHANGES>
+###2017-11-02
+- Add in check for Ryzen cpu running with unRaid version pre 6.4
+
 ###2017-10-28
 - Remove Sensors display, running processes, etc from troubleshooting mode
 

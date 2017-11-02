@@ -163,6 +163,7 @@ if ( $troubleshooting ) {
 	templateURLMissing();
 	marvelControllerTest();
 	breadTest();
+	Ryzen63();
 }
 
 if ( $ignored && ( $fixSettings['logIgnored'] != "yes") ) {

@@ -83,6 +83,7 @@ $checkList = "
 * Check for missing/different TemplateURL field in docker application's template
 * Check for Marvel Based controller.
 * Check for Directory Bread's (ie: flash drive disconnected)
+* Check for Ryzen CPU running on unRaid < 6.4
 
 <h2>Troubleshooting Mode</h2>
 

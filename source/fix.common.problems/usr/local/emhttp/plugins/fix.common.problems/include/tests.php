@@ -1592,6 +1592,19 @@ function breadTest() {
 		}
 	}
 }	
+
+function Ryzen63() {
+	global $fixPaths, $fixSettings, $autoUpdateOverride, $developerMode, $communityApplicationsInstalled, $dockerRunning, $ignoreList, $shareList, $unRaidVersion;
+
+	if ( version_compare($unRaidVersion,"6.4.0-rc1","<") ) {
+		$output = exec("lscpu | grep Ryzen");
+		if ( $output ) {
+			addWarning("<font color='purple'>Ryzen CPU on unRaid 6.3</font>","It is <b>highly</b> recommended to only use a Ryzen CPU if you are running unRaid version 6.4+");
+		}
+	}
+}
+			
+			
 			
 
 
