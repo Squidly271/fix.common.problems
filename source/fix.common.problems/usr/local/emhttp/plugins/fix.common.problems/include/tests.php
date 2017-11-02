@@ -1174,7 +1174,7 @@ function callTrace() {
 	$files = dirContents("/var/log");
 	foreach ($files as $file) {
 		if ( startsWith($file,"syslog") ) {
-			$output = exec("cat /var/log/$file | grep -i 'Call Trace:'");
+			$output = exec("cat /var/log/$file | grep -i '\[ cut here \]'");
 		  if ( is_file($fixPaths['Traceacknowledge']) ) {
 			  return;
 		  }
