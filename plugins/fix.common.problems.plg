@@ -2,8 +2,8 @@
 <!DOCTYPE PLUGIN [
 <!ENTITY name      "fix.common.problems">
 <!ENTITY author    "Andrew Zawadzki">
-<!ENTITY version   "2017.11.02a">
-<!ENTITY md5       "99517fc3d3ecbd105fbbe2e9d6b3b02a">
+<!ENTITY version   "2017.11.04">
+<!ENTITY md5       "50a61c31e433163147f157595fbc96e6">
 <!ENTITY launch    "Settings/FixProblems">
 <!ENTITY plugdir   "/usr/local/emhttp/plugins/&name;">
 <!ENTITY github    "Squidly271/fix.common.problems">
@@ -13,6 +13,9 @@
 <PLUGIN name="&name;" author="&author;" version="&version;" launch="&launch;" pluginURL="&pluginURL;">
 
 <CHANGES>
+###2017-11-04
+- Update link for BTRFS filesystem corruption
+
 ###2017-11-02a
 - Tighten code for call trace searches to only display serious traces and ignore informational ones
 

@@ -391,7 +391,7 @@ function fileSystemErrors() {
 	$disks = my_parse_ini_file($fixPaths['disks.ini'],true);
 	foreach ( $disks as $disk ) {
 		if ( $disk['fsError'] ) {
-			addError("<font color='purple'><b>".$disk['name']." (".$disk['id'].")</b></font> has file system errors (".$disk['fsError'].")","If the disk if XFS / REISERFS, stop the array, restart the Array in Maintenance mode, and run the file system checks.  If the disk is BTRFS, then just run the file system checks".addLinkButton("unRaid Main","/Main")."<b>If the disk is listed as being unmountable, and it has data on it, whatever you do do not hit the format button.  Seek assistance <a href='http://lime-technology.com/forum/index.php?board=71.0' target='_blank'>HERE</a>");
+			addError("<font color='purple'><b>".$disk['name']." (".$disk['id'].")</b></font> has file system errors (".$disk['fsError'].")","If the disk if XFS / REISERFS, stop the array, restart the Array in Maintenance mode, and run the file system checks.  If the disk is BTRFS, then see <a href='https://forums.lime-technology.com/topic/46802-faq-for-unraid-v6/?page=2&tab=comments#comment-543490' target='_blank'>this post</a>.  <b>If the disk is listed as being unmountable, and it has data on it, whatever you do do not hit the format button.  Seek assistance <a href='http://lime-technology.com/forum/index.php?board=71.0' target='_blank'>HERE</a>");
 		}
 	}
 }
