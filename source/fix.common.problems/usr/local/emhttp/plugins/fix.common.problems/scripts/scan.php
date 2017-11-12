@@ -164,6 +164,7 @@ if ( $troubleshooting ) {
 	marvelControllerTest();
 	breadTest();
 	Ryzen63();
+	lessThan2G();
 }
 
 if ( $ignored && ( $fixSettings['logIgnored'] != "yes") ) {

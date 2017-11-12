@@ -2,8 +2,8 @@
 <!DOCTYPE PLUGIN [
 <!ENTITY name      "fix.common.problems">
 <!ENTITY author    "Andrew Zawadzki">
-<!ENTITY version   "2017.11.04">
-<!ENTITY md5       "50a61c31e433163147f157595fbc96e6">
+<!ENTITY version   "2017.11.12">
+<!ENTITY md5       "edd2a712427d180d873b29995cefd6c3">
 <!ENTITY launch    "Settings/FixProblems">
 <!ENTITY plugdir   "/usr/local/emhttp/plugins/&name;">
 <!ENTITY github    "Squidly271/fix.common.problems">
@@ -13,6 +13,9 @@
 <PLUGIN name="&name;" author="&author;" version="&version;" launch="&launch;" pluginURL="&pluginURL;">
 
 <CHANGES>
+###2017-11-12
+- Check to see if enough installed memory to be able to operate at "functional" minimum
+
 ###2017-11-04
 - Update link for BTRFS filesystem corruption
 

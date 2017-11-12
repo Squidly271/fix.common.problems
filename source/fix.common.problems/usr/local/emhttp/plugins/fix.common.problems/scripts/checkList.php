@@ -84,6 +84,7 @@ $checkList = "
 * Check for Marvel Based controller.
 * Check for Directory Bread's (ie: flash drive disconnected)
 * Check for Ryzen CPU running on unRaid < 6.4
+* Check for minimum 2G memory installed
 
 <h2>Troubleshooting Mode</h2>
 

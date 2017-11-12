@@ -1604,7 +1604,17 @@ function Ryzen63() {
 	}
 }
 			
-			
+function lessThan2G() {
+	global $fixPaths, $fixSettings, $autoUpdateOverride, $developerMode, $communityApplicationsInstalled, $dockerRunning, $ignoreList, $shareList, $unRaidVersion;
+	
+	$file = trim(str_replace("MemTotal:","",exec("cat /proc/meminfo | grep MemTotal:")));
+	$raw = explode(" ",$file);
+	
+	if ($raw[0] < 1500000 ) {
+		addWarning("Less than <font color='purple'>2GB Memory</font> Installed","Your system currently has {$raw[0]} {$raw[1]} memory installed.  For a trouble-free experience with unRaid, the functional minimum for a basic NAS server is 2GB of memory.  You should add more memory");
+	}
+}
+
 			
 
 
