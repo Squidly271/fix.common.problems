@@ -899,6 +899,9 @@ function dockerAppsChangedPorts() {
 
 			foreach ($info as $dockerInstalled) {
 				$dockerImage = $dockerInstalled['Image'];
+				if ( strtolower($dockerInstalled['NetworkMode']) != "host" && strtolower($dockerInstalled['NetworkMode']) != "bridge" ) {
+					continue;
+				}
 				foreach ($allApps as $app) {
 					$support = $app['Support'] ? $app['Support'] : $app['Forum'];
 					if ( ($app['Repository'] === str_replace(":latest","",$dockerImage) ) || ($app['Repository'] === $dockerImage) ) {

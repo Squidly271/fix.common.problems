@@ -2,8 +2,8 @@
 <!DOCTYPE PLUGIN [
 <!ENTITY name      "fix.common.problems">
 <!ENTITY author    "Andrew Zawadzki">
-<!ENTITY version   "2017.11.12">
-<!ENTITY md5       "edd2a712427d180d873b29995cefd6c3">
+<!ENTITY version   "2017.11.18">
+<!ENTITY md5       "41014a3be4d024bfedcc628649af3314">
 <!ENTITY launch    "Settings/FixProblems">
 <!ENTITY plugdir   "/usr/local/emhttp/plugins/&name;">
 <!ENTITY github    "Squidly271/fix.common.problems">
@@ -13,6 +13,9 @@
 <PLUGIN name="&name;" author="&author;" version="&version;" launch="&launch;" pluginURL="&pluginURL;">
 
 <CHANGES>
+###2017-11-18
+- Ignore Network mode tests if network not set to Bridge or Host
+
 ###2017-11-12
 - Check to see if enough installed memory to be able to operate at "functional" minimum
 
