@@ -2,8 +2,8 @@
 <!DOCTYPE PLUGIN [
 <!ENTITY name      "fix.common.problems">
 <!ENTITY author    "Andrew Zawadzki">
-<!ENTITY version   "2017.11.18">
-<!ENTITY md5       "41014a3be4d024bfedcc628649af3314">
+<!ENTITY version   "2017.11.24">
+<!ENTITY md5       "c1e354ed3351bdd7987404f5db56b8e3">
 <!ENTITY launch    "Settings/FixProblems">
 <!ENTITY plugdir   "/usr/local/emhttp/plugins/&name;">
 <!ENTITY github    "Squidly271/fix.common.problems">
@@ -13,6 +13,9 @@
 <PLUGIN name="&name;" author="&author;" version="&version;" launch="&launch;" pluginURL="&pluginURL;">
 
 <CHANGES>
+###2017-11-24
+- Fix URL subjected to redirection
+
 ###2017-11-18
 - Ignore Network mode tests if network not set to Bridge or Host
 
