@@ -1064,7 +1064,7 @@ function cacheFloorTests() {
 
 		$cacheFloorSuffix = strtolower(preg_replace('/[0-9]+/', '', $vars['shareCacheFloor']));
 		$cacheFloor = str_replace($cacheFloorSuffix,"",$cacheFloor);
-
+		$cacheFloor = $cacheFloor ? $cacheFloor : 0;
 		switch ( $cacheFloorSuffix ) {
 			case "":
 				$multiplier = 1024;
@@ -1081,7 +1081,11 @@ function cacheFloorTests() {
 			case "tb":
 				$multiplier = 1000000000000;
 				break;
+			default:
+				$multiplier = 1;
+				break;
 		}
+
 		$cacheFloor = $cacheFloor * $multiplier;
 		$cacheFree = disk_free_space("/mnt/cache");
 		$cacheSize = disk_total_space("/mnt/cache");
