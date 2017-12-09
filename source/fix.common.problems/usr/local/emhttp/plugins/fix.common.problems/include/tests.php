@@ -1580,6 +1580,7 @@ function marvelControllerTest() {
 function breadTest() {
 	global $fixPaths, $fixSettings, $autoUpdateOverride, $developerMode, $communityApplicationsInstalled, $dockerRunning, $ignoreList, $shareList, $unRaidVersion;
 
+  ini_set('memory_limit',-1);
 	$syslogs = dirContents("/var/log");
 	foreach ($syslogs as $syslog) {
 		if ( startsWith($syslog,"syslog") ) {
@@ -1598,6 +1599,7 @@ function breadTest() {
 			break;
 		}
 	}
+	ini_set('memory_limit','128M');
 }	
 
 function Ryzen63() {

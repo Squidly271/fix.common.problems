@@ -2,8 +2,8 @@
 <!DOCTYPE PLUGIN [
 <!ENTITY name      "fix.common.problems">
 <!ENTITY author    "Andrew Zawadzki">
-<!ENTITY version   "2017.11.25">
-<!ENTITY md5       "aef3a9c75efd67fa0c657696fc105dc4">
+<!ENTITY version   "2017.12.09">
+<!ENTITY md5       "c02a48620dc19ae84d28885cbc3f431e">
 <!ENTITY launch    "Settings/FixProblems">
 <!ENTITY plugdir   "/usr/local/emhttp/plugins/&name;">
 <!ENTITY github    "Squidly271/fix.common.problems">
@@ -13,6 +13,9 @@
 <PLUGIN name="&name;" author="&author;" version="&version;" launch="&launch;" pluginURL="&pluginURL;">
 
 <CHANGES>
+###2017-12-09
+- Fixed: Out of memory errors if syslog files exceed PHP's default memory limits
+
 ###2017-11-25
 - Fixed: PHP error displayed if cache floor not set in unRaid settings
 
