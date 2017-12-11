@@ -822,7 +822,7 @@ function blacklistedPluginsInstalled() {
 			if ( ! is_file("/var/log/plugins/$plugin") ) {
 				continue;
 			}
-			$pluginURL = exec("/usr/local/emhttp/plugins/dynamix.plugin.manager/scripts/plugin pluginURL /var/log/plugins/$plugin");
+			$pluginURL = getRedirectedURL(exec("/usr/local/emhttp/plugins/dynamix.plugin.manager/scripts/plugin pluginURL /var/log/plugins/$plugin"));
 			if ( $caModeration[$pluginURL]['Blacklist'] ) {
 				addError("Blacklisted plugin <font color='purple'><b>$plugin</b></font>","This plugin has been blacklisted and should no longer be used due to the following reason(s): <font color='purple'><em><b>".$caModeration[$pluginURL]['ModeratorComment']."</b></em></font>  You should remove this plugin as its continued installation may cause adverse effects on your server.".addLinkButton("Plugins","/Plugins"));
 			}
