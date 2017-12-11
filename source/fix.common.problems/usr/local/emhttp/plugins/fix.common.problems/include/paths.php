@@ -26,7 +26,7 @@ $fixPaths['var.ini']                    = "/var/local/emhttp/var.ini";
 $fixPaths['ignoreList']                 = $fixPaths['flashPath']."/ignoreList.json";
 $fixPaths['uncleanReboot']              = $fixPaths['tempFiles']."/resetCheckFlag";
 $fixPaths['uncleanRebootFlag']          = $fixPaths['flashPath']."/resetCheckFlag";
-$fixPaths['application-feed-last-updated'] = "http://tools.linuxserver.io/unraid-docker-templates.json?last_updated=1";
+$fixPaths['application-feed-last-updated'] = "https://tools.linuxserver.io/unraid-docker-templates.json?last_updated=1";
 $fixPaths['troubleshoot']               = $fixPaths['tempFiles']."/troubleshoot";
 $fixPaths['extendedStatus']             = $fixPaths['tempFiles']."/extendedStatus";
 $fixPaths['extendedPID']                = $fixPaths['tempFiles']."/extendedPID";

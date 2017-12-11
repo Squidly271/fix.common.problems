@@ -281,17 +281,11 @@ function unRaidVersion() {
 #################################################################
 
 function versionCheck($template) {
-  global $unRaidVersion;
+	global $unRaidVersion;
 
-  if ( $template['MinVer'] ) {
-    if ( version_compare($template['MinVer'],$unRaidVersion) > 0 ) { return false; }
-  }
-
-  if ( $template['MaxVer'] ) {
-    if ( version_compare($template['MaxVer'],$unRaidVersion) < 0 ) { return false; }
-  }
-
-  return true;
+	if ( $template['MinVer'] && ( version_compare($template['MinVer'],$unRaidVersion) > 0 ) ) { return false; }
+	if ( $template['MaxVer'] && ( version_compare($template['MaxVer'],$unRaidVersion) < 0 ) ) { return false; }
+	return true;
 }
 
 ###############################################
@@ -408,5 +402,18 @@ function dirContents($path) {
 	$dirContents = @scandir($path);
 	if ( ! $dirContents ) { $dirContents = array(); }
 	return array_diff($dirContents,array(".",".."));
+}
+
+################################################
+# Returns the actual URL after any redirection #
+################################################
+function getRedirectedURL($url) {
+	$ch = curl_init();
+	curl_setopt($ch, CURLOPT_URL, $url);
+	curl_setopt($ch, CURLOPT_HEADER, true);
+	curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
+	curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+	$a = curl_exec($ch);
+	return curl_getinfo($ch, CURLINFO_EFFECTIVE_URL);
 }
 ?>

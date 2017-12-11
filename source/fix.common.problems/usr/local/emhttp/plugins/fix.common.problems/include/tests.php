@@ -1280,17 +1280,30 @@ function pluginNotCompatible() {
 
 	$installedPlugins = array_diff(scandir("/var/log/plugins"),array(".",".."));
 	$templates = readJsonFile($fixPaths['templates']);
+	$moderation = readJsonFile($fixPaths['moderation']);
+	
 	$allApps = $templates['applist'];
 	if ( ! $allApps ) { return; }
 
 	foreach ($installedPlugins as $plugin) {
-		$pluginURL = exec("/usr/local/emhttp/plugins/dynamix.plugin.manager/scripts/plugin pluginURL /var/log/plugins/$plugin");
+		unset($minVer);
+		unset($maxVer);
+		$pluginURL = getRedirectedURL(exec("/usr/local/emhttp/plugins/dynamix.plugin.manager/scripts/plugin pluginURL /var/log/plugins/$plugin"));
 
 		foreach ( $allApps as $app ) {
 			if ( $app['Plugin'] ) {
 				if ( $app['PluginURL'] == $pluginURL ) {
+					if ( $moderation[$pluginURL] ) {
+						$app = array_merge($app,$moderation[$pluginURL]);
+					}
 					if ( ! versionCheck($app) ) {
-						addWarning("<font color='purple'><b>$plugin</b></font> Not Compatible with unRaid version $unRaidVersion","The author of the plugin template (<font color='purple'><b>$pluginURL</b></font>) has specified that this plugin is incompatible with your version of unRaid ($unRaidVersion).  You should uninstall the plugin here:".addLinkButton("Plugins","/Plugins"));
+						if ( $app['MinVer'] ) {
+						  $minVer = "Minimum OS Version: {$app['MinVer']}";
+						}
+						if ( $app['MaxVer'] ) {
+							$maxVer = "Maximum OS Version: {$app['MaxVer']}";
+						}
+						addWarning("<font color='purple'><b>$plugin</b></font> Not Compatible with unRaid version $unRaidVersion","The author (or moderators of Community Applications) of the plugin template (<font color='purple'><b>$pluginURL</b></font>) has specified that this plugin is incompatible with your version of unRaid ($unRaidVersion).  You should uninstall the plugin here:".addLinkButton("Plugins","/Plugins")." $minVer  $maxVer");
 					}
 					break;
 				}
