@@ -81,10 +81,11 @@ $checkList = "
 * Check for SSD cache drive formatted as reiserFS (format does not support trim)
 * Check for SSD cache drive, but Dynamix SSD Trim not installed
 * Check for missing/different TemplateURL field in docker application's template
-* Check for Marvel Based controller.
+* Check for Marvel Based controller
 * Check for Directory Bread's (ie: flash drive disconnected)
 * Check for Ryzen CPU running on unRaid < 6.4
 * Check for minimum 2G memory installed
+* Incompatible docker applications installed
 
 <h2>Troubleshooting Mode</h2>
 

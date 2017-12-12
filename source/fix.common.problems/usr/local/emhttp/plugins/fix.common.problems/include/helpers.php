@@ -416,4 +416,22 @@ function getRedirectedURL($url) {
 	$a = curl_exec($ch);
 	return curl_getinfo($ch, CURLINFO_EFFECTIVE_URL);
 }
+
+###############################################
+# Search array for a particular key and value #
+# returns the index number of the array       #
+# return value === false if not found         #
+###############################################
+function searchArray($array,$key,$value) {
+	$result = false;
+	if (count($array) ) {
+		for ($i = 0; $i <= max(array_keys($array)); $i++) {
+			if ( $array[$i][$key] == $value ) {
+				$result = $i;
+				break;
+			}
+		}
+	}
+	return $result;
+}
 ?>

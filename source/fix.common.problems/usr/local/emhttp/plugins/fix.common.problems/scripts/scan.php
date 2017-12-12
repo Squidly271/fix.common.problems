@@ -165,6 +165,7 @@ if ( $troubleshooting ) {
 	breadTest();
 	Ryzen63();
 	lessThan2G();
+	checkDockerCompatible();
 }
 
 if ( $ignored && ( $fixSettings['logIgnored'] != "yes") ) {

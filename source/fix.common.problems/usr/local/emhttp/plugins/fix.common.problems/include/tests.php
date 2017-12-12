@@ -1637,7 +1637,41 @@ function lessThan2G() {
 	}
 }
 
-			
+function checkDockerCompatible() {
+	global $fixPaths, $fixSettings, $autoUpdateOverride, $developerMode, $communityApplicationsInstalled, $dockerRunning, $ignoreList, $shareList;
+
+	if ( ! $dockerRunning ) { return; }
+
+	$moderation = readJsonFile($fixPaths['moderation']);
+	if ( ! is_array($moderation) ) { return; }
+	$templates = readJsonFile($fixPaths['templates']);
+	$allApps = $templates['applist'];
+	if ( ! is_array($allApps) ) { return; }
+
+	$dockerClient = new DockerClient();
+	$info = $dockerClient->getDockerContainers();
+
+	foreach ( $info as $dockerApp ) {
+		$image = $dockerApp['Image'];
+		$Repository = explode(":",$image);
+		$index = searchArray($allApps,"Repository",$Repository[0]);
+		if ( $index === false ) { continue;}
+		$template = $allApps[$index];
+		if ( $moderation[$Repository[0]] ) {
+			$template = array_merge($template,$moderation[$Repository[0]]);
+		}
+		if ( ! versionCheck($template) ) {
+			unset($verMsg);
+			if ( $template['MinVer'] ) {
+				$verMsg = "Minimum OS Version: unRaid v{$template['MinVer']} ";
+			}
+			if ( $template['MaxVer'] ) {
+				$verMsg .= "Maximum OS Version: unRaid v{$template['MaxVer']}";
+			}
+			addWarning("<font color='purple'>{$template['Name']}</font> ({$template['Repository']}) Incompatible","{$template['Name']} has been flagged as being incompatible with your version of unRaid.  $verMsg");
+		}
+	}
+}
 
 
 ?>
