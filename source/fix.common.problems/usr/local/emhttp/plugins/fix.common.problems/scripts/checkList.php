@@ -95,10 +95,6 @@ $checkList = "
 
 * var/log filling up
 * rootfs filling up
-* logs sysload
-* logs free memory
-* logs ps aux (CPU % > 0)
-* logs the output from sensors
 
 <b>Every 30 Minutes</b>
 
