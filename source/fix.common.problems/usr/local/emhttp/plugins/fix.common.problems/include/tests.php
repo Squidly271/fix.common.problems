@@ -1209,7 +1209,7 @@ function checkForHack() {
 		}
 	}
 	foreach ($output as $line) {
-		$split = explode(" ",$line);
+		$split = explode(" ",preg_replace('/\s+/',' ',$line));
 		$month = $split[0];
 		$day = $split[1];
 		$errors[$month]['Month'] = $month;
