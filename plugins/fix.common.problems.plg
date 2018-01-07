@@ -2,8 +2,8 @@
 <!DOCTYPE PLUGIN [
 <!ENTITY name      "fix.common.problems">
 <!ENTITY author    "Andrew Zawadzki">
-<!ENTITY version   "2018.01.06">
-<!ENTITY md5       "0e5d1847f100766b6f319c7ab0b4cc77">
+<!ENTITY version   "2018.01.06a">
+<!ENTITY md5       "e761154931d9e3e05a1449da909808cf">
 <!ENTITY launch    "Settings/FixProblems">
 <!ENTITY plugdir   "/usr/local/emhttp/plugins/&name;">
 <!ENTITY github    "Squidly271/fix.common.problems">
@@ -16,7 +16,6 @@
 ###2018-01-06
 - Fixed: Hack attempts within the first 10 days of a month would not show the day
 - Added: Check for incompatible docker apps present
-- Added: 5 minute delay after server startup before running tests
 
 ###2017-12-11
 - Fixed: Minimum/Maximum versions of unRaid for plugin compatibility set by CA moderators was not being honoured for plugin compatibility tests
