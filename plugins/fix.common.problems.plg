@@ -2,8 +2,8 @@
 <!DOCTYPE PLUGIN [
 <!ENTITY name      "fix.common.problems">
 <!ENTITY author    "Andrew Zawadzki">
-<!ENTITY version   "2018.01.06a">
-<!ENTITY md5       "e761154931d9e3e05a1449da909808cf">
+<!ENTITY version   "2018.01.09">
+<!ENTITY md5       "bf27f53adc42a7703c07cbd5588bf748">
 <!ENTITY launch    "Settings/FixProblems">
 <!ENTITY plugdir   "/usr/local/emhttp/plugins/&name;">
 <!ENTITY github    "Squidly271/fix.common.problems">
@@ -13,6 +13,9 @@
 <PLUGIN name="&name;" author="&author;" version="&version;" launch="&launch;" pluginURL="&pluginURL;">
 
 <CHANGES>
+###2018-01-09
+- Changed: Delay execution of startup scans by 10 minutes, and run as a background process
+
 ###2018-01-06
 - Fixed: Hack attempts within the first 10 days of a month would not show the day
 - Added: Check for incompatible docker apps present
