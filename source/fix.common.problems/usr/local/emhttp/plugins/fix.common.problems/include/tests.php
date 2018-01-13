@@ -67,7 +67,6 @@ function impliedArrayFilesOnCache() {
 function cacheOnlyFilesOnArray() {
 	global $fixPaths, $fixSettings, $autoUpdateOverride, $developerMode, $communityApplicationsInstalled, $dockerRunning, $ignoreList, $shareList;
 
-
 	foreach ($shareList as $share) {
 		if ( startsWith($share,".") ) { continue; }
 		if ( is_file("/boot/config/shares/$share.cfg") ) {
@@ -323,7 +322,11 @@ function dockerAppdataCacheOnly() {
 
 	if ( is_dir("/mnt/cache") ) {
 		$dockerOptions = @my_parse_ini_file("/boot/config/docker.cfg");
-		$sharename = basename($dockerOptions['DOCKER_APP_CONFIG_PATH']);
+		if ( ! startsWith($dockerOptions['DOCKER_APP_CONFIG_PATH'],"/mnt/user/") ) {
+			return;
+		}
+		$folders = explode("/",str_replace("/mnt/user/","",$dockerOptions['DOCKER_APP_CONFIG_PATH']));
+		$sharename = $folders[0]; # get the actual sharename from the path;
 		if ( is_file("/boot/config/shares/$sharename.cfg") ) {
 			$shareSettings = my_parse_ini_file("/boot/config/shares/$sharename.cfg");
 			if ( ( $shareSettings['shareUseCache'] != "only" ) && ( $shareSettings['shareUseCache'] != "prefer" ) ) {
