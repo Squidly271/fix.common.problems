@@ -166,6 +166,8 @@ if ( $troubleshooting ) {
 	Ryzen63();
 	lessThan2G();
 	checkDockerCompatible();
+	CPUoverheat();
+	statsButNoPreclear();
 }
 
 if ( $ignored && ( $fixSettings['logIgnored'] != "yes") ) {

@@ -1676,5 +1676,24 @@ function checkDockerCompatible() {
 	}
 }
 
+function CPUoverheat() {
+	global $fixPaths, $fixSettings, $autoUpdateOverride, $developerMode, $communityApplicationsInstalled, $dockerRunning, $ignoreList, $shareList;
+
+	$syslogs = glob("/var/log/syslog*");
+	foreach ( $syslogs as $syslog ) {
+		if (exec("cat $syslog | grep 'Package temperature above threshold'") ) {
+			addWarning("<font color='purple'>CPU Overheating","Your CPU is overheating and has been throttled down (This may however be a transient occurance).  You may need to clean your filters and/or increase your cooling capacity.  Investigate here: ".addLinkButton("SYSLOG","Tools/Syslog"));
+		}
+	}
+}
+
+function statsButNoPreclear() {
+	global $fixPaths, $fixSettings, $autoUpdateOverride, $developerMode, $communityApplicationsInstalled, $dockerRunning, $ignoreList, $shareList;
+
+	if ( is_file("/var/log/plugins/statistics.sender.plg") && ( ! is_file("/var/log/plugins/preclear.disk.plg") ) ) {
+		addWarning("<font color='purple'>Statistics</font> installed","The statistics plugin is installed, but the preclear disk plugin is not installed.  There is no reason to have statistics installed but not Preclear.  It is recommended to uninstall statistics here: ".addLinkButton("Plugins","/Plugins"));
+	}
+}
+
 
 ?>

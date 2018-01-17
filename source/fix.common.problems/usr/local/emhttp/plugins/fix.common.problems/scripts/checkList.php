@@ -86,6 +86,8 @@ $checkList = "
 * Check for Ryzen CPU running on unRaid < 6.4
 * Check for minimum 2G memory installed
 * Incompatible docker applications installed
+* Check for CPU overheating
+* Check for Stats plugin installed, but Preclear Not installed
 
 <h2>Troubleshooting Mode</h2>
 

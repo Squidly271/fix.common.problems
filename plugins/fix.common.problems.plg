@@ -2,8 +2,8 @@
 <!DOCTYPE PLUGIN [
 <!ENTITY name      "fix.common.problems">
 <!ENTITY author    "Andrew Zawadzki">
-<!ENTITY version   "2018.01.13">
-<!ENTITY md5       "0257f0eb31d24de5e479ef0e0ac27d60">
+<!ENTITY version   "2018.01.18">
+<!ENTITY md5       "9ece3879f396b9762c65a95883a8648d">
 <!ENTITY launch    "Settings/FixProblems">
 <!ENTITY plugdir   "/usr/local/emhttp/plugins/&name;">
 <!ENTITY github    "Squidly271/fix.common.problems">
@@ -13,6 +13,10 @@
 <PLUGIN name="&name;" author="&author;" version="&version;" launch="&launch;" pluginURL="&pluginURL;">
 
 <CHANGES>
+###2018-01-18
+- Added: CPU Overheating causing throttle down test (May not work on all CPUs though)
+- Added: Statistics plugin installed, but Preclear plugin not installed (recommend to uninstall Statistics)
+
 ###2018-01-13
 - Fixed: Edge case of default docker storage location within a subfolder of a share
 - Fixed: Edge case of default docker storage location within a UD mounted device and similar named share and a cache drive exists.
