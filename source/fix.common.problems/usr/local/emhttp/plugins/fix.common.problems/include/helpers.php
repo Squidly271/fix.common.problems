@@ -295,6 +295,9 @@ function versionCheck($template) {
 ###############################################
 
 function readXmlFile($xmlfile) {
+	if ( ! $xmlfile ) {
+		return false;
+	}
   $doc = new DOMDocument();
   $doc->load($xmlfile);
   if ( ! $doc ) { return false; }

@@ -23,38 +23,6 @@ exec("mkdir -p ".$fixPaths['tempFiles']);
 logger("Fix Common Problems Version ".exec("/usr/local/emhttp/plugins/dynamix.plugin.manager/scripts/plugin version /var/log/plugins/fix.common.problems.plg"));
 if ( $argv[1] == "troubleshoot" ) {
 	$troubleshooting = true;
-/* 	logger("Fix Common Problems: Troubleshooting scan running");
-	$uptime = exec("uptime");
-	logger("Fix Common Problems: Uptime: $uptime");
-	unset($output);
-	exec("free",$output);
-	foreach ($output as $line) {
-		logger("Fix Common Problems: $line");
-	}
-
-	logger("Fix Common Problems: ps aux output (only CPU % > 0)");
-	unset($output);
-	exec("ps aux",$output);
-	logger("Fix Common Problems: ".$output[0]);
-	unset($output[0]);
-
-	foreach ($output as $line) {
-		$statusLine = preg_replace('!\s+!', ' ', $line);
-		$test = explode(" ",$statusLine);
-
-		if ( $test[2] > 0 ) {
-			logger("Fix Common Problems: $line");
-		}
-	}
-	unset($output);
-	exec("sensors -A",$output);
-	logger("Fix Common Problems: Sensors output:");
-	foreach ($output as $line) {
-		logger("Fix Common Problems: ".escapeshellarg($line));
-	}
-
-
- */
 } else {
 	$disableNotifications = $argv[1];
 }
@@ -101,74 +69,24 @@ if ( $troubleshooting ) {
 	varLogFilled();
 	rootfsFull();
 } else {
-	HPApresent();
-	isArrayStarted();
-	impliedArrayFilesOnCache();
-	cacheOnlyFilesOnArray();
-	arrayOnlyFilesOnCache();
-	pluginUpdateCheck();
-	dockerUpdateCheck();
-	autoUpdateCheck();
-	sameShareDifferentCase();
-	powerdownInstalled();
-	outsideCommunication();
-	dockerImageOnDiskShare();
-	dockerAppdataCacheOnly();
-	disabledDisksPresent();
-	missingDisksPresent();
-	readErrorsPresent();
-	fileSystemErrors();
-	SSDinArray();
-	pluginsUpToDate();
-	incompatiblePackagesPresent();
-	dockerUpToDate();
-	dockerConfigUserShare();
-	varLogFilled();
-	dockerImageFull();
-	rootfsFull();
-#  dateTimeOK();
-	scheduledParityChecks();
-	shareIncludeExcludeSet();
-	shareIncludeExcludeSameDisk();
-	UDmountedSlaveMode();
-	supportedFileSystemCheck();
-	FTPrunning();
-	checkNotifications();
-	blacklistedPluginsInstalled();
-	unknownPluginInstalled();
-	dockerAppsChangedPorts();
-	illegalShareName();
-	writeToDriveTest();
-	flashDriveFull();
-	cacheFloorTests();
-#  sharePermission();
-	uncleanReboot();
-	checkForHack();
-	checkForModeration();
-	pluginNotCompatible();
-	checkWebUI();
-	cacheOnlyNoCache();
-	shareNameSameAsDiskName();
-	noCPUscaling();
-	extraParamInRepository();
-	multipleKey();
-#  inotifyToolsNerdPack();
-	outOfMemory();
-	callTrace();
-	mceCheck();
-	inotifyExhausted();
-	nobodyCared();
-	reiserCache();
-	SSDcacheNoTrim();
-	templateURLMissing();
-	marvelControllerTest();
-	breadTest();
-	Ryzen63();
-	lessThan2G();
-	checkDockerCompatible();
-	CPUoverheat();
-	statsButNoPreclear();
+	$tests = array("HPApresent","isArrayStarted","impliedArrayFilesOnCache","cacheOnlyFilesOnArray","arrayOnlyFilesOnCache","pluginUpdateCheck",
+		"dockerUpdateCheck","autoUpdateCheck","sameShareDifferentCase","powerdownInstalled","outsideCommunication","dockerImageOnDiskShare",
+		"dockerAppdataCacheOnly","disabledDisksPresent","missingDisksPresent","readErrorsPresent","fileSystemErrors","SSDinArray","pluginsUpToDate",
+		"incompatiblePackagesPresent","dockerUpToDate","dockerConfigUserShare","varLogFilled","dockerImageFull","rootfsFull","scheduledParityChecks",
+		"shareIncludeExcludeSet","shareIncludeExcludeSameDisk","UDmountedSlaveMode","supportedFileSystemCheck","FTPrunning","checkNotifications",
+		"blacklistedPluginsInstalled","unknownPluginInstalled","dockerAppsChangedPorts","illegalShareName","writeToDriveTest","flashDriveFull",
+		"cacheFloorTests","uncleanReboot","checkForHack","checkForModeration","pluginNotCompatible","checkWebUI","cacheOnlyNoCache",
+		"shareNameSameAsDiskName","noCPUscaling","extraParamInRepository","outOfMemory","callTrace","mceCheck","inotifyExhausted","nobodyCared",
+		"reiserCache","SSDcacheNoTrim","templateURLMissing","marvelControllerTest","breadTest","Ryzen63","lessThan2G","checkDockerCompatible",
+		"CPUoverheat","statsButNoPreclear"
+	);
+	foreach ($tests as $test) {
+		logger("Performing $test");
+		$test();
+	}
+		
 }
+
 
 if ( $ignored && ( $fixSettings['logIgnored'] != "yes") ) {
 	logger("Fix Common Problems: Ignored errors / warnings / other comments found, but not logged per user settings");
