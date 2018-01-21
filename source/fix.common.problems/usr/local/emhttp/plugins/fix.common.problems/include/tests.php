@@ -1000,6 +1000,7 @@ function HPApresent() {
 	foreach ($disks as $disk) {
 		if ( ! $disk['device'] ) { continue; }
 		if ( $disk['name'] == "flash" ) { continue; }
+		if ( ! startsWith($disk['name'],"parity") ) { continue; }  # only test for parity disks
 
 		if ( $fixSettings['disableSpinUp'] == "true" ) {
 			if ( stripos($disk['color'],"blink") ) {
@@ -1007,7 +1008,6 @@ function HPApresent() {
 			}
 		}
 		$deviceID = $disk['device'];
-
 		$command = "/sbin/hdparm -N /dev/$deviceID 2>&1";
 		unset($output);
 		exec($command,$output);
@@ -1016,7 +1016,7 @@ function HPApresent() {
 			if ( strpos($line,"questionable") ) { break; }
 			if ( strpos($line,"incorrect") ) { break; }
 			if ( strpos($line,"HPA is enabled") ) {
-				if ( $disk['name'] == "parity" ) {
+				if ( $disk['name'] == "parity" || $disk['name'] == "parity2" ) {
 					$func = "addError";
 				} else {
 					$func = "addOther";
