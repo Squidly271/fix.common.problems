@@ -816,7 +816,7 @@ function checkNotifications() {
 ###########################################
 
 function blacklistedPluginsInstalled() {
-	global $fixPaths, $fixSettings, $autoUpdateOverride, $developerMode, $communityApplicationsInstalled, $dockerRunning, $ignoreList, $shareList;
+	global $fixPaths, $fixSettings, $autoUpdateOverride, $developerMode, $communityApplicationsInstalled, $dockerRunning, $ignoreList, $shareList, $unRaidVersion;
 
 	$caModeration = readJsonFile($fixPaths['moderation']);
 	if ( $caModeration ) {
@@ -829,8 +829,8 @@ function blacklistedPluginsInstalled() {
 			if ( $caModeration[$pluginURL]['Blacklist'] ) {
 				addError("Blacklisted plugin <font color='purple'><b>$plugin</b></font>","This plugin has been blacklisted and should no longer be used due to the following reason(s): <font color='purple'><em><b>".$caModeration[$pluginURL]['ModeratorComment']."</b></em></font>  You should remove this plugin as its continued installation may cause adverse effects on your server.".addLinkButton("Plugins","/Plugins"));
 			}
-			if ( $caModeration[$pluginURL]['Deprecated'] ) {
-				addWarning("Deprecated plugin <font color='purple'><b>$plugin</b></font>","This plugin has been deprecate and should no longer be used due to the following reason(s): <font color='purple'><em><b>".$caModeration[$pluginURL]['ModeratorComment']."</b></em></font>  While this plugin should still be functional, it is no recommended to continue to use it.".addLinkButton("Plugins","/Plugins"));
+			if ( ($caModeration[$pluginURL]['Deprecated']) || ( $caModeration[$pluginURL]['DeprecatedMaxVer'] && version_compare($caModeration[$pluginURL]['DeprecatedMaxVer'],$unRaidVersion,"<") ) ) {
+				addWarning("Deprecated plugin <font color='purple'><b>$plugin</b></font>","This plugin has been deprecated and should no longer be used due to the following reason(s): <font color='purple'><em><b>".$caModeration[$pluginURL]['ModeratorComment']."</b></em></font>  While this plugin should still be functional, it is no recommended to continue to use it.".addLinkButton("Plugins","/Plugins"));
 			}
 		}
 	} else {
