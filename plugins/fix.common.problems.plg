@@ -2,8 +2,8 @@
 <!DOCTYPE PLUGIN [
 <!ENTITY name      "fix.common.problems">
 <!ENTITY author    "Andrew Zawadzki">
-<!ENTITY version   "2018.01.21">
-<!ENTITY md5       "e65436a2f73ad1d94fd8da07bd50a5af">
+<!ENTITY version   "2018.02.14">
+<!ENTITY md5       "20a6bf061367e98ea472e94a257e66cf">
 <!ENTITY launch    "Settings/FixProblems">
 <!ENTITY plugdir   "/usr/local/emhttp/plugins/&name;">
 <!ENTITY github    "Squidly271/fix.common.problems">
@@ -13,6 +13,10 @@
 <PLUGIN name="&name;" author="&author;" version="&version;" launch="&launch;" pluginURL="&pluginURL;">
 
 <CHANGES>
+###2018-02-14
+- Added: Check for mover logging enabled (recommended to be disabled)
+- Added: Check for zenstates installed on Ryzen CPU
+
 ###2018-01-18
 - Added: CPU Overheating causing throttle down test (May not work on all CPUs though)
 - Added: Statistics plugin installed, but Preclear plugin not installed (recommend to uninstall Statistics)

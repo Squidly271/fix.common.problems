@@ -168,6 +168,8 @@ if ( $troubleshooting ) {
 	checkDockerCompatible();
 	CPUoverheat();
 	statsButNoPreclear();
+	moverLogging();
+	zenStates();
 }
 
 if ( $ignored && ( $fixSettings['logIgnored'] != "yes") ) {

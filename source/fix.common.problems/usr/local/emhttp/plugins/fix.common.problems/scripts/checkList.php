@@ -88,6 +88,8 @@ $checkList = "
 * Incompatible docker applications installed
 * Check for CPU overheating
 * Check for Stats plugin installed, but Preclear Not installed
+* Mover logging enabled
+* Zenstates not running on Ryzen CPU
 
 <h2>Troubleshooting Mode</h2>
 
