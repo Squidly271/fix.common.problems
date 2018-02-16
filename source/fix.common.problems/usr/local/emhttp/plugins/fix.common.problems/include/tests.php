@@ -905,6 +905,12 @@ function dockerAppsChangedPorts() {
 				foreach ($allApps as $app) {
 					$support = $app['Support'] ? $app['Support'] : $app['Forum'];
 					if ( ($app['Repository'] === str_replace(":latest","",$dockerImage) ) || ($app['Repository'] === $dockerImage) ) {
+						if ( ! $app['Networking']['Mode'] ) {   # Fix for some lsio templates
+							$app['Networking']['Mode'] = $app['Network'];
+						}
+						if ( is_array($app['Networking']['Mode']) ) {
+							$app['Networking']['Mode'] = "Indeterminate";
+						}
 						$mode = strtolower($app['Networking']['Mode']);
 						if ( $mode != strtolower($dockerInstalled['NetworkMode']) ) {
 							addError("Docker Application <font color='purple'><b>".$dockerInstalled['Name']."</b></font> is currently set up to run in <font color='purple'><b>".$dockerInstalled['NetworkMode']."</b></font> mode","The template for this application specifies that the application should run in $mode mode.  <a href='$support' target='_blank'>Application Support Thread</a>  ".addLinkButton("Docker","/Docker"));
@@ -1711,7 +1717,7 @@ function zenStates() {
 	}
 	$output = exec("lscpu | grep Ryzen");
 	if ( $output ) {
-		$output = exec("cat /boot/config/go | grep zenstates");
+		$output = exec("cat /boot/config/go | grep  /usr/local/sbin/zenstates");
 		if ( ! $output ) {
 			addWarning("You have a Ryzen CPU, but <font color='purple']>Zenstates</font> not installed.","Adding zenstates to your 'go' file can improve the stability of your system.  See this thread for more details <a href='https://lime-technology.com/forums/topic/66327-unraid-os-version-641-stable-release-update-notes/' target='_blank'>6.4.1 Upgrade Notes</a>");
 		}

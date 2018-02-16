@@ -13,6 +13,10 @@
 <PLUGIN name="&name;" author="&author;" version="&version;" launch="&launch;" pluginURL="&pluginURL;">
 
 <CHANGES>
+###2018-02-16
+- Refined check for zenstates test
+- Certain template errors could cause a failure on Network mode set tests
+
 ###2018-02-14
 - Added: Check for mover logging enabled (recommended to be disabled)
 - Added: Check for zenstates installed on Ryzen CPU
