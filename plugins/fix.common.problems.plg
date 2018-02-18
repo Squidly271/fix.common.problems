@@ -2,8 +2,8 @@
 <!DOCTYPE PLUGIN [
 <!ENTITY name      "fix.common.problems">
 <!ENTITY author    "Andrew Zawadzki">
-<!ENTITY version   "2018.02.16">
-<!ENTITY md5       "7e2eea4d84ced87e661ef4770d033a9c">
+<!ENTITY version   "2018.02.18">
+<!ENTITY md5       "d00eb1e071b1446fee9a0e13d9c4b6ad">
 <!ENTITY launch    "Settings/FixProblems">
 <!ENTITY plugdir   "/usr/local/emhttp/plugins/&name;">
 <!ENTITY github    "Squidly271/fix.common.problems">
@@ -13,6 +13,11 @@
 <PLUGIN name="&name;" author="&author;" version="&version;" launch="&launch;" pluginURL="&pluginURL;">
 
 <CHANGES>
+###2018-02-18
+- Remove docker network mode test
+- Remove docker port changed test
+- Remove docker webUI link test
+
 ###2018-02-16
 - Refined check for zenstates test
 - Certain template errors could cause a failure on Network mode set tests

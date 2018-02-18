@@ -136,7 +136,7 @@ if ( $troubleshooting ) {
 	checkNotifications();
 	blacklistedPluginsInstalled();
 	unknownPluginInstalled();
-	dockerAppsChangedPorts();
+#	dockerAppsChangedPorts();
 	illegalShareName();
 	writeToDriveTest();
 	flashDriveFull();
@@ -146,7 +146,7 @@ if ( $troubleshooting ) {
 	checkForHack();
 	checkForModeration();
 	pluginNotCompatible();
-	checkWebUI();
+#	checkWebUI();
 	cacheOnlyNoCache();
 	shareNameSameAsDiskName();
 	noCPUscaling();

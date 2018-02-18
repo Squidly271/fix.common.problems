@@ -53,7 +53,6 @@ $checkList = "
 * Check for email server and recipient addresses set if email notifications are selected
 * Check for plugins installed being blacklisted
 * Check for plugins installed not being known to Community Applications (implies incompatible)
-* Check for docker applications installed and users changing Container ports from author default
 * Check for ad blocker's interfering with unRaid
 * Check for illegal characters in share names
 * Check for docker applications not running in the network mode template author specifies
@@ -66,7 +65,6 @@ $checkList = "
 * Check for Hack Attacks on your server
 * Check for Moderated / Blacklisted docker applications
 * Check for plugins incompatible for your unRaid version
-* Check for changed webUI on docker applications
 * Check for cache only shares, but no cache drive
 * Check for user shares named the same as a disk share
 * Check for CPU Scaling Driver installed
