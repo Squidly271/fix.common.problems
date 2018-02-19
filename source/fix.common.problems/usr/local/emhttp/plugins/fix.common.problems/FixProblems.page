@@ -205,11 +205,7 @@ $(function() {
   }
   
   if ($('.adsitem').length==0 || $('.adsitem').css('display')=='none') {
-/*     myAlert("Ad Blocker Detected","Ad blockers under certain circumstances can interfere with the displaying of information from unRaid.  You will need to &quot;white-list&quot; your server with your ad blocker program.","","",false,false,true,"error");   
- */
-  alert("Ad blocker detected.  Ad blockers can interfere with the GUI of unRaid, and it is recommended to whitelist your server in the ad-blocker settings");
-  } else {
-    myCloseAlert();
+    alert("Ad blocker detected.  Ad blockers can interfere with the GUI of unRaid, and it is recommended to whitelist your server in the ad-blocker settings");
   }
   $.post(URL,{action:'getTimeStamp'},function(data) {
     if (data) {
