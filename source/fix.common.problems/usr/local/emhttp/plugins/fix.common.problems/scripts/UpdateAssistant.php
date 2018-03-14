@@ -1,14 +1,17 @@
 #!/usr/bin/php
 <?PHP
+require_once("/usr/local/emhttp/plugins/dynamix.plugin.manager/include/PluginHelpers.php");
+
 echo "Disclaimer:  This script is NOT definitive.  There may be other issues with your server that will affect compatibility.\n\n";
 
 $currentUnRaidVersion = parse_ini_file("/etc/unraid-version");
-if ( version_compare($currentUnRaidVersion,"6.3.5","<=") ) {
-	exec("plugin check /var/log/unRAIDServer.plg");
+if ( version_compare($currentUnRaidVersion['version'],"6.3.5","<=") ) {
+	plugin("check","/var/log/unRAIDServer.plg");
+	
 } else {
-	exec("plugin checkos");
+	plugin("checkos");
 }
-$newUnRaidVersion = exec("plugin version /tmp/plugins/unRAIDServer.plg");
+$newUnRaidVersion = plugin("version","/tmp/plugins/unRAIDServer.plg");
 echo "<font color='blue'>Current unRaid Version: {$currentUnRaidVersion['version']}   Upgrade unRaid Version: $newUnRaidVersion</font>\n\n";
 
 if ( version_compare($newUnRaidVersion,$currentUnRaidVersion['version'],"=") ) {
@@ -35,13 +38,14 @@ if ( $disks['cache']['status'] == "DISK_OK" ) {
 }
 #check for plugins up to date
 echo "\nChecking for plugin updates\n";
-exec("plugin checkall > /dev/null 2>&1");
+plugin("checkall");
 $installedPlugs = glob("/tmp/plugins/*.plg");
 foreach ($installedPlugs as $installedPlg) {
-	$updateVer = exec("plugin version ".escapeshellarg($installedPlg));
-	$installedVer = exec("plugin version ".escapeshellarg("/boot/config/plugins/".basename($installedPlg)));
+	if ( basename($installedPlg) == "unRAIDServer.plg" ) { continue; }
+	$updateVer = plugin("version",$installedPlg);
+	$installedVer = plugin("version","/boot/config/plugins/".basename($installedPlg));
 	if (version_compare($updateVer,$installedVer,">")) {
-		$pluginName = exec("plugin name ".escapeshellarg($installedPlg));
+		$pluginName = plugin("name",$installedPlg);
 		ISSUE(basename($installedPlg)." ($pluginName) is not up to date.  It is recommended to update all your plugins.");
 		$updateFlag = true;
 	}
@@ -116,7 +120,7 @@ echo "\nChecking installed RAM\n";
 $file = trim(str_replace("MemTotal:","",exec("cat /proc/meminfo | grep MemTotal:")));
 $raw = explode(" ",$file);
 	
-if ($raw[0] < 3500000 ) {
+if ($raw[0] < 3000000 ) {
 	ISSUE("The functional minimum of memory for unRaid is 4G as a very basic NAS.  You will need to increase your memory");
 } else {
 	OK("You have 4+ Gig of memory");
