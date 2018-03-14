@@ -1,0 +1,16 @@
+Menu="About"
+Title="Update Assistant"
+---
+This script is part of Fix Common Problems
+
+These tests, while not definitive will give you recommendations on what you should do prior to updating your unRaid OS.  The tests are run against what the available update for unRaid expects and/or wants.
+
+There may also be perfectly valid use-cases for any issues that this script finds.
+
+<input type='button' value='Run Tests' onclick='runUpdateTests();'>
+
+<script>
+function runUpdateTests() {
+	openBox('/plugins/fix.common.problems/scripts/UpdateAssistant.sh','Update Assistant',600,900,true);
+}
+</script>
