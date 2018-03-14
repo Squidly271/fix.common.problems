@@ -6,7 +6,8 @@ echo "Disclaimer:  This script is NOT definitive.  There may be other issues wit
 
 $currentUnRaidVersion = parse_ini_file("/etc/unraid-version");
 if ( version_compare($currentUnRaidVersion['version'],"6.3.5","<=") ) {
-	plugin("check","/var/log/unRAIDServer.plg");
+	plugin("checkall");
+	$unRaid635 = "true";
 	
 } else {
 	plugin("checkos");
@@ -38,7 +39,9 @@ if ( $disks['cache']['status'] == "DISK_OK" ) {
 }
 #check for plugins up to date
 echo "\nChecking for plugin updates\n";
-plugin("checkall");
+if ( ! $unRaid635 ) {
+	exec("plugin checkall");
+}
 $installedPlugs = glob("/tmp/plugins/*.plg");
 foreach ($installedPlugs as $installedPlg) {
 	if ( basename($installedPlg) == "unRAIDServer.plg" ) { continue; }
