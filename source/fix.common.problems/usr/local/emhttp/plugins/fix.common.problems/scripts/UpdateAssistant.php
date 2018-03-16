@@ -40,7 +40,7 @@ if ( $disks['cache']['status'] == "DISK_OK" ) {
 #check for plugins up to date
 echo "\nChecking for plugin updates\n";
 if ( ! $unRaid635 ) {
-#	exec("plugin checkall");
+	exec("plugin checkall");
 }
 $installedPlugs = glob("/tmp/plugins/*.plg");
 foreach ($installedPlugs as $installedPlg) {
