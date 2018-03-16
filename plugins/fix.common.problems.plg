@@ -2,8 +2,8 @@
 <!DOCTYPE PLUGIN [
 <!ENTITY name      "fix.common.problems">
 <!ENTITY author    "Andrew Zawadzki">
-<!ENTITY version   "2018.03.14b">
-<!ENTITY md5       "ed34f1d73075f17d61beb0e39512d522">
+<!ENTITY version   "2018.03.15">
+<!ENTITY md5       "437e94900ffdde58f0dadb622920083a">
 <!ENTITY launch    "Settings/FixProblems">
 <!ENTITY plugdir   "/usr/local/emhttp/plugins/&name;">
 <!ENTITY github    "Squidly271/fix.common.problems">
@@ -13,6 +13,9 @@
 <PLUGIN name="&name;" author="&author;" version="&version;" launch="&launch;" pluginURL="&pluginURL;">
 
 <CHANGES>
+###2018-03-15
+- Additional tests and fixes on Update Assistant
+
 ###2018-03-14
 - Add in an Update Assistant to check for compatibility prior to updating the unRaid OS
 

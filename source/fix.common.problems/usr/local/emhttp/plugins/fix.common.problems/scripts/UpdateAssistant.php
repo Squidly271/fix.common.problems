@@ -30,7 +30,7 @@ if ( $disks['cache']['status'] == "DISK_OK" ) {
 	$line = preg_replace('!\s+!',' ',$output);
 	$contents = explode(" ",$line);
   if ( $contents[1] != "64" ) {
-		ISSUE("Cache drive partition doesn't start on sector 64.  You will have problems.  See here https://lime-technology.com/forums/topic/46802-faq-for-unraid-v6/?tab=comments#comment-511923 for how to fix this.");
+		ISSUE("Cache drive partition doesn't start on sector 64.  You will have problems.  See here https://lime-technology.com/forums/topic/46802-faq-for-unraid-v6/?tab=comments#comment-511923 for how to fix this.   NOTE: Currently there may be false positives associated with this test");
 	} else {
 		OK("Cache drive partition starts on sector 64");
 	}
@@ -40,14 +40,14 @@ if ( $disks['cache']['status'] == "DISK_OK" ) {
 #check for plugins up to date
 echo "\nChecking for plugin updates\n";
 if ( ! $unRaid635 ) {
-	exec("plugin checkall");
+#	exec("plugin checkall");
 }
 $installedPlugs = glob("/tmp/plugins/*.plg");
 foreach ($installedPlugs as $installedPlg) {
 	if ( basename($installedPlg) == "unRAIDServer.plg" ) { continue; }
 	$updateVer = plugin("version",$installedPlg);
 	$installedVer = plugin("version","/boot/config/plugins/".basename($installedPlg));
-	if (version_compare($updateVer,$installedVer,">")) {
+	if (strcasecmp($updateVer,$installedVer) > 0) {
 		$pluginName = plugin("name",$installedPlg);
 		ISSUE(basename($installedPlg)." ($pluginName) is not up to date.  It is recommended to update all your plugins.");
 		$updateFlag = true;
@@ -61,22 +61,43 @@ if ( ! $updateFlag ) {
 echo "\nChecking for plugin compatibility\n";
 
 $moderation = download_json("https://raw.githubusercontent.com/Squidly271/Community-Applications-Moderators/master/Moderation.json","/tmp/upgradeAssistantModeration.json");
+$appfeed = download_json("https://tools.linuxserver.io/unraid-docker-templates.json","/tmp/upgradeAssistantAppfeed.json");
 
 foreach ($installedPlugs as $installedPlg) {
 	$pluginURL = exec("plugin pluginURL ".escapeshellarg($installedPlg));
 	if ( $moderation[$pluginURL]['MaxVer'] ) {
 		if ( version_compare($newUnRaidVersion,$moderation[$pluginURL]['MaxVer'],">") ) {
 			$pluginName = exec("plugin name ".escapeshellarg($installedPlg));
-			ISSUE(basename($installedPlg)." ($pluginName) is not compatible with $newUnRaidVersion.  It is HIGHLY recommended to uninstall this plugin");
+			ISSUE(basename($installedPlg)." ($pluginName) is not compatible with $newUnRaidVersion.  It is HIGHLY recommended to uninstall this plugin. {$moderation[$pluginURL]['ModeratorComment']}");
 			$versionsFlag = true;
 		}
 	}
 	if ( $moderation[$pluginURL]['DeprecatedMaxVer'] ) {
 		if ( version_compare($newUnRaidVersion,$moderation[$pluginURL]['DeprecatedMaxVer'],">") ) {
 			$pluginName = exec("plugin name ".escapeshellarg($installedPlg));
-			ISSUE(basename($installedPlg)." ($pluginName) is deprecated with $newUnRaidVersion.  It is recommended to uninstall this plugin");
+			ISSUE(basename($installedPlg)." ($pluginName) is deprecated with $newUnRaidVersion.  It is recommended to uninstall this plugin. {$moderation[$pluginURL]['ModeratorComment']}");
 			$versionsFlag = true;
 		}
+	}
+	if ( filter_var($moderation[$pluginURL]['Deprecated'],FILTER_VALIDATE_BOOLEAN) ) {
+		ISSUE(basename($installedPlg)." ($pluginName) is deprecated for ALL unRaid versions.  This does not necessarily mean you will have any issues with the plugin, but there are no guarantees.  It is recommended to uninstall the plugin");
+		$versionsFlag = true;
+	}
+	$foundAppFlag = false;
+	if ( basename($installedPlg) != "unRAIDServer.plg" ) {
+		foreach ( $appfeed['applist'] as $template ) {
+			if ( ! $template['Plugin'] ) {
+				continue;
+			}
+			$template['PluginURL'] = str_replace("raw.github.com","raw.githubusercontent.com",$template['PluginURL']);
+			if ( $pluginURL == $template['PluginURL'] ) {
+				$foundAppFlag = true;
+				break;
+			}
+		}
+		if ( ! $foundAppFlag ) {
+			ISSUE(basename($installedPlg)." ($pluginName) is not known to Community Applications.  Compatibility for this plugin CANNOT be determined and it may cause you issues.");
+		}		
 	}
 }
 if ( ! $versionsFlag ) {
@@ -100,7 +121,7 @@ $output = exec("lscpu | grep Ryzen");
 if ( $output ) {
 	$output = exec("cat /boot/config/go | grep  /usr/local/sbin/zenstates");
 	if ( ! $output ) {
-		ISSUE("zenstates is not loading withing /boot/config/go  See here: https://lime-technology.com/forums/topic/66327-unraid-os-version-641-stable-release-update-notes/");
+		ISSUE("zenstates is not loading within /boot/config/go  See here: https://lime-technology.com/forums/topic/66327-unraid-os-version-641-stable-release-update-notes/");
 	}
 } else {
 	OK("Ryzen CPU not detected");
@@ -143,6 +164,50 @@ if ( ! is_file("/boot/config/plugins/fix.common.problems.plg") ) {
 	}
 }
 	
+# Check for valid NETBIOS name
+echo "\nChecking for valid NETBIOS name\n";
+$identity = parse_ini_file("/boot/config/ident.cfg");
+if ( strlen($identity['NAME']) > 15 ) {
+	ISSUE("Server Name is not NETBIOS compliant (greater than 15 characters)  You may have trouble accessing your server.  Change in Settings - Identity");
+	$netBIOSflag = true;
+}
+$testName = preg_replace("/[a-zA-Z0-9.-]/","",$identity['NAME']);
+if ( $testName ) {
+	ISSUE("Server Name contains invalid characters for NETBIOS - Only 'A-Z', 'a-z', and '0-9'), dashes ('-'), and dots ('.') are allowed.  You may have trouble accessing your server.  Change in Settings - Identity");
+	$netBIOSflag = true;
+}
+if ( ! $netBIOSflag ) {
+	OK("NETBIOS server name is compliant.");
+}
+	
+# Check for ancient dynamix.plg
+echo "\nChecking for ancient version of dynamix.plg\n";
+if ( is_file("/boot/config/plugins/dynamix.plg") ) {
+	if ( filemtime("/boot/config/plugins/dynamix.plg") < 1451606400 ) {  # Jan 1, 2016 
+		ISSUE("Ancient version of dynamix.plg found.  You may have issues.  Recommended to delete dynamix.plg from /config/plugins on the flash drive");
+	} else {
+		OK("Dynamix plugin timestamp");
+	}
+} else {
+	OK("Dynamix plugin not found");
+}
+
+# Check for VM DomainDir / MediaDir set to be /mnt
+echo "\nChecking for VM MediaDir / DomainDir set to be /mnt\n";
+$domainCFG = parse_ini_file("/boot/config/domain.cfg");
+if ($domainCFG['SERVICE'] != "enable") {
+	OK("VMs are not enabled");
+} else {
+	$domaindir = str_replace("/mnt","",$domainCFG['DOMAINDIR']);
+	$mediadir = str_replace("/mnt","",$domainCFG['MEDIADIR']);
+	$domaindir = str_replace("/","",$domaindir);
+	$mediadir = str_replace("/","",$mediadir);
+	if ( ! $domaindir || ! $mediadir) {
+		ISSUE("Either domain directory or ISO directory is set to be /mnt.  Your VMs will not properly start up.  Fix in Settings - VM Settings");
+	} else {
+		OK("VM domain directory and ISO directory not set to be /mnt");
+	}
+}
 
 
 if ($ISSUES_FOUND) {
