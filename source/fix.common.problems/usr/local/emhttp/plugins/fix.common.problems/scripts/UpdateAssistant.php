@@ -52,6 +52,7 @@ if ( ! $unRaid635 ) {
 $installedPlugs = glob("/tmp/plugins/*.plg");
 foreach ($installedPlugs as $installedPlg) {
 	if ( basename($installedPlg) == "unRAIDServer.plg" ) { continue; }
+	if ( basename($installedPlg) == "unRAIDServer-.plg") { continue; }
 	$updateVer = plugin("version",$installedPlg);
 	$installedVer = plugin("version","/boot/config/plugins/".basename($installedPlg));
 	if (strcasecmp($updateVer,$installedVer) > 0) {
@@ -74,6 +75,8 @@ if ( ! $appfeed ) {
 	echo "<font color='orange'>Unable to check</font>\n";
 } else {
 	foreach ($installedPlugs as $installedPlg) {
+		if ( basename($installedPlg) == "unRAIDServer.plg" ) { continue; }
+		if ( basename($installedPlg) == "unRAIDServer-.plg") { continue; }
 		$pluginURL = plugin("pluginURL",$installedPlg);
 		if ( $moderation[$pluginURL]['MaxVer'] ) {
 			if ( version_compare($newUnRaidVersion,$moderation[$pluginURL]['MaxVer'],">") ) {
@@ -177,7 +180,7 @@ if ( ! is_file("/boot/config/plugins/fix.common.problems.plg") ) {
 	
 # Check for valid NETBIOS name
 echo "\nChecking for valid NETBIOS name\n";
-$identity = parse_ini_file("/boot/config/ident.cfg");
+$identity = @parse_ini_file("/boot/config/ident.cfg");
 if ( strlen($identity['NAME']) > 15 ) {
 	ISSUE("Server Name is not NETBIOS compliant (greater than 15 characters)  You may have trouble accessing your server.  Change in Settings - Identity");
 	$netBIOSflag = true;
@@ -205,7 +208,7 @@ if ( is_file("/boot/config/plugins/dynamix.plg") ) {
 
 # Check for VM DomainDir / MediaDir set to be /mnt
 echo "\nChecking for VM MediaDir / DomainDir set to be /mnt\n";
-$domainCFG = parse_ini_file("/boot/config/domain.cfg");
+$domainCFG = @parse_ini_file("/boot/config/domain.cfg");
 if ($domainCFG['SERVICE'] != "enable") {
 	OK("VMs are not enabled");
 } else {
@@ -220,6 +223,18 @@ if ($domainCFG['SERVICE'] != "enable") {
 	}
 }
 
+# check for mover logging enabled
+echo "\nChecking for mover logging enabled\n";
+if ( is_dir("/mnt/cache") ) {
+	$iniFile = @parse_ini_file("/boot/config/share.cfg",true);
+	if ( strtolower($iniFile['shareMoverLogging']) == "yes" ) {
+		echo "<font color='orange'>Mover logging is enabled.  While this isn't an issue, it is now recommended to disable this setting on all versions of unRaid.  You can do this in Settings - Schedule - Mover Schedule.</font>\n";
+	} else {
+		OK("Mover logging not enabled");
+	}
+} else {
+	OK("Cache drive not installed");
+}
 
 if ($ISSUES_FOUND) {
 	echo "\n\n<font color='red'>Issues have been found with your server that may hinder the OS upgrade.  You should rectify those problems before upgrading</font>\n";
