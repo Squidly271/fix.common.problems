@@ -1703,7 +1703,7 @@ function moverLogging() {
 
 	if ( ! is_dir("/mnt/cache") ) { return; }
 	
-	$iniFile = parse_ini_file("/boot/config/share.cfg",true);
+	$iniFile = @parse_ini_file("/boot/config/share.cfg",true);
   if ( strtolower($iniFile['shareMoverLogging']) == "yes" ) {
 		addOther("Mover logging is <font color='purple'>enabled</font>","It is generally recommended to disable mover logging as unless there are problems with the moving, it performs no useful function and merely fills up the syslog and makes other issues harder to diagnose.   Disable it here: ".addLinkButton("Scheduler","/Settings/Scheduler")."  (Go To Mover Settings)");
   }
