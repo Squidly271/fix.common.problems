@@ -26,13 +26,20 @@ echo "Checking cache drive partitioning\n";
 $disks = parse_ini_file("/var/local/emhttp/disks.ini",true);
 if ( $disks['cache']['status'] == "DISK_OK" ) {
 	$cacheDevice = $disks['cache']['device'];
-	$output = exec("fdisk -l /dev/$cacheDevice | grep /dev/{$cacheDevice}1");
-	$line = preg_replace('!\s+!',' ',$output);
-	$contents = explode(" ",$line);
-  if ( $contents[1] != "64" ) {
-		ISSUE("Cache drive partition doesn't start on sector 64.  You will have problems.  See here https://lime-technology.com/forums/topic/46802-faq-for-unraid-v6/?tab=comments#comment-511923 for how to fix this.   NOTE: Currently there may be false positives associated with this test");
+	$output = trim(exec("fdisk -l /dev/$cacheDevice | grep /dev/{$cacheDevice}1"));
+	if ( ! $output ) {
+		$output = trim(exec("fdisk -l /dev/$cacheDevice | grep /dev/{$cacheDevice}p1"));
+	}
+	if ( ! $output ) {
+		echo "<font color='orange'>Unknown: Could not determine</font>\n";
 	} else {
-		OK("Cache drive partition starts on sector 64");
+		$line = preg_replace('!\s+!',' ',$output);
+		$contents = explode(" ",$line);
+		if ( $contents[1] != "64" ) {
+			ISSUE("Cache drive partition doesn't start on sector 64.  You will have problems.  See here https://lime-technology.com/forums/topic/46802-faq-for-unraid-v6/?tab=comments#comment-511923 for how to fix this.   NOTE: Currently there may be false positives associated with this test");
+		} else {
+			OK("Cache drive partition starts on sector 64");
+		}
 	}
 } else {
 	OK("Cache drive not present");
