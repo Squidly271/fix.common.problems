@@ -36,7 +36,7 @@ if ( $disks['cache']['status'] == "DISK_OK" ) {
 		$line = preg_replace('!\s+!',' ',$output);
 		$contents = explode(" ",$line);
 		if ( $contents[1] != "64" ) {
-			ISSUE("Cache drive partition doesn't start on sector 64.  You will have problems.  See here https://lime-technology.com/forums/topic/46802-faq-for-unraid-v6/?tab=comments#comment-511923 for how to fix this.   NOTE: Currently there may be false positives associated with this test");
+			ISSUE("Cache drive partition doesn't start on sector 64.  You will have problems.  See here https://lime-technology.com/forums/topic/46802-faq-for-unraid-v6/?tab=comments#comment-511923 for how to fix this.");
 		} else {
 			OK("Cache drive partition starts on sector 64");
 		}
@@ -70,45 +70,49 @@ echo "\nChecking for plugin compatibility\n";
 $moderation = download_json("https://raw.githubusercontent.com/Squidly271/Community-Applications-Moderators/master/Moderation.json","/tmp/upgradeAssistantModeration.json");
 $appfeed = download_json("https://tools.linuxserver.io/unraid-docker-templates.json","/tmp/upgradeAssistantAppfeed.json");
 
-foreach ($installedPlugs as $installedPlg) {
-	$pluginURL = exec("plugin pluginURL ".escapeshellarg($installedPlg));
-	if ( $moderation[$pluginURL]['MaxVer'] ) {
-		if ( version_compare($newUnRaidVersion,$moderation[$pluginURL]['MaxVer'],">") ) {
-			$pluginName = exec("plugin name ".escapeshellarg($installedPlg));
-			ISSUE(basename($installedPlg)." ($pluginName) is not compatible with $newUnRaidVersion.  It is HIGHLY recommended to uninstall this plugin. {$moderation[$pluginURL]['ModeratorComment']}");
-			$versionsFlag = true;
-		}
-	}
-	if ( $moderation[$pluginURL]['DeprecatedMaxVer'] ) {
-		if ( version_compare($newUnRaidVersion,$moderation[$pluginURL]['DeprecatedMaxVer'],">") ) {
-			$pluginName = exec("plugin name ".escapeshellarg($installedPlg));
-			ISSUE(basename($installedPlg)." ($pluginName) is deprecated with $newUnRaidVersion.  It is recommended to uninstall this plugin. {$moderation[$pluginURL]['ModeratorComment']}");
-			$versionsFlag = true;
-		}
-	}
-	if ( filter_var($moderation[$pluginURL]['Deprecated'],FILTER_VALIDATE_BOOLEAN) ) {
-		ISSUE(basename($installedPlg)." ($pluginName) is deprecated for ALL unRaid versions.  This does not necessarily mean you will have any issues with the plugin, but there are no guarantees.  It is recommended to uninstall the plugin");
-		$versionsFlag = true;
-	}
-	$foundAppFlag = false;
-	if ( basename($installedPlg) != "unRAIDServer.plg" ) {
-		foreach ( $appfeed['applist'] as $template ) {
-			if ( ! $template['Plugin'] ) {
-				continue;
-			}
-			$template['PluginURL'] = str_replace("raw.github.com","raw.githubusercontent.com",$template['PluginURL']);
-			if ( $pluginURL == $template['PluginURL'] ) {
-				$foundAppFlag = true;
-				break;
+if ( ! $appfeed ) {
+	echo "<font color='orange'>Unable to check</font>\n";
+} else {
+	foreach ($installedPlugs as $installedPlg) {
+		$pluginURL = plugin("pluginURL",$installedPlg);
+		if ( $moderation[$pluginURL]['MaxVer'] ) {
+			if ( version_compare($newUnRaidVersion,$moderation[$pluginURL]['MaxVer'],">") ) {
+				$pluginName = plugin("name",$installedPlg);
+				ISSUE(basename($installedPlg)." ($pluginName) is not compatible with $newUnRaidVersion.  It is HIGHLY recommended to uninstall this plugin. {$moderation[$pluginURL]['ModeratorComment']}");
+				$versionsFlag = true;
 			}
 		}
-		if ( ! $foundAppFlag ) {
-			ISSUE(basename($installedPlg)." ($pluginName) is not known to Community Applications.  Compatibility for this plugin CANNOT be determined and it may cause you issues.");
-		}		
+		if ( $moderation[$pluginURL]['DeprecatedMaxVer'] ) {
+			if ( version_compare($newUnRaidVersion,$moderation[$pluginURL]['DeprecatedMaxVer'],">") ) {
+				$pluginName = plugin("name",$installedPlg);
+				ISSUE(basename($installedPlg)." ($pluginName) is deprecated with $newUnRaidVersion.  It is recommended to uninstall this plugin. {$moderation[$pluginURL]['ModeratorComment']}");
+				$versionsFlag = true;
+			}
+		}
+		if ( filter_var($moderation[$pluginURL]['Deprecated'],FILTER_VALIDATE_BOOLEAN) ) {
+			ISSUE(basename($installedPlg)." ($pluginName) is deprecated for ALL unRaid versions.  This does not necessarily mean you will have any issues with the plugin, but there are no guarantees.  It is recommended to uninstall the plugin");
+			$versionsFlag = true;
+		}
+		$foundAppFlag = false;
+		if ( basename($installedPlg) != "unRAIDServer.plg" ) {
+			foreach ( $appfeed['applist'] as $template ) {
+				if ( ! $template['Plugin'] ) {
+					continue;
+				}
+				$template['PluginURL'] = str_replace("raw.github.com","raw.githubusercontent.com",$template['PluginURL']);
+				if ( $pluginURL == $template['PluginURL'] ) {
+					$foundAppFlag = true;
+					break;
+				}
+			}
+			if ( ! $foundAppFlag ) {
+				ISSUE(basename($installedPlg)." ($pluginName) is not known to Community Applications.  Compatibility for this plugin CANNOT be determined and it may cause you issues.");
+			}		
+		}
 	}
-}
-if ( ! $versionsFlag ) {
-	OK("All plugins are compatible");
+	if ( ! $versionsFlag ) {
+		OK("All plugins are compatible");
+	}
 }
 
 # Check for extra parameters on emhttp executable

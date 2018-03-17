@@ -2,8 +2,8 @@
 <!DOCTYPE PLUGIN [
 <!ENTITY name      "fix.common.problems">
 <!ENTITY author    "Andrew Zawadzki">
-<!ENTITY version   "2018.03.16">
-<!ENTITY md5       "fb24a205f9ddac91756aa8f45120350f">
+<!ENTITY version   "2018.03.17">
+<!ENTITY md5       "3054cbf54073a75282f3ff58aeac6dba">
 <!ENTITY launch    "Settings/FixProblems">
 <!ENTITY plugdir   "/usr/local/emhttp/plugins/&name;">
 <!ENTITY github    "Squidly271/fix.common.problems">
@@ -13,6 +13,9 @@
 <PLUGIN name="&name;" author="&author;" version="&version;" launch="&launch;" pluginURL="&pluginURL;">
 
 <CHANGES>
+###2018-03-17
+- Fix compatibility with unRaid 6.3.5
+
 ###2018-03-16
 - Fix partition start test for nvme drives
 
