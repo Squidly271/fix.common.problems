@@ -2,8 +2,8 @@
 <!DOCTYPE PLUGIN [
 <!ENTITY name      "fix.common.problems">
 <!ENTITY author    "Andrew Zawadzki">
-<!ENTITY version   "2018.03.17a">
-<!ENTITY md5       "cfa14a7ed3a8ec180fb75e2fc57a4ff4">
+<!ENTITY version   "2018.03.21">
+<!ENTITY md5       "6d730e69c1ff7cfffdf012fa62472e27">
 <!ENTITY launch    "Settings/FixProblems">
 <!ENTITY plugdir   "/usr/local/emhttp/plugins/&name;">
 <!ENTITY github    "Squidly271/fix.common.problems">
@@ -13,6 +13,9 @@
 <PLUGIN name="&name;" author="&author;" version="&version;" launch="&launch;" pluginURL="&pluginURL;">
 
 <CHANGES>
+###2018-03-21
+- Add in checks against either stable or next branch
+
 ###2018-03-17a
 - Fix compatibility against branch Next when no next branch exists
 - Suppress warning if Settings - Global Share settings have never been changed

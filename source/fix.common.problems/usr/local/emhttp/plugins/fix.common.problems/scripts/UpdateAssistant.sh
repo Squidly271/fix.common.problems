@@ -1,3 +1,3 @@
 #!/bin/bash
-/usr/local/emhttp/plugins/fix.common.problems/scripts/UpdateAssistant.php
+/usr/local/emhttp/plugins/fix.common.problems/scripts/UpdateAssistant.php $1
 

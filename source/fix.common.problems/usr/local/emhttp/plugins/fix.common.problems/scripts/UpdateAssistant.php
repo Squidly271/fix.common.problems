@@ -2,21 +2,33 @@
 <?PHP
 require_once("/usr/local/emhttp/plugins/dynamix.plugin.manager/include/PluginHelpers.php");
 
+$nextBranch = ( $argv[1] == "next" );
+
 echo "Disclaimer:  This script is NOT definitive.  There may be other issues with your server that will affect compatibility.\n\n";
 
 $currentUnRaidVersion = parse_ini_file("/etc/unraid-version");
+@unlink("/tmp/plugins/unRAIDServer-.plg");
 if ( version_compare($currentUnRaidVersion['version'],"6.3.5","<=") ) {
 	plugin("checkall");
 	$unRaid635 = "true";
-	
 } else {
-	plugin("checkos");
+	if ( $nextBranch ) {
+		exec("/usr/local/emhttp/plugins/fix.common.problems/scripts/checkNext.php next");
+	} else {
+		exec("/usr/local/emhttp/plugins/fix.common.problems/scripts/checkNext.php stable");
+	}
 }
-$newUnRaidVersion = plugin("version","/tmp/plugins/unRAIDServer.plg");
-echo "<font color='blue'>Current unRaid Version: {$currentUnRaidVersion['version']}   Upgrade unRaid Version: $newUnRaidVersion</font>\n\n";
+
+if ( is_file("/tmp/plugins/unRAIDServer-.plg") ) {
+	$newUnRaidVersion = plugin("version","/tmp/plugins/unRAIDServer-.plg");
+} else {
+	$newUnRaidVersion = plugin("version","/tmp/plugins/unRAIDServer.plg");
+}
+$downgrade = version_compare($newUnRaidVersion,$currentUnRaidVersion['version'],"<") ? "Downgrade" : "Upgrade";
+echo "<font color='blue'>Current unRaid Version: {$currentUnRaidVersion['version']}   $downgrade unRaid Version: $newUnRaidVersion</font>\n\n";
 
 if ( version_compare($newUnRaidVersion,$currentUnRaidVersion['version'],"=") ) {
-	echo "NOTE: You are currently running the latest version of unRaid.  To check compatibility against the 'next' branch of unRaid, go to Upgrade OS and select 'Next' branch and then re-run these tests\n\n";
+	echo "NOTE: You are currently running the latest version of unRaid.  \n\n";
 }
 
 # MAIN
