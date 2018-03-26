@@ -33,11 +33,11 @@ if ( version_compare($newUnRaidVersion,$currentUnRaidVersion['version'],"=") ) {
 
 # MAIN
 $unRaid63 = version_compare($currentUnRaidVersion['version'],"6.4.0-rc1","<");
-
+$disks = parse_ini_file("/var/local/emhttp/disks.ini",true);
 # Check for correct starting sector on the partition for cache drive
 if ( $unRaid63 ) {
 	echo "Checking cache drive partitioning\n";
-	$disks = parse_ini_file("/var/local/emhttp/disks.ini",true);
+
 	if ( $disks['cache']['status'] == "DISK_OK" ) {
 		$cacheDevice = $disks['cache']['device'];
 		$output = trim(exec("fdisk -l /dev/$cacheDevice | grep /dev/{$cacheDevice}1"));
