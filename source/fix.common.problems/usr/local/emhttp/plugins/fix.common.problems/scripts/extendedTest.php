@@ -31,7 +31,9 @@ function echoResult($string) {
   global $fixPaths;
   
   echo $string;
-  file_put_contents($fixPaths['extendedLog'],$string,FILE_APPEND);
+	$string = str_replace("\n","<br>",$string);
+	$string = str_replace(" ","&nbsp;",$string);
+  file_put_contents($fixPaths['extendedLog'],"<tt>$string</tt>",FILE_APPEND);
 }
 
 

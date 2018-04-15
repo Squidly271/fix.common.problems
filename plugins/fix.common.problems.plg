@@ -2,8 +2,8 @@
 <!DOCTYPE PLUGIN [
 <!ENTITY name      "fix.common.problems">
 <!ENTITY author    "Andrew Zawadzki">
-<!ENTITY version   "2018.03.25a">
-<!ENTITY md5       "805228e738e8b3e00bd1fe368b70ef7d">
+<!ENTITY version   "2018.04.15">
+<!ENTITY md5       "28dcd6041aa6aa31bc368de59b7d7d3b">
 <!ENTITY launch    "Settings/FixProblems">
 <!ENTITY plugdir   "/usr/local/emhttp/plugins/&name;">
 <!ENTITY github    "Squidly271/fix.common.problems">
@@ -13,6 +13,9 @@
 <PLUGIN name="&name;" author="&author;" version="&version;" launch="&launch;" pluginURL="&pluginURL;">
 
 <CHANGES>
+###2018-04-14
+- Change extended test output
+
 ###2018-03-25
 - Remove test for partition if already running 6.4+
 

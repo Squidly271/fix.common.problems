@@ -371,7 +371,7 @@ function showCredits() {
 > Troubleshooting mode will add start a process to continually save your syslog, automatically run diagnostics every half hour, and run a subset of these tests every ten minutes.  Useful for diagnosing random crashes, etc.
 
 <span id='userOnly'>
-<input type='button' id='extendedTest' value='Run Extended Test' onclick='extendedTest();'><input type='button' value='View Results' id='extendedLog' onclick='openBox("/plugins/fix.common.problems/scripts/showExtendedLog.sh","Extended Test Results",550,550)';> <font color='red'>Status:</font> <font color='green'> <span id='extendedStatus'></span></font>
+<input type='button' id='extendedTest' value='Run Extended Test' onclick='extendedTest();'><a href='/plugins/fix.common.problems/scripts/showExtendedLog.php' target='_blank'><input type='button' value='View Results' id='extendedLog';></a> <font color='red'>Status:</font> <font color='green'> <span id='extendedStatus'></span></font>
 > Extended tests will perform more tests on every file in the array.
 </span>
 <center><b>Time of last scan: <span id='timestamp'></span></center></b>
