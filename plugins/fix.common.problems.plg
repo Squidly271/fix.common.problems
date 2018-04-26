@@ -2,8 +2,8 @@
 <!DOCTYPE PLUGIN [
 <!ENTITY name      "fix.common.problems">
 <!ENTITY author    "Andrew Zawadzki">
-<!ENTITY version   "2018.04.15">
-<!ENTITY md5       "28dcd6041aa6aa31bc368de59b7d7d3b">
+<!ENTITY version   "2018.04.25">
+<!ENTITY md5       "4b1d8170ec99edfcb42a60b37ea55316">
 <!ENTITY launch    "Settings/FixProblems">
 <!ENTITY plugdir   "/usr/local/emhttp/plugins/&name;">
 <!ENTITY github    "Squidly271/fix.common.problems">
@@ -13,6 +13,9 @@
 <PLUGIN name="&name;" author="&author;" version="&version;" launch="&launch;" pluginURL="&pluginURL;">
 
 <CHANGES>
+###2018-04-25
+- Update assistant handle major mismatches of URL's between templates and plugin files
+
 ###2018-04-14
 - Change extended test output
 

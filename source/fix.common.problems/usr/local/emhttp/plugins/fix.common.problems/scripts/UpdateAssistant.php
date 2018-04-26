@@ -64,11 +64,15 @@ echo "\nChecking for plugin updates\n";
 if ( ! $unRaid635 ) {
 	exec("plugin checkall");
 }
-$installedPlugs = glob("/tmp/plugins/*.plg");
+$installedPlugs = glob("/var/log/plugins/*.plg");
 foreach ($installedPlugs as $installedPlg) {
 	if ( basename($installedPlg) == "unRAIDServer.plg" ) { continue; }
 	if ( basename($installedPlg) == "unRAIDServer-.plg") { continue; }
-	$updateVer = plugin("version",$installedPlg);
+	if ( is_file("/tmp/plugins/".basename($installedPlg)) ) {
+		$updateVer = plugin("version","/tmp/plugins/".basename($installedPlg));
+	} else {
+		$updateVer = 0;
+	}
 	$installedVer = plugin("version","/boot/config/plugins/".basename($installedPlg));
 	if (strcasecmp($updateVer,$installedVer) > 0) {
 		$pluginName = plugin("name",$installedPlg);
@@ -89,6 +93,10 @@ $appfeed = download_json("https://tools.linuxserver.io/unraid-docker-templates.j
 if ( ! $appfeed ) {
 	echo "<font color='orange'>Unable to check</font>\n";
 } else {
+	foreach ($appfeed['applist'] as &$template) {
+		if ( ! $template['Plugin'] ) { continue; }
+		$template['redirectedURL'] = getRedirectedURL($template['PluginURL']);
+	}
 	foreach ($installedPlugs as $installedPlg) {
 		if ( basename($installedPlg) == "unRAIDServer.plg" ) { continue; }
 		if ( basename($installedPlg) == "unRAIDServer-.plg") { continue; }
@@ -96,6 +104,7 @@ if ( ! $appfeed ) {
 		if ( $moderation[$pluginURL]['MaxVer'] ) {
 			if ( version_compare($newUnRaidVersion,$moderation[$pluginURL]['MaxVer'],">") ) {
 				$pluginName = plugin("name",$installedPlg);
+				
 				ISSUE(basename($installedPlg)." ($pluginName) is not compatible with $newUnRaidVersion.  It is HIGHLY recommended to uninstall this plugin. {$moderation[$pluginURL]['ModeratorComment']}");
 				$versionsFlag = true;
 			}
@@ -112,13 +121,17 @@ if ( ! $appfeed ) {
 			$versionsFlag = true;
 		}
 		$foundAppFlag = false;
+		$pluginURL = getRedirectedURL($pluginURL);
 		if ( basename($installedPlg) != "unRAIDServer.plg" ) {
 			foreach ( $appfeed['applist'] as $template ) {
 				if ( ! $template['Plugin'] ) {
 					continue;
 				}
-				$template['PluginURL'] = str_replace("raw.github.com","raw.githubusercontent.com",$template['PluginURL']);
-				if ( $pluginURL == $template['PluginURL'] ) {
+				if (basename($installedPlg) == "ProFTPd.plg") {
+					echo "  $pluginURL   {$template['redirectedURL']}\n";
+				}
+				
+				if ( $pluginURL == $template['redirectedURL'] ) {
 					$foundAppFlag = true;
 					break;
 				}
@@ -282,5 +295,15 @@ function ISSUE($msg) {
 	global $ISSUES_FOUND;
 	echo "<font color='red'>Issue Found: $msg</font>\n";
 	$ISSUES_FOUND = true;
+}
+function getRedirectedURL($url) {
+	$ch = curl_init();
+	curl_setopt($ch, CURLOPT_URL, $url);
+	curl_setopt($ch, CURLOPT_HEADER, true);
+	curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
+	curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+	$a = curl_exec($ch);
+	$ret = curl_getinfo($ch, CURLINFO_EFFECTIVE_URL);
+	return $ret;
 }
 ?>
