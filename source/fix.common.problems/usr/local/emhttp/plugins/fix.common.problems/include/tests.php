@@ -430,7 +430,7 @@ function pluginsUpToDate() {
 					if ( strtolower(pathinfo($Plugin, PATHINFO_EXTENSION)) == "plg" ) {
 						if ( checkPluginUpdate($Plugin) ) {
 							if ( $Plugin == "fix.common.problems.plg" ) {
-								addError("Plugin <font color='purple'><b>$Plugin</b></font> is not up to date","Upgrade the plugin here: ".addLinkButton("Plugins","/Plugins"));
+								addError("Plugin <font color='purple'><b>$Plugin</b></font> is not up to date","Upgrade the plugin here: ".addLinkButton("UpdateOS","/Tools/Update"));
 							} else {
 								if ( $Plugin == "unRAIDServer.plg" ) {
 									$uptodateVersion = pluginVersion("/tmp/plugins/$Plugin");

@@ -13,6 +13,9 @@
 <PLUGIN name="&name;" author="&author;" version="&version;" launch="&launch;" pluginURL="&pluginURL;">
 
 <CHANGES>
+###2018-06-21
+- Update link for OS out of date
+
 ###2018-04-25
 - Update assistant handle major mismatches of URL's between templates and plugin files
 
