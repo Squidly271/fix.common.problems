@@ -1723,4 +1723,31 @@ function zenStates() {
 		}
 	}
 }
+
+function phpWarnings() {
+	global $fixPaths, $fixSettings, $autoUpdateOverride, $developerMode, $communityApplicationsInstalled, $dockerRunning, $ignoreList, $shareList,$unRaidVersion;
+
+	if ( ! is_file("/var/log/plugins/tips.and.tweaks.plg") ) { return; }
+	$tweaks = @parse_ini_file("/boot/config/plugins/tips.and.tweaks/tips.and.tweaks.cfg");
+	if ( $tweaks['PHP_WARNINGS'] == "yes" ) {
+		addOther("PHP Warnings are enabled","While this is not an error per se, if you are not a plugin developer, there is generally zero reason to enable this option, and under certain circumstances it can do nothing but spam your log with PHP warnings.  Fix it here: ".addLinkButton("Tips And Tweaks Settings","/Settings/TipsAndTweaks")."  (Go to Tweaks)");
+	}
+}
+
+function invalidIncludedDisk() {
+	global $fixPaths, $fixSettings, $autoUpdateOverride, $developerMode, $communityApplicationsInstalled, $dockerRunning, $ignoreList, $shareList,$unRaidVersion;
+
+	if ( ! is_dir("/mnt/user") ) { return; }
+	
+	foreach ($shareList as $share) {
+		$shareCfg = my_parse_ini_file("/boot/config/shares/$share.cfg");
+		$includedDisks = explode(",",$shareCfg['shareInclude']);
+		foreach ($includedDisks as $disk) {
+			if ( ! is_dir("/mnt/$disk") ) {
+				addError("Share <font color='purple'><b>$share</b></font> has $disk set in its included disk settings","$disk is not defined / installed in the array.  This will cause errors when writing to the array.  Fix it here: ".addLinkButton("$share Settings","/Shares/Share?name=$share")."  NOTE:  Because of how the UI works, $disk will not appear in on this page.  You will need to make a change (any change), then revert the change and hit apply to fix this issue");
+			}
+		}
+	}
+}
+		
 ?>

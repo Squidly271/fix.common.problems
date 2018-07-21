@@ -170,6 +170,8 @@ if ( $troubleshooting ) {
 	statsButNoPreclear();
 	moverLogging();
 	zenStates();
+	phpWarnings();
+	invalidIncludedDisk();
 }
 
 if ( $ignored && ( $fixSettings['logIgnored'] != "yes") ) {

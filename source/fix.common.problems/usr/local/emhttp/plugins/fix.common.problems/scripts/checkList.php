@@ -88,6 +88,8 @@ $checkList = "
 * Check for Stats plugin installed, but Preclear Not installed
 * Mover logging enabled
 * Zenstates not running on Ryzen CPU
+* PHP Warnings enabled via Tips and Tweaks plugin
+* Disk included in share setting that doesn't exist on array
 
 <h2>Troubleshooting Mode</h2>
 
