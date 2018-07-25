@@ -71,7 +71,6 @@ $checkList = "
 * Check for extra parameters set via Repository section instead of Extra Parameters Section (docker Apps)
 * Check for multiple registration key files stored on the flash drive (Excludes Trial keys)
 * Check for Out Of Memory errors
-* Check for Call Traces (should handle Kernel Oops, General Protection Faults, and the like)
 * Check for MCE errors
 * Check for Files / Folders contained within /mnt (anything other than disk1,disk2, etc or cache or disks
 * Check for exhaustion of inotify watches

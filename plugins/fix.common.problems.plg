@@ -2,8 +2,8 @@
 <!DOCTYPE PLUGIN [
 <!ENTITY name      "fix.common.problems">
 <!ENTITY author    "Andrew Zawadzki">
-<!ENTITY version   "2018.07.21">
-<!ENTITY md5       "50ac7bbbbe35c7511896f3dcb0f20089">
+<!ENTITY version   "2018.07.25">
+<!ENTITY md5       "f1ae1d3531835c0eed1c02f42ad5865d">
 <!ENTITY launch    "Settings/FixProblems">
 <!ENTITY plugdir   "/usr/local/emhttp/plugins/&name;">
 <!ENTITY github    "Squidly271/fix.common.problems">
@@ -13,6 +13,9 @@
 <PLUGIN name="&name;" author="&author;" version="&version;" launch="&launch;" pluginURL="&pluginURL;">
 
 <CHANGES>
+###2018-07-25
+- Remove call trace test
+
 ###2018-07-21
 - Issue Other Comment if PHP warnings are enabled
 - Issue Error if Share's disk include settings includes a disk that isn't present

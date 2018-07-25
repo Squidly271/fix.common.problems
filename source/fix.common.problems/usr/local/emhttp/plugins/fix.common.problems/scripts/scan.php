@@ -154,7 +154,7 @@ if ( $troubleshooting ) {
 	multipleKey();
 #  inotifyToolsNerdPack();
 	outOfMemory();
-	callTrace();
+#	callTrace();
 	mceCheck();
 	inotifyExhausted();
 	nobodyCared();
