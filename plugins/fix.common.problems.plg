@@ -2,8 +2,8 @@
 <!DOCTYPE PLUGIN [
 <!ENTITY name      "fix.common.problems">
 <!ENTITY author    "Andrew Zawadzki">
-<!ENTITY version   "2018.07.25">
-<!ENTITY md5       "f1ae1d3531835c0eed1c02f42ad5865d">
+<!ENTITY version   "2018.07.26">
+<!ENTITY md5       "a6be8e2a7da8ab4c1cd02358811ce646">
 <!ENTITY launch    "Settings/FixProblems">
 <!ENTITY plugdir   "/usr/local/emhttp/plugins/&name;">
 <!ENTITY github    "Squidly271/fix.common.problems">
@@ -13,6 +13,9 @@
 <PLUGIN name="&name;" author="&author;" version="&version;" launch="&launch;" pluginURL="&pluginURL;">
 
 <CHANGES>
+###2018-07-26
+- Add identifier to Notifications
+
 ###2018-07-25
 - Remove call trace test
 

@@ -214,15 +214,16 @@ if ( ! $errors && ! $warnings && ! $otherWarnings && ! $ignored ) {
 			$message .= "**** ".strip_tags($warning['error'])." ****   ";
 		}
 	}
+	$unRaidSettings = parse_ini_file("/usr/local/emhttp/state/var.ini");
 	if ( ! $disableNotifications ) {
 		if ( $errors ) {
 			if ( $fixSettings['notifications'] != "disabled" ) {
-				notify("Fix Common Problems","Errors have been found with your server.","Investigate at Settings / User Utilities / Fix Common Problems",$message,"alert");
+				notify("Fix Common Problems - {$unRaidSettings['NAME']}","Errors have been found with your server ({$unRaidSettings['NAME']}).","Investigate at Settings / User Utilities / Fix Common Problems",$message,"alert");
 			}
 		} else {
 			if ( $warnings ) {
 				if ($fixSettings['notifications'] != "errors" ) {
-					notify("Fix Common Problems","Warnings have been found with your server.","Investigate at Settings / User Utilities / Fix Common Problems",$message,"warning");
+					notify("Fix Common Problems - {$unRaidSettings['NAME']}","Warnings have been found with your server.({$unRaidSettings['NAME']})","Investigate at Settings / User Utilities / Fix Common Problems",$message,"warning");
 				}
 			}
 		}
