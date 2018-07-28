@@ -2,8 +2,8 @@
 <!DOCTYPE PLUGIN [
 <!ENTITY name      "fix.common.problems">
 <!ENTITY author    "Andrew Zawadzki">
-<!ENTITY version   "2018.07.26">
-<!ENTITY md5       "a6be8e2a7da8ab4c1cd02358811ce646">
+<!ENTITY version   "2018.07.28">
+<!ENTITY md5       "9ecb108b1812e6692c39b0ebec3e0d5c">
 <!ENTITY launch    "Settings/FixProblems">
 <!ENTITY plugdir   "/usr/local/emhttp/plugins/&name;">
 <!ENTITY github    "Squidly271/fix.common.problems">
@@ -13,6 +13,9 @@
 <PLUGIN name="&name;" author="&author;" version="&version;" launch="&launch;" pluginURL="&pluginURL;">
 
 <CHANGES>
+###2018-07-28
+- Fix update plugins link
+
 ###2018-07-26
 - Add identifier to Notifications
 

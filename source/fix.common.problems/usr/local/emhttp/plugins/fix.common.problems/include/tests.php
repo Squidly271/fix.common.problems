@@ -430,11 +430,11 @@ function pluginsUpToDate() {
 					if ( strtolower(pathinfo($Plugin, PATHINFO_EXTENSION)) == "plg" ) {
 						if ( checkPluginUpdate($Plugin) ) {
 							if ( $Plugin == "fix.common.problems.plg" ) {
-								addError("Plugin <font color='purple'><b>$Plugin</b></font> is not up to date","Upgrade the plugin here: ".addLinkButton("UpdateOS","/Tools/Update"));
+								addError("Plugin <font color='purple'><b>$Plugin</b></font> is not up to date","Upgrade the plugin here: ".addLinkButton("Plugins","/Plugins"));
 							} else {
 								if ( $Plugin == "unRAIDServer.plg" ) {
 									$uptodateVersion = pluginVersion("/tmp/plugins/$Plugin");
-									addWarning("<font color='purple'><b>unRaid OS</b></font> not up to date","You are currently running <b>".unRaidVersion()."</b> and the latest version is <b>$uptodateVersion</b>.  It is recommended to upgrade here: ".addLinkButton("Plugins","/Plugins")." and review the release notes <a href='http://lime-technology.com/forum/index.php?board=1.0' target='_blank'>HERE</a>");
+									addWarning("<font color='purple'><b>unRaid OS</b></font> not up to date","You are currently running <b>".unRaidVersion()."</b> and the latest version is <b>$uptodateVersion</b>.  It is recommended to upgrade here: ".addLinkButton("UpdateOS","/Tools/Update")." and review the release notes <a href='http://lime-technology.com/forum/index.php?board=1.0' target='_blank'>HERE</a>");
 								} else {
 									addWarning("Plugin <font color='purple'><b>$Plugin</b></font> is not up to date","Upgrade the plugin here: ".addLinkButton("Plugins","/Plugins"));
 								}
