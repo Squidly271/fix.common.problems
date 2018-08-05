@@ -92,6 +92,7 @@ if ( is_file($fixPaths['templates']) ) {
 	$templates = readJsonFile($fixPaths['templates']);
 }
 
+@unlink($fixPaths['moderation']);
 download_url($fixPaths['moderationURL'],$fixPaths['moderation']);
 
 
