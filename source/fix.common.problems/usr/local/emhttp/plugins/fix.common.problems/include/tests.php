@@ -1419,7 +1419,6 @@ function extraParamInRepository() {
 
 	$dockerTemplates = new DockerTemplates();
 	$info = $dockerTemplates->getAllInfo();
-
 	foreach ($info as $container) {
 		if ( is_file($container['template']) ) {
 			$xmlTemplate = readXmlFile($container['template']);
@@ -1748,5 +1747,24 @@ function invalidIncludedDisk() {
 		}
 	}
 }
-		
+
+function CPUSet() {
+	global $fixPaths, $fixSettings, $autoUpdateOverride, $developerMode, $communityApplicationsInstalled, $dockerRunning, $ignoreList, $shareList,$unRaidVersion;
+
+	if ( ! $dockerRunning ) { return; }
+	if ( version_compare("6.5.3",$unRaidVersion) > 0 ) { return; }
+
+	$dockerTemplates = new DockerTemplates();
+	$info = $dockerTemplates->getAllInfo();
+  
+	$userTemplates = glob("/boot/config/plugins/dockerMan/templates-user/*.xml");
+	foreach ($userTemplates as $template) {
+		$xml = simplexml_load_file($template);
+		$Name = (string)$xml->Name;
+		if ( ! $info[$Name] ) continue;
+		if (strlen($xml->CPUset) && strpos($xml->ExtraParams,"cpuset-cpus")) {
+			addError("Docker Application <font color='purple'>$Name</font> has duplicated entries for CPU pinning","Under unRaid version 6.6+, CPU pinning for docker applications via the extra parameters has been deprecated.  On this template, you have CPU pinning (--cpuset-cpus) contained in the extraparameters section of the template, and have also checked off one or more CPU's to pin the container to via the UI.  You should edit the container via the ".addLinkButton("Docker Tab","/Docker")." and remove the pinning from the extra parameters field");
+		}
+	}
+}
 ?>

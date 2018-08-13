@@ -173,6 +173,7 @@ if ( $troubleshooting ) {
 	zenStates();
 	phpWarnings();
 	invalidIncludedDisk();
+	CPUSet();
 }
 
 if ( $ignored && ( $fixSettings['logIgnored'] != "yes") ) {
