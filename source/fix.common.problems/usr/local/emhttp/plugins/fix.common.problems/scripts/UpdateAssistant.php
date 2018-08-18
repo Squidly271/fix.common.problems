@@ -68,6 +68,7 @@ $installedPlugs = glob("/var/log/plugins/*.plg");
 foreach ($installedPlugs as $installedPlg) {
 	if ( basename($installedPlg) == "unRAIDServer.plg" ) { continue; }
 	if ( basename($installedPlg) == "unRAIDServer-.plg") { continue; }
+	if ( basename($installedPlg) == "dynamix.plg")			 { continue; }
 	if ( is_file("/tmp/plugins/".basename($installedPlg)) ) {
 		$updateVer = plugin("version","/tmp/plugins/".basename($installedPlg));
 	} else {
@@ -100,6 +101,7 @@ if ( ! $appfeed ) {
 	foreach ($installedPlugs as $installedPlg) {
 		if ( basename($installedPlg) == "unRAIDServer.plg" ) { continue; }
 		if ( basename($installedPlg) == "unRAIDServer-.plg") { continue; }
+		if ( basename($installedPlg) == "dynamix.plg")       { continue; }
 		$pluginURL = plugin("pluginURL",$installedPlg);
 		if ( $moderation[$pluginURL]['MaxVer'] ) {
 			if ( version_compare($newUnRaidVersion,$moderation[$pluginURL]['MaxVer'],">") ) {
