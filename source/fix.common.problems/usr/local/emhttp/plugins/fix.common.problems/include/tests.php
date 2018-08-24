@@ -1765,6 +1765,8 @@ function CPUSet() {
 		if (strlen($xml->CPUset) && strpos($xml->ExtraParams,"cpuset-cpus")) {
 			addError("Docker Application <font color='purple'>$Name</font> has duplicated entries for CPU pinning","Under unRaid version 6.6+, CPU pinning for docker applications via the extra parameters has been deprecated.  On this template, you have CPU pinning (--cpuset-cpus) contained in the extraparameters section of the template, and have also checked off one or more CPU's to pin the container to via the UI.  You should edit the container via the ".addLinkButton("Docker Tab","/Docker")." and remove the pinning from the extra parameters field");
 		}
-	}
+		if (strpos($xml->ExtraParams,"cpuset-cpus")) {
+			addWarning("Docker Application <font color='purple'>$Name</font> has CPU cores pinned via the extra parameters (--cpuset-cpus)","Under unRaid version 6.6+, CPU pinning for docker applications should be handled via the CPU Pinning section.  Fix it here: ".addLinkButton("Docker Tab","/Docker")." and remove the CPU pinning from the extra parameters section");
+	}	}
 }
 ?>
