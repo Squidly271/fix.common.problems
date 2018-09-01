@@ -90,6 +90,7 @@ $checkList = "
 * PHP Warnings enabled via Tips and Tweaks plugin
 * Disk included in share setting that doesn't exist on array
 * Check for deprecated --cpuset-cpus in extraparameters AND via CPU pinning via GUI
+
 <h2>Troubleshooting Mode</h2>
 
 * Continuously 'tails' syslog to /boot/logs/syslog.txt
