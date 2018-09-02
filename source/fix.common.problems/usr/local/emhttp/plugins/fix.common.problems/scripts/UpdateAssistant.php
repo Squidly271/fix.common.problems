@@ -227,11 +227,7 @@ if ( ! $netBIOSflag ) {
 # Check for ancient dynamix.plg
 echo "\nChecking for ancient version of dynamix.plg\n";
 if ( is_file("/boot/config/plugins/dynamix.plg") ) {
-	if ( filemtime("/boot/config/plugins/dynamix.plg") < 1451606400 ) {  # Jan 1, 2016 
-		ISSUE("Ancient version of dynamix.plg found.  You may have issues.  Recommended to delete dynamix.plg from /config/plugins on the flash drive");
-	} else {
-		OK("Dynamix plugin timestamp");
-	}
+	ISSUE("Ancient version of dynamix.plg found.  You may have issues.  Recommended to delete dynamix.plg from /config/plugins on the flash drive");
 } else {
 	OK("Dynamix plugin not found");
 }
