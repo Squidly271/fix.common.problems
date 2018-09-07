@@ -1752,7 +1752,7 @@ function CPUSet() {
 	global $fixPaths, $fixSettings, $autoUpdateOverride, $developerMode, $communityApplicationsInstalled, $dockerRunning, $ignoreList, $shareList,$unRaidVersion;
 
 	if ( ! $dockerRunning ) { return; }
-	if ( version_compare("6.5.3",$unRaidVersion) > 0 ) { return; }
+	if ( ! version_compare($unRaidVersion,"6.5.3",">") ) { return; }
 
 	$dockerTemplates = new DockerTemplates();
 	$info = $dockerTemplates->getAllInfo();

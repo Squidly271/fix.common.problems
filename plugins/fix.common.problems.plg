@@ -2,8 +2,8 @@
 <!DOCTYPE PLUGIN [
 <!ENTITY name      "fix.common.problems">
 <!ENTITY author    "Andrew Zawadzki">
-<!ENTITY version   "2018.09.02">
-<!ENTITY md5       "67226b9e7f6ccd27e0732dfb56f2d5a0">
+<!ENTITY version   "2018.09.07">
+<!ENTITY md5       "99bbeff94744bc5f7f6c673d74b660b9">
 <!ENTITY launch    "Settings/FixProblems">
 <!ENTITY plugdir   "/usr/local/emhttp/plugins/&name;">
 <!ENTITY github    "Squidly271/fix.common.problems">
@@ -13,6 +13,9 @@
 <PLUGIN name="&name;" author="&author;" version="&version;" launch="&launch;" pluginURL="&pluginURL;">
 
 <CHANGES>
+###2018-09-07
+- Fixed unRaid version tests for CPU pinning
+
 ###2018-09-02
 - Update Assistant always recommend to delete dynamix.plg
 
