@@ -174,6 +174,7 @@ if ( $troubleshooting ) {
 	phpWarnings();
 	invalidIncludedDisk();
 	CPUSet();
+	isolatedCPUdockerCollision();
 }
 
 if ( $ignored && ( $fixSettings['logIgnored'] != "yes") ) {

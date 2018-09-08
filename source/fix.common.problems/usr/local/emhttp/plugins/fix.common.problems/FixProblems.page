@@ -27,7 +27,7 @@ if ( is_dir("/mnt/user") ) {
   $userEnabled = "true";
 }
 ?>
-<script src="/webGui/javascript/jquery.filetree.js"></script>
+<script src="<?autov("/webGui/javascript/jquery.filetree.js")?>"></script>
 <script>
 
 var URL = "/plugins/<?=$plugin?>/include/fixExec.php";

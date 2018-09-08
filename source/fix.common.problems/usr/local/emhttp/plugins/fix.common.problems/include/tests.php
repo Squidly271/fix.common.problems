@@ -1769,4 +1769,47 @@ function CPUSet() {
 			addWarning("Docker Application <font color='purple'>$Name</font> has CPU cores pinned via the extra parameters (--cpuset-cpus)","Under unRaid version 6.6+, CPU pinning for docker applications should be handled via the CPU Pinning section.  Fix it here: ".addLinkButton("Docker Tab","/Docker")." and remove the CPU pinning from the extra parameters section.  Note that if you DO NOT fix this, then you will NOT be able to change CPU pinning for the application via the GUI");
 	}	}
 }
+
+function isolatedCPUdockerCollision() {
+	global $fixPaths, $fixSettings, $autoUpdateOverride, $developerMode, $communityApplicationsInstalled, $dockerRunning, $ignoreList, $shareList,$unRaidVersion;
+
+	if ( ! $dockerRunning ) { return; }
+	if ( ! version_compare($unRaidVersion,"6.5.3",">") ) { return; }
+	
+	$cmdLine = explode(" ",file_get_contents("/proc/cmdline"));
+#	$cmdLine = explode(" ","BOOT_IMAGE=/bzimage pcie_acs_override=downstream isolcpus=1,3 initrd=/bzroot,/bzroot-gui");
+	
+	foreach ($cmdLine as $option) {
+		if (strpos($option,"isolcpus") !== false ) {
+			$isolatedCPUs = explode("=",$option)[1];
+		}
+	}
+	$cpus = explode(",",$isolatedCPUs);
+	foreach ($cpus as $test) {
+		if (strpos($test,"-")) {
+			$range = explode("-",$test);
+			for ( $j = $range[0]; $j <= $range[1]; $j++ ) {
+				$iso[$j] = true;
+			}
+		} else {
+			$iso[$test] = true;
+		}
+	}
+
+	$dockerTemplates = new DockerTemplates();
+	$info = $dockerTemplates->getAllInfo();
+	
+	foreach ($info as $name=>$container) {
+		$flag = 0;
+		foreach (explode(",",$container['cpuset']) as $dockerCPU) {
+			if ( $iso[$dockerCPU] ) {
+				$flag++;
+			}
+		}
+		if ( $flag > 1 ) {
+			addError("Docker Application <font color='purple'>$name</font> has multiple CPUs pinned to isolated CPUs","Unless you know exactly what you are doing, pinning a docker application to multiple isolated CPUs will only allow the application to execute on a single isolated core ".addLinkButton("CPU Set","/Settings/CPUset")." and adjust either the Isolated CPUs or the application's CPU pinning");
+		}
+	}
+}
+	
 ?>
