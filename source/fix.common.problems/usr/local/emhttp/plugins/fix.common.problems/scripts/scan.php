@@ -143,7 +143,7 @@ if ( $troubleshooting ) {
 	flashDriveFull();
 	cacheFloorTests();
 #  sharePermission();
-	uncleanReboot();
+//	uncleanReboot();
 	checkForHack();
 	checkForModeration();
 	pluginNotCompatible();
