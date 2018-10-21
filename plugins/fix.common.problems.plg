@@ -2,8 +2,8 @@
 <!DOCTYPE PLUGIN [
 <!ENTITY name      "fix.common.problems">
 <!ENTITY author    "Andrew Zawadzki">
-<!ENTITY version   "2018.10.19">
-<!ENTITY md5       "5f86de05ca9d293d36006b0f8eb429da">
+<!ENTITY version   "2018.10.21">
+<!ENTITY md5       "b6157eb65c1c766ea9427008e41bb49a">
 <!ENTITY launch    "Settings/FixProblems">
 <!ENTITY plugdir   "/usr/local/emhttp/plugins/&name;">
 <!ENTITY github    "Squidly271/fix.common.problems">
@@ -13,6 +13,9 @@
 <PLUGIN name="&name;" author="&author;" version="&version;" launch="&launch;" pluginURL="&pluginURL;">
 
 <CHANGES>
+###2018-10-21
+- 6.6.3 Compatibility Fix
+
 ###2018-10-19
 - Fix Broken Pipe
 

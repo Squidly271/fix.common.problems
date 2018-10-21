@@ -1540,7 +1540,7 @@ function SSDcacheNoTrim() {
 function templateURLMissing() {
 	global $fixPaths, $fixSettings, $autoUpdateOverride, $developerMode, $communityApplicationsInstalled, $dockerRunning, $ignoreList, $shareList, $unRaidVersion;
 
-	function xml_decode($string) {
+	function my_xml_decode($string) {
 		return strval(html_entity_decode($string, ENT_XML1, 'UTF-8'));
 	}
 
@@ -1562,7 +1562,7 @@ function templateURLMissing() {
 						$name = $dockerInstalled['Name'];
 						$xmlfile = $myTemplates[$name]['template'];
 						$template = simplexml_load_file($xmlfile);
-						$template_url = xml_decode($template->TemplateURL);
+						$template_url = my_xml_decode($template->TemplateURL);
 						$warning = null;
 						if (empty($template_url)) {
 							$warning = "Template URL for docker application <font color='purple'><b>".$dockerInstalled['Name']."</b></font> is missing.";
