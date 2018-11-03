@@ -357,7 +357,7 @@ function showCredits() {
 </tr>
 </table>
 </div><div style='margin-left:540px;'>
-<b>Permission Test/Fix Excluded On: <input type='text' id='excludedPerms'</input><br><font color='purple'>(Docker Appdata Folders and CA backup Destination is automatically excluded)</font><br>
+<b>Permission Test/Fix Excluded On: <input type='text' id='excludedPerms'</input><br><font color='purple'>(Docker Appdata Folders and CA backup Destination is automatically excluded)</b></font><br>
 <center><input type='button' value='Exclude Selected' onclick='excludeSelected();'></center>
 <div id='excludedFoldersList' style='margin-left:240px;width:305px;max-height:150px;overflow:scroll;'></div><br>
 </div>

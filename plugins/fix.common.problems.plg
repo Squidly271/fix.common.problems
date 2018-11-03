@@ -2,8 +2,8 @@
 <!DOCTYPE PLUGIN [
 <!ENTITY name      "fix.common.problems">
 <!ENTITY author    "Andrew Zawadzki">
-<!ENTITY version   "2018.10.21">
-<!ENTITY md5       "b6157eb65c1c766ea9427008e41bb49a">
+<!ENTITY version   "2018.11.03">
+<!ENTITY md5       "764326711f5d2c29f0b89cd2548efbff">
 <!ENTITY launch    "Settings/FixProblems">
 <!ENTITY plugdir   "/usr/local/emhttp/plugins/&name;">
 <!ENTITY github    "Squidly271/fix.common.problems">
@@ -13,6 +13,9 @@
 <PLUGIN name="&name;" author="&author;" version="&version;" launch="&launch;" pluginURL="&pluginURL;">
 
 <CHANGES>
+###2018-11-03
+- Fix display aberration
+
 ###2018-10-21
 - 6.6.3 Compatibility Fix
 
