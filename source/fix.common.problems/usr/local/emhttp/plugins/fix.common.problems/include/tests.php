@@ -214,7 +214,7 @@ function powerdownInstalled() {
 function outsideCommunication() {
 	global $fixPaths, $fixSettings, $autoUpdateOverride, $developerMode, $communityApplicationsInstalled, $dockerRunning, $ignoreList, $shareList;
 
-	if ( ! readJsonFile($fixPaths['moderation']) ) {
+	if ( ! @file_get_contents($fixPaths['moderation']) || ! strlen(@file_get_contents($fixPaths['moderation'])) ) {
 		addError("Unable to communicate with GitHub.com","Reset your modem / router or try again later, or set your ".addLinkButton("DNS Settings","/Settings/NetworkSettings")." to 8.8.8.8 and 8.8.4.4  Also make sure that you have a Gateway address set up (Your Router's IP address).  Additionally, this may also mean that GitHub is currently down.  This error means that you may not be able to update your OS or plugins");
 	}
 }

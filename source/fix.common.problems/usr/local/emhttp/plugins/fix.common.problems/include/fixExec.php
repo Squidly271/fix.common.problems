@@ -20,7 +20,7 @@ function displayErrors() {
   echo "<table class='tablesorter'>";
   echo "<thead><th width='25%'>Errors Found</th><th width='60%'>Suggested Fix</th><th></th></thead>";    
   if ( ! $errors ) {
-    echo "<tr><td><b><img src='https://raw.githubusercontent.com/Squidly271/fix.common.problems/master/images/happy_face.gif' width='10%'>  No errors found</b>";
+    echo "<tr><td><b>No errors found</b>";
   } else {
     foreach ($errors as $error) {
       echo "<tr><td>".$error['error']."</td><td>".$error['suggestion']."</td>";
@@ -32,7 +32,7 @@ function displayErrors() {
   echo "<thead><th width='25%'>Warnings Found</th><th width='60%'>Suggested Fix</th><th></th></thead>";
   $warnings = $allErrors['warnings'];
   if ( ! $warnings ) {
-    echo "<tr><td><b><img src='https://raw.githubusercontent.com/Squidly271/fix.common.problems/master/images/happy_face.gif' width='10%'>  No Warnings found</b>";
+    echo "<tr><td><b>No Warnings found</b>";
   } else {
     foreach ($warnings as $warning) {
       echo "<tr><td>".$warning['error']."</td><td>".$warning['suggestion']."</td>";
