@@ -89,7 +89,7 @@ if ( ! $updateFlag ) {
 echo "\nChecking for plugin compatibility\n";
 
 $moderation = download_json("https://raw.githubusercontent.com/Squidly271/Community-Applications-Moderators/master/Moderation.json","/tmp/upgradeAssistantModeration.json");
-$appfeed = download_json("https://tools.linuxserver.io/unraid-docker-templates.json","/tmp/upgradeAssistantAppfeed.json");
+$appfeed = download_json("https://raw.githubusercontent.com/Squidly271/AppFeed/master/applicationFeed.json","/tmp/upgradeAssistantAppfeed.json");
 
 if ( ! $appfeed ) {
 	echo "<font color='orange'>Unable to check</font>\n";
@@ -99,6 +99,7 @@ if ( ! $appfeed ) {
 		$template['redirectedURL'] = getRedirectedURL($template['PluginURL']);
 	}
 	foreach ($installedPlugs as $installedPlg) {
+		unset($pluginname);
 		if ( basename($installedPlg) == "unRAIDServer.plg" ) { continue; }
 		if ( basename($installedPlg) == "unRAIDServer-.plg") { continue; }
 		if ( basename($installedPlg) == "dynamix.plg")       { continue; }
@@ -107,19 +108,19 @@ if ( ! $appfeed ) {
 			if ( version_compare($newUnRaidVersion,$moderation[$pluginURL]['MaxVer'],">") ) {
 				$pluginName = plugin("name",$installedPlg);
 				
-				ISSUE(basename($installedPlg)." ($pluginName) is not compatible with $newUnRaidVersion.  It is HIGHLY recommended to uninstall this plugin. {$moderation[$pluginURL]['ModeratorComment']}");
+				ISSUE(basename($installedPlg)." is not compatible with $newUnRaidVersion.  It is HIGHLY recommended to uninstall this plugin. {$moderation[$pluginURL]['ModeratorComment']}");
 				$versionsFlag = true;
 			}
 		}
 		if ( $moderation[$pluginURL]['DeprecatedMaxVer'] ) {
 			if ( version_compare($newUnRaidVersion,$moderation[$pluginURL]['DeprecatedMaxVer'],">") ) {
 				$pluginName = plugin("name",$installedPlg);
-				ISSUE(basename($installedPlg)." ($pluginName) is deprecated with $newUnRaidVersion.  It is recommended to uninstall this plugin. {$moderation[$pluginURL]['ModeratorComment']}");
+				ISSUE(basename($installedPlg)." is deprecated with $newUnRaidVersion.  It is recommended to uninstall this plugin. {$moderation[$pluginURL]['ModeratorComment']}");
 				$versionsFlag = true;
 			}
 		}
 		if ( filter_var($moderation[$pluginURL]['Deprecated'],FILTER_VALIDATE_BOOLEAN) ) {
-			ISSUE(basename($installedPlg)." ($pluginName) is deprecated for ALL unRaid versions.  This does not necessarily mean you will have any issues with the plugin, but there are no guarantees.  It is recommended to uninstall the plugin");
+			ISSUE(basename($installedPlg)." is deprecated for ALL unRaid versions.  This does not necessarily mean you will have any issues with the plugin, but there are no guarantees.  It is recommended to uninstall the plugin");
 			$versionsFlag = true;
 		}
 		$foundAppFlag = false;
@@ -139,7 +140,7 @@ if ( ! $appfeed ) {
 				}
 			}
 			if ( ! $foundAppFlag ) {
-				ISSUE(basename($installedPlg)." ($pluginName) is not known to Community Applications.  Compatibility for this plugin CANNOT be determined and it may cause you issues.");
+				ISSUE(basename($installedPlg)." is not known to Community Applications.  Compatibility for this plugin CANNOT be determined and it may cause you issues.");
 			}		
 		}
 	}

@@ -2,8 +2,8 @@
 <!DOCTYPE PLUGIN [
 <!ENTITY name      "fix.common.problems">
 <!ENTITY author    "Andrew Zawadzki">
-<!ENTITY version   "2018.12.07">
-<!ENTITY md5       "446f902a1f22fb84652737dcd657fcef">
+<!ENTITY version   "2018.12.31">
+<!ENTITY md5       "64e7dd72f381ba545917f63d98150486">
 <!ENTITY launch    "Settings/FixProblems">
 <!ENTITY plugdir   "/usr/local/emhttp/plugins/&name;">
 <!ENTITY github    "Squidly271/fix.common.problems">
@@ -13,6 +13,10 @@
 <PLUGIN name="&name;" author="&author;" version="&version;" launch="&launch;" pluginURL="&pluginURL;">
 
 <CHANGES>
+###2018-12-31
+- Update icons
+- Update Assistant was flagging ALL plugins as being incompatible with all versions of unRaid
+
 ###2018-12-07
 - Revamp of outside communication test
 - Remove happy face :(
