@@ -2,8 +2,8 @@
 <!DOCTYPE PLUGIN [
 <!ENTITY name      "fix.common.problems">
 <!ENTITY author    "Andrew Zawadzki">
-<!ENTITY version   "2018.12.31">
-<!ENTITY md5       "64e7dd72f381ba545917f63d98150486">
+<!ENTITY version   "2019.01.01">
+<!ENTITY md5       "e1bf05173c5dedcf8dfd6024ea6d507a">
 <!ENTITY launch    "Settings/FixProblems">
 <!ENTITY plugdir   "/usr/local/emhttp/plugins/&name;">
 <!ENTITY github    "Squidly271/fix.common.problems">
@@ -13,6 +13,9 @@
 <PLUGIN name="&name;" author="&author;" version="&version;" launch="&launch;" pluginURL="&pluginURL;">
 
 <CHANGES>
+###2019-01-01
+- Fix compatibility with Azure / Gray themes
+
 ###2018-12-31
 - Update icons
 - Update Assistant was flagging ALL plugins as being incompatible with all versions of unRaid
