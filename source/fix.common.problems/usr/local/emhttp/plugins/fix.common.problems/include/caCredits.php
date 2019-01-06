@@ -23,6 +23,9 @@ function getLineCount($directory) {
 }
 
 $caCredits = "
+<style>
+table {background-color:transparent;}
+</style>
     <center><table align:'center'>
       <tr>
         <td><img src='https://github.com/Squidly271/plugin-repository/raw/master/Chode_300.gif' width='50px';height='48px'></td>

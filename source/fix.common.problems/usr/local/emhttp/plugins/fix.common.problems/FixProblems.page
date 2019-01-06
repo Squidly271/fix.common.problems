@@ -17,7 +17,7 @@ $settings = json_decode(@file_get_contents("/boot/config/plugins/fix.common.prob
 
 if ( ! $settings['notifications'] ) { $settings['notifications'] = "all"; }
 if ( ! $settings['frequency'] ) { $settings['frequency'] = "disabled"; }
-if ( ! $settings['disableSpinUp'] ) { $settings['disableSpinUp'] = "false"; }
+if ( ! $settings['disableSpinUp'] ) { $settings['disableSpinUp'] = "true"; }
 if ( ! $settings['hacksPerDay'] ) { $settings['hacksPerDay'] = 10; }
 if ( ! $settings['logIgnored']) { $settings['logIgnored'] = "yes"; }
 

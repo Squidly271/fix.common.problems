@@ -2,8 +2,8 @@
 <!DOCTYPE PLUGIN [
 <!ENTITY name      "fix.common.problems">
 <!ENTITY author    "Andrew Zawadzki">
-<!ENTITY version   "2019.01.01">
-<!ENTITY md5       "e1bf05173c5dedcf8dfd6024ea6d507a">
+<!ENTITY version   "2019.01.06">
+<!ENTITY md5       "e3443ec3d5796ea68238a87fafbe9fb2">
 <!ENTITY launch    "Settings/FixProblems">
 <!ENTITY plugdir   "/usr/local/emhttp/plugins/&name;">
 <!ENTITY github    "Squidly271/fix.common.problems">
@@ -13,6 +13,14 @@
 <PLUGIN name="&name;" author="&author;" version="&version;" launch="&launch;" pluginURL="&pluginURL;">
 
 <CHANGES>
+###2019-01-06
+- Remove zenstates test
+- Remove autoupdate test on CA
+- Remove warning that CA not installed (IMHO should be an error/the world will stop spinning, but what can you do?)
+- CSS fixes for future unRaid versions
+- Remove excess graphic files
+- Change file system check defaults to not spin up drives
+
 ###2019-01-01
 - Fix compatibility with Azure / Gray themes
 

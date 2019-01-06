@@ -170,7 +170,7 @@ if ( $troubleshooting ) {
 	CPUoverheat();
 	statsButNoPreclear();
 	moverLogging();
-	zenStates();
+//	zenStates();
 	phpWarnings();
 	invalidIncludedDisk();
 	CPUSet();

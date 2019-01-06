@@ -161,7 +161,7 @@ if ( $emhttpParams == "&" || ! $emhttpParams) {
 }
 
 # check for zenstates in go file
-echo "\nChecking for zenstates on Ryzen CPU\n";
+/* echo "\nChecking for zenstates on Ryzen CPU\n";
 $output = exec("lscpu | grep Ryzen");
 if ( $output ) {
 	$output = exec("cat /boot/config/go | grep  /usr/local/sbin/zenstates");
@@ -170,7 +170,7 @@ if ( $output ) {
 	}
 } else {
 	OK("Ryzen CPU not detected");
-}
+} */
 
 # Check for disabled disks
 echo "\nChecking for disabled disks\n";

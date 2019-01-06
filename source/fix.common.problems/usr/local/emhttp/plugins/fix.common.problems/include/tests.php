@@ -158,9 +158,9 @@ function autoUpdateCheck() {
 			$autoUpdateSettings['fix.common.problems.plg'] = "true";
 		}
 		if ( $autoUpdateSettings['Global'] != "true" ) {
-			if ( $autoUpdateSettings['community.applications.plg'] != "true" ) {
+/* 			if ( $autoUpdateSettings['community.applications.plg'] != "true" ) {
 				addWarning("<font color='purple'><b>Community Applications</b></font> not set to auto update</font>",addLinkButton("Auto Update Settings","/Settings/AutoUpdate")."Recommended to enable auto updates for this plugin to minimize issues with applications");
-			}
+			} */ # Recent changes to CA don't require AutoUpdate to be enabled per se
 			if ( $autoUpdateSettings['fix.common.problems.plg'] != "true" ) {
 				if ( $autoUpdateOverride ) {
 					$func = "addWarning";
@@ -170,8 +170,6 @@ function autoUpdateCheck() {
 				$func("This plugin <font color='purple'><b>(Fix Common Problems)</b></font> not set to auto update</font>",addLinkButton("Auto Update Settings","/Settings/AutoUpdate")."Recommended to enable auto updates for this plugin to enable further problem solving / fixes");
 			}
 		}
-	} else {
-		addWarning("<font color='purple'><b>Community Applications</b></font> not installed","Recommended to install Community Applications so that plugins can auto-update.  Follow the directions <a href='http://lime-technology.com/forum/index.php?topic=40262.0' target='_blank'>HERE</a> to install");
 	}
 }
 
