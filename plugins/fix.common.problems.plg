@@ -2,8 +2,8 @@
 <!DOCTYPE PLUGIN [
 <!ENTITY name      "fix.common.problems">
 <!ENTITY author    "Andrew Zawadzki">
-<!ENTITY version   "2019.01.06">
-<!ENTITY md5       "e3443ec3d5796ea68238a87fafbe9fb2">
+<!ENTITY version   "2019.01.19">
+<!ENTITY md5       "278c77b5368836e5b8a1ca18a4e6020f">
 <!ENTITY launch    "Settings/FixProblems">
 <!ENTITY plugdir   "/usr/local/emhttp/plugins/&name;">
 <!ENTITY github    "Squidly271/fix.common.problems">
@@ -13,6 +13,9 @@
 <PLUGIN name="&name;" author="&author;" version="&version;" launch="&launch;" pluginURL="&pluginURL;" icon="warning">
 
 <CHANGES>
+###2019-01-19
+- Don't issue a warning if a plugin update requires an OS update
+
 ###2019-01-06
 - Remove zenstates test
 - Remove autoupdate test on CA

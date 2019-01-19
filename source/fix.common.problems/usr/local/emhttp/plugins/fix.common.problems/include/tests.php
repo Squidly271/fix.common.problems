@@ -115,6 +115,7 @@ function arrayOnlyFilesOnCache() {
 function pluginUpdateCheck() {
 	global $fixPaths, $communityPaths, $fixSettings, $autoUpdateOverride, $developerMode, $communityApplicationsInstalled, $dockerRunning, $ignoreList, $shareList;
 
+	
 	if ( is_file("/boot/config/plugins/ca.update.applications/plugin_update.cron") ) { return; }
 
 	if ( ! is_file("/boot/config/plugins/dynamix/plugin-check.cron") ) {
@@ -416,7 +417,7 @@ function SSDinArray() {
 
 function pluginsUpToDate() {
 	global $fixPaths, $fixSettings, $autoUpdateOverride, $developerMode, $communityApplicationsInstalled, $dockerRunning, $ignoreList, $shareList;
-	global $communityPaths;
+	global $communityPaths, $unRaidVersion;
 
 	$autoUpdateSettings = readJsonFile($communityPaths['autoUpdateSettings']);
 	if ( $autoUpdateSettings['Global'] != "true" ) {

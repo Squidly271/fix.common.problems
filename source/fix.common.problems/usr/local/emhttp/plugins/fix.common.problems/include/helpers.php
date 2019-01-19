@@ -129,7 +129,6 @@ function addButton($buttonName,$action) {
 
 function checkPluginUpdate($filename) {
   global $unRaidVersion;
-  
   $filename = basename($filename);
   $installedVersion = plugin("version","/var/log/plugins/$filename");
   if ( is_file("/tmp/plugins/$filename") ) {
@@ -137,6 +136,13 @@ function checkPluginUpdate($filename) {
   } else {
     $upgradeVersion = "0";
   }
+	if ( $upgradeVersion != "0" ) {	
+
+		$OSversion = plugin("min","/tmp/plugins/$filename") ?: $unRaidVersion;
+		if ( strcmp($unRaidVersion,$OSversion) < 0 ) {
+			return false;
+		}
+	}
   if ( $installedVersion < $upgradeVersion ) {
     $unRaid = plugin("unRAID","/tmp/plugins/$filename");
     if ( $unRaid === false || version_compare($unRaidVersion,$unRaid,">=") ) {
