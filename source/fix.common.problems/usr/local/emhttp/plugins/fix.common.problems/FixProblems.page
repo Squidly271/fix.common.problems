@@ -10,7 +10,7 @@ Title="Fix Common Problems"
 ###############################################################
 
 require_once("/usr/local/emhttp/plugins/fix.common.problems/include/caCredits.php");
-
+require_once("/usr/local/emhttp/plugins/fix.common.problems/include/helpers.php");
 $plugin = "fix.common.problems";
 
 $settings = json_decode(@file_get_contents("/boot/config/plugins/fix.common.problems/settings.json"),true);
@@ -26,6 +26,7 @@ if ( is_file("/tmp/fix.common.problems/troubleshoot") ) { $troubleshoot = true; 
 if ( is_dir("/mnt/user") ) {
   $userEnabled = "true";
 }
+$unRaid67 = version_compare(unRaidVersion(),"6.6.6",">");
 ?>
 <script src="<?autov("/webGui/javascript/jquery.filetree.js")?>"></script>
 <script>
@@ -367,10 +368,15 @@ function showCredits() {
 > <b>Avoid spinning up disks for tests</b> - Will try and avoid certain tests on disks (notably the write check) that unRaid thinks are currently spun down<br>
 > <b>Number of allowed invalid logins per day</b> - This is the number of "grace" invalid logins allowed per day either via the local console or through SSH / Telnet (ie: you typed your password wrong)  This is used to determine if any hacking attempts are being made on your server<br>
 
-<input type='button' id='applyButton' value='Apply' onclick='apply();' disabled><input type='button' value='Rescan' onclick='rescan();'><input type='button' onclick='done();' value='Done'><span style='float:right'><input type='button' id='troubleshoot' value='Troubleshooting Mode' onclick='troubleshoot();'></span><br><br>
-> Troubleshooting mode will add start a process to continually save your syslog, automatically run diagnostics every half hour, and run a subset of these tests every ten minutes.  Useful for diagnosing random crashes, etc.
 
-<span id='userOnly'>
+<input type='button' id='applyButton' value='Apply' onclick='apply();' disabled><input type='button' value='Rescan' onclick='rescan();'><input type='button' onclick='done();' value='Done'>
+<?if (!$unRaid67):?>
+<span style='float:right'><input type='button' id='troubleshoot' value='Troubleshooting Mode' onclick='troubleshoot();'></span>
+
+> Troubleshooting mode will add start a process to continually save your syslog, automatically run diagnostics every half hour, and run a subset of these tests every ten minutes.  Useful for diagnosing random crashes, etc.
+<?endif;?>
+
+<br><br><span id='userOnly'>
 <input type='button' id='extendedTest' value='Run Extended Test' onclick='extendedTest();'><a href='/plugins/fix.common.problems/scripts/showExtendedLog.php' target='_blank'><input type='button' value='View Results' id='extendedLog';></a> <font color='red'>Status:</font> <font color='green'> <span id='extendedStatus'></span></font>
 > Extended tests will perform more tests on every file in the array.
 </span>
