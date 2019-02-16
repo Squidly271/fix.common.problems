@@ -13,6 +13,7 @@ require_once("/usr/local/emhttp/plugins/dynamix.docker.manager/include/DockerCli
 require_once("/usr/local/emhttp/plugins/fix.common.problems/include/tests.php");
 
 exec("mkdir -p ".$fixPaths['tempFiles']);
+libxml_use_internal_errors(true);
 
 ##################################################################################################################
 #                                                                                                                #
@@ -175,6 +176,7 @@ if ( $troubleshooting ) {
 	invalidIncludedDisk();
 	CPUSet();
 	isolatedCPUdockerCollision();
+	testXML();
 }
 
 if ( $ignored && ( $fixSettings['logIgnored'] != "yes") ) {

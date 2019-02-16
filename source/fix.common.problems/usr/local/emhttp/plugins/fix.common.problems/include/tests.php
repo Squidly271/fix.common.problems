@@ -54,7 +54,7 @@ function impliedArrayFilesOnCache() {
 		if ( ! is_file("/boot/config/shares/$share.cfg") ) {
 			if ( is_dir("/mnt/cache/$share") ) {
 				$shareURL = str_replace(" ","+",$share);
-				addWarning("Share <b><font color='purple'>$share</font></b> is an implied <em>array-only</em> share, but files / folders exist on the cache","Set <b><em>Use Cache</em></b> appropriately, then rerun this analysis. ".addLinkButton("$share Settings","/Shares/Share?name=$shareURL"));
+				addWarning("Share <b>$share</b> is an implied <em>array-only</em> share, but files / folders exist on the cache","Set <b><em>Use Cache</em></b> appropriately, then rerun this analysis. ".addLinkButton("$share Settings","/Shares/Share?name=$shareURL"));
 			}
 		}
 	}
@@ -76,7 +76,7 @@ function cacheOnlyFilesOnArray() {
 					$contents = array_diff(scandir("/mnt/user0/$share"),array(".",".."));
 					if ( ! empty($contents) ) {
 						$shareURL = str_replace(" ","+",$share);
-						addWarning("Share <b><font color='purple'>$share</font></b> set to <em>cache-only</em>, but files / folders exist on the array","You should change the share's settings appropriately ".addLinkButton("$share Settings","/Shares/Share?name=$shareURL")." or use the dolphin / krusader docker applications to move the offending files accordingly.  Note that there are some valid use cases for a set up like this.  In particular: <a href='https://lime-technology.com/forum/index.php?topic=40777.msg385753' target='_blank'>THIS</a>");
+						addWarning("Share <b>$share</b> set to <em>cache-only</em>, but files / folders exist on the array","You should change the share's settings appropriately ".addLinkButton("$share Settings","/Shares/Share?name=$shareURL")." or use the dolphin / krusader docker applications to move the offending files accordingly.  Note that there are some valid use cases for a set up like this.  In particular: <a href='https://lime-technology.com/forum/index.php?topic=40777.msg385753' target='_blank'>THIS</a>");
 					}
 				}
 			}
@@ -100,7 +100,7 @@ function arrayOnlyFilesOnCache() {
 					$contents = array_diff(scandir("/mnt/cache/$share"),array(".",".."));
 					if ( ! empty($contents) ) {
 						$shareURL = str_replace(" ","+",$share);
-						addWarning("Share <b><font color='purple'>$share</font></b> set to <em>not use the cache</em>, but files / folders exist on the cache drive","You should change the share's settings appropriately ".addLinkButton("$share Settings","/Shares/Share?name=$shareURL")."or use the dolphin / krusader docker applications to move the offending files accordingly.  Note that there are some valid use cases for a set up like this.  In particular: <a href='https://lime-technology.com/forum/index.php?topic=40777.msg385753' target='_blank'>THIS</a>");
+						addWarning("Share <b>$share</b> set to <em>not use the cache</em>, but files / folders exist on the cache drive","You should change the share's settings appropriately ".addLinkButton("$share Settings","/Shares/Share?name=$shareURL")."or use the dolphin / krusader docker applications to move the offending files accordingly.  Note that there are some valid use cases for a set up like this.  In particular: <a href='https://lime-technology.com/forum/index.php?topic=40777.msg385753' target='_blank'>THIS</a>");
 					}
 				}
 			}
@@ -124,7 +124,7 @@ function pluginUpdateCheck() {
 		} else {
 			$func = "addError";
 		}
-		$func("<font color='purple'><b>Plugin Update Check</b></font> not enabled","Highly recommended to have dynamix check for plugin updates (including for the webUI".addLinkButton("Notification Settings","/Settings/Notifications"));
+		$func("<b>Plugin Update Check</b> not enabled","Highly recommended to have dynamix check for plugin updates (including for the webUI".addLinkButton("Notification Settings","/Settings/Notifications"));
 	}
 }
 
@@ -139,7 +139,7 @@ function dockerUpdateCheck() {
 
 	if ( $dockerRunning ) {
 		if ( ! is_file("/boot/config/plugins/dynamix/docker-update.cron") ) {
-			addWarning("<font color='purple'><b>Docker Update Check</b></font> not enabled","Recommended to enable update checks for docker applications".addLinkButton("Notification Settings","/Settings/Notifications"));
+			addWarning("<b>Docker Update Check</b> not enabled","Recommended to enable update checks for docker applications".addLinkButton("Notification Settings","/Settings/Notifications"));
 		}
 	}
 }
@@ -159,16 +159,13 @@ function autoUpdateCheck() {
 			$autoUpdateSettings['fix.common.problems.plg'] = "true";
 		}
 		if ( $autoUpdateSettings['Global'] != "true" ) {
-/* 			if ( $autoUpdateSettings['community.applications.plg'] != "true" ) {
-				addWarning("<font color='purple'><b>Community Applications</b></font> not set to auto update</font>",addLinkButton("Auto Update Settings","/Settings/AutoUpdate")."Recommended to enable auto updates for this plugin to minimize issues with applications");
-			} */ # Recent changes to CA don't require AutoUpdate to be enabled per se
 			if ( $autoUpdateSettings['fix.common.problems.plg'] != "true" ) {
 				if ( $autoUpdateOverride ) {
 					$func = "addWarning";
 				} else {
 					$func = "addWarning";
 				}
-				$func("This plugin <font color='purple'><b>(Fix Common Problems)</b></font> not set to auto update</font>",addLinkButton("Auto Update Settings","/Settings/AutoUpdate")."Recommended to enable auto updates for this plugin to enable further problem solving / fixes");
+				$func("This plugin <b>(Fix Common Problems)</b> not set to auto update",addLinkButton("Auto Update Settings","/Settings/AutoUpdate")."Recommended to enable auto updates for this plugin to enable further problem solving / fixes");
 			}
 		}
 	}
@@ -185,7 +182,7 @@ function sameShareDifferentCase() {
 		$dupShareList = array_diff(scandir("/mnt/user/"),array(".","..",$share));
 		foreach ($dupShareList as $dup) {
 			if ( strtolower($share) === strtolower($dup) ) {
-				addError("Same share <font color='purple'>($share)</font> exists in a different case","This will confuse SMB shares.  Manual intervention required.  Use the dolphin / krusader docker app to combine the shares into one unified spelling");
+				addError("Same share ($share) exists in a different case","This will confuse SMB shares.  Manual intervention required.  Use the dolphin / krusader docker app to combine the shares into one unified spelling");
 				break;
 			}
 		}
@@ -202,7 +199,7 @@ function powerdownInstalled() {
 	if ( version_compare($unRaidVersion,"6.1.9",">=") ) { return; }
 	if ( ! is_file("/var/log/plugins/powerdown-x86_64.plg") ) {
 		$suggestion = $communityApplicationsInstalled ? "Install either through ".addLinkButton("Community Applications","/Apps")." or via" : "";
-		addWarning("<font color='purple'><b>Powerdown</b></font> plugin not installed","Highly recommended to install this plugin.  Install via $suggestion the instructions <a href='http://lime-technology.com/forum/index.php?topic=31735.0' target='_blank'>HERE</a>");
+		addWarning("<b>Powerdown</b> plugin not installed","Highly recommended to install this plugin.  Install via $suggestion the instructions <a href='http://lime-technology.com/forum/index.php?topic=31735.0' target='_blank'>HERE</a>");
 	}
 }
 
@@ -236,24 +233,24 @@ function writeToDriveTest() {
 			}
 		}
 		if ( is_file("/mnt/$drive") ) {
-			addError("File <font color='purple'>$drive</font> present within /mnt","Generally speaking, most times when files get created within /mnt it is a result of an improperly configured application.  This error may or may not cause issues for you");
+			addError("File $drive present within /mnt","Generally speaking, most times when files get created within /mnt it is a result of an improperly configured application.  This error may or may not cause issues for you");
 			continue;
 		}
 		$diskpos = strpos($drive,"disk");
 		if ( $diskpos !== false ) {
 			$validTest = str_replace("disk","",$drive);
 			if ( ! is_numeric($validTest) ) {
-				addError("Invalid folder <font color='purple'>$drive</font> contained within /mnt","Generally speaking, most times when other folders get created within /mnt it is a result of an improperly configured application.  This error may or may not cause issues for you");
+				addError("Invalid folder $drive contained within /mnt","Generally speaking, most times when other folders get created within /mnt it is a result of an improperly configured application.  This error may or may not cause issues for you");
 				continue;
 			}
 		}
 		$cachepos = strpos($drive,"cache");
 		if ( ($cachepos !== false) && ($drive != "cache") ) {
-			addError("Invalid folder <font color='purple'>$drive</font> contained within /mnt","Generally speaking, most times when other folders get created within /mnt it is a result of an improperly configured application.  This error may or may not cause issues for you");
+			addError("Invalid folder $drive contained within /mnt","Generally speaking, most times when other folders get created within /mnt it is a result of an improperly configured application.  This error may or may not cause issues for you");
 			continue;
 		}
 		if ( $diskpos === false && $drive != "cache" ) {
-			addError("Invalid folder <font color='purple'>$drive</font> contained within /mnt","Generally speaking, most times when other folders get created within /mnt it is a result of an improperly configured application.  This error may or may not cause issues for you");
+			addError("Invalid folder $drive contained within /mnt","Generally speaking, most times when other folders get created within /mnt it is a result of an improperly configured application.  This error may or may not cause issues for you");
 			continue;
 		}
 		$filename = randomFile("/mnt/$drive");
@@ -261,7 +258,7 @@ function writeToDriveTest() {
 		@file_put_contents($filename,"test");
 		$result = @file_get_contents($filename);
 		if ( $result != "test" ) {
-			addError("Unable to write to <font color='purple'>$drive","Drive mounted read-only or completely full.  Begin Investigation Here: ".addLinkButton("unRaid Main","/Main"));
+			addError("Unable to write to $drive","Drive mounted read-only or completely full.  Begin Investigation Here: ".addLinkButton("unRaid Main","/Main"));
 		}
 		@unlink($filename);
 	}
@@ -271,7 +268,7 @@ function writeToDriveTest() {
 	$result = @file_get_contents($filename);
 
 	if ( $result != "test" ) {
-		addError("Unable to write to <font color='purple'><b>flash drive</b>","Drive mounted read-only or completely full.  Begin Investigation Here: ".addLinkButton("unRaid Main","/Main")." Note: failing this test will also mean that you will be unable to perform a clean shutdown of your server");
+		addError("Unable to write to <b>flash drive</b>","Drive mounted read-only or completely full.  Begin Investigation Here: ".addLinkButton("unRaid Main","/Main")." Note: failing this test will also mean that you will be unable to perform a clean shutdown of your server");
 	}
 	@unlink($filename);
 # Toss the reset check flag on the the flash drive
@@ -285,7 +282,7 @@ function writeToDriveTest() {
 		$result = @file_get_contents($filename);
 
 		if ( $result != "test" ) {
-			addError("Unable to write to <font color='purple'><b>Docker Image</b></font>","Docker Image either full or corrupted.  Investigate Here: ".addLinkButton("Docker Settings","/Settings/DockerSettings"));
+			addError("Unable to write to <b>Docker Image</b>","Docker Image either full or corrupted.  Investigate Here: ".addLinkButton("Docker Settings","/Settings/DockerSettings"));
 		}
 		@unlink($filename);
 	}
@@ -303,7 +300,7 @@ function dockerImageOnDiskShare() {
 	if ( is_dir("/mnt/cache") ) {
 		$dockerOptions = @my_parse_ini_file("/boot/config/docker.cfg");
 		if ( startsWith($dockerOptions['DOCKER_APP_CONFIG_PATH'],"/mnt/user/") ) {
-			addWarning("<font color='purple'><b>docker appdata location</b></font> is stored within /mnt/user","Many (if not most) docker applications will have issues (weird results, not starting, etc) if their appdata is stored within a user share.  You should constrain the appdata share to a <b>single</b>disk or to the cache drive.  This is true even if the appdata share is a <em>Cache-Only</em> share.  Change the default here: ".addLinkButton("Docker Settings","/Settings/DockerSettings"));
+			addWarning("<b>docker appdata location</b> is stored within /mnt/user","Many (if not most) docker applications will have issues (weird results, not starting, etc) if their appdata is stored within a user share.  You should constrain the appdata share to a <b>single</b>disk or to the cache drive.  This is true even if the appdata share is a <em>Cache-Only</em> share.  Change the default here: ".addLinkButton("Docker Settings","/Settings/DockerSettings"));
 		}
 	}
 }
@@ -325,7 +322,7 @@ function dockerAppdataCacheOnly() {
 		if ( is_file("/boot/config/shares/$sharename.cfg") ) {
 			$shareSettings = my_parse_ini_file("/boot/config/shares/$sharename.cfg");
 			if ( ( $shareSettings['shareUseCache'] != "only" ) && ( $shareSettings['shareUseCache'] != "prefer" ) ) {
-				addError("<font color='purple'><b>Default docker appdata</b></font> location is not a cache-only share","If the appdata share is not set to be cache-only, then the mover program will cause your docker applications to become inoperable when it runs (6.1.x). Under 6.2+, this setting should not affect the operation of the application, but it will definitely impact significantly the performance of the application.  Fix it via ".addLinkButton("$sharename Settings","/Shares/Share?name=$sharename"));
+				addError("<b>Default docker appdata</b> location is not a cache-only share","If the appdata share is not set to be cache-only, then the mover program will cause your docker applications to become inoperable when it runs (6.1.x). Under 6.2+, this setting should not affect the operation of the application, but it will definitely impact significantly the performance of the application.  Fix it via ".addLinkButton("$sharename Settings","/Shares/Share?name=$sharename"));
 			}
 		}
 	}
@@ -342,7 +339,7 @@ function disabledDisksPresent() {
 
 	foreach ($disks as $disk) {
 		if ( startsWith($disk['status'],'DISK_DSBL') ) {
-			addError("<font color='purple'><b>".$disk['name']." (".$disk['id'].")</b></font> is disabled","Begin Investigation Here: ".addLinkButton("unRaid Main","/Main"));
+			addError("<b>".$disk['name']." (".$disk['id'].")</b> is disabled","Begin Investigation Here: ".addLinkButton("unRaid Main","/Main"));
 		}
 	}
 }
@@ -358,7 +355,7 @@ function missingDisksPresent() {
 	foreach ($disks as $disk) {
 		if ( ( $disk['status'] == "DISK_NP") || ( $disk['status'] == "DISK_NP_DSBL" ) ) {
 			if ( $disk['id'] ) {
-				addError("<font color='purple'><b>".$disk['name']." (".$disk['id'].")</b></font> is missing","unRaid believes that your hard drive is not connected to any SATA port.  Begin Investigation Here: ".addLinkButton("unRaid Main","/Main")."  And also look at the ".addLinkButton("Diagnostics","/Tools/Diagnostics"));
+				addError("<b>".$disk['name']." (".$disk['id'].")</b> is missing","unRaid believes that your hard drive is not connected to any SATA port.  Begin Investigation Here: ".addLinkButton("unRaid Main","/Main")."  And also look at the ".addLinkButton("Diagnostics","/Tools/Diagnostics"));
 			}
 		}
 	}
@@ -374,7 +371,7 @@ function readErrorsPresent() {
 	$disks = my_parse_ini_file($fixPaths['disks.ini'],true);
 	foreach ($disks as $disk) {
 		if ( $disk['numErrors'] ) {
-			addError("<font color='purple'><b>".$disk['name']." (".$disk['id'].")</b></font> has read errors","If the disk has not been disabled, then unRaid has successfully rewritten the contents of the offending sectors back to the hard drive.  It would be a good idea to look at the S.M.A.R.T. Attributes for the drive in questionBegin Investigation Here: ".addLinkButton($disk['name']." Settings","/Main/Device?name=".$disk['name']));
+			addError("<b>".$disk['name']." (".$disk['id'].")</b> has read errors","If the disk has not been disabled, then unRaid has successfully rewritten the contents of the offending sectors back to the hard drive.  It would be a good idea to look at the S.M.A.R.T. Attributes for the drive in questionBegin Investigation Here: ".addLinkButton($disk['name']." Settings","/Main/Device?name=".$disk['name']));
 		}
 	}
 }
@@ -389,7 +386,7 @@ function fileSystemErrors() {
 	$disks = my_parse_ini_file($fixPaths['disks.ini'],true);
 	foreach ( $disks as $disk ) {
 		if ( $disk['fsError'] ) {
-			addError("<font color='purple'><b>".$disk['name']." (".$disk['id'].")</b></font> has file system errors (".$disk['fsError'].")","If the disk if XFS / REISERFS, stop the array, restart the Array in Maintenance mode, and run the file system checks.  If the disk is BTRFS, then see <a href='https://forums.lime-technology.com/topic/46802-faq-for-unraid-v6/?page=2&tab=comments#comment-543490' target='_blank'>this post</a>.  <b>If the disk is listed as being unmountable, and it has data on it, whatever you do do not hit the format button.  Seek assistance <a href='http://lime-technology.com/forum/index.php?board=71.0' target='_blank'>HERE</a>");
+			addError("<b>".$disk['name']." (".$disk['id'].")</b> has file system errors (".$disk['fsError'].")","If the disk if XFS / REISERFS, stop the array, restart the Array in Maintenance mode, and run the file system checks.  If the disk is BTRFS, then see <a href='https://forums.lime-technology.com/topic/46802-faq-for-unraid-v6/?page=2&tab=comments#comment-543490' target='_blank'>this post</a>.  <b>If the disk is listed as being unmountable, and it has data on it, whatever you do do not hit the format button.  Seek assistance <a href='http://lime-technology.com/forum/index.php?board=71.0' target='_blank'>HERE</a>");
 		}
 	}
 }
@@ -405,7 +402,7 @@ function SSDinArray() {
 	foreach ( $disks as $disk ) {
 		if ( $disk['rotational'] == "0" ) {
 			if ( startsWith($disk['name'],"disk") ) {
-				addWarning("<font color='purple'><b>".$disk['name']." (".$disk['id'].")</b></font> is an SSD.","SSD's are not currently supported within the array, and their background garbage collection *may* impact your ability to rebuild a disk");
+				addWarning("<b>".$disk['name']." (".$disk['id'].")</b> is an SSD.","SSD's are not currently supported within the array, and their background garbage collection *may* impact your ability to rebuild a disk");
 			}
 		}
 	}
@@ -428,13 +425,13 @@ function pluginsUpToDate() {
 					if ( strtolower(pathinfo($Plugin, PATHINFO_EXTENSION)) == "plg" ) {
 						if ( checkPluginUpdate($Plugin) ) {
 							if ( $Plugin == "fix.common.problems.plg" ) {
-								addError("Plugin <font color='purple'><b>$Plugin</b></font> is not up to date","Upgrade the plugin here: ".addLinkButton("Plugins","/Plugins"));
+								addError("Plugin <b>$Plugin</b> is not up to date","Upgrade the plugin here: ".addLinkButton("Plugins","/Plugins"));
 							} else {
 								if ( $Plugin == "unRAIDServer.plg" ) {
 									$uptodateVersion = pluginVersion("/tmp/plugins/$Plugin");
-									addWarning("<font color='purple'><b>unRaid OS</b></font> not up to date","You are currently running <b>".unRaidVersion()."</b> and the latest version is <b>$uptodateVersion</b>.  It is recommended to upgrade here: ".addLinkButton("UpdateOS","/Tools/Update")." and review the release notes <a href='http://lime-technology.com/forum/index.php?board=1.0' target='_blank'>HERE</a>");
+									addWarning("<b>unRaid OS</b> not up to date","You are currently running <b>".unRaidVersion()."</b> and the latest version is <b>$uptodateVersion</b>.  It is recommended to upgrade here: ".addLinkButton("UpdateOS","/Tools/Update")." and review the release notes <a href='http://lime-technology.com/forum/index.php?board=1.0' target='_blank'>HERE</a>");
 								} else {
-									addWarning("Plugin <font color='purple'><b>$Plugin</b></font> is not up to date","Upgrade the plugin here: ".addLinkButton("Plugins","/Plugins"));
+									addWarning("Plugin <b>$Plugin</b> is not up to date","Upgrade the plugin here: ".addLinkButton("Plugins","/Plugins"));
 								}
 							}
 						}
@@ -456,7 +453,7 @@ function incompatiblePackagesPresent() {
 		$files = array_diff(scandir("/boot/extra"),array(".",".."));
 		foreach ($files as $file) {
 			if ( strpos($file,"i386") || strpos($file,"i486") ) {
-				addError("Probable 32 Bit package <font color='purple'><b>$file</b></font> found on the flash drive in the <b>extra</b> folder","32 Bit packages are incompatible with unRaid 6.x and need to be removed - Using your desktop, navigate to the <em>flash</em> share (extra folder) and delete the offending file");
+				addError("Probable 32 Bit package <b>$file</b> found on the flash drive in the <b>extra</b> folder","32 Bit packages are incompatible with unRaid 6.x and need to be removed - Using your desktop, navigate to the <em>flash</em> share (extra folder) and delete the offending file");
 			}
 		}
 	}
@@ -464,7 +461,7 @@ function incompatiblePackagesPresent() {
 		$files = array_diff(scandir("/boot/packages"),array(".",".."));
 		foreach ($files as $file) {
 			if ( strpos($file,"i386") || strpos($file,"i486") ) {
-				addError("Probable 32 Bit package <font color='purple'><b>$file</b></font> found on the flash drive in the <b>packages</b> folder","32 Bit packages are incompatible with unRaid 6.x and need to be removed - Using your desktop, navigate to the <em>flash</em> share (packages folder) and delete the offending file");
+				addError("Probable 32 Bit package <b>$file</b> found on the flash drive in the <b>packages</b> folder","32 Bit packages are incompatible with unRaid 6.x and need to be removed - Using your desktop, navigate to the <em>flash</em> share (packages folder) and delete the offending file");
 			}
 		}
 	}
@@ -484,7 +481,7 @@ function dockerUpToDate() {
 
 		foreach ($info as $docker) {
 			if ( $updateStatus[$docker['Image']]['status'] == 'false' ) {
-				addWarning("Docker Application <font color='purple'><b>".$docker['Name']."</b></font> has an update available for it","Install the updates here: ".addLinkButton("Docker","/Docker"));
+				addWarning("Docker Application <b>".$docker['Name']."</b> has an update available for it","Install the updates here: ".addLinkButton("Docker","/Docker"));
 			}
 		}
 	}
@@ -507,7 +504,7 @@ function dockerConfigUserShare() {
 		foreach ($info as $docker) {
 			$appData = findAppData($docker['Volumes']);
 			if ( startsWith($appData,"/mnt/user") ) {
-				addWarning("<font color='purple'><b>".$docker['Name']."</b></font> docker application has its /config folder set to <font color='purple'><b>$appData</b></font>","Many (if not most docker applications) will not function correctly if their appData folder is set to a user share.  Ideally, they should be set to a disk share.  Either /mnt/cache/... or /mnt/diskX/...  Fix it here: ".addLinkButton("Docker Settings","/Docker"));
+				addWarning("<b>".$docker['Name']."</b> docker application has its /config folder set to <b>$appData</b>","Many (if not most docker applications) will not function correctly if their appData folder is set to a user share.  Ideally, they should be set to a disk share.  Either /mnt/cache/... or /mnt/diskX/...  Fix it here: ".addLinkButton("Docker Settings","/Docker"));
 			}
 		}
 	}
@@ -532,10 +529,10 @@ function varLogFilled() {
 	}
 
 	if ( $used > 80 ) {
-		addError("<font color='purple'><b>/var/log</b></font> is getting full (currently <font color='purple'>$used % </font>used)","Either your server has an extremely long uptime, or your syslog could be potentially being spammed with error messages.  A reboot of your server will at least temporarily solve this problem, but ideally you should seek assistance in the forums and post your ".addLinkButton("Diagnostics","/Tools/Diagnostics"));
+		addError("<b>/var/log</b> is getting full (currently $used % used)","Either your server has an extremely long uptime, or your syslog could be potentially being spammed with error messages.  A reboot of your server will at least temporarily solve this problem, but ideally you should seek assistance in the forums and post your ".addLinkButton("Diagnostics","/Tools/Diagnostics"));
 	} else {
 		if ( $used > 50 ) {
-			addWarning("<font color='purple'><b>/var/log</b></font> is getting full (currently <font color='purple'>$used % </font>used)","Either your server has an extremely long uptime, or your syslog could be potentially being spammed with error messages.  A reboot of your server will at least temporarily solve this problem, but ideally you should seek assistance in the forums and post your ".addLinkButton("Diagnostics","/Tools/Diagnostics"));
+			addWarning("<b>/var/log</b> is getting full (currently $used % used)","Either your server has an extremely long uptime, or your syslog could be potentially being spammed with error messages.  A reboot of your server will at least temporarily solve this problem, but ideally you should seek assistance in the forums and post your ".addLinkButton("Diagnostics","/Tools/Diagnostics"));
 		}
 	}
 }
@@ -555,10 +552,10 @@ function dockerImageFull() {
 		$used = str_replace("%","",$status[4]);
 
 		if ( $used > 90 ) {
-			addError("<font color='purple'><b>Docker image</b></font> file is getting full (currently <font color='purple'>$used % </font>used)","You should either increase the available image size to the docker image here ".addLinkButton("Docker Settings","/Settings/DockerSettings")."or investigate the possibility of docker applications storing completed downloads / incomplete downloads / etc within the actual docker image here: ".addLinkButton("Docker","/Docker"));
+			addError("<b>Docker image</b> file is getting full (currently $used % used)","You should either increase the available image size to the docker image here ".addLinkButton("Docker Settings","/Settings/DockerSettings")."or investigate the possibility of docker applications storing completed downloads / incomplete downloads / etc within the actual docker image here: ".addLinkButton("Docker","/Docker"));
 		} else {
 			if ( $used > 80 ) {
-				addWarning("<font color='purple'><b>Docker image</b></font> file is getting full (currently <font color='purple'>$used % </font>used)","You should either increase the available image size to the docker image here ".addLinkButton("Docker Settings","/Settings/DockerSettings")."or investigate the possibility of docker applications storing completed downloads / incomplete downloads / etc within the actual docker image here: ".addLinkButton("Docker","/Docker"));
+				addWarning("<b>Docker image</b> file is getting full (currently $used % used)","You should either increase the available image size to the docker image here ".addLinkButton("Docker Settings","/Settings/DockerSettings")."or investigate the possibility of docker applications storing completed downloads / incomplete downloads / etc within the actual docker image here: ".addLinkButton("Docker","/Docker"));
 			}
 		}
 	}
@@ -584,10 +581,10 @@ function rootfsFull() {
 		}
 
 		if ( $used > 90 ) {
-			addError("<font color='purple'><b>Rootfs</b></font> file is getting full (currently <font color='purple'>$used % </font>used)","Possibly an application is storing excessive amount of data in /tmp.  Seek assistance on the forums and post your ".addLinkButton("Diagnostics","/Tools/Diagnostics"));
+			addError("<b>Rootfs</b> file is getting full (currently $used % used)","Possibly an application is storing excessive amount of data in /tmp.  Seek assistance on the forums and post your ".addLinkButton("Diagnostics","/Tools/Diagnostics"));
 		} else {
 			if ( $used > 75 ) {
-				addWarning("<font color='purple'><b>Rootfs</b></font> file is getting full (currently <font color='purple'>$used % </font>used)","Possibly an application is storing excessive amount of data in /tmp.  Seek assistance on the forums and post your ".addLinkButton("Diagnostics","/Tools/Diagnostics"));
+				addWarning("<b>Rootfs</b> file is getting full (currently $used % used)","Possibly an application is storing excessive amount of data in /tmp.  Seek assistance on the forums and post your ".addLinkButton("Diagnostics","/Tools/Diagnostics"));
 			}
 		}
 	}
@@ -608,7 +605,7 @@ function dateTimeOK() {
 		$timeDifference = abs($serverTime - intval($actualTime));
 
 		if ( $timeDifference > 5 ) {
-			addWarning("Your server's <font color='purple'><b>current time</b></font> differs from the actual time by more than 5 minutes.  Currently out by approximately <font color='purple'>$timeDifference minutes</font>","Either set your date / time manually, or set up the server to use an NTP server to automatically update the date and time".addLinkButton("Date and Time Settings","/Settings/DateTime"));
+			addWarning("Your server's <b>current time</b> differs from the actual time by more than 5 minutes.  Currently out by approximately $timeDifference minutes","Either set your date / time manually, or set up the server to use an NTP server to automatically update the date and time".addLinkButton("Date and Time Settings","/Settings/DateTime"));
 		}
 	}
 	@unlink($filename);
@@ -625,7 +622,7 @@ function scheduledParityChecks() {
 		$dynamixSettings = my_parse_ini_file("/boot/config/plugins/dynamix/dynamix.cfg",true);
 
 		if ( $dynamixSettings['parity']['mode'] == "0" ) {
-			addWarning("Scheduled <font color='purple'><b>Parity Checks</b></font> are not enabled","It is highliy recommended to schedule parity checks for your system (most users choose monthly).  This is so that you know if unRaid has the ability to rebuild a failed drive if it needs to.  Set the schedule here: ".addLinkButton("Scheduler","/Settings/Scheduler"));
+			addWarning("Scheduled <b>Parity Checks</b> are not enabled","It is highliy recommended to schedule parity checks for your system (most users choose monthly).  This is so that you know if unRaid has the ability to rebuild a failed drive if it needs to.  Set the schedule here: ".addLinkButton("Scheduler","/Settings/Scheduler"));
 		}
 	}
 }
@@ -642,7 +639,7 @@ function shareIncludeExcludeSet() {
 			$shareCfg = my_parse_ini_file("/boot/config/shares/$share.cfg");
 			if ( $shareCfg['shareInclude'] && $shareCfg['shareExclude'] ) {
 				$shareURL = str_replace(" ","+",$share);
-				addWarning("Share <font color='purple'><b>$share</b></font> is set for both included (".$shareCfg['shareInclude'].") and excluded (".$shareCfg['shareExclude'].") disks","While if you're careful this isn't a problem, there is absolutely no reason ever to specify BOTH included and excluded disks.  It is far easier and safer to only set either the included list or the excluded list.  Fix it here: ".addLinkButton("$share Settings","/Shares/Share?name=$shareURL"));
+				addWarning("Share <b>$share</b> is set for both included (".$shareCfg['shareInclude'].") and excluded (".$shareCfg['shareExclude'].") disks","While if you're careful this isn't a problem, there is absolutely no reason ever to specify BOTH included and excluded disks.  It is far easier and safer to only set either the included list or the excluded list.  Fix it here: ".addLinkButton("$share Settings","/Shares/Share?name=$shareURL"));
 			}
 		}
 	}
@@ -651,7 +648,7 @@ function shareIncludeExcludeSet() {
 	if ( is_file("/boot/config/share.cfg") ) {
 		$shareCfg = my_parse_ini_file("/boot/config/share.cfg");
 		if ( $shareCfg['shareUserInclude'] && $shareCfg['shareUserExclude'] ) {
-			addWarning("<font color='purple'><b>Global Share Settings</b></font> is set for both included (".$shareCfg['shareUserInclude'].") and excluded (".$shareCfg['shareUserExclude'].") disks","While if you're careful this isn't a problem, there is absolutely no reason ever to specify BOTH included and excluded disks.  It is far easier and safer to only set either the included list or the excluded list.  Fix it here: ".addLinkButton("Global Share Settings","/Settings/ShareSettings"));
+			addWarning("<b>Global Share Settings</b> is set for both included (".$shareCfg['shareUserInclude'].") and excluded (".$shareCfg['shareUserExclude'].") disks","While if you're careful this isn't a problem, there is absolutely no reason ever to specify BOTH included and excluded disks.  It is far easier and safer to only set either the included list or the excluded list.  Fix it here: ".addLinkButton("Global Share Settings","/Settings/ShareSettings"));
 		}
 	}
 }
@@ -674,7 +671,7 @@ function shareIncludeExcludeSameDisk() {
 				foreach ($shareExclude as $excluded) {
 					if ( $included == $excluded ) {
 						$shareURL = str_replace(" ","+",$share);
-						addError("Share <font color='purple'><b>$share</b></font> has the same disk ($included) set to be both included and excluded","The same disk cannot be both included and excluded.  There is also no reason to ever set both the included and excluded disks for a share.  Use one or the other.  Fix it here:".addLinkButton("$share Settings","/Shares/Share?name=$shareURL"));
+						addError("Share <b>$share</b> has the same disk ($included) set to be both included and excluded","The same disk cannot be both included and excluded.  There is also no reason to ever set both the included and excluded disks for a share.  Use one or the other.  Fix it here:".addLinkButton("$share Settings","/Shares/Share?name=$shareURL"));
 					}
 				}
 			}
@@ -692,7 +689,7 @@ function shareIncludeExcludeSameDisk() {
 				foreach ($shareExclude as $excluded) {
 					if ( $included == $excluded ) {
 						$shareURL = str_replace(" ","+",$share);
-						addError("Share <font color='purple'><b>Global Share Settings</b></font> has the same disk ($included) set to be both included and excluded","The same disk cannot be both included and excluded.  There is also no reason to ever set both the included and excluded disks for a share.  Use one or the other.  Fix it here:".addLinkButton("Global Share Settings","/Settings/ShareSettings"));
+						addError("Share <b>Global Share Settings</b> has the same disk ($included) set to be both included and excluded","The same disk cannot be both included and excluded.  There is also no reason to ever set both the included and excluded disks for a share.  Use one or the other.  Fix it here:".addLinkButton("Global Share Settings","/Settings/ShareSettings"));
 					}
 				}
 			}
@@ -717,7 +714,7 @@ function UDmountedSlaveMode() {
 						$volumePassed = explode(":",$volume);
 						if ( startsWith($volumePassed[0],"/mnt/disks/") ) {
 							if ( ! stripos($volumePassed[2],"slave") ) {
-								addError("Docker application <font color='purple'><b>".$docker['Name']."</b></font> has volumes being passed that are mounted by <em>Unassigned Devices</em>, but they are not mounted with the <font color='purple'>slave</font> option","To help with a trouble free experience with this application, you need to pass any volumes mounted with Unassigned Devices using the slave option.  Fix it here: ".addLinkButton("Docker","/Docker"));
+								addError("Docker application <b>".$docker['Name']."</b> has volumes being passed that are mounted by <em>Unassigned Devices</em>, but they are not mounted with the slave option","To help with a trouble free experience with this application, you need to pass any volumes mounted with Unassigned Devices using the slave option.  Fix it here: ".addLinkButton("Docker","/Docker"));
 							}
 						}
 					}
@@ -742,11 +739,11 @@ function supportedFileSystemCheck() {
 			}
 			if ( $disk['name'] == "flash" ) {
 				if ( $disk['fsType'] != "vfat" ) {
-					addError("unRaid <font color='purple'><b>USB Flash Drive</b></font> is not formatted as FAT32","Strange results can happen if the flash drive is not formatted as FAT32.  Note that if your flash drive is > 32Gig, you must jump through some hoops to format it as FAT32.  Seek assistance in the formums if this is the case");
+					addError("unRaid <b>USB Flash Drive</b> is not formatted as FAT32","Strange results can happen if the flash drive is not formatted as FAT32.  Note that if your flash drive is > 32Gig, you must jump through some hoops to format it as FAT32.  Seek assistance in the formums if this is the case");
 				}
 			} else {
 				if ( ($disk['name'] != "parity") && ($disk['name'] != "parity2") ) {
-					addError("Disk <font color='purple'><b>".$disk['name']."</b></font> is formatted as ".$disk['fsType'],"The only supported file systems are ReiserFS, btrFS, XFS.  This error should only happen if you are setting up a new array and the disk already has data on it.  <font color='red'><b>Prior to with a fix, you should seek assistance in the forums as the disk may simply be unmountable.  Whatever you do, do not hit the format button on the unRaid main screen as you will then lose data");
+					addError("Disk <b>".$disk['name']."</b> is formatted as ".$disk['fsType'],"The only supported file systems are ReiserFS, btrFS, XFS.  This error should only happen if you are setting up a new array and the disk already has data on it.  <font color='red'><b>Prior to with a fix, you should seek assistance in the forums as the disk may simply be unmountable.  Whatever you do, do not hit the format button on the unRaid main screen as you will then lose data");
 				}
 			}
 		}
@@ -765,12 +762,12 @@ function FTPrunning() {
 	foreach ($output as $line) {
 		if ($line[0] != "#") {
 			if ( is_file("/boot/config/vsftpd.user_list") ) {
-				addWarning("unRaid's built in <font color='purple'><b>FTP server</b></font> is running","Opening up your unRaid server directly to the internet is an extremely bad idea. - You <b>will</b> get hacked.  If you require an FTP server running on your server, use one of the FTP docker applications instead.  They will be more secure than the built in one".addLinkButton("FTP Server Settings","/Settings/FTP")." If you are only using the built in FTP server locally on your network you can ignore this warning, but ensure that you have not forwarded any ports from your router to your server.  Note that there is a bug in unRaid 6.1.9 and 6.2b21 where if you disable the service, it will come back alive after a reboot.  This check is looking at whether you have users authenticated to use the ftp server");
+				addWarning("unRaid's built in <b>FTP server</b> is running","Opening up your unRaid server directly to the internet is an extremely bad idea. - You <b>will</b> get hacked.  If you require an FTP server running on your server, use one of the FTP docker applications instead.  They will be more secure than the built in one".addLinkButton("FTP Server Settings","/Settings/FTP")." If you are only using the built in FTP server locally on your network you can ignore this warning, but ensure that you have not forwarded any ports from your router to your server.  Note that there is a bug in unRaid 6.1.9 and 6.2b21 where if you disable the service, it will come back alive after a reboot.  This check is looking at whether you have users authenticated to use the ftp server");
 			}
 			break;
 		} else {
 			if ( is_file("/boot/config/vsftpd.user_list") ) {
-				addWarning("unRaid's built in <font color='purple'><b>FTP server</b></font> is currently disabled, but users are defined","There is a &quot;feature&quot; within 6.1.9 and 6.2 beta 21 where after the server is reset, the FTP server will be automatically re-enabled regardless if you want it to be or not.  Remove the users here".addLinkButton("FTP Settings","/Settings/FTP"));
+				addWarning("unRaid's built in <b>FTP server</b> is currently disabled, but users are defined","There is a &quot;feature&quot; within 6.1.9 and 6.2 beta 21 where after the server is reset, the FTP server will be automatically re-enabled regardless if you want it to be or not.  Remove the users here".addLinkButton("FTP Settings","/Settings/FTP"));
 			}
 		}
 	}
@@ -786,12 +783,12 @@ function checkNotifications() {
 	$dynamixSettings = my_parse_ini_file("/boot/config/plugins/dynamix/dynamix.cfg",true);
 
 	if ( $dynamixSettings['notify']['alert'] == "0" ) {
-		addWarning("No destination (browser / email / agents set for <font color='purple'><b>Alert level notifications</b></font>","Without a destination set for alerts, you will not know if any issue requiring your immediate attention happens on your server.  Fix it here:".addLinkButton("Notification Settings","/Settings/Notifications"));
+		addWarning("No destination (browser / email / agents set for <b>Alert level notifications</b>","Without a destination set for alerts, you will not know if any issue requiring your immediate attention happens on your server.  Fix it here:".addLinkButton("Notification Settings","/Settings/Notifications"));
 	}
 # Check for destination for Warning level notifications
 
 	if ( $dynamixSettings['notify']['warning'] == "0" ) {
-	 addWarning("No destination (browser / email / agents set for <font color='purple'><b>Warning level notifications</b></font>","Without a destination set for alerts, you will not know if any issue requiring your attention happens on your server.  Fix it here:".addLinkButton("Notification Settings","/Settings/Notifications"));
+	 addWarning("No destination (browser / email / agents set for <b>Warning level notifications</b>","Without a destination set for alerts, you will not know if any issue requiring your attention happens on your server.  Fix it here:".addLinkButton("Notification Settings","/Settings/Notifications"));
 	}
 
 # Check for destination email address
@@ -801,7 +798,7 @@ function checkNotifications() {
 
 	if ( $emailSelected ) {
 		if ( ( ! $dynamixSettings['ssmtp']['RcptTo'] ) || ( ! $dynamixSettings['ssmtp']['server'] ) ) {
-			addWarning("<font color='purple'><b>Email</b></font> selected as a notification destination, but not properly configured","Either deselect email as a destination for notifications or properly configure it here: ".addLinkButton("Notification Settings","/Settings/Notifications")."  Note That this test does NOT test to see if you can actually send mail or not");
+			addWarning("<b>Email</b> selected as a notification destination, but not properly configured","Either deselect email as a destination for notifications or properly configure it here: ".addLinkButton("Notification Settings","/Settings/Notifications")."  Note That this test does NOT test to see if you can actually send mail or not");
 		}
 	}
 }
@@ -822,14 +819,14 @@ function blacklistedPluginsInstalled() {
 			}
 			$pluginURL = getRedirectedURL(exec("/usr/local/emhttp/plugins/dynamix.plugin.manager/scripts/plugin pluginURL /var/log/plugins/$plugin"));
 			if ( $caModeration[$pluginURL]['Blacklist'] ) {
-				addError("Blacklisted plugin <font color='purple'><b>$plugin</b></font>","This plugin has been blacklisted and should no longer be used due to the following reason(s): <font color='purple'><em><b>".$caModeration[$pluginURL]['ModeratorComment']."</b></em></font>  You should remove this plugin as its continued installation may cause adverse effects on your server.".addLinkButton("Plugins","/Plugins"));
+				addError("Blacklisted plugin <b>$plugin</b>","This plugin has been blacklisted and should no longer be used due to the following reason(s): <em><b>".$caModeration[$pluginURL]['ModeratorComment']."</b></em>  You should remove this plugin as its continued installation may cause adverse effects on your server.".addLinkButton("Plugins","/Plugins"));
 			}
 			if ( $caModeration[$pluginURL]['Deprecated'] ) {
-				addWarning("Deprecated plugin <font color='purple'><b>$plugin</b></font>","This plugin has been deprecate and should no longer be used due to the following reason(s): <font color='purple'><em><b>".$caModeration[$pluginURL]['ModeratorComment']."</b></em></font>  While this plugin should still be functional, it is no recommended to continue to use it.".addLinkButton("Plugins","/Plugins"));
+				addWarning("Deprecated plugin <b>$plugin</b>","This plugin has been deprecate and should no longer be used due to the following reason(s): <em><b>".$caModeration[$pluginURL]['ModeratorComment']."</b></em>  While this plugin should still be functional, it is no recommended to continue to use it.".addLinkButton("Plugins","/Plugins"));
 			}
 		}
 	} else {
-		addOther("Could not check for <font color='purple'><b>blacklisted</b></font> plugins","The download of the blacklist failed");
+		addOther("Could not check for <b>blacklisted</b> plugins","The download of the blacklist failed");
 	}
 }
 
@@ -869,12 +866,12 @@ function unknownPluginInstalled() {
 						}
 					}
 					if ( ! $flag ) {
-						addWarning("The plugin <font color='purple'><b>$plugin</b></font> is not known to Community Applications and is possibly incompatible with your server","As a <em>general</em> rule, if the plugin is not known to Community Applications, then it is not compatible with your server.  It is recommended to uninstall this plugin ".addLinkButton("Plugins","/Plugins"));
+						addWarning("The plugin <b>$plugin</b> is not known to Community Applications and is possibly incompatible with your server","As a <em>general</em> rule, if the plugin is not known to Community Applications, then it is not compatible with your server.  It is recommended to uninstall this plugin ".addLinkButton("Plugins","/Plugins"));
 					}
 				}
 			}
 		} else {
-			addOther("Could not perform <font color='purple'><b>unknown plugins</b></font> installed checks","The download of the application feed failed.");
+			addOther("Could not perform <b>unknown plugins</b> installed checks","The download of the application feed failed.");
 		}
 	}
 }
@@ -911,7 +908,7 @@ function dockerAppsChangedPorts() {
 						}
 						$mode = strtolower($app['Networking']['Mode']);
 						if ( $mode != strtolower($dockerInstalled['NetworkMode']) ) {
-							addError("Docker Application <font color='purple'><b>".$dockerInstalled['Name']."</b></font> is currently set up to run in <font color='purple'><b>".$dockerInstalled['NetworkMode']."</b></font> mode","The template for this application specifies that the application should run in $mode mode.  <a href='$support' target='_blank'>Application Support Thread</a>  ".addLinkButton("Docker","/Docker"));
+							addError("Docker Application <b>".$dockerInstalled['Name']."</b> is currently set up to run in <b>".$dockerInstalled['NetworkMode']."</b> mode","The template for this application specifies that the application should run in $mode mode.  <a href='$support' target='_blank'>Application Support Thread</a>  ".addLinkButton("Docker","/Docker"));
 						}
 						if ( $mode == "host" ) { continue;}
 
@@ -929,14 +926,14 @@ function dockerAppsChangedPorts() {
 								}
 							}
 							if ( ! $flag ) {
-								addError("Docker Application <font color='purple'><b>".$dockerInstalled['Name'].", Container Port ".$port['ContainerPort']."</b></font> not found or changed on installed application","When changing ports on a docker container, you should only ever modify the <font color='purple'>HOST</font> port, as the application in question will expect the container port to remain the same as what the template author dictated.  Fix this here: ".addLinkButton("Docker","/Docker")."<a href='$support' target='_blank'>Application Support Thread</a>");
+								addError("Docker Application <b>".$dockerInstalled['Name'].", Container Port ".$port['ContainerPort']."</b> not found or changed on installed application","When changing ports on a docker container, you should only ever modify the HOST port, as the application in question will expect the container port to remain the same as what the template author dictated.  Fix this here: ".addLinkButton("Docker","/Docker")."<a href='$support' target='_blank'>Application Support Thread</a>");
 							}
 						}
 					}
 				}
 			}
 		} else {
-			addOther("Could not perform <font color='purple'><b>docker application port</b></font> tests","The download of the application feed failed.");
+			addOther("Could not perform <b>docker application port</b> tests","The download of the application feed failed.");
 		}
 	}
 }
@@ -950,41 +947,41 @@ function illegalShareName() {
 
 	foreach ($shareList as $share) {
 		if ( strpos($share, '\\') != false ) {
-			addError("Share <font color='purple'><b>$share</b></font> contains <font color='purple'>the \\ character</font> which is an illegal character on Windows systems.","You may run into issues with Windows and/or other programs attempting to access this share.  You will most likely have to use the command prompt in order to rectify this error.  Ask for assistance on the unRaid forums");
+			addError("Share <b>$share</b> contains the \\ character which is an illegal character on Windows systems.","You may run into issues with Windows and/or other programs attempting to access this share.  You will most likely have to use the command prompt in order to rectify this error.  Ask for assistance on the unRaid forums");
 		}
 		if ( strpos($share,"/") != false ) {
-			addError("Share <font color='purple'><b>$share</b></font> contains <font color='purple'>the / character</font> which is an illegal character on Windows / Linux systems.","You may run into issues with Windows and/or other programs attempting to access this share.  You will most likely have to use the command prompt in order to rectify this error.  Ask for assistance on the unRaid forums.  You probably also have some disk corruption, as this folder should be impossible to create");
+			addError("Share <b>$share</b> contains the / character which is an illegal character on Windows / Linux systems.","You may run into issues with Windows and/or other programs attempting to access this share.  You will most likely have to use the command prompt in order to rectify this error.  Ask for assistance on the unRaid forums.  You probably also have some disk corruption, as this folder should be impossible to create");
 		}
 		if ( strpos($share,":") ) {
-			addError("Share <font color='purple'><b>$share</b></font> contains <font color='purple'>the : character</font> which is an illegal character on Windows / MAC systems.","You will most likely have to use the command prompt in order to rectify this error.  Ask for assistance on the unRaid forums");
+			addError("Share <b>$share</b> contains the : character which is an illegal character on Windows / MAC systems.","You will most likely have to use the command prompt in order to rectify this error.  Ask for assistance on the unRaid forums");
 		}
 		if ( strpos($share,"*") != false ) {
-			addError("Share <font color='purple'><b>$share</b></font> contains <font color='purple'>the * character</font> which is an illegal character on Windows systems.","You may also run into issues with non-Windows systems when using this character.  You will most likely have to use the command prompt in order to rectify this error.  Ask for assistance on the unRaid forums");
+			addError("Share <b>$share</b> contains the * character which is an illegal character on Windows systems.","You may also run into issues with non-Windows systems when using this character.  You will most likely have to use the command prompt in order to rectify this error.  Ask for assistance on the unRaid forums");
 		}
 		if ( strpos($share,"?") != false ) {
-			addError("Share <font color='purple'><b>$share</b></font> contains <font color='purple'>the ? character</font> which is an illegal character on Windows systems.","You may run into issues with Windows and/or other programs attempting to access this share.  You will most likely have to use the command prompt in order to rectify this error.  Ask for assistance on the unRaid forums");
+			addError("Share <b>$share</b> contains the ? character which is an illegal character on Windows systems.","You may run into issues with Windows and/or other programs attempting to access this share.  You will most likely have to use the command prompt in order to rectify this error.  Ask for assistance on the unRaid forums");
 		}
 		if ( strpos($share,'"') != false ) {
-			addError("Share <font color='purple'><b>$share</b></font> contains <font color='purple'>the \" character</font> which is an illegal character on Windows systems.","You may run into issues with Windows and/or other programs attempting to access this share.  You will most likely have to use the command prompt in order to rectify this error.  Ask for assistance on the unRaid forums");
+			addError("Share <b>$share</b> contains the \" character which is an illegal character on Windows systems.","You may run into issues with Windows and/or other programs attempting to access this share.  You will most likely have to use the command prompt in order to rectify this error.  Ask for assistance on the unRaid forums");
 		}
 		if ( strpos($share,"<") != false ) {
-			addError("Share <font color='purple'><b>$share</b></font> contains <font color='purple'>the < character</font> which is an illegal character on Windows systems.","You may run into issues with Windows and/or other programs attempting to access this share  You may also run into issues with non-Windows systems when using this character.  You will most likely have to use the command prompt in order to rectify this error.  Ask for assistance on the unRaid forums");
+			addError("Share <b>$share</b> contains the < character which is an illegal character on Windows systems.","You may run into issues with Windows and/or other programs attempting to access this share  You may also run into issues with non-Windows systems when using this character.  You will most likely have to use the command prompt in order to rectify this error.  Ask for assistance on the unRaid forums");
 		}
 		if ( strpos($share,">") != false ) {
-			addError("Share <font color='purple'><b>$share</b></font> contains <font color='purple'>the > character</font> which is an illegal character on Windows systems.","You may run into issues with Windows and/or other programs attempting to access this share.  You will most likely have to use the command prompt in order to rectify this error.  Ask for assistance on the unRaid forums");
+			addError("Share <b>$share</b> contains the > character which is an illegal character on Windows systems.","You may run into issues with Windows and/or other programs attempting to access this share.  You will most likely have to use the command prompt in order to rectify this error.  Ask for assistance on the unRaid forums");
 		}
 		if ( strpos($share,"|") != false ) {
-			addError("Share <font color='purple'><b>$share</b></font> contains <font color='purple'>the | character</font> which is an illegal character on Windows systems.","You may run into issues with Windows and/or other programs attempting to access this share.  You will most likely have to use the command prompt in order to rectify this error.  Ask for assistance on the unRaid forums");
+			addError("Share <b>$share</b> contains the | character which is an illegal character on Windows systems.","You may run into issues with Windows and/or other programs attempting to access this share.  You will most likely have to use the command prompt in order to rectify this error.  Ask for assistance on the unRaid forums");
 		}
 		if ( trim($share) == "" ) {
-			addError("Share <font color='purple'><b>\"$share\"</b></font> contains <font color='purple'>only spaces</font> which is illegal Windows systems.","You may run into issues with Windows and/or other programs attempting to access this share/  You will most likely have to use the command prompt in order to rectify this error.  Ask for assistance on the unRaid forums");
+			addError("Share <b>\"$share\"</b> contains only spaces which is illegal Windows systems.","You may run into issues with Windows and/or other programs attempting to access this share/  You will most likely have to use the command prompt in order to rectify this error.  Ask for assistance on the unRaid forums");
 		}
 		if ( substr($share, -1) == "." ) {
-			addError("Share <font color='purple'><b>$share</b></font> ends with <font color='purple'>the . character</font> which is an illegal character to end a file / folder name  on Windows systems.","You may run into issues with Windows and/or other programs attempting to access this share.  You will most likely have to use the command prompt in order to rectify this error.  Ask for assistance on the unRaid forums");
+			addError("Share <b>$share</b> ends with the . character which is an illegal character to end a file / folder name  on Windows systems.","You may run into issues with Windows and/or other programs attempting to access this share.  You will most likely have to use the command prompt in order to rectify this error.  Ask for assistance on the unRaid forums");
 		}
 	# control characters in file names are a standard part of OSX
 	/*   if ( ! ctype_print($share) ) {
-			addError("Share <font color='purple'><b>$share</b></font> contains <font color='purple'>control character</font> which should be illegal characters on any OS.","You may run into issues with programs attempting to access this share.  You will most likely have to use the command prompt in order to rectify this error.  Ask for assistance on the unRaid forums");
+			addError("Share <b>$share</b> contains control character which should be illegal characters on any OS.","You may run into issues with programs attempting to access this share.  You will most likely have to use the command prompt in order to rectify this error.  Ask for assistance on the unRaid forums");
 		} */
 	}
 }
@@ -1022,7 +1019,7 @@ function HPApresent() {
 				} else {
 					$func = "addOther";
 				}
-				$func("Disk <font color='purple'><b>".$disk['name']."</b></font> has an HPA partition enabled on it","If this is your parity disk, then you <b>must</b> remove the HPA partition, because its presence will impact the ability (<b>as in you may not be able to do it</b>) rebuild a disabled drive and/or expand your array.  It is not so important if this is present on a data/cache disk.  See assistance on unRaid's forums for help with the commands to fix this issue.  <a href='http://lime-technology.com/wiki/index.php/UnRAID_Topical_Index#HPA' target='_blank'>Sample of forum posts</a>  This issue mainly affects hard drives that are currently installed in, or have been in a system with a Gigabyte motherboard");
+				$func("Disk <b>".$disk['name']."</b> has an HPA partition enabled on it","If this is your parity disk, then you <b>must</b> remove the HPA partition, because its presence will impact the ability (<b>as in you may not be able to do it</b>) rebuild a disabled drive and/or expand your array.  It is not so important if this is present on a data/cache disk.  See assistance on unRaid's forums for help with the commands to fix this issue.  <a href='http://lime-technology.com/wiki/index.php/UnRAID_Topical_Index#HPA' target='_blank'>Sample of forum posts</a>  This issue mainly affects hard drives that are currently installed in, or have been in a system with a Gigabyte motherboard");
 				break;
 			}
 		}
@@ -1042,7 +1039,7 @@ function flashDriveFull() {
 	$percentage = ($flashFree / $flashAvail) * 100;
 
 	if ( $percentage < 10 ) {
-		addWarning("<font color='purple'><b>Flash Drive</b></font> is > 90% full","As very little information is stored on the flash drive in a properly configured system, you may have an improperly configured application which is storing an excessive amount of data onto the flash drive.  On a properly configured system with no extraneous files on the flash drive, it should only use at most 1G");
+		addWarning("<b>Flash Drive</b> is > 90% full","As very little information is stored on the flash drive in a properly configured system, you may have an improperly configured application which is storing an excessive amount of data onto the flash drive.  On a properly configured system with no extraneous files on the flash drive, it should only use at most 1G");
 	}
 }
 
@@ -1057,7 +1054,7 @@ function cacheFloorTests() {
 	$suffix = strtolower(preg_replace('/[0-9]+/', '', $vars['shareCacheFloor']));
 
 	if ( ( $suffix!= "" ) && ($suffix != "kb") && ($suffix != "mb") && ($suffix != "gb") && ($suffix != "tb") ) {
-		addError("An improper suffix <font color='purple'><b>$suffix</b></font> was use in the cache floor settings","The only valid suffixes allowed are KB, MB, GB, TB.  Fix it here: ".addLinkButton("Global Share Settings","/Settings/ShareSettings"));
+		addError("An improper suffix <b>$suffix</b> was use in the cache floor settings","The only valid suffixes allowed are KB, MB, GB, TB.  Fix it here: ".addLinkButton("Global Share Settings","/Settings/ShareSettings"));
 	}
 
 # Check for cache drive exceeding its floor space ( and cache floor larger than cache drive )
@@ -1095,10 +1092,10 @@ function cacheFloorTests() {
 		$cacheSize = disk_total_space("/mnt/cache");
 
 		if ( $cacheFloor > $cacheSize ) {
-			addError("<font color='purple'><b>Cache Floor Size</b></font> (calculated to $cacheFloor bytes) is larger than your cache drive ($cacheSize bytes)","Change your cache floor settings here: ".addLinkButton("Global Share Settings","/Settings/ShareSettings"));
+			addError("<b>Cache Floor Size</b> (calculated to $cacheFloor bytes) is larger than your cache drive ($cacheSize bytes)","Change your cache floor settings here: ".addLinkButton("Global Share Settings","/Settings/ShareSettings"));
 		} else {
 			if ( $cacheFree < $cacheFloor ) {
-				addWarning("<font color='purple'><b>Cache Disk</b></font> free space is less than the cache floor setting","All writes to your cache enabled shares are being redirected to your array.  If this is a transient situation, you can ignore this, otherwise adjust your cache floor settings here:".addLinkButton("Global Share Settings","/Settings/ShareSettings")." or adjust the frequency of the mover running:".addLinkButton("Scheduler Settings","/Settings/Scheduler")." or purchase a larger cache drive");
+				addWarning("<b>Cache Disk</b> free space is less than the cache floor setting","All writes to your cache enabled shares are being redirected to your array.  If this is a transient situation, you can ignore this, otherwise adjust your cache floor settings here:".addLinkButton("Global Share Settings","/Settings/ShareSettings")." or adjust the frequency of the mover running:".addLinkButton("Scheduler Settings","/Settings/Scheduler")." or purchase a larger cache drive");
 			}
 		}
 	}
@@ -1116,7 +1113,7 @@ function sharePermission() {
 		$sharePermission = substr(sprintf("%o",fileperms("/mnt/user/$share")),-4);
 
 		if ( $sharePermission != "0777" ) {
-			addWarning("Share <font color='purple'><b>$share</b></font> has non-standard permissions set","The permission on the share is currently set to <b>$sharePermission</b> (standard permissions are <b>0777</b>).  You may have trouble accessing this share locally and/or over the network due to this issue.  You should run the ".addLinkButton("New Permissions","/Tools/DockerSafeNewPerms")."tool to fix this issue.  (Don't know what these numbers mean?  Look <a href='http://permissions-calculator.org/decode/' target='_blank'>HERE</a>  NOTE that if this is your appdata share then you will need to manually run the command to fix this.  Ask for assistance on the forums");
+			addWarning("Share <b>$share</b> has non-standard permissions set","The permission on the share is currently set to <b>$sharePermission</b> (standard permissions are <b>0777</b>).  You may have trouble accessing this share locally and/or over the network due to this issue.  You should run the ".addLinkButton("New Permissions","/Tools/DockerSafeNewPerms")."tool to fix this issue.  (Don't know what these numbers mean?  Look <a href='http://permissions-calculator.org/decode/' target='_blank'>HERE</a>  NOTE that if this is your appdata share then you will need to manually run the command to fix this.  Ask for assistance on the forums");
 		}
 	}
 }
@@ -1129,7 +1126,7 @@ function uncleanReboot() {
 	global $fixPaths, $fixSettings, $autoUpdateOverride, $developerMode, $communityApplicationsInstalled, $dockerRunning, $ignoreList, $shareList;
 
 	if ( is_file($fixPaths['uncleanReboot']) ) {
-		addError("<font color='purple'><b>unclean shutdown</b></font> detected of your server",addButton("Acknowledge Error","acknowledgeUncleanReboot(this.id);")."Your server has performed an unclean shutdown.  You need to investigate adding a UPS (if this was due to a power failure) or if one is already present, properly setting up its settings".addLinkButton("UPS Settings","/Settings/UPSsettings")."  If this is a recurring issue (ie: random resets / crashes, etc) then you should run memtest from unRaid's boot menu for <b>at least</b> one complete pass.  If there are no memory issues, then you might want to look at putting this plugin into <b>troubleshooting mode</b> before posting for support on the unRaid forums.  Note: if you do not acknowledge this error you will continually get this notification.");
+		addError("<b>unclean shutdown</b> detected of your server",addButton("Acknowledge Error","acknowledgeUncleanReboot(this.id);")."Your server has performed an unclean shutdown.  You need to investigate adding a UPS (if this was due to a power failure) or if one is already present, properly setting up its settings".addLinkButton("UPS Settings","/Settings/UPSsettings")."  If this is a recurring issue (ie: random resets / crashes, etc) then you should run memtest from unRaid's boot menu for <b>at least</b> one complete pass.  If there are no memory issues, then you might want to look at putting this plugin into <b>troubleshooting mode</b> before posting for support on the unRaid forums.  Note: if you do not acknowledge this error you will continually get this notification.");
 	}
 }
 
@@ -1145,7 +1142,7 @@ function outOfMemory() {
 		return;
 	}
 	if ($output) {
-		addError("<font color='purple'><b>Out Of Memory</b></font> errors detected on your server",addButton("Acknowledge Error","acknowledgeOOM(this.id);")."Your server has run out of memory, and processes (potentially required) are being killed off.  You should post your diagnostics and ask for assistance on the unRaid forums");
+		addError("<b>Out Of Memory</b> errors detected on your server",addButton("Acknowledge Error","acknowledgeOOM(this.id);")."Your server has run out of memory, and processes (potentially required) are being killed off.  You should post your diagnostics and ask for assistance on the unRaid forums");
 	}
 }
 
@@ -1161,7 +1158,7 @@ function mceCheck() {
 		return;
 	}
 	if ($output) {
-		addError("<font color='purple'><b>Machine Check Events</b></font> detected on your server",addButton("Acknowledge Error","acknowledgeMCE(this.id);")."Your server has detected hardware errors.  You should install mcelog via the NerdPack plugin, post your diagnostics and ask for assistance on the unRaid forums.  The output of mcelog (if installed) has been logged");
+		addError("<b>Machine Check Events</b> detected on your server",addButton("Acknowledge Error","acknowledgeMCE(this.id);")."Your server has detected hardware errors.  You should install mcelog via the NerdPack plugin, post your diagnostics and ask for assistance on the unRaid forums.  The output of mcelog (if installed) has been logged");
 		if ( is_file("/usr/sbin/mcelog") ) {
 			$filename = randomFile("/tmp");
 			exec("mcelog > $filename 2>&1",$mcelog);
@@ -1190,7 +1187,7 @@ function callTrace() {
 			  return;
 		  }
 			if ($output) {
-				addError("<font color='purple'><b>Call Traces</b></font> found on your server",addButton("Acknowledge Error","acknowledgeTrace(this.id);")."Your server has issued one or more call traces.  This could be caused by a Kernel Issue, Bad Memory, etc.  You should post your diagnostics and ask for assistance on the unRaid forums");
+				addError("<b>Call Traces</b> found on your server",addButton("Acknowledge Error","acknowledgeTrace(this.id);")."Your server has issued one or more call traces.  This could be caused by a Kernel Issue, Bad Memory, etc.  You should post your diagnostics and ask for assistance on the unRaid forums");
 				break;
 			}
 		}
@@ -1227,7 +1224,7 @@ function checkForHack() {
 			if ( is_array($errorDay) ) {
 				$currentDay = $errorDay['Day'];
 				if ( count($errorDay) > $fixSettings['hacksPerDay'] ) {
-					addError("<font size='3'>Possible <font color='purple'><b>Hack Attempt</b></font> on $currentMonth $currentDay</font>","On $currentMonth $currentDay there were <b>".count($errorDay)."</b> invalid login attempts.  This could either be yourself attempting to login to your server (SSH / Telnet) with the wrong user or password, or <b>you could be actively be the victim of hack attacks</b>.  A common cause of this would be placing your server within your router's DMZ, or improperly forwarding ports.  <font color='red'><b><h2>This is a major issue and needs to be addressed IMMEDIATELY</h2></b></font>NOTE: Because this check is done against the logged entries in the syslog, the only way to clear it is to either increase the number of allowed invalid logins per day (if determined that it is not a hack attempt) or to reset your server.  It is not recommended under any circumstance to ignore this error");
+					addError("<font size='3'>Possible <b>Hack Attempt</b> on $currentMonth $currentDay","On $currentMonth $currentDay there were <b>".count($errorDay)."</b> invalid login attempts.  This could either be yourself attempting to login to your server (SSH / Telnet) with the wrong user or password, or <b>you could be actively be the victim of hack attacks</b>.  A common cause of this would be placing your server within your router's DMZ, or improperly forwarding ports.  <font color='red'><b><h2>This is a major issue and needs to be addressed IMMEDIATELY</h2></b>NOTE: Because this check is done against the logged entries in the syslog, the only way to clear it is to either increase the number of allowed invalid logins per day (if determined that it is not a hack attempt) or to reset your server.  It is not recommended under any circumstance to ignore this error");
 				}
 			}
 		}
@@ -1264,13 +1261,13 @@ function checkForModeration() {
 			continue;
 		}
 		if ( $comments['Blacklist'] ) {
-			addWarning("Docker application <font color='purple'><b>".$dockerApp['Name']."</b></font> has moderator comments listed","<font color='purple'><b>".$dockerApp['Name']."</b></font> (".$dockerApp['Image'].") has the following comments: <font color='purple'>".$comments['ModeratorComment']."</font>  Additionally, this application has been blacklisted from Community Applications for that reason.");
+			addWarning("Docker application <b>".$dockerApp['Name']."</b> has moderator comments listed","<b>".$dockerApp['Name']."</b> (".$dockerApp['Image'].") has the following comments: ".$comments['ModeratorComment']."  Additionally, this application has been blacklisted from Community Applications for that reason.");
 			continue;
 		}
 		if ( $comments['Deprecated'] ) {
-			addWarning("Docker application <font color='purple'><b>".$dockerApp['Name']."</b></font> has moderator comments listed","<font color='purple'><b>".$dockerApp['Name']."</b></font> (".$dockerApp['Image'].") has the following comments: <font color='purple'>".$comments['ModeratorComment']."</font>  This application has been deprecated from Community Applications for that reason.  While still functional, it is no longer recommended to utilize it.");
+			addWarning("Docker application <b>".$dockerApp['Name']."</b> has moderator comments listed","<b>".$dockerApp['Name']."</b> (".$dockerApp['Image'].") has the following comments: ".$comments['ModeratorComment']."  This application has been deprecated from Community Applications for that reason.  While still functional, it is no longer recommended to utilize it.");
 		} else {
-			addOther("Docker application <font color='purple'><b>".$dockerApp['Name']."</b></font> has moderator comments listed","<font color='purple'><b>".$dockerApp['Name']."</b></font> (".$dockerApp['Image'].") has the following comments: <font color='purple'>".$comments['ModeratorComment']."</font>");
+			addOther("Docker application <b>".$dockerApp['Name']."</b> has moderator comments listed","<b>".$dockerApp['Name']."</b> (".$dockerApp['Image'].") has the following comments: ".$comments['ModeratorComment']."");
 		}
 	}
 }
@@ -1307,7 +1304,7 @@ function pluginNotCompatible() {
 						if ( $app['MaxVer'] ) {
 							$maxVer = "Maximum OS Version: {$app['MaxVer']}";
 						}
-						addWarning("<font color='purple'><b>$plugin</b></font> Not Compatible with unRaid version $unRaidVersion","The author (or moderators of Community Applications) of the plugin template (<font color='purple'><b>$pluginURL</b></font>) has specified that this plugin is incompatible with your version of unRaid ($unRaidVersion).  You should uninstall the plugin here:".addLinkButton("Plugins","/Plugins")." $minVer  $maxVer");
+						addWarning("<b>$plugin</b> Not Compatible with unRaid version $unRaidVersion","The author (or moderators of Community Applications) of the plugin template (<b>$pluginURL</b>) has specified that this plugin is incompatible with your version of unRaid ($unRaidVersion).  You should uninstall the plugin here:".addLinkButton("Plugins","/Plugins")." $minVer  $maxVer");
 					}
 					break;
 				}
@@ -1348,7 +1345,7 @@ function checkWebUI() {
 				$defaultUI     = str_replace("&amp;","&",$defaultUI);
 				$templateWebUI = str_replace("&amp;","&",$templateWebUI);
 				if ( htmlspecialchars($templateWebUI) != htmlspecialchars($defaultUI) ) {
-					addWarning("Docker application <font color='purple'><b>".$dockerApp['Name']."</b></font> does not have the same webUI interface as what the template author specified","The webUI the author specified is <font color='purple'>$defaultUI</font> and the webUI you are using is <font color='purple'>$templateWebUI</font>.  If you are specifying an absolute port (IE: <b>PORT:xxxx</b> is missing from your specified webUI address, then you will have issues should you ever have to change the host port on the docker applications's settings.  In the same vein, specifying an absolute IP address in the webUI will cause issues should your server's IP address ever change.  Note that the PORT:xxxx refers to the <b>Container's</b> port, not the host port.  There may however be perfectly valid reasons to change the default webUI entry on the application.  You can fix this problem here:".addLinkButton("Docker","/Docker"));
+					addWarning("Docker application <b>".$dockerApp['Name']."</b> does not have the same webUI interface as what the template author specified","The webUI the author specified is $defaultUI and the webUI you are using is $templateWebUI.  If you are specifying an absolute port (IE: <b>PORT:xxxx</b> is missing from your specified webUI address, then you will have issues should you ever have to change the host port on the docker applications's settings.  In the same vein, specifying an absolute IP address in the webUI will cause issues should your server's IP address ever change.  Note that the PORT:xxxx refers to the <b>Container's</b> port, not the host port.  There may however be perfectly valid reasons to change the default webUI entry on the application.  You can fix this problem here:".addLinkButton("Docker","/Docker"));
 				}
 				break;
 			}
@@ -1370,7 +1367,7 @@ function cacheOnlyNoCache() {
 		}
 		$shareCfg = my_parse_ini_file("/boot/config/shares/$share.cfg");
 		if ( $shareCfg['shareUseCache'] == "only" ){
-			addError("Share <font color='purple'><b>$share</b></font> set to use cache only, but the cache drive is not present","Setting a share to be cache-only, but without a cache drive present can have unpredictable results at best, and in some cases can prevent proper operation of any application attempting to use that share.  Fix it here:".addLinkButton("$share Settings","/Shares/Share?name=$share")."  Alternatively, depending upon your version of unRaid, you may have to manually delete this file: <b>/config/shares/$share.cfg</b> from the flash drive to fix this issue");
+			addError("Share <b>$share</b> set to use cache only, but the cache drive is not present","Setting a share to be cache-only, but without a cache drive present can have unpredictable results at best, and in some cases can prevent proper operation of any application attempting to use that share.  Fix it here:".addLinkButton("$share Settings","/Shares/Share?name=$share")."  Alternatively, depending upon your version of unRaid, you may have to manually delete this file: <b>/config/shares/$share.cfg</b> from the flash drive to fix this issue");
 		}
 	}
 }
@@ -1387,7 +1384,7 @@ function shareNameSameAsDiskName() {
 	foreach ($disks as $disk) {
 		if ( $disk['name'] == "parity" ) { continue; }
 		if ( is_dir("/mnt/user/".$disk['name']) ) {
-			addError("Share <font color='purple'><b>".$disk['name']."</b></font> is identically named to a <b>disk share</b>","While there *may be* (doubtful) valid use cases for having a share named identically to a disk share, this is only going to cause some confusion as if disk shares are enabled, then you will have duplicated share names, and possibly if disk shares are not enabled, then you might not be able to gain access to the share.  This is usually caused by moving the contents of one disk to another (XFS Conversion?) and an improperly placed <b>slash</b>.  The solution is to move the contents of the user share named ".$disk['name']." to be placed within a validly named share.  Ask for assistance on the forums for guidance on doing this.");
+			addError("Share <b>".$disk['name']."</b> is identically named to a <b>disk share</b>","While there *may be* (doubtful) valid use cases for having a share named identically to a disk share, this is only going to cause some confusion as if disk shares are enabled, then you will have duplicated share names, and possibly if disk shares are not enabled, then you might not be able to gain access to the share.  This is usually caused by moving the contents of one disk to another (XFS Conversion?) and an improperly placed <b>slash</b>.  The solution is to move the contents of the user share named ".$disk['name']." to be placed within a validly named share.  Ask for assistance on the forums for guidance on doing this.");
 		}
 	}
 }
@@ -1424,7 +1421,7 @@ function extraParamInRepository() {
 
 			$repository = trim($xmlTemplate['Repository']);
 			if ( strpos($repository," ") ) {
-				addWarning("Docker application <font color='purple'><b>".$xmlTemplate['Name']."</b></font> appears to have extra parameters contained within its <b>Repository</b> entry","Adding extra parameters by including them in the repository (eg: --cpuset-cpus) is deprecated, and may impact the ability of dockerMan to correctly manage your application (eg: unable to update, etc).  The proper way to add extra parameters is through the <b>Extra Parameters</b> section when you edit the container (you will have to hit Advanced Settings)  Fix this here: ".addLinkButton("Edit ".$xmlTemplate['Name'],"/Docker/UpdateContainer?xmlTemplate=edit:".$container['template']));
+				addWarning("Docker application <b>".$xmlTemplate['Name']."</b> appears to have extra parameters contained within its <b>Repository</b> entry","Adding extra parameters by including them in the repository (eg: --cpuset-cpus) is deprecated, and may impact the ability of dockerMan to correctly manage your application (eg: unable to update, etc).  The proper way to add extra parameters is through the <b>Extra Parameters</b> section when you edit the container (you will have to hit Advanced Settings)  Fix this here: ".addLinkButton("Edit ".$xmlTemplate['Name'],"/Docker/UpdateContainer?xmlTemplate=edit:".$container['template']));
 			}
 		}
 	}
@@ -1466,7 +1463,7 @@ function inotifyToolsNerdPack() {
 			continue;
 		}
 		if ( $nerdPackCFG[$cfg] == "yes" ) {
-			addWarning("<font color='purple'>inotify-tools</font> set to install","inotify-tools is set to be installed by the NerdPack plugin.  This package is now included in unRaid 6.3RC6+, and NerdPack should be set to not install it.  Fix this here: ".addLinkButton("NerdPack Settings","/Settings/NerdPack"));
+			addWarning("inotify-tools set to install","inotify-tools is set to be installed by the NerdPack plugin.  This package is now included in unRaid 6.3RC6+, and NerdPack should be set to not install it.  Fix this here: ".addLinkButton("NerdPack Settings","/Settings/NerdPack"));
 		}
 	}
 }
@@ -1486,7 +1483,7 @@ function inotifyExhausted() {
 
 	$inotifyResult = passthru("inotifywatch $filename -t 1 > /dev/null 2>&1",$returnValue);
 	if ( $returnValue ) {
-		addWarning("Possibly out of <font color='purple'>inotify</font> watches","Many plugins (dynamix File Integrity, File Activity, Ransomware Protection and others utilize inotify watches to run.  Your system is returning an error when attempting to watch a file.  You may need to increase the maximum number of watches available (usually can be set within the plugin's settings");
+		addWarning("Possibly out of inotify watches","Many plugins (dynamix File Integrity, File Activity, Ransomware Protection and others utilize inotify watches to run.  Your system is returning an error when attempting to watch a file.  You may need to increase the maximum number of watches available (usually can be set within the plugin's settings");
 	}
 	@unlink($filename);
 }
@@ -1500,7 +1497,7 @@ function nobodyCared() {
 	exec("cat /var/log/syslog | grep -i -o 'irq .* nobody cared'",$out);
 	if ( $out ) {
 		foreach ($out as $output) {
-			addWarning("<font color='purple'>$output</font> found on your server","You should post your diagnostics and seek assistance from the forums before deciding to ignore this error.  The interrupts in use have been logged to assist in diagnosis");
+			addWarning("$output found on your server","You should post your diagnostics and seek assistance from the forums before deciding to ignore this error.  The interrupts in use have been logged to assist in diagnosis");
 		}
 		exec("cat /proc/interrupts",$interrupts);
 		logger("Interrupts listed as being in use:");
@@ -1517,7 +1514,7 @@ function reiserCache() {
 
 	$disks = parse_ini_file("/var/local/emhttp/disks.ini",true);
 	if ( ($disks['cache']['fsType'] == "reiserfs") && ( ! $disks['cache']['rotational'] ) ) {
-		addWarning("<font color='purple'>SSD Cache Drive</font> formatted as reiserFS","You have an SSD cache drive which has been formatted as reiserFS.  ReiserFS does not support trim, so you will encounter performance issues.  You should convert the cache drive's format to XFS (or to BTRFS if you are planning a future cache-pool)");
+		addWarning("SSD Cache Drive formatted as reiserFS","You have an SSD cache drive which has been formatted as reiserFS.  ReiserFS does not support trim, so you will encounter performance issues.  You should convert the cache drive's format to XFS (or to BTRFS if you are planning a future cache-pool)");
 	}
 }
 ################################################
@@ -1529,7 +1526,7 @@ function SSDcacheNoTrim() {
 	$disks = parse_ini_file("/var/local/emhttp/disks.ini",true);
 	if ( ! is_array($disks['cache']) ) { return; }
 	if ( (! $disks['cache']['rotational']) && (! is_file("/var/log/plugins/dynamix.ssd.trim.plg")) && ( $disks['cache']['status'] != "DISK_NP") ) {
-		addWarning("<font color='purple'>Dynamix SSD Trim Plugin</font> Not installed","Your cache drive is an SSD Drive, but you do not have the Dynamix SSD Trim plugin installed.  Your performance will suffer.  Install the plugin via the Apps Tab (Community Applications)");
+		addWarning("Dynamix SSD Trim Plugin Not installed","Your cache drive is an SSD Drive, but you do not have the Dynamix SSD Trim plugin installed.  Your performance will suffer.  Install the plugin via the Apps Tab (Community Applications)");
 	}
 }
 
@@ -1564,19 +1561,19 @@ function templateURLMissing() {
 						$template_url = my_xml_decode($template->TemplateURL);
 						$warning = null;
 						if (empty($template_url)) {
-							$warning = "Template URL for docker application <font color='purple'><b>".$dockerInstalled['Name']."</b></font> is missing.";
+							$warning = "Template URL for docker application <b>".$dockerInstalled['Name']."</b> is missing.";
 						}
 						else if ($template_url !== $app['TemplateURL']) {
-							$warning = "Template URL for docker application <font color='purple'><b>".$dockerInstalled['Name']."</b></font> is not the as what the template author specified.";
+							$warning = "Template URL for docker application <b>".$dockerInstalled['Name']."</b> is not the as what the template author specified.";
 						}
 						if (!empty($warning)) {
-							addWarning($warning,  "The template URL the author specified is <font color='purple'>".$app['TemplateURL']."</font>. The template can be updated automatically with the correct URL. <input type='button' id='apply_fix' value='Apply Fix' onclick='openBox(\"/plugins/fix.common.problems/scripts/applyFix.php?cmd=templateURL&template=".$xmlfile."&url=".$app['TemplateURL']."\",\"Docker Application Template URL Fix\",490,430);'>");
+							addWarning($warning,  "The template URL the author specified is ".$app['TemplateURL'].". The template can be updated automatically with the correct URL. <input type='button' id='apply_fix' value='Apply Fix' onclick='openBox(\"/plugins/fix.common.problems/scripts/applyFix.php?cmd=templateURL&template=".$xmlfile."&url=".$app['TemplateURL']."\",\"Docker Application Template URL Fix\",490,430);'>");
 						}
 					}
 				}
 			}
 		} else {
-			addOther("Could not perform <font color='purple'><b>docker application port</b></font> tests","The download of the application feed failed.");
+			addOther("Could not perform <b>docker application port</b> tests","The download of the application feed failed.");
 		}
 	}
 }
@@ -1587,7 +1584,7 @@ function marvelControllerTest() {
 	exec("lspci -k",$testResults);
 	foreach ($testResults as $line) {
 		if (strpos($line,"Kernel driver in use: mvsas") ) {
-			addWarning("<font color='purple'>Marvel Hard Drive Controller</font> Installed","It appears that your server has a Marvel based hard drive controller installed within it.  <b>Some</b> users with Marvel based controllers exhibit random drives dropping offline, recurring parity errors during checks etc.  This tends to be exacberated if VT-D / IOMMU is enabled in the BIOS.  Generally, LSI based controllers would be preferred over Marvel based controllers because of these issues.  <strong>Note that these issues are out of Limetech's hands</strong>.  Depending upon the exact combination of hardware present in your server, you may not have any problems whatsoever.  <strong><em>If you have no problems, then this warning can be safely ignored</em></strong>, but future versions of unRaid (and later Kernel versions) may (or may not) present you with the previously mentioned issues."); 
+			addWarning("Marvel Hard Drive Controller Installed","It appears that your server has a Marvel based hard drive controller installed within it.  <b>Some</b> users with Marvel based controllers exhibit random drives dropping offline, recurring parity errors during checks etc.  This tends to be exacberated if VT-D / IOMMU is enabled in the BIOS.  Generally, LSI based controllers would be preferred over Marvel based controllers because of these issues.  <strong>Note that these issues are out of Limetech's hands</strong>.  Depending upon the exact combination of hardware present in your server, you may not have any problems whatsoever.  <strong><em>If you have no problems, then this warning can be safely ignored</em></strong>, but future versions of unRaid (and later Kernel versions) may (or may not) present you with the previously mentioned issues."); 
 			break;
 		}
 	}
@@ -1604,7 +1601,7 @@ function breadTest() {
 			foreach ($log as $logline) {
 				if ( strpos($logline,"Directory bread") ) {
 					if ( strpos($logline,"sda1") ) {
-						addError("<font color='purple'>Directory Bread Errors</font> found","Directory Bread errors have been found.  This usually means (assuming that your flash drive didn't physically come disconnected) that your flash drive has dropped offline.  The most common solution to this is to try a different USB controller for your flash drive (USB2<-->USB3)");
+						addError("Directory Bread Errors found","Directory Bread errors have been found.  This usually means (assuming that your flash drive didn't physically come disconnected) that your flash drive has dropped offline.  The most common solution to this is to try a different USB controller for your flash drive (USB2<-->USB3)");
 						$foundFlag = true;
 						break;
 					}
@@ -1624,7 +1621,7 @@ function Ryzen63() {
 	if ( version_compare($unRaidVersion,"6.4.0-rc1","<") ) {
 		$output = exec("lscpu | grep Ryzen");
 		if ( $output ) {
-			addWarning("<font color='purple'>Ryzen CPU on unRaid 6.3</font>","It is <b>highly</b> recommended to only use a Ryzen CPU if you are running unRaid version 6.4+");
+			addWarning("Ryzen CPU on unRaid 6.3","It is <b>highly</b> recommended to only use a Ryzen CPU if you are running unRaid version 6.4+");
 		}
 	}
 }
@@ -1636,7 +1633,7 @@ function lessThan2G() {
 	$raw = explode(" ",$file);
 	
 	if ($raw[0] < 1500000 ) {
-		addWarning("Less than <font color='purple'>2GB Memory</font> Installed","Your system currently has {$raw[0]} {$raw[1]} memory installed.  For a trouble-free experience with unRaid, the functional minimum for a basic NAS server is 2GB of memory.  You should add more memory");
+		addWarning("Less than 2GB Memory Installed","Your system currently has {$raw[0]} {$raw[1]} memory installed.  For a trouble-free experience with unRaid, the functional minimum for a basic NAS server is 2GB of memory.  You should add more memory");
 	}
 }
 
@@ -1671,7 +1668,7 @@ function checkDockerCompatible() {
 			if ( $template['MaxVer'] ) {
 				$verMsg .= "Maximum OS Version: unRaid v{$template['MaxVer']}";
 			}
-			addWarning("<font color='purple'>{$template['Name']}</font> ({$template['Repository']}) Incompatible","{$template['Name']} has been flagged as being incompatible with your version of unRaid.  $verMsg");
+			addWarning("{$template['Name']} ({$template['Repository']}) Incompatible","{$template['Name']} has been flagged as being incompatible with your version of unRaid.  $verMsg");
 		}
 	}
 }
@@ -1682,7 +1679,7 @@ function CPUoverheat() {
 	$syslogs = glob("/var/log/syslog*");
 	foreach ( $syslogs as $syslog ) {
 		if (exec("cat $syslog | grep 'Package temperature above threshold'") ) {
-			addWarning("<font color='purple'>CPU Overheating","Your CPU is overheating and has been throttled down (This may however be a transient occurance).  You may need to clean your filters and/or increase your cooling capacity.  Investigate here: ".addLinkButton("SYSLOG","Tools/Syslog"));
+			addWarning("CPU Overheating","Your CPU is overheating and has been throttled down (This may however be a transient occurance).  You may need to clean your filters and/or increase your cooling capacity.  Investigate here: ".addLinkButton("SYSLOG","Tools/Syslog"));
 		}
 	}
 }
@@ -1691,7 +1688,7 @@ function statsButNoPreclear() {
 	global $fixPaths, $fixSettings, $autoUpdateOverride, $developerMode, $communityApplicationsInstalled, $dockerRunning, $ignoreList, $shareList;
 
 	if ( is_file("/var/log/plugins/statistics.sender.plg") && ( ! is_file("/var/log/plugins/preclear.disk.plg") ) ) {
-		addWarning("<font color='purple'>Statistics</font> installed","The statistics plugin is installed, but the preclear disk plugin is not installed.  There is no reason to have statistics installed but not Preclear.  It is recommended to uninstall statistics here: ".addLinkButton("Plugins","/Plugins"));
+		addWarning("Statistics installed","The statistics plugin is installed, but the preclear disk plugin is not installed.  There is no reason to have statistics installed but not Preclear.  It is recommended to uninstall statistics here: ".addLinkButton("Plugins","/Plugins"));
 	}
 }
 
@@ -1702,7 +1699,7 @@ function moverLogging() {
 	
 	$iniFile = @parse_ini_file("/boot/config/share.cfg",true);
   if ( strtolower($iniFile['shareMoverLogging']) == "yes" ) {
-		addOther("Mover logging is <font color='purple'>enabled</font>","It is generally recommended to disable mover logging as unless there are problems with the moving, it performs no useful function and merely fills up the syslog and makes other issues harder to diagnose.   Disable it here: ".addLinkButton("Scheduler","/Settings/Scheduler")."  (Go To Mover Settings)");
+		addOther("Mover logging is enabled","It is generally recommended to disable mover logging as unless there are problems with the moving, it performs no useful function and merely fills up the syslog and makes other issues harder to diagnose.   Disable it here: ".addLinkButton("Scheduler","/Settings/Scheduler")."  (Go To Mover Settings)");
   }
 }	
 
@@ -1716,7 +1713,7 @@ function zenStates() {
 	if ( $output ) {
 		$output = exec("cat /boot/config/go | grep  /usr/local/sbin/zenstates");
 		if ( ! $output ) {
-			addWarning("You have a Ryzen CPU, but <font color='purple']>Zenstates</font> not installed.","Adding zenstates to your 'go' file can improve the stability of your system.  See this thread for more details <a href='https://lime-technology.com/forums/topic/66327-unraid-os-version-641-stable-release-update-notes/' target='_blank'>6.4.1 Upgrade Notes</a>");
+			addWarning("You have a Ryzen CPU, but <font color='purple']>Zenstates not installed.","Adding zenstates to your 'go' file can improve the stability of your system.  See this thread for more details <a href='https://lime-technology.com/forums/topic/66327-unraid-os-version-641-stable-release-update-notes/' target='_blank'>6.4.1 Upgrade Notes</a>");
 		}
 	}
 }
@@ -1741,7 +1738,7 @@ function invalidIncludedDisk() {
 		$includedDisks = explode(",",$shareCfg['shareInclude']);
 		foreach ($includedDisks as $disk) {
 			if ( ! is_dir("/mnt/$disk") ) {
-				addError("Share <font color='purple'><b>$share</b></font> has $disk set in its included disk settings","$disk is not defined / installed in the array.  This will cause errors when writing to the array.  Fix it here: ".addLinkButton("$share Settings","/Shares/Share?name=$share")."  NOTE:  Because of how the UI works, $disk will not appear in on this page.  You will need to make a change (any change), then revert the change and hit apply to fix this issue");
+				addError("Share <b>$share</b> has $disk set in its included disk settings","$disk is not defined / installed in the array.  This will cause errors when writing to the array.  Fix it here: ".addLinkButton("$share Settings","/Shares/Share?name=$share")."  NOTE:  Because of how the UI works, $disk will not appear in on this page.  You will need to make a change (any change), then revert the change and hit apply to fix this issue");
 			}
 		}
 	}
@@ -1758,14 +1755,14 @@ function CPUSet() {
   
 	$userTemplates = glob("/boot/config/plugins/dockerMan/templates-user/*.xml");
 	foreach ($userTemplates as $template) {
-		$xml = simplexml_load_file($template);
+		$xml = @simplexml_load_file($template);
 		$Name = (string)$xml->Name;
 		if ( ! $info[$Name] ) continue;
 		if (strlen($xml->CPUset) && strpos($xml->ExtraParams,"cpuset-cpus")) {
-			addError("Docker Application <font color='purple'>$Name</font> has duplicated entries for CPU pinning","Under unRaid version 6.6+, CPU pinning for docker applications via the extra parameters has been deprecated.  On this template, you have CPU pinning (--cpuset-cpus) contained in the extraparameters section of the template, and have also checked off one or more CPU's to pin the container to via the UI.  You should edit the container via the ".addLinkButton("Docker Tab","/Docker")." and remove the pinning from the extra parameters field");
+			addError("Docker Application $Name has duplicated entries for CPU pinning","Under unRaid version 6.6+, CPU pinning for docker applications via the extra parameters has been deprecated.  On this template, you have CPU pinning (--cpuset-cpus) contained in the extraparameters section of the template, and have also checked off one or more CPU's to pin the container to via the UI.  You should edit the container via the ".addLinkButton("Docker Tab","/Docker")." and remove the pinning from the extra parameters field");
 		}
 		if (strpos($xml->ExtraParams,"cpuset-cpus")) {
-			addWarning("Docker Application <font color='purple'>$Name</font> has CPU cores pinned via the extra parameters (--cpuset-cpus)","Under unRaid version 6.6+, CPU pinning for docker applications should be handled via the CPU Pinning section.  Fix it here: ".addLinkButton("Docker Tab","/Docker")." and remove the CPU pinning from the extra parameters section.  Note that if you DO NOT fix this, then you will NOT be able to change CPU pinning for the application via the GUI");
+			addWarning("Docker Application $Name has CPU cores pinned via the extra parameters (--cpuset-cpus)","Under unRaid version 6.6+, CPU pinning for docker applications should be handled via the CPU Pinning section.  Fix it here: ".addLinkButton("Docker Tab","/Docker")." and remove the CPU pinning from the extra parameters section.  Note that if you DO NOT fix this, then you will NOT be able to change CPU pinning for the application via the GUI");
 	}	}
 }
 
@@ -1806,7 +1803,24 @@ function isolatedCPUdockerCollision() {
 			}
 		}
 		if ( $flag > 1 ) {
-			addError("Docker Application <font color='purple'>$name</font> has multiple CPUs pinned to isolated CPUs","Unless you know exactly what you are doing, pinning a docker application to multiple isolated CPUs will only allow the application to execute on a single isolated core ".addLinkButton("CPU Set","/Settings/CPUset")." and adjust either the Isolated CPUs or the application's CPU pinning");
+			addError("Docker Application $name has multiple CPUs pinned to isolated CPUs","Unless you know exactly what you are doing, pinning a docker application to multiple isolated CPUs will only allow the application to execute on a single isolated core ".addLinkButton("CPU Set","/Settings/CPUset")." and adjust either the Isolated CPUs or the application's CPU pinning");
+		}
+	}
+}
+
+function testXML() {
+	global $fixPaths, $fixSettings, $autoUpdateOverride, $developerMode, $communityApplicationsInstalled, $dockerRunning, $ignoreList, $shareList,$unRaidVersion;
+
+	require_once("/usr/local/emhttp/plugins/fix.common.problems/include/xmlHelpers.php");
+	
+	foreach ( ["/boot/config/plugins/dockerMan/templates","/boot/config/plugins/dockerMan/templates-user"] as $directory) {
+		$contents = glob("$directory/*.xml");
+		foreach ($contents as $xmlfile) {
+			$xml = file_get_contents($xmlfile);
+			$o = TypeConverter::xmlToArray($xml,TypeConverter::XML_GROUP);
+			if ( ! $o ) {
+				addError("$xmlfile corrupted","A corrupted xml file will wind up having unRaid display numerous php errors in various tabs on the UI.  You will need to delete or edit and fix the file manually");
+			}
 		}
 	}
 }

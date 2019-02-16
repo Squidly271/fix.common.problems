@@ -90,6 +90,7 @@ $checkList = "
 * Disk included in share setting that doesn't exist on array
 * Check for deprecated --cpuset-cpus in extraparameters AND via CPU pinning via GUI
 * Check for collisions on CPU isolation and Docker CPU pinning (multiple collisions only)
+* Check for invalid docker template xml's
 
 <h2>Troubleshooting Mode</h2>
 

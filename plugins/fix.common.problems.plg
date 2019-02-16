@@ -2,8 +2,8 @@
 <!DOCTYPE PLUGIN [
 <!ENTITY name      "fix.common.problems">
 <!ENTITY author    "Andrew Zawadzki">
-<!ENTITY version   "2019.01.19">
-<!ENTITY md5       "278c77b5368836e5b8a1ca18a4e6020f">
+<!ENTITY version   "2019.02.16">
+<!ENTITY md5       "d9b9ce14a708ecc98da760d49e65f2f6">
 <!ENTITY launch    "Settings/FixProblems">
 <!ENTITY plugdir   "/usr/local/emhttp/plugins/&name;">
 <!ENTITY github    "Squidly271/fix.common.problems">
@@ -13,6 +13,13 @@
 <PLUGIN name="&name;" author="&author;" version="&version;" launch="&launch;" pluginURL="&pluginURL;" icon="warning">
 
 <CHANGES>
+###2019-02-16
+- Check for corrupted xml files on flash drive
+- Remove impossible to read highlighting on errors
+
+###2019-02-03
+- autov fix
+
 ###2019-01-19
 - Don't issue a warning if a plugin update requires an OS update
 
