@@ -1248,14 +1248,14 @@ function checkForModeration() {
 
 	foreach ( $info as $dockerApp ) {
 		$image = $dockerApp['Image'];
-		$Repository = explode(":",$image);
+		$Repository = str_replace(":latest","",$image);
 
 		unset($comments);
 		if ( $moderation[$image]['ModeratorComment'] ) {
 			$comments = $moderation[$image];
 		}
-		if ( $moderation[$Repository[0]]['ModeratorComment'] ) {
-			$comments = $moderation[$Repository[0]];
+		if ( $moderation[$Repository]['ModeratorComment'] ) {
+			$comments = $moderation[$Repository];
 		}
 		if ( ! $comments ) {
 			continue;

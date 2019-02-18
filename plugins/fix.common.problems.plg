@@ -2,8 +2,8 @@
 <!DOCTYPE PLUGIN [
 <!ENTITY name      "fix.common.problems">
 <!ENTITY author    "Andrew Zawadzki">
-<!ENTITY version   "2019.02.16a">
-<!ENTITY md5       "5c767985d862a12779988f6f0b3d5de1">
+<!ENTITY version   "2019.02.19">
+<!ENTITY md5       "e7a449aea0510c085f921e6259c67445">
 <!ENTITY launch    "Settings/FixProblems">
 <!ENTITY plugdir   "/usr/local/emhttp/plugins/&name;">
 <!ENTITY github    "Squidly271/fix.common.problems">
@@ -13,6 +13,9 @@
 <PLUGIN name="&name;" author="&author;" version="&version;" launch="&launch;" pluginURL="&pluginURL;" icon="warning">
 
 <CHANGES>
+###2019-02-19
+- Slight modification to detection of comments within a container
+
 ###2019-02-16
 - Deprecate Troubleshooting mode when running unRaid 6.7+
 - Check for corrupted xml files on flash drive
