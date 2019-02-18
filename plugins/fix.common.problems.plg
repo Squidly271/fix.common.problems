@@ -13,7 +13,7 @@
 <PLUGIN name="&name;" author="&author;" version="&version;" launch="&launch;" pluginURL="&pluginURL;" icon="warning">
 
 <CHANGES>
-###2019-02-19
+###2019-02-18
 - Slight modification to detection of comments within a container
 
 ###2019-02-16
