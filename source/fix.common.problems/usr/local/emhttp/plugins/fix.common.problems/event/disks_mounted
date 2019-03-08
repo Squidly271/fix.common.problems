@@ -1,6 +1,5 @@
 #!/bin/bash
 
 mkdir -p /tmp/fix.common.problems
-cp /boot/config/plugins/fix.common.problems/resetCheckFlag /tmp/fix.common.problems/resetCheckFlag > /dev/null 2>&1
 logger "Delaying execution of fix common problems scan for 10 minutes"
 echo "/usr/local/emhttp/plugins/fix.common.problems/scripts/scan.php" | at now +10 min -M > /dev/null 2>&1

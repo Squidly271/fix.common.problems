@@ -271,10 +271,7 @@ function writeToDriveTest() {
 		addError("Unable to write to <b>flash drive</b>","Drive mounted read-only or completely full.  Begin Investigation Here: ".addLinkButton("unRaid Main","/Main")." Note: failing this test will also mean that you will be unable to perform a clean shutdown of your server");
 	}
 	@unlink($filename);
-# Toss the reset check flag on the the flash drive
-	if ( is_dir("/mnt/user") ) {
-		@file_put_contents($fixPaths['uncleanRebootFlag'],"just a flag file to determine if unclean shutdowns occur");
-	}
+
 
 	if ( $dockerRunning ) {
 		$filename = randomFile("/var/lib/docker/tmp");

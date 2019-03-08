@@ -1,3 +1,0 @@
-#!/bin/bash
-
-rm -rf /boot/config/plugins/fix.common.problems/resetCheckFlag
