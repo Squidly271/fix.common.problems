@@ -182,22 +182,6 @@ if ( $troubleshooting ) {
 if ( $ignored && ( $fixSettings['logIgnored'] != "yes") ) {
 	logger("Fix Common Problems: Ignored errors / warnings / other comments found, but not logged per user settings");
 }
-###################################################################
-#                                                                 #
-# Execute any custom scripts at /boot/fix.common.problems/scripts #
-#                                                                 #
-###################################################################
-
-$allScripts = array_diff(scandir("/boot/config/plugins/fix.common.problems/scripts"),array(".",".."));
-
-foreach ($allScripts as $script) {
-	if ( $script == "sample.php" ) {
-		continue;
-	}
-	if ( is_executable("/boot/config/plugins/fix.common.problems/scripts/$script") ) {
-		exec("/boot/config/plugins/fix.common.problems/scripts/$script");
-	}
-}
 
 
 if ( ! $errors && ! $warnings && ! $otherWarnings && ! $ignored ) {
