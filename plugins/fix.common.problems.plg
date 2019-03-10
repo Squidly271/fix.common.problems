@@ -2,8 +2,8 @@
 <!DOCTYPE PLUGIN [
 <!ENTITY name      "fix.common.problems">
 <!ENTITY author    "Andrew Zawadzki">
-<!ENTITY version   "2019.03.07">
-<!ENTITY md5       "7bac876d58c9070391905cc36ef80778">
+<!ENTITY version   "2019.03.10">
+<!ENTITY md5       "ef43f15b821b0f87ed0c3bfb76c9c094">
 <!ENTITY launch    "Settings/FixProblems">
 <!ENTITY plugdir   "/usr/local/emhttp/plugins/&name;">
 <!ENTITY github    "Squidly271/fix.common.problems">
@@ -13,6 +13,9 @@
 <PLUGIN name="&name;" author="&author;" version="&version;" launch="&launch;" pluginURL="&pluginURL;" icon="warning">
 
 <CHANGES>
+###2019-03-10
+- Remove write to flash test
+
 ###2019-03-07
 - Stop pointless write to flashdrive on array stop / start
 

@@ -263,14 +263,14 @@ function writeToDriveTest() {
 		@unlink($filename);
 	}
 
-	$filename = randomFile("/boot");
+/* 	$filename = randomFile("/boot");
 	@file_put_contents($filename,"test");
 	$result = @file_get_contents($filename);
 
 	if ( $result != "test" ) {
 		addError("Unable to write to <b>flash drive</b>","Drive mounted read-only or completely full.  Begin Investigation Here: ".addLinkButton("unRaid Main","/Main")." Note: failing this test will also mean that you will be unable to perform a clean shutdown of your server");
 	}
-	@unlink($filename);
+	@unlink($filename); */
 
 
 	if ( $dockerRunning ) {
