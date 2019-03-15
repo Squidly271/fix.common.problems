@@ -2,8 +2,8 @@
 <!DOCTYPE PLUGIN [
 <!ENTITY name      "fix.common.problems">
 <!ENTITY author    "Andrew Zawadzki">
-<!ENTITY version   "2019.03.10">
-<!ENTITY md5       "ef43f15b821b0f87ed0c3bfb76c9c094">
+<!ENTITY version   "2019.03.14">
+<!ENTITY md5       "488b105f32d279a3186698e2014b7ba9">
 <!ENTITY launch    "Settings/FixProblems">
 <!ENTITY plugdir   "/usr/local/emhttp/plugins/&name;">
 <!ENTITY github    "Squidly271/fix.common.problems">
@@ -13,6 +13,9 @@
 <PLUGIN name="&name;" author="&author;" version="&version;" launch="&launch;" pluginURL="&pluginURL;" icon="warning">
 
 <CHANGES>
+###2019-03-14
+- Update to support CA API
+
 ###2019-03-10
 - Remove write to flash test
 

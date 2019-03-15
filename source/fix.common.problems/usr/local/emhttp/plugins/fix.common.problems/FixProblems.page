@@ -177,6 +177,10 @@ function checkList() {
 
 
 $(function() {
+	if ( typeof caPluginUpdateCheck === "function" ) {
+		caPluginUpdateCheck("fix.common.problems.plg",{name:"Fix Common Problems"});
+	}
+	
   if ( "<?=$userEnabled?>" == "true" ) {
     $("#userOnly").show();
     setInterval(function() {
@@ -382,7 +386,7 @@ function showCredits() {
 </span>
 <center><b>Time of last scan: <span id='timestamp'></span></center></b>
 
-
+<div id="debugging"></div>
 <span id='settings'></span>
 
 <center><input type='button' value='What is checked' onclick='checkList();'></center>
