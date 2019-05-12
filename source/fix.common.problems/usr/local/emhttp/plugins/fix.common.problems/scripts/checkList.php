@@ -91,6 +91,7 @@ $checkList = "
 * Check for deprecated --cpuset-cpus in extraparameters AND via CPU pinning via GUI
 * Check for collisions on CPU isolation and Docker CPU pinning (multiple collisions only)
 * Check for invalid docker template xml's
+* Check for write cache disabled on drives
 
 <h2>Troubleshooting Mode</h2>
 

@@ -67,7 +67,7 @@ function displayErrors() {
     echo "<thead><th width='85%'>All Ignored Errors & Warnings</th><th></th></thead>";
     $ignores = array_keys($ignoreList);
     foreach ($ignores as $ignore) {
-      echo "<tr><td><font color='purple'>$ignore</font></td><td><input type='button' id='".mt_rand()."' value='Monitor Warning / Error' onclick='readdError(&quot;$ignore&quot;,this.id);'</td></tr>";
+      echo "<tr><td>$ignore</td><td><input type='button' id='".mt_rand()."' value='Monitor Warning / Error' onclick='readdError(&quot;$ignore&quot;,this.id);'</td></tr>";
     }
     echo "</table>";
   }

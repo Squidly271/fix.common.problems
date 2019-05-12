@@ -261,6 +261,13 @@ function writeToDriveTest() {
 			addError("Unable to write to $drive","Drive mounted read-only or completely full.  Begin Investigation Here: ".addLinkButton("unRaid Main","/Main"));
 		}
 		@unlink($filename);
+		
+		# look for write cache disabled
+		$writeCache = exec("/usr/sbin/smartctl -a /dev/{$disksIni[$drive]['device']} | grep 'Write Cache'");
+		
+		if (stripos($writeCache,"Disabled")) {
+			addWarning("Write Cache is disabled on $drive","You may experience slow read/writes to $drive.  Write Cache should be enabled for better results.  See <a href='https://forums.unraid.net/topic/80038-parity-write-stuck-50mbs/?tab=comments#comment-743335' target='_blank'>HERE</a> for more information");
+		}
 	}
 
 /* 	$filename = randomFile("/boot");
