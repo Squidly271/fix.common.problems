@@ -2,8 +2,8 @@
 <!DOCTYPE PLUGIN [
 <!ENTITY name      "fix.common.problems">
 <!ENTITY author    "Andrew Zawadzki">
-<!ENTITY version   "2019.03.26">
-<!ENTITY md5       "e2ca179b04e3beb90abc9441815a5f7d">
+<!ENTITY version   "2019.05.11">
+<!ENTITY md5       "2cee890124f1b83a47f558338d328373">
 <!ENTITY launch    "Settings/FixProblems">
 <!ENTITY plugdir   "/usr/local/emhttp/plugins/&name;">
 <!ENTITY github    "Squidly271/fix.common.problems">
@@ -13,6 +13,9 @@
 <PLUGIN name="&name;" author="&author;" version="&version;" launch="&launch;" pluginURL="&pluginURL;" icon="warning">
 
 <CHANGES>
+###2019-05-11
+- Add in note stating where to find Syslog server instead of Troubleshooting mode
+
 ###2019-03-26
 - Fixed: Troubleshooting mode wouldn't appear on 6.6.7
 
