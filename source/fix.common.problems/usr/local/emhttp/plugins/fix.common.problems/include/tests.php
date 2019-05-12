@@ -263,10 +263,10 @@ function writeToDriveTest() {
 		@unlink($filename);
 		
 		# look for write cache disabled
-		$writeCache = exec("/usr/sbin/smartctl -a /dev/{$disksIni[$drive]['device']} | grep 'Write Cache'");
+		$writeCache = exec("/usr/sbin/hdparm -W /dev/{$disksIni[$drive]['device']} | grep 'write-caching'");
 		
-		if (stripos($writeCache,"Disabled")) {
-			addWarning("Write Cache is disabled on $drive","You may experience slow read/writes to $drive.  Write Cache should be enabled for better results.  See <a href='https://forums.unraid.net/topic/80038-parity-write-stuck-50mbs/?tab=comments#comment-743335' target='_blank'>HERE</a> for more information");
+		if (stripos($writeCache,"off")) {
+			addWarning("Write Cache is disabled on $drive","You may experience slow read/writes to $drive.  Write Cache should be enabled for better results.  Post your diagnostics for other users to confirm this test and advise");
 		}
 	}
 
