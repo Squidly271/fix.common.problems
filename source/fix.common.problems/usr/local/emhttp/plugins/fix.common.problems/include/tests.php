@@ -266,7 +266,7 @@ function writeToDriveTest() {
 		$writeCache = exec("/usr/sbin/hdparm -W /dev/{$disksIni[$drive]['device']} | grep 'write-caching'");
 		
 		if (stripos($writeCache,"off")) {
-			addWarning("Write Cache is disabled on $drive","You may experience slow read/writes to $drive.  Write Cache should be enabled for better results.  Post your diagnostics for other users to confirm this test and advise");
+			addWarning("Write Cache is disabled on $drive","You may experience slow read/writes to $drive.  Write Cache should be enabled for better results.  Post your diagnostics for other users to confirm this test and advise.  NOTE: If this drive is connected to your server via USB, then this test and the fix may or may not work / be accurate as USB support for smartctl and hdparm is hit and miss");
 		}
 	}
 

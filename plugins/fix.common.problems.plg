@@ -2,8 +2,8 @@
 <!DOCTYPE PLUGIN [
 <!ENTITY name      "fix.common.problems">
 <!ENTITY author    "Andrew Zawadzki">
-<!ENTITY version   "2019.05.12a">
-<!ENTITY md5       "1c91b4a93878125f83daf03c9ec2120a">
+<!ENTITY version   "2019.05.18">
+<!ENTITY md5       "e2d5480af92c344be51060da35f735cf">
 <!ENTITY launch    "Settings/FixProblems">
 <!ENTITY plugdir   "/usr/local/emhttp/plugins/&name;">
 <!ENTITY github    "Squidly271/fix.common.problems">
@@ -13,6 +13,9 @@
 <PLUGIN name="&name;" author="&author;" version="&version;" launch="&launch;" pluginURL="&pluginURL;" icon="warning">
 
 <CHANGES>
+###2019-05-18
+- Wording change
+
 ###2019-05-12
 - Add in checks for write cache disabled on hard drives
 
