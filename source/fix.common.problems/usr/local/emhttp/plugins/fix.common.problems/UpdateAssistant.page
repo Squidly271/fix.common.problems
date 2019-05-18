@@ -17,6 +17,13 @@ There may also be perfectly valid use-cases for any issues that this script find
 <?endif;?>
 <span style='float:right'><a href='https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=7M7CBCVU732XG' target='_blank'><img src="https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif"></a></span>
 <script>
+$(function() {
+	if ( typeof caPluginUpdateCheck === "function" ) {
+		caPluginUpdateCheck("fix.common.problems.plg",{name:"Fix Common Problems"});
+	}
+});
+	
+
 function runUpdateTests(branch) {
 	openBox('/plugins/fix.common.problems/scripts/UpdateAssistant.sh&arg1='+branch,'Update Assistant',600,900,true);
 }

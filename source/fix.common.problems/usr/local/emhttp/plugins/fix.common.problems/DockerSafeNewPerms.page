@@ -15,6 +15,10 @@ $plugin = "fix.common.problems";
 var URL = "/plugins/<?=$plugin?>/include/newpermissions.php";
 
 $(function() {
+	if ( typeof caPluginUpdateCheck === "function" ) {
+		caPluginUpdateCheck("fix.common.problems.plg",{name:"Fix Common Problems"});
+	}
+
   $.post(URL,{action:'showExcluded'}, function(data) {
     if (data) {
       $("#excluded").html(data);
