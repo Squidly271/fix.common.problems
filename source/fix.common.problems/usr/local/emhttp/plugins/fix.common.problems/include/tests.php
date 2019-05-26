@@ -263,21 +263,13 @@ function writeToDriveTest() {
 		@unlink($filename);
 		
 		# look for write cache disabled
-		$writeCache = exec("/usr/sbin/hdparm -W /dev/{$disksIni[$drive]['device']} | grep 'write-caching'");
+		$writeCache = exec("/usr/sbin/hdparm -W /dev/{$disksIni[$drive]['device']} | grep 'write-caching' 2>/dev/null");
 		
 		if (stripos($writeCache,"off")) {
 			addWarning("Write Cache is disabled on $drive","You may experience slow read/writes to $drive.  Write Cache should be enabled for better results.  Post your diagnostics for other users to confirm this test and advise.  NOTE: If this drive is connected to your server via USB, then this test and the fix may or may not work / be accurate as USB support for smartctl and hdparm is hit and miss");
 		}
 	}
 
-/* 	$filename = randomFile("/boot");
-	@file_put_contents($filename,"test");
-	$result = @file_get_contents($filename);
-
-	if ( $result != "test" ) {
-		addError("Unable to write to <b>flash drive</b>","Drive mounted read-only or completely full.  Begin Investigation Here: ".addLinkButton("unRaid Main","/Main")." Note: failing this test will also mean that you will be unable to perform a clean shutdown of your server");
-	}
-	@unlink($filename); */
 
 
 	if ( $dockerRunning ) {

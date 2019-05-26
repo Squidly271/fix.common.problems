@@ -2,8 +2,8 @@
 <!DOCTYPE PLUGIN [
 <!ENTITY name      "fix.common.problems">
 <!ENTITY author    "Andrew Zawadzki">
-<!ENTITY version   "2019.05.18a">
-<!ENTITY md5       "77f7eacef41a411402f6e5c4b117b50f">
+<!ENTITY version   "2019.05.26">
+<!ENTITY md5       "1617d552470af404be8edc838d7e458f">
 <!ENTITY launch    "Settings/FixProblems">
 <!ENTITY plugdir   "/usr/local/emhttp/plugins/&name;">
 <!ENTITY github    "Squidly271/fix.common.problems">
@@ -13,6 +13,9 @@
 <PLUGIN name="&name;" author="&author;" version="&version;" launch="&launch;" pluginURL="&pluginURL;" icon="warning">
 
 <CHANGES>
+###2019-05-26
+- Suppress errors from HDPARM
+
 ###2019-05-18
 - Wording change
 - Add in update API to docker safe permissions page and update assistant page
