@@ -266,7 +266,7 @@ function writeToDriveTest() {
 		$writeCache = exec("/usr/sbin/hdparm -W /dev/{$disksIni[$drive]['device']} | grep 'write-caching' 2>/dev/null");
 		
 		if (stripos($writeCache,"off")) {
-			addWarning("Write Cache is disabled on $drive","You may experience slow read/writes to $drive.  Write Cache should be enabled for better results.  Post your diagnostics for other users to confirm this test and advise.  NOTE: If this drive is connected to your server via USB, then this test and the fix may or may not work / be accurate as USB support for smartctl and hdparm is hit and miss");
+			addWarning("Write Cache is disabled on $drive","You may experience slow read/writes to $drive.  Write Cache should be enabled for better results.  Read this post ( <a href='https://forums.unraid.net/topic/46802-faq-for-unraid-v6/page/2/?tab=comments#comment-755621'>https://forums.unraid.net/topic/46802-faq-for-unraid-v6/page/2/?tab=comments#comment-755621</a> for more information.  NOTE: If this drive is connected to your server via USB, then this test and the fix may or may not work / be accurate as USB support for smartctl and hdparm is hit and miss");
 		}
 	}
 

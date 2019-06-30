@@ -2,8 +2,8 @@
 <!DOCTYPE PLUGIN [
 <!ENTITY name      "fix.common.problems">
 <!ENTITY author    "Andrew Zawadzki">
-<!ENTITY version   "2019.05.29">
-<!ENTITY md5       "5bb49919b5646789c8cb99863796953e">
+<!ENTITY version   "2019.06.30">
+<!ENTITY md5       "a1c24368bfa3a4393692e046cbfc116d">
 <!ENTITY launch    "Settings/FixProblems">
 <!ENTITY plugdir   "/usr/local/emhttp/plugins/&name;">
 <!ENTITY github    "Squidly271/fix.common.problems">
@@ -13,6 +13,9 @@
 <PLUGIN name="&name;" author="&author;" version="&version;" launch="&launch;" pluginURL="&pluginURL;" icon="warning">
 
 <CHANGES>
+###2019-06-30
+- Change wording on write cache disabled to point to a FAQ to lessen redundant posts on forum
+
 ###2019-05-29
 - Suppress cron errors from tests
 
