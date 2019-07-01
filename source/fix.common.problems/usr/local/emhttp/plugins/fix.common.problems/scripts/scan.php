@@ -177,6 +177,7 @@ if ( $troubleshooting ) {
 	CPUSet();
 	isolatedCPUdockerCollision();
 	testXML();
+	writeCacheDisabled();
 }
 
 if ( $ignored && ( $fixSettings['logIgnored'] != "yes") ) {

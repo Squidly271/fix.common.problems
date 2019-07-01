@@ -2,8 +2,8 @@
 <!DOCTYPE PLUGIN [
 <!ENTITY name      "fix.common.problems">
 <!ENTITY author    "Andrew Zawadzki">
-<!ENTITY version   "2019.06.30">
-<!ENTITY md5       "a1c24368bfa3a4393692e046cbfc116d">
+<!ENTITY version   "2019.06.30a">
+<!ENTITY md5       "3c05178d644987f5f2c79e363bae5589">
 <!ENTITY launch    "Settings/FixProblems">
 <!ENTITY plugdir   "/usr/local/emhttp/plugins/&name;">
 <!ENTITY github    "Squidly271/fix.common.problems">
@@ -13,6 +13,9 @@
 <PLUGIN name="&name;" author="&author;" version="&version;" launch="&launch;" pluginURL="&pluginURL;" icon="warning">
 
 <CHANGES>
+###2019-06-30a
+- Fixed: Drive write cache enabled tests were never checking parity drives
+
 ###2019-06-30
 - Change wording on write cache disabled to point to a FAQ to lessen redundant posts on forum
 
