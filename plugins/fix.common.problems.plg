@@ -2,8 +2,8 @@
 <!DOCTYPE PLUGIN [
 <!ENTITY name      "fix.common.problems">
 <!ENTITY author    "Andrew Zawadzki">
-<!ENTITY version   "2019.06.30a">
-<!ENTITY md5       "3c05178d644987f5f2c79e363bae5589">
+<!ENTITY version   "2019.08.31">
+<!ENTITY md5       "89ecbb87223260412c2d83b02f2b1f3d">
 <!ENTITY launch    "Settings/FixProblems">
 <!ENTITY plugdir   "/usr/local/emhttp/plugins/&name;">
 <!ENTITY github    "Squidly271/fix.common.problems">
@@ -13,6 +13,9 @@
 <PLUGIN name="&name;" author="&author;" version="&version;" launch="&launch;" pluginURL="&pluginURL;" icon="warning">
 
 <CHANGES>
+###2019-08-31
+- Due to changes in Community Applications over the last few months, don't issue a warning / error if CA is not up to date
+
 ###2019-06-30a
 - Fixed: Drive write cache enabled tests were never checking parity drives
 

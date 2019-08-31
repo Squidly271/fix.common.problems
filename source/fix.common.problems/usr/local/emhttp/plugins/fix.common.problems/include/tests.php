@@ -409,6 +409,9 @@ function pluginsUpToDate() {
 	if ( $autoUpdateSettings['Global'] != "true" ) {
 		$installedPlugins = array_diff(scandir("/var/log/plugins"),array(".",".."));
 		foreach ($installedPlugins as $Plugin) {
+			if ( $Plugin == "community.applications.plg" ) {
+				continue;
+			}
 			if ( $autoUpdateSettings[$Plugin] != "true" ) {
 				if ( is_file("/var/log/plugins/$Plugin") ) {
 					if ( strtolower(pathinfo($Plugin, PATHINFO_EXTENSION)) == "plg" ) {
