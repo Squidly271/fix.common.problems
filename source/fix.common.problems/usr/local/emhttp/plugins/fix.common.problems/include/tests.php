@@ -133,7 +133,9 @@ function pluginUpdateCheck() {
 #####################################################
 
 function dockerUpdateCheck() {
-	global $fixPaths, $communityPaths, $fixSettings, $autoUpdateOverride, $developerMode, $communityApplicationsInstalled, $dockerRunning, $ignoreList, $shareList;
+	global $fixPaths, $communityPaths, $fixSettings, $autoUpdateOverride, $developerMode, $communityApplicationsInstalled, $dockerRunning, $ignoreList, $shareList, $unRaidVersion;
+
+	if ( version_compare($unRaidVersion,"6.7.4","<") ) return;
 
 	if ( is_file("/boot/config/plugins/ca.update.applications/docker_update.cron") ) { return; }
 
@@ -464,7 +466,9 @@ function incompatiblePackagesPresent() {
 ##########################################
 
 function dockerUpToDate() {
-	global $fixPaths, $fixSettings, $autoUpdateOverride, $developerMode, $communityApplicationsInstalled, $dockerRunning, $ignoreList, $shareList;
+	global $fixPaths, $fixSettings, $autoUpdateOverride, $developerMode, $communityApplicationsInstalled, $dockerRunning, $ignoreList, $shareList, $unRaidVersion;
+
+	if ( version_compare($unRaidVersion,"6.7.4","<") ) return;
 
 	if ( $dockerRunning ) {
 		$DockerClient = new DockerClient();
