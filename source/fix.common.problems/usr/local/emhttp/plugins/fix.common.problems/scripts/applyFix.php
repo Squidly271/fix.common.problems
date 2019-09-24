@@ -33,6 +33,7 @@ function fixTemplateURL($template, $url) {
   if (!is_file($template)) {
     return error("Template not found: ".$template);
   }
+	$url = str_replace(" ","%20",$url);
 
   echo Markdown("### Template to fix:");
   echo Markdown("`".$template."`");

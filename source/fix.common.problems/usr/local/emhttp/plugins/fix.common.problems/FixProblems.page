@@ -318,8 +318,8 @@ function showCredits() {
 </style>
 <link type="text/css" rel="stylesheet" href="/webGui/styles/jquery.filetree.css">
 <a style='float:right;cursor:pointer' onclick='showCredits();'>Credits</a>
-<br><font color='purple'><b>Note that certain errors due to how they are found will have an "Acknowledge" button.  Clicking the acknowledge button will prevent Fix Common Problems from finding these certain errors until the next reboot<br></b></font>
-<font color='purple'><b>Errors / Warnings Listed are from the last <em>scheduled</em> scan.  Press Rescan to update with the current issues found<br></b></font><br>
+<br>Note that certain errors due to how they are found will have an "Acknowledge" button.  Clicking the acknowledge button will prevent Fix Common Problems from finding these certain errors until the next reboot<br><br>
+<b>Errors / Warnings Listed are from the last <em>scheduled</em> scan.  Press Rescan to update with the current issues found<br></b><br>
 <div  style='width:600px;float:left;'>
 <table>
 <tr>
@@ -362,7 +362,7 @@ function showCredits() {
 </tr>
 </table>
 </div><div style='margin-left:540px;'>
-<b>Permission Test/Fix Excluded On: <input type='text' id='excludedPerms'</input><br><font color='purple'>(Docker Appdata Folders and CA backup Destination is automatically excluded)</b></font><br>
+<b>Permission Test/Fix Excluded On: <input type='text' id='excludedPerms'</input><br>(Docker Appdata Folders and CA backup Destination is automatically excluded)</b><br>
 <center><input type='button' value='Exclude Selected' onclick='excludeSelected();'></center>
 <div id='excludedFoldersList' style='margin-left:240px;width:305px;max-height:150px;overflow:scroll;'></div><br>
 </div>
