@@ -175,6 +175,26 @@ function checkList() {
   openBox('/plugins/fix.common.problems/scripts/checkList.php',"What Is Checked?",550,550);
 }
 
+var fixScan = new NchanSubscriber('/sub/fixscan');
+fixScan.on('message',function(data) {
+	if (data) {
+		var results = JSON.parse(data)
+		if ( results.errors ) {
+			myCloseAlert();
+			$("#settings").html(results.errors);
+			$.post(URL,{action:'getTimeStamp'}, function(timestamp) {
+				if (timestamp) {
+					timestamp = timestamp.replace("*","");
+					$("#timestamp").html(timestamp);
+				}
+			});
+			fixScan.stop();
+		}
+		if ( results.test ) {
+			$("#currentTest").html(results.test);
+		}
+	}
+});
 
 $(function() {
 	if ( typeof caPluginUpdateCheck === "function" ) {
@@ -238,20 +258,9 @@ function checkExtended() {
 
 function rescan() {
   $("#extendedStatus").html("Scanning...");
-  myAlert("Scanning","Now Scanning your system for common problems.  This may take a minute.","","",false,false,false,"warning");
-  $.post(URL,{action:'scan'},function(data) {
-    if (data) {
-      myCloseAlert();
-      $("#settings").html(data);
-      $.post(URL,{action:'getTimeStamp'}, function(timestamp) {
-        if (timestamp) {
-          timestamp = timestamp.replace("*","");
-          $("#timestamp").html(timestamp);
-        }
-      });
-
-    }
-  });
+  myAlert("Scanning","Now Scanning your system for common problems.  This may take a minute.<br><br><span id='currentTest'></span>","","",false,false,false,"warning");
+  $.post(URL,{action:'scan'});
+	fixScan.start();
 }
 function acknowledgeUncleanReboot(button)
 {
@@ -401,3 +410,7 @@ function showCredits() {
 > <center><a href='https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=7M7CBCVU732XG' target='_blank'><img src="https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif"></a></center>
 
 <div class="adsitem"></div>
+<script>
+
+
+</script>

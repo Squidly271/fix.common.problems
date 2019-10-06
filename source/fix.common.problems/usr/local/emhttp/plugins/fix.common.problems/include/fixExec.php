@@ -17,60 +17,61 @@ function displayErrors() {
     
   $errors = $allErrors['errors'];
 
-  echo "<table class='tablesorter'>";
-  echo "<thead><th width='25%'>Errors Found</th><th width='60%'>Suggested Fix</th><th></th></thead>";    
+  $o =  "<table class='tablesorter'>";
+  $o .= "<thead><th width='25%'>Errors Found</th><th width='60%'>Suggested Fix</th><th></th></thead>";    
   if ( ! $errors ) {
-    echo "<tr><td><b>No errors found</b>";
+    $o .=  "<tr><td><b>No errors found</b>";
   } else {
     foreach ($errors as $error) {
-      echo "<tr><td>".$error['error']."</td><td>".$error['suggestion']."</td>";
-      echo "<td><input type='button' id='".mt_rand()."' value='Ignore Error' onclick='ignoreError(&quot;".strip_tags($error['error'])."&quot;,&quot;error&quot;,this.id);'></td></tr>";
+      $o .= "<tr><td>".$error['error']."</td><td>".$error['suggestion']."</td>";
+      $o .= "<td><input type='button' id='".mt_rand()."' value='Ignore Error' onclick='ignoreError(&quot;".strip_tags($error['error'])."&quot;,&quot;error&quot;,this.id);'></td></tr>";
     }
   }
-  echo "</table>";
-  echo "<table class='tablesorter'>";
-  echo "<thead><th width='25%'>Warnings Found</th><th width='60%'>Suggested Fix</th><th></th></thead>";
+  $o .= "</table>";
+  $o .= "<table class='tablesorter'>";
+  $o .= "<thead><th width='25%'>Warnings Found</th><th width='60%'>Suggested Fix</th><th></th></thead>";
   $warnings = $allErrors['warnings'];
   if ( ! $warnings ) {
-    echo "<tr><td><b>No Warnings found</b>";
+    $o .= "<tr><td><b>No Warnings found</b>";
   } else {
     foreach ($warnings as $warning) {
-      echo "<tr><td>".$warning['error']."</td><td>".$warning['suggestion']."</td>";
-      echo "<td><input type='button' id='".mt_rand()."' value='Ignore Warning' onclick='ignoreError(&quot;".strip_tags($warning['error'])."&quot;,&quot;warning&quot;,this.id);'></td></tr>";
+      $o .= "<tr><td>".$warning['error']."</td><td>".$warning['suggestion']."</td>";
+      $o .= "<td><input type='button' id='".mt_rand()."' value='Ignore Warning' onclick='ignoreError(&quot;".strip_tags($warning['error'])."&quot;,&quot;warning&quot;,this.id);'></td></tr>";
     }
   }
-  echo "</table>";
+  $o .= "</table>";
   $others = $allErrors['other'];
   if ( $others ) {
-    echo "<table class='tablesorter'>";
-    echo "<thead><th width='25%'>Other Comments</th><th width='60%'>Comments</th><th></thead>";
+    $o .= "<table class='tablesorter'>";
+    $o .= "<thead><th width='25%'>Other Comments</th><th width='60%'>Comments</th><th></thead>";
     foreach ($others as $other) {
-      echo "<tr><td>".$other['error']."</td><td>".$other['suggestion']."</td>";      
-      echo "<td><input type='button' id='".mt_rand()."' value='Ignore Comment' onclick='ignoreError(&quot;".strip_tags($other['error'])."&quot;,&quot;other comment&quot;,this.id);'></td></tr>";
+      $o .= "<tr><td>".$other['error']."</td><td>".$other['suggestion']."</td>";      
+      $o .= "<td><input type='button' id='".mt_rand()."' value='Ignore Comment' onclick='ignoreError(&quot;".strip_tags($other['error'])."&quot;,&quot;other comment&quot;,this.id);'></td></tr>";
     }
-    echo "</table>";
+    $o .= "</table>";
   }
   $ignored = $allErrors['ignored'];
   if ( $ignored ) {
-    echo "<table class='tablesorter'>";
-    echo "<thead><th width='25%'>Ignored Errors & Warnings</th><th width='60%'>Suggested Fix</th><th></th></thead>";
+    $o .= "<table class='tablesorter'>";
+    $o .= "<thead><th width='25%'>Ignored Errors & Warnings</th><th width='60%'>Suggested Fix</th><th></th></thead>";
     foreach ($ignored as $ignore) {
-      echo "<tr><td>".$ignore['error']."</td><td>".$ignore['suggestion']."</td>";
-      echo "<td><input type='button' id='".mt_rand()."' value='Monitor Warning / Error' onclick='readdError(&quot;".strip_tags($ignore['error'])."&quot;,this.id);';></td></tr>";
+      $o .= "<tr><td>".$ignore['error']."</td><td>".$ignore['suggestion']."</td>";
+      $o .= "<td><input type='button' id='".mt_rand()."' value='Monitor Warning / Error' onclick='readdError(&quot;".strip_tags($ignore['error'])."&quot;,this.id);';></td></tr>";
     }
-    echo "</table>";
-    echo "<center>";
-    echo "<input type='button' value='Monitor All Ignored' onclick='readdAll();'>";
+    $o .= "</table>";
+    $o .= "<center>";
+    $o .= "<input type='button' value='Monitor All Ignored' onclick='readdAll();'>";
   }
   if ( $ignoreList ) {
-    echo "<table class='tablesorter'>";
-    echo "<thead><th width='85%'>All Ignored Errors & Warnings</th><th></th></thead>";
+    $o .= "<table class='tablesorter'>";
+    $o .= "<thead><th width='85%'>All Ignored Errors & Warnings</th><th></th></thead>";
     $ignores = array_keys($ignoreList);
     foreach ($ignores as $ignore) {
-      echo "<tr><td>$ignore</td><td><input type='button' id='".mt_rand()."' value='Monitor Warning / Error' onclick='readdError(&quot;$ignore&quot;,this.id);'</td></tr>";
+      $o .= "<tr><td>$ignore</td><td><input type='button' id='".mt_rand()."' value='Monitor Warning / Error' onclick='readdError(&quot;$ignore&quot;,this.id);'</td></tr>";
     }
-    echo "</table>";
+    $o .= "</table>";
   }
+	return $o;
 }
 
 
@@ -88,10 +89,12 @@ switch ($_POST['action']) {
     exec("/usr/local/emhttp/plugins/fix.common.problems/scripts/scan.php 1",$output);
     if ($output) {
       foreach ($output as $line) {
-        echo $line."<br>";
+        $out .= $line."<br>";
       }
     }
-    displayErrors();
+		$results['errors'] = displayErrors();
+		$cmd = "curl -sfd ".escapeshellarg(json_encode($results))." --unix-socket /var/run/nginx.socket http://localhost/pub/fixscan?buffer_length=0";
+		exec($cmd);
     break;
   case 'apply':
     $settings['frequency'] =isset($_POST['frequency']) ? urldecode(($_POST['frequency'])) : "";
@@ -138,7 +141,7 @@ switch ($_POST['action']) {
     }
     break;
   case 'displayErrors':
-    displayErrors();
+    echo displayErrors();
     break;
   
   case 'checkExtendedStatus':

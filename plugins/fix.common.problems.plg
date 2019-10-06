@@ -2,17 +2,21 @@
 <!DOCTYPE PLUGIN [
 <!ENTITY name      "fix.common.problems">
 <!ENTITY author    "Andrew Zawadzki">
-<!ENTITY version   "2019.09.23">
-<!ENTITY md5       "b7d515419da6b3a5133b78282e5ac70a">
+<!ENTITY version   "2019.10.06">
+<!ENTITY md5       "e051d14eb12f6d9b2cfebee0d390bf41">
 <!ENTITY launch    "Settings/FixProblems">
 <!ENTITY plugdir   "/usr/local/emhttp/plugins/&name;">
 <!ENTITY github    "Squidly271/fix.common.problems">
 <!ENTITY pluginURL "https://raw.githubusercontent.com/&github;/master/plugins/&name;.plg">
 ]>
 
-<PLUGIN name="&name;" author="&author;" version="&version;" launch="&launch;" pluginURL="&pluginURL;" icon="warning">
+<PLUGIN name="&name;" author="&author;" version="&version;" launch="&launch;" pluginURL="&pluginURL;" icon="warning" min="6.7.0">
 
 <CHANGES>
+###2019.10.06
+- Fixed: If tests take longer than 120 seconds, popup will never close
+- Changed: Minimum unRaid version now 6.7.0
+
 ###2019.09.23
 - Fixed: Handle spaces in Template URLs
 - Remove purple text
