@@ -263,6 +263,15 @@ if ( is_dir("/mnt/cache") ) {
 	OK("Cache drive not installed");
 }
 
+# check for extra.cfg
+if ( version_compare($newUnRaidVersion,"6.7.9",">") ) {
+	if ( is_file("/boot/config/extra.cfg") ) {
+		ISSUE("File file /config/extra.cfg on the flash drive exists.  This file is currently not used and may cause issues with your server.  You should delete it");
+	} else {
+		OK("/boot/config/extra.cfg does not exist");
+	}
+}
+
 if ($ISSUES_FOUND) {
 	echo "\n\n<font color='red'>Issues have been found with your server that may hinder the OS upgrade.  You should rectify those problems before upgrading</font>\n";
 } else {
