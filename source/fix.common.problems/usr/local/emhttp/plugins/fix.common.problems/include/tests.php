@@ -1851,7 +1851,7 @@ function updatePluginSupport() {
 	
 	$raw_templates = readJsonFile($fixPaths['templates']);
 	$templates = $raw_templates['applist'];
-	if ( ! is_array($templates) ) { return; ]
+	if ( ! is_array($templates) ) { return; }
 	$plugins = glob("/boot/config/plugins/*.plg");
 	foreach ($plugins as $plugin) {
 		$pluginURL = plugin("pluginURL",$plugin);
