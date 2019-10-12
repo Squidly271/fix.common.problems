@@ -77,6 +77,9 @@ if ( ! $fixSettings['logIgnored']) { $fixSettings['logIgnored'] = "yes"; }
 
 # download updated appfeed if necessary
 
+$cmd = "curl -sfd ".escapeshellarg(json_encode(array("test"=>"Downloading Support Files"),JSON_UNESCAPED_SLASHES))." --unix-socket /var/run/nginx.socket http://localhost/pub/fixscan?buffer_length=0";
+exec($cmd);
+
 if ( is_file($fixPaths['templates']) ) {
 	$templates = readJsonFile($fixPaths['templates']);
 	$updatedTime = $templates['last_updated_timestamp'];
@@ -169,7 +172,8 @@ if ( $troubleshooting ) {
 	"CPUSet",
 	"isolatedCPUdockerCollision",
 	"testXML",
-	"writeCacheDisabled"
+	"writeCacheDisabled",
+	"updatePluginSupport"
 	);
 	foreach ($tests as $test) {
 		if ( $disableNotifications ) {
