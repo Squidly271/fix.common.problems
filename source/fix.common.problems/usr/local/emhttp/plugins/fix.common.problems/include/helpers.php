@@ -444,4 +444,18 @@ function searchArray($array,$key,$value) {
 	}
 	return $result;
 }
+function curl_socket($socket, $url, $postdata = NULL) {
+    $ch = curl_init($url);
+    curl_setopt($ch, CURLOPT_UNIX_SOCKET_PATH, $socket);
+    if ($postdata !== NULL) {
+        curl_setopt($ch, CURLOPT_POST, 1);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, $postdata);
+    }
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+    curl_exec($ch);
+    curl_close($ch);
+}
+function publish($endpoint, $message){
+    curl_socket("/var/run/nginx.socket", "http://localhost/pub/$endpoint?buffer_length=1", $message);
+}
 ?>

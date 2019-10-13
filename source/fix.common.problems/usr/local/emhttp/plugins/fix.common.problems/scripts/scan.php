@@ -77,8 +77,7 @@ if ( ! $fixSettings['logIgnored']) { $fixSettings['logIgnored'] = "yes"; }
 
 # download updated appfeed if necessary
 
-$cmd = "curl -sfd ".escapeshellarg(json_encode(array("test"=>"Downloading Support Files"),JSON_UNESCAPED_SLASHES))." --unix-socket /var/run/nginx.socket http://localhost/pub/fixscan?buffer_length=0";
-exec($cmd);
+publish("fixscan",json_encode(array("test"=>"Downloading Support Files"),JSON_UNESCAPED_SLASHES));
 
 if ( is_file($fixPaths['templates']) ) {
 	$templates = readJsonFile($fixPaths['templates']);
@@ -177,8 +176,8 @@ if ( $troubleshooting ) {
 	);
 	foreach ($tests as $test) {
 		if ( $disableNotifications ) {
-			$cmd = "curl -sfd ".escapeshellarg(json_encode(array("test"=>"$test"),JSON_UNESCAPED_SLASHES))." --unix-socket /var/run/nginx.socket http://localhost/pub/fixscan?buffer_length=0";
-			exec($cmd);
+			$currentTest++;
+			publish("fixscan",json_encode(array("test"=> intval($currentTest / count($tests) * 100)."% $test"),JSON_UNESCAPED_SLASHES));
 		}
 		$test();
 	}

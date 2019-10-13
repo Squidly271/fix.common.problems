@@ -93,8 +93,7 @@ switch ($_POST['action']) {
       }
     }
 		$results['errors'] = displayErrors();
-		$cmd = "curl -sfd ".escapeshellarg(json_encode($results))." --unix-socket /var/run/nginx.socket http://localhost/pub/fixscan?buffer_length=0";
-		exec($cmd);
+		publish("fixscan",json_encode($results));
     break;
   case 'apply':
     $settings['frequency'] =isset($_POST['frequency']) ? urldecode(($_POST['frequency'])) : "";
