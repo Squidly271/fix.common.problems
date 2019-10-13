@@ -178,6 +178,7 @@ function checkList() {
 var fixScan = new NchanSubscriber('/sub/fixscan');
 fixScan.on('message',function(data) {
 	if (data) {
+	console.log(data);
 		var results = JSON.parse(data)
 		if ( results.errors ) {
 			myCloseAlert();

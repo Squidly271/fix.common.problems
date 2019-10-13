@@ -9,6 +9,8 @@
 require_once("/usr/local/emhttp/plugins/fix.common.problems/include/paths.php");
 require_once("/usr/local/emhttp/plugins/fix.common.problems/include/helpers.php");
 
+exec("mkdir -p /tmp/fix.common.problems");
+
 function displayErrors() {
   global $fixPaths, $fixSettings, $autoUpdateOverride, $developerMode, $communityApplicationsInstalled, $dockerRunning, $ignoreList, $shareList;
 
@@ -93,7 +95,7 @@ switch ($_POST['action']) {
       }
     }
 		$results['errors'] = displayErrors();
-		publish("fixscan",json_encode($results));
+		publish("fixscan",json_encode($results,JSON_UNESCAPED_SLASHES));
     break;
   case 'apply':
     $settings['frequency'] =isset($_POST['frequency']) ? urldecode(($_POST['frequency'])) : "";
