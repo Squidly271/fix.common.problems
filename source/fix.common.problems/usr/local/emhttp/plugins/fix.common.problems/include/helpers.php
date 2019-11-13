@@ -109,7 +109,7 @@ function addOther($description,$action) {
 
 function addLinkButton($buttonName,$link) {
   $link = str_replace("'","&quot;",$link);
-  return "<input type='button' value='$buttonName' onclick='window.location.href=&quot;$link&quot;'>";
+  return "<input type='button' value='$buttonName' onclick='window.location.href=&quot;/FixProblems/$link&quot;'>";
 }
 
 ########################################

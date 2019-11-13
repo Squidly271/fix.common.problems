@@ -2,8 +2,8 @@
 <!DOCTYPE PLUGIN [
 <!ENTITY name      "fix.common.problems">
 <!ENTITY author    "Andrew Zawadzki">
-<!ENTITY version   "2019.10.13a">
-<!ENTITY md5       "8088fdaa0de92c7095afaaae014337fa">
+<!ENTITY version   "2019.11.13">
+<!ENTITY md5       "d920c93c41940a7967988e78b32bb99a">
 <!ENTITY launch    "Settings/FixProblems">
 <!ENTITY plugdir   "/usr/local/emhttp/plugins/&name;">
 <!ENTITY github    "Squidly271/fix.common.problems">
@@ -13,6 +13,10 @@
 <PLUGIN name="&name;" author="&author;" version="&version;" launch="&launch;" pluginURL="&pluginURL;" icon="warning" min="6.7.0">
 
 <CHANGES>
+###2019.11.13
+- Added warning for syslog being mirrored to flash drive
+- Fixed: Any link within unRaid's GUI will now return to FCP when pressing Done
+
 ###2019.10.13
 - Improved method of reporting current test
 

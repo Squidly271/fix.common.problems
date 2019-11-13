@@ -1883,4 +1883,13 @@ function updatePluginSupport() {
 		}
 	}
 }
+
+function flashSyslog() {
+	global $fixPaths, $fixSettings, $autoUpdateOverride, $developerMode, $communityApplicationsInstalled, $dockerRunning, $ignoreList, $shareList,$unRaidVersion;
+	
+	$rsyslogCFG = @file_get_contents("/boot/config/rsyslog.conf");
+	if ( strpos($rsyslogCFG,"/boot/logs/syslog") ) {
+		addWarning("<b>Syslog mirrored to flash</b>","The syslog is currently mirrored to the flashdrive.  This option should only be used for troubleshooting, and extended use of this option may fill up your flash drive, increase the number of writes to it etc.  It should be disabled if you are not actively troubleshooting an issue with your server.  Change this here: ".addLinkButton("Syslog Server","/SyslogSettings"));
+	}
+}
 ?>

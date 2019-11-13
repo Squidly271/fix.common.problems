@@ -172,7 +172,8 @@ if ( $troubleshooting ) {
 	"isolatedCPUdockerCollision",
 	"testXML",
 	"writeCacheDisabled",
-	"updatePluginSupport"
+	"updatePluginSupport",
+	"flashSyslog"
 	);
 	foreach ($tests as $test) {
 		if ( $disableNotifications ) {

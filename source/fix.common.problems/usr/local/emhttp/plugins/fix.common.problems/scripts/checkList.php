@@ -92,6 +92,7 @@ $checkList = "
 * Check for collisions on CPU isolation and Docker CPU pinning (multiple collisions only)
 * Check for invalid docker template xml's
 * Check for write cache disabled on drives
+* Check for syslog being mirrored to flash drive
 
 <h2>Troubleshooting Mode</h2>
 
