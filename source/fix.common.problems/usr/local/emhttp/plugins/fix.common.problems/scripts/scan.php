@@ -154,7 +154,6 @@ if ( $troubleshooting ) {
 	"outOfMemory",
 	"mceCheck",
 	"inotifyExhausted",
-	"nobodyCared",
 	"reiserCache",
 	"SSDcacheNoTrim",
 	"templateURLMissing",

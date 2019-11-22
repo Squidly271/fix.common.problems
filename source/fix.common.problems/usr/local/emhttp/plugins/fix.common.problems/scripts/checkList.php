@@ -73,7 +73,6 @@ $checkList = "
 * Check for MCE errors
 * Check for Files / Folders contained within /mnt (anything other than disk1,disk2, etc or cache or disks
 * Check for exhaustion of inotify watches
-* Check for irq xx: nobody cared messages
 * Check for SSD cache drive formatted as reiserFS (format does not support trim)
 * Check for SSD cache drive, but Dynamix SSD Trim not installed
 * Check for missing/different TemplateURL field in docker application's template
