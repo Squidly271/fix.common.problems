@@ -1589,12 +1589,10 @@ function marvelControllerTest() {
 function breadTest() {
 	global $fixPaths, $fixSettings, $autoUpdateOverride, $developerMode, $communityApplicationsInstalled, $dockerRunning, $ignoreList, $shareList, $unRaidVersion;
 
-  ini_set('memory_limit',-1);
 	$syslogs = dirContents("/var/log");
 	foreach ($syslogs as $syslog) {
 		if ( startsWith($syslog,"syslog") ) {
-			$log = file("/var/log/$syslog");
-			foreach ($log as $logline) {
+			foreach (logline($syslog) as $logline) {
 				if ( strpos($logline,"Directory bread") ) {
 					if ( strpos($logline,"sda1") ) {
 						addError("Directory Bread Errors found","Directory Bread errors have been found.  This usually means (assuming that your flash drive didn't physically come disconnected) that your flash drive has dropped offline.  The most common solution to this is to try a different USB controller for your flash drive (USB2<-->USB3)");
@@ -1608,8 +1606,18 @@ function breadTest() {
 			break;
 		}
 	}
-	ini_set('memory_limit','128M');
 }	
+
+function logline($filename) {
+	$file = fopen("/var/log/$filename","r");
+	if ( ! $file ) {
+		die("$filename does not exist or cannot be opened");
+	}
+	while (($line = fgets($file)) !== false) {
+		yield $line;
+	}
+	fclose($file);
+}
 
 function Ryzen63() {
 	global $fixPaths, $fixSettings, $autoUpdateOverride, $developerMode, $communityApplicationsInstalled, $dockerRunning, $ignoreList, $shareList, $unRaidVersion;
