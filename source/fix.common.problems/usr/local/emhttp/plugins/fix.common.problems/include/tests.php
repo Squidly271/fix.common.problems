@@ -1900,4 +1900,15 @@ function flashSyslog() {
 		addWarning("<b>Syslog mirrored to flash</b>","The syslog is currently mirrored to the flashdrive.  This option should only be used for troubleshooting, and extended use of this option may fill up your flash drive, increase the number of writes to it etc.  It should be disabled if you are not actively troubleshooting an issue with your server.  Change this here: ".addLinkButton("Syslog Server","/SyslogSettings"));
 	}
 }
+
+function unassignedDevicesPlus() {
+	global $fixPaths, $fixSettings, $autoUpdateOverride, $developerMode, $communityApplicationsInstalled, $dockerRunning, $ignoreList, $shareList,$unRaidVersion;
+
+	if ( is_file("/var/log/plugins/unassigned.devices.plg") && ! is_file("/var/log/plugins/unassigned.devices-plus.plg") ) {
+		addWarning("Unassigned Devices <b>Plus</b> not installed","If you use unassigned devices to mount devices that are formatted with exFAT (ie: flash drives) or HSF+, then you also require UD+ to be installed (available within Apps).  If you only use UD to mount disks formatted as BTRFS, XFS, or network shares via SMB/NFS, then this is not required and this message can be safely ignored");
+	}
+	if ( ! is_file("/var/log/plugins/unassigned.devices.plg") && is_file("/var/log/plugins/unassigned.devices-plus.plg") ) {
+		addOther("Unassigned Devices <b>Plus</b> installed","Unassigned Devices Plus is installed, but Unassigned Devices is not.  There is zero point in having Unassigned Devices Plus installed without having Unassigned Devices installed.  You should uninstall Unassigned Devices Plus or install Unassigned Devices");
+	}		
+}	
 ?>

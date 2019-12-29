@@ -92,6 +92,7 @@ $checkList = "
 * Check for invalid docker template xml's
 * Check for write cache disabled on drives
 * Check for syslog being mirrored to flash drive
+* Check for UD installed but not UD+
 
 <h2>Troubleshooting Mode</h2>
 

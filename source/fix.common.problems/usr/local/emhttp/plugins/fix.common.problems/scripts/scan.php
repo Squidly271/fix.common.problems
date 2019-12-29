@@ -172,7 +172,8 @@ if ( $troubleshooting ) {
 	"testXML",
 	"writeCacheDisabled",
 	"updatePluginSupport",
-	"flashSyslog"
+	"flashSyslog",
+	"unassignedDevicesPlus"
 	);
 	foreach ($tests as $test) {
 		if ( $disableNotifications ) {
