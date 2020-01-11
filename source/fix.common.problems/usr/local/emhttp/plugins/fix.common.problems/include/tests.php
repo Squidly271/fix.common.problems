@@ -1911,4 +1911,15 @@ function unassignedDevicesPlus() {
 		addOther("Unassigned Devices <b>Plus</b> installed","Unassigned Devices Plus is installed, but Unassigned Devices is not.  There is zero point in having Unassigned Devices Plus installed without having Unassigned Devices installed.  You should uninstall Unassigned Devices Plus or install Unassigned Devices");
 	}		
 }	
+
+function zeroByteSSH() {
+	global $fixPaths, $fixSettings, $autoUpdateOverride, $developerMode, $communityApplicationsInstalled, $dockerRunning, $ignoreList, $shareList,$unRaidVersion;
+
+	$sshFiles = glob("/boot/config/ssh/*");
+	foreach ($sshFiles as $ssh) {
+		if ( filesize($ssh) === 0 ) {
+			addWarning("Corrupted SSH Files","You may have problems SSH'ing into your server as one or more of the SSH files stored on the flash drive are corrupt.  Deleting the folder /config/ssh on the flash drive, followed by a reboot will fix this issue");
+		}
+	}
+}	
 ?>

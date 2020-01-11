@@ -173,7 +173,8 @@ if ( $troubleshooting ) {
 	"writeCacheDisabled",
 	"updatePluginSupport",
 	"flashSyslog",
-	"unassignedDevicesPlus"
+	"unassignedDevicesPlus",
+	"zeroByteSSH"
 	);
 	foreach ($tests as $test) {
 		if ( $disableNotifications ) {
