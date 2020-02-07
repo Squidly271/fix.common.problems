@@ -1,7 +1,7 @@
 <?PHP
 ###############################################################
 #                                                             #
-# Fix Common Problems copyright 2015-2017, Andrew Zawadzki    #
+# Fix Common Problems copyright 2015-2020, Andrew Zawadzki    #
 #                                                             #
 ###############################################################
 

@@ -1,7 +1,7 @@
 <?
 ###############################################################
 #                                                             #
-# Fix Common Problems copyright 2015-2017, Andrew Zawadzki    #
+# Fix Common Problems copyright 2015-2020, Andrew Zawadzki    #
 #                                                             #
 ###############################################################
 
@@ -93,6 +93,7 @@ $checkList = "
 * Check for write cache disabled on drives
 * Check for syslog being mirrored to flash drive
 * Check for UD installed but not UD+
+* Check for unRaid being mitigated against sysdream
 
 <h2>Troubleshooting Mode</h2>
 

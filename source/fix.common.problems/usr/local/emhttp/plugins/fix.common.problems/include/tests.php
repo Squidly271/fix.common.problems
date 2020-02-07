@@ -2,7 +2,7 @@
 
 ###############################################################
 #                                                             #
-# Fix Common Problems copyright 2015-2017, Andrew Zawadzki    #
+# Fix Common Problems copyright 2015-2020, Andrew Zawadzki    #
 #                                                             #
 ###############################################################
 
@@ -1912,14 +1912,16 @@ function unassignedDevicesPlus() {
 	}		
 }	
 
-function zeroByteSSH() {
+function sysdream() {
 	global $fixPaths, $fixSettings, $autoUpdateOverride, $developerMode, $communityApplicationsInstalled, $dockerRunning, $ignoreList, $shareList,$unRaidVersion;
 
-	$sshFiles = glob("/boot/config/ssh/*");
-	foreach ($sshFiles as $ssh) {
-		if ( filesize($ssh) === 0 ) {
-			addWarning("Corrupted SSH Files","You may have problems SSH'ing into your server as one or more of the SSH files stored on the flash drive are corrupt.  Deleting the folder /config/ssh on the flash drive, followed by a reboot will fix this issue");
+	if ( version_compare($unRaidVersion,"6.7.2",">") && version_compare($unRaidVersion,"6.8.1","<") ) {
+		addError("Vulnerable unRaid Version","You are currently running unRaid version $unRaidVersion.  This version is susceptible to a would be attacker being able to bypass the login credentials and potentially run inject code into your server's software.  You should upgrade your OS to 6.8.2+.  See <a href='https://forums.unraid.net/topic/88253-critical-security-vulnerabilies-discovered/' target='_blank'>HERE</a> for more details");
+	}
+	if ( version_compare($unRaidVersion,"6.6.0",">=") && version_compare($unRaidVersion,"6.7.2","<=") ) {
+		if ( ! is_file("/var/log/plugins/sysdream.plg") ) {
+			addError("Vulnerable unRaid Version","You are currently running unRaid version $unRaidVersion.  This version is susceptible to a would be attacker being able to bypass the login credentials and potentially run inject code into your server's software.  There is a plugin available within the Apps tab (sysdream) to mitigate this security vulnerabilty that should be installed.  See <a href='https://forums.unraid.net/topic/88253-critical-security-vulnerabilies-discovered/' target='_blank'>HERE</a> for more details");
 		}
 	}
-}	
+}
 ?>

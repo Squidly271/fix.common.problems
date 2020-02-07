@@ -2,8 +2,8 @@
 <!DOCTYPE PLUGIN [
 <!ENTITY name      "fix.common.problems">
 <!ENTITY author    "Andrew Zawadzki">
-<!ENTITY version   "2019.12.29">
-<!ENTITY md5       "42af32ab24bcf0d0729cc72bd0900025">
+<!ENTITY version   "2020.02.06">
+<!ENTITY md5       "4e296746dadc66a7cb9e663e6d339f8b">
 <!ENTITY launch    "Settings/FixProblems">
 <!ENTITY plugdir   "/usr/local/emhttp/plugins/&name;">
 <!ENTITY github    "Squidly271/fix.common.problems">
@@ -13,6 +13,9 @@
 <PLUGIN name="&name;" author="&author;" version="&version;" launch="&launch;" pluginURL="&pluginURL;" icon="warning" min="6.7.0">
 
 <CHANGES>
+###2020.02.06
+- Check for sysdream mitigations on affected unRaid OS versions
+
 ###2019.12.29
 - Tests related to unassigned devices / unassigned devices plus
 
@@ -500,7 +503,7 @@ rm -rf /tmp/fix.common.problems/errors.json
 echo ""
 echo "----------------------------------------------------"
 echo " &name; has been installed."
-echo " Copyright 2016-2019, Andrew Zawadzki"
+echo " Copyright 2016-2020, Andrew Zawadzki"
 echo " Version: &version;"
 echo "----------------------------------------------------"
 echo ""
