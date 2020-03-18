@@ -94,6 +94,7 @@ $checkList = "
 * Check for syslog being mirrored to flash drive
 * Check for UD installed but not UD+
 * Check for unRaid being mitigated against sysdream
+* Check for CA Notifications being enabled
 
 <h2>Troubleshooting Mode</h2>
 

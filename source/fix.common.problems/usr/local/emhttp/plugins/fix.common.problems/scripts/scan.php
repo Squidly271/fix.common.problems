@@ -174,7 +174,8 @@ if ( $troubleshooting ) {
 	"updatePluginSupport",
 	"flashSyslog",
 	"unassignedDevicesPlus",
-	"sysdream"
+	"sysdream",
+	"caNotifications"
 	);
 	foreach ($tests as $test) {
 		if ( $disableNotifications ) {

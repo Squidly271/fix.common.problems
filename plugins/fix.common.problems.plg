@@ -2,8 +2,8 @@
 <!DOCTYPE PLUGIN [
 <!ENTITY name      "fix.common.problems">
 <!ENTITY author    "Andrew Zawadzki">
-<!ENTITY version   "2020.02.06">
-<!ENTITY md5       "4e296746dadc66a7cb9e663e6d339f8b">
+<!ENTITY version   "2020.03.18">
+<!ENTITY md5       "76baa1d23ade79349742ed7836063a5c">
 <!ENTITY launch    "Settings/FixProblems">
 <!ENTITY plugdir   "/usr/local/emhttp/plugins/&name;">
 <!ENTITY github    "Squidly271/fix.common.problems">
@@ -13,6 +13,9 @@
 <PLUGIN name="&name;" author="&author;" version="&version;" launch="&launch;" pluginURL="&pluginURL;" icon="warning" min="6.7.0">
 
 <CHANGES>
+###2020.03.18
+- Check for CA notifications being enabled
+
 ###2020.02.06
 - Check for sysdream mitigations on affected unRaid OS versions
 

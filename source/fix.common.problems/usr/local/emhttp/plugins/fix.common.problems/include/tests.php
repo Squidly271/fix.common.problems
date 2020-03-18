@@ -1924,4 +1924,15 @@ function sysdream() {
 		}
 	}
 }
+
+function caNotifications() {
+	global $fixPaths, $fixSettings, $autoUpdateOverride, $developerMode, $communityApplicationsInstalled, $dockerRunning, $ignoreList, $shareList,$unRaidVersion;
+
+	if ( is_file("/var/log/plugins/community.applications.plg") ) {
+		$caNotify = parse_plugin_cfg("community.applications");
+		if ( $caNotify['notifications'] == "no" ) {
+			addOther("Background notifications not enabled","CA has background notifications to alert you if you have known malware installed on your server, or if your server is vulnerable to certain security issues, etc.  It is highly advised to enable this scanning via ".addLinkButton("CA Settings","/Apps/ca_settings"));
+		}
+	}
+}	
 ?>
