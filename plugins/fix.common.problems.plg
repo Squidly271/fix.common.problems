@@ -2,8 +2,8 @@
 <!DOCTYPE PLUGIN [
 <!ENTITY name      "fix.common.problems">
 <!ENTITY author    "Andrew Zawadzki">
-<!ENTITY version   "2020.03.18">
-<!ENTITY md5       "76baa1d23ade79349742ed7836063a5c">
+<!ENTITY version   "2020.04.16">
+<!ENTITY md5       "7ba856e73b773c74f1542cfc8647ebaf">
 <!ENTITY launch    "Settings/FixProblems">
 <!ENTITY plugdir   "/usr/local/emhttp/plugins/&name;">
 <!ENTITY github    "Squidly271/fix.common.problems">
@@ -13,6 +13,10 @@
 <PLUGIN name="&name;" author="&author;" version="&version;" launch="&launch;" pluginURL="&pluginURL;" icon="warning" min="6.7.0">
 
 <CHANGES>
+###2020.04.16
+- Multi cache pool compatibility
+- Fix excluded shares being run on extended tests
+
 ###2020.03.18
 - Check for CA notifications being enabled
 

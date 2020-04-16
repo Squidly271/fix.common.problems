@@ -392,13 +392,7 @@ function showCredits() {
 
 
 <input type='button' id='applyButton' value='Apply' onclick='apply();' disabled><input type='button' value='Rescan' onclick='rescan();'><input type='button' onclick='done();' value='Done'>
-<?if (!$unRaid67):?>
-<span style='float:right'><input type='button' id='troubleshoot' value='Troubleshooting Mode' onclick='troubleshoot();'></span>
 
-> Troubleshooting mode will add start a process to continually save your syslog, automatically run diagnostics every half hour, and run a subset of these tests every ten minutes.  Useful for diagnosing random crashes, etc.
-<?else:?>
-<span style='float:right;'>LOOKING FOR TROUBLESHOOTING MODE? On unRaid 6.7+ it has been removed, and you should instead configure the built-in syslog server to save to the flash drive via Settings - Syslog Server</span>
-<?endif;?>
 
 <br><br><span id='userOnly'>
 <input type='button' id='extendedTest' value='Run Extended Test' onclick='extendedTest();'><a href='/plugins/fix.common.problems/scripts/showExtendedLog.php' target='_blank'><input type='button' value='View Results' id='extendedLog';></a> <font color='red'>Status:</font> <font color='green'> <span id='extendedStatus'></span></font>

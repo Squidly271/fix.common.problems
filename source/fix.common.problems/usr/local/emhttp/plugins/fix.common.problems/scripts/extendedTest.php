@@ -47,14 +47,16 @@ function scanDirectory($directory) {
 #  if ( $directory == "/mnt/user/appdata" || $directory == "/mnt/user/Backups" ) { return; }
   $folderContents = array_diff(scandir($directory),array(".",".."));
   foreach ($folderContents as $entry) {
+    $testing = str_replace("/mnt/user/","","$directory/$entry");
+    $share = explode("/",$testing);
     if ( $directory == "/mnt/user" )
     {
+		  if ( $excludedDirectory[$share[0]] ) continue;
       echoResult("Processing $directory/$entry\n");
       file_put_contents($fixPaths['extendedStatus'],"Processing $directory/$entry");
     }
 
-    $testing = str_replace("/mnt/user/","","$directory/$entry");
-    $share = explode("/",$testing);
+
     
 
     if ( ! $excludedDirectory[$share[0]] ) {
@@ -87,7 +89,7 @@ function scanDirectory($directory) {
         }
       }        
     }
- 
+	  if ( $excludedDirectory[$share[0]] ) continue;
     if ( $entry != trim($entry) ) {
       $errors['whitespace'][] = escapeshellarg("$directory/$entry");
     }
@@ -151,7 +153,6 @@ if ( ! empty($excludedDirectory) ) {
   }
   echoResult("\n");
 }
-print_r($excludedDirectory);
 
 $disks = my_parse_ini_file("/var/local/emhttp/disks.ini",true);
 scanDirectory("/mnt/user");

@@ -222,11 +222,13 @@ function outsideCommunication() {
 ###############################################################
 
 function writeToDriveTest() {
-	global $fixPaths, $fixSettings, $autoUpdateOverride, $developerMode, $communityApplicationsInstalled, $dockerRunning, $ignoreList, $shareList;
+	global $fixPaths, $fixSettings, $autoUpdateOverride, $developerMode, $communityApplicationsInstalled, $dockerRunning, $ignoreList, $shareList, $unRaidVersion;
 
 	$availableDrives = array_diff(scandir("/mnt/"),array(".","..","user","user0","disks","RecycleBin"));
 	$disksIni = my_parse_ini_file($fixPaths['disks.ini'],true);
-
+	$disksPresent = array_keys(array_filter($disksIni, function($k) {
+		return ($k['status'] !== "DISK_NP" && $k['name'] !== "parity" && $k['name'] !== "parity2");
+	}));
 	foreach ($availableDrives as $drive) {
 		if ( $fixSettings['disableSpinUp'] == "true" ) {
 			if ( stripos($disksIni[$drive]['color'],"blink") ) {
@@ -238,23 +240,11 @@ function writeToDriveTest() {
 			addError("File $drive present within /mnt","Generally speaking, most times when files get created within /mnt it is a result of an improperly configured application.  This error may or may not cause issues for you");
 			continue;
 		}
-		$diskpos = strpos($drive,"disk");
-		if ( $diskpos !== false ) {
-			$validTest = str_replace("disk","",$drive);
-			if ( ! is_numeric($validTest) ) {
-				addError("Invalid folder $drive contained within /mnt","Generally speaking, most times when other folders get created within /mnt it is a result of an improperly configured application.  This error may or may not cause issues for you");
-				continue;
-			}
-		}
-		$cachepos = strpos($drive,"cache");
-		if ( ($cachepos !== false) && ($drive != "cache") ) {
+		if ( ! in_array($drive,$disksPresent ) ) {
 			addError("Invalid folder $drive contained within /mnt","Generally speaking, most times when other folders get created within /mnt it is a result of an improperly configured application.  This error may or may not cause issues for you");
 			continue;
 		}
-		if ( $diskpos === false && $drive != "cache" ) {
-			addError("Invalid folder $drive contained within /mnt","Generally speaking, most times when other folders get created within /mnt it is a result of an improperly configured application.  This error may or may not cause issues for you");
-			continue;
-		}
+	
 		$filename = randomFile("/mnt/$drive");
 
 		@file_put_contents($filename,"test");
