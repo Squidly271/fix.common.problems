@@ -229,6 +229,11 @@ function writeToDriveTest() {
 	$disksPresent = array_keys(array_filter($disksIni, function($k) {
 		return ($k['status'] !== "DISK_NP" && $k['name'] !== "parity" && $k['name'] !== "parity2");
 	}));
+	$cachePools = array_keys(array_filter($disksIni, function($k) {
+		return ! preg_match("/disk\d(\d|$)|(parity|parity2|disks|flash|diskP|diskQ)/",$k['name']);
+	}));
+	
+
 	foreach ($availableDrives as $drive) {
 		if ( $fixSettings['disableSpinUp'] == "true" ) {
 			if ( stripos($disksIni[$drive]['color'],"blink") ) {
@@ -240,7 +245,7 @@ function writeToDriveTest() {
 			addError("File $drive present within /mnt","Generally speaking, most times when files get created within /mnt it is a result of an improperly configured application.  This error may or may not cause issues for you");
 			continue;
 		}
-		if ( ! in_array($drive,$disksPresent ) ) {
+		if ( ! in_array($drive,$disksPresent ) && ! in_array($drive,$cachePools) ) {
 			addError("Invalid folder $drive contained within /mnt","Generally speaking, most times when other folders get created within /mnt it is a result of an improperly configured application.  This error may or may not cause issues for you");
 			continue;
 		}
@@ -710,31 +715,6 @@ function UDmountedSlaveMode() {
 	}
 }
 
-##############################################
-# Check for only supported file system types #
-##############################################
-
-function supportedFileSystemCheck() {
-	global $fixPaths, $fixSettings, $autoUpdateOverride, $developerMode, $communityApplicationsInstalled, $dockerRunning, $ignoreList, $shareList;
-
-	$disks = my_parse_ini_file($fixPaths['disks.ini'],true);
-	foreach ($disks as $disk) {
-		if ( ($disk['fsType'] != "reiserfs") && ($disk['fsType'] != "xfs") && ($disk['fsType'] != "btrfs") && ($disk['size'] != "0") && ($disk['fsType'] != "auto") && ($disk['fsType'] != "reiserfs") && ($disk['fsType'] != "xfs") && ($disk['fsType'] != "btrfs") && ($disk['fsType'] != "luks:reiserfs") && ($disk['fsType'] != "luks:xfs") && ($disk['fsType'] != "luks:btrfs")) {
-			if ( ( startsWith($disk['name'],"cache") ) && ( $disk['name'] != "cache" ) ) {
-				continue;
-			}
-			if ( $disk['name'] == "flash" ) {
-				if ( $disk['fsType'] != "vfat" ) {
-					addError("unRaid <b>USB Flash Drive</b> is not formatted as FAT32","Strange results can happen if the flash drive is not formatted as FAT32.  Note that if your flash drive is > 32Gig, you must jump through some hoops to format it as FAT32.  Seek assistance in the formums if this is the case");
-				}
-			} else {
-				if ( ($disk['name'] != "parity") && ($disk['name'] != "parity2") ) {
-					addError("Disk <b>".$disk['name']."</b> is formatted as ".$disk['fsType'],"The only supported file systems are ReiserFS, btrFS, XFS.  This error should only happen if you are setting up a new array and the disk already has data on it.  <font color='red'><b>Prior to with a fix, you should seek assistance in the forums as the disk may simply be unmountable.  Whatever you do, do not hit the format button on the unRaid main screen as you will then lose data");
-				}
-			}
-		}
-	}
-}
 
 #########################################
 # Check for unRaid's ftp server running #
@@ -1895,7 +1875,7 @@ function unassignedDevicesPlus() {
 	global $fixPaths, $fixSettings, $autoUpdateOverride, $developerMode, $communityApplicationsInstalled, $dockerRunning, $ignoreList, $shareList,$unRaidVersion;
 
 	if ( is_file("/var/log/plugins/unassigned.devices.plg") && ! is_file("/var/log/plugins/unassigned.devices-plus.plg") ) {
-		addWarning("Unassigned Devices <b>Plus</b> not installed","If you use unassigned devices to mount devices that are formatted with exFAT (ie: flash drives) or HSF+, then you also require UD+ to be installed (available within Apps).  If you only use UD to mount disks formatted as BTRFS, XFS, or network shares via SMB/NFS, then this is not required and this message can be safely ignored");
+		addOther("Unassigned Devices <b>Plus</b> not installed","If you use unassigned devices to mount devices that are formatted with exFAT (ie: flash drives) or HSF+, then you also require UD+ to be installed (available within Apps).  If you only use UD to mount disks formatted as BTRFS, XFS, or network shares via SMB/NFS, then this is not required and this message can be safely ignored");
 	}
 	if ( ! is_file("/var/log/plugins/unassigned.devices.plg") && is_file("/var/log/plugins/unassigned.devices-plus.plg") ) {
 		addOther("Unassigned Devices <b>Plus</b> installed","Unassigned Devices Plus is installed, but Unassigned Devices is not.  There is zero point in having Unassigned Devices Plus installed without having Unassigned Devices installed.  You should uninstall Unassigned Devices Plus or install Unassigned Devices");

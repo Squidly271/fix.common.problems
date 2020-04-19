@@ -134,7 +134,6 @@ if ( $troubleshooting ) {
 	"shareIncludeExcludeSet",
 	"shareIncludeExcludeSameDisk",
 	"UDmountedSlaveMode",
-	"supportedFileSystemCheck",
 	"FTPrunning",
 	"checkNotifications",
 	"blacklistedPluginsInstalled",
