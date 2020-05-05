@@ -2,8 +2,8 @@
 <!DOCTYPE PLUGIN [
 <!ENTITY name      "fix.common.problems">
 <!ENTITY author    "Andrew Zawadzki">
-<!ENTITY version   "2020.04.19">
-<!ENTITY md5       "5f03e5394573fff8cc6c197fb6e71d92">
+<!ENTITY version   "2020.05.05">
+<!ENTITY md5       "dfc857e2ef2204a881df2857516b48e6">
 <!ENTITY launch    "Settings/FixProblems">
 <!ENTITY plugdir   "/usr/local/emhttp/plugins/&name;">
 <!ENTITY github    "Squidly271/fix.common.problems">
@@ -13,6 +13,9 @@
 <PLUGIN name="&name;" author="&author;" version="&version;" launch="&launch;" pluginURL="&pluginURL;" icon="warning" min="6.7.0">
 
 <CHANGES>
+###2020.05.05
+- Remove some tests that were only relevant a few years ago
+
 ###2020.04.19
 - Fixed: If a cache pool had first member missing, invalid folder present would appear
 

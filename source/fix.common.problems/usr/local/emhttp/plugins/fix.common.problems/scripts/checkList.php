@@ -19,7 +19,6 @@ $checkList = "
 * Community Applications set to auto update itself
 * Dynamix WebUI set to auto update (via Community Applications)
 * This plugin set to auto update itself (via Community Applications)
-* Powerdown plugin installed
 * Ability for the server to communicate to the outside world (ping github.com)
 * Ability to write a file to each drive in array and cache
 * Ability to write a file to the flash drive
@@ -33,7 +32,6 @@ $checkList = "
 * Look for file system errors
 * Look for SSD's within the Array
 * Check if plugins are up to date (and ignore if autoupdate settings are enabled in CA)
-* Check for 32 bit packages in /boot/extra and /boot/packages
 * Check for docker applications updates available
 * Check individual docker application's /config mappings set to /mnt/user (should be /mnt/cache) (skipped 6.2-rc3+)
 * Check for /var/log greater than 50% full
@@ -68,7 +66,6 @@ $checkList = "
 * Check for user shares named the same as a disk share
 * Check for CPU Scaling Driver installed
 * Check for extra parameters set via Repository section instead of Extra Parameters Section (docker Apps)
-* Check for multiple registration key files stored on the flash drive (Excludes Trial keys)
 * Check for Out Of Memory errors
 * Check for MCE errors
 * Check for Files / Folders contained within /mnt (anything other than disk1,disk2, etc or cache or disks
@@ -78,13 +75,11 @@ $checkList = "
 * Check for missing/different TemplateURL field in docker application's template
 * Check for Marvel Based controller
 * Check for Directory Bread's (ie: flash drive disconnected)
-* Check for Ryzen CPU running on unRaid < 6.4
 * Check for minimum 2G memory installed
 * Incompatible docker applications installed
 * Check for CPU overheating
 * Check for Stats plugin installed, but Preclear Not installed
 * Mover logging enabled
-* Zenstates not running on Ryzen CPU
 * PHP Warnings enabled via Tips and Tweaks plugin
 * Disk included in share setting that doesn't exist on array
 * Check for deprecated --cpuset-cpus in extraparameters AND via CPU pinning via GUI

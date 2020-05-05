@@ -37,7 +37,7 @@ function isArrayStarted() {
 		$shareList = array();
 		$unRaidVars = my_parse_ini_file($fixPaths['var.ini']);
 		if ( $unRaidVars['mdState'] != "STARTED" ) {
-			addError("Array is not started","Most (but not all) tests require the array to be started in order to run.  There may be more errors / warnings than what is listed here");
+			addOther("Array is not started","Most (but not all) tests require the array to be started in order to run.  There may be more errors / warnings than what is listed here");
 		}
 	}
 }
@@ -122,7 +122,7 @@ function pluginUpdateCheck() {
 		if ( $autoUpdateOverride ) {
 			$func = "addWarning";
 		} else {
-			$func = "addError";
+			$func = "addWarning";
 		}
 		$func("<b>Plugin Update Check</b> not enabled","Highly recommended to have dynamix check for plugin updates (including for the webUI".addLinkButton("Notification Settings","/Settings/Notifications"));
 	}
@@ -188,20 +188,6 @@ function sameShareDifferentCase() {
 				break;
 			}
 		}
-	}
-}
-
-########################################
-# Check for powerdown plugin installed #
-########################################
-
-function powerdownInstalled() {
-	global $fixPaths, $fixSettings, $autoUpdateOverride, $developerMode, $communityApplicationsInstalled, $dockerRunning, $ignoreList, $shareList, $unRaidVersion;
-
-	if ( version_compare($unRaidVersion,"6.1.9",">=") ) { return; }
-	if ( ! is_file("/var/log/plugins/powerdown-x86_64.plg") ) {
-		$suggestion = $communityApplicationsInstalled ? "Install either through ".addLinkButton("Community Applications","/Apps")." or via" : "";
-		addWarning("<b>Powerdown</b> plugin not installed","Highly recommended to install this plugin.  Install via $suggestion the instructions <a href='http://lime-technology.com/forum/index.php?topic=31735.0' target='_blank'>HERE</a>");
 	}
 }
 
@@ -431,30 +417,6 @@ function pluginsUpToDate() {
 	}
 }
 
-###############################################################
-# check for 32 bit packages in /boot/extra and /boot/packages #
-###############################################################
-
-function incompatiblePackagesPresent() {
-	global $fixPaths, $fixSettings, $autoUpdateOverride, $developerMode, $communityApplicationsInstalled, $dockerRunning, $ignoreList, $shareList;
-
-	if ( is_dir("/boot/extra") ) {
-		$files = array_diff(scandir("/boot/extra"),array(".",".."));
-		foreach ($files as $file) {
-			if ( strpos($file,"i386") || strpos($file,"i486") ) {
-				addError("Probable 32 Bit package <b>$file</b> found on the flash drive in the <b>extra</b> folder","32 Bit packages are incompatible with unRaid 6.x and need to be removed - Using your desktop, navigate to the <em>flash</em> share (extra folder) and delete the offending file");
-			}
-		}
-	}
-	if ( is_dir("/boot/packages") ) {
-		$files = array_diff(scandir("/boot/packages"),array(".",".."));
-		foreach ($files as $file) {
-			if ( strpos($file,"i386") || strpos($file,"i486") ) {
-				addError("Probable 32 Bit package <b>$file</b> found on the flash drive in the <b>packages</b> folder","32 Bit packages are incompatible with unRaid 6.x and need to be removed - Using your desktop, navigate to the <em>flash</em> share (packages folder) and delete the offending file");
-			}
-		}
-	}
-}
 
 ##########################################
 # Check if docker containers not updated #
@@ -581,26 +543,6 @@ function rootfsFull() {
 	}
 }
 
-##############################################
-# Check if the server's time is out to lunch #
-##############################################
-
-function dateTimeOK() {
-	global $fixPaths, $fixSettings, $autoUpdateOverride, $developerMode, $communityApplicationsInstalled, $dockerRunning, $ignoreList, $shareList;
-
-	$filename = randomFile("/tmp/fix.common.problems");
-	download_url("http://currentmillis.com/time/minutes-since-unix-epoch.php",$filename);
-	$actualTime = @file_get_contents($filename);
-	if (intval($actualTime) > 24377381 ) { # current time as of this code being written as a check for complete download_url
-		$serverTime = intval(time() / 60);
-		$timeDifference = abs($serverTime - intval($actualTime));
-
-		if ( $timeDifference > 5 ) {
-			addWarning("Your server's <b>current time</b> differs from the actual time by more than 5 minutes.  Currently out by approximately $timeDifference minutes","Either set your date / time manually, or set up the server to use an NTP server to automatically update the date and time".addLinkButton("Date and Time Settings","/Settings/DateTime"));
-		}
-	}
-	@unlink($filename);
-}
 
 #####################################
 # Check for scheduled parity checks #
@@ -796,51 +738,6 @@ function blacklistedPluginsInstalled() {
 	}
 }
 
-##################################
-# Check for non CA known plugins #
-##################################
-
-function unknownPluginInstalled() {
-	global $fixPaths, $fixSettings, $autoUpdateOverride, $developerMode, $communityApplicationsInstalled, $dockerRunning, $ignoreList, $shareList;
-
-	$templates = readJsonFile($fixPaths['templates']);
-	if ( ! $developerMode ) {
-		$pluginList = array_diff(scandir("/var/log/plugins"),array(".",".."));
-
-		if ( is_array($templates['applist']) ) {
-			foreach ($templates['applist'] as $template) {
-				if ($template['Plugin']) {
-					$allPlugins[] = $template;
-				}
-			}
-			if ( ! $allPlugins ) { return; }
-			foreach ($pluginList as $plugin) {
-
-				if ( is_file("/boot/config/plugins/$plugin") ) {
-					if ( ( $plugin == "fix.common.problems.plg") || ( $plugin == "dynamix.plg" ) || ($plugin == "unRAIDServer.plg") || ($plugin == "community.applications.plg") ) {
-						continue;
-					}
-					$pluginURL = exec("/usr/local/emhttp/plugins/dynamix.plugin.manager/scripts/plugin pluginURL /var/log/plugins/$plugin");
-					$flag = false;
-					foreach ($allPlugins as $checkPlugin) {
-						if ( is_array($checkPlugin['PluginURL']) ) {                  # due to coppit
-							$checkPlugin['PluginURL'] = $checkPlugin['PluginURL'][1];
-						}
-						if ( $plugin == basename($checkPlugin['PluginURL']) ) {
-							$flag = true;
-							break;
-						}
-					}
-					if ( ! $flag ) {
-						addWarning("The plugin <b>$plugin</b> is not known to Community Applications and is possibly incompatible with your server","As a <em>general</em> rule, if the plugin is not known to Community Applications, then it is not compatible with your server.  It is recommended to uninstall this plugin ".addLinkButton("Plugins","/Plugins"));
-					}
-				}
-			}
-		} else {
-			addOther("Could not perform <b>unknown plugins</b> installed checks","The download of the application feed failed.");
-		}
-	}
-}
 
 ###################################################################################################################
 # check for docker applications installed but with changed container ports from what the author specified         #
@@ -1138,27 +1035,7 @@ function mceCheck() {
 	}
 }
 
-#########################
-# Check for call traces #
-#########################
 
-function callTrace() {
-	global $fixPaths, $fixSettings, $autoUpdateOverride, $developerMode, $communityApplicationsInstalled, $dockerRunning, $ignoreList, $shareList;
-
-	$files = dirContents("/var/log");
-	foreach ($files as $file) {
-		if ( startsWith($file,"syslog") ) {
-			$output = exec("cat /var/log/$file | grep -i '\[ cut here \]'");
-		  if ( is_file($fixPaths['Traceacknowledge']) ) {
-			  return;
-		  }
-			if ($output) {
-				addError("<b>Call Traces</b> found on your server",addButton("Acknowledge Error","acknowledgeTrace(this.id);")."Your server has issued one or more call traces.  This could be caused by a Kernel Issue, Bad Memory, etc.  You should post your diagnostics and ask for assistance on the unRaid forums");
-				break;
-			}
-		}
-	}
-}
 
 ##########################
 # Check for hack attacks #
@@ -1393,22 +1270,6 @@ function extraParamInRepository() {
 	}
 }
 
-#####################################################
-# Checks for multiple .key files on the flash drive #
-#####################################################
-
-function multipleKey() {
-	global $fixPaths, $fixSettings, $autoUpdateOverride, $developerMode, $communityApplicationsInstalled, $dockerRunning, $ignoreList, $shareList, $unRaidVersion;
-
-	exec("ls --file-type -1 /boot/config/*.key",$keyfiles);
-	if ( ( count($keyfiles) == 2 ) && ( ( $keyfiles[0] == "/boot/config/Trial.key" ) || ( $keyfiles[1] == "/boot/config/Trial.key" ) ) ) {
-		return;
-	}
-	if (count($keyfiles) > 1) {
-		addWarning("Multiple registration keys found","While unRaid will operate with multiple .key (registration files) within the config folder on the flash drive (ie: For simplicity sake you have multiple valid registrations and are storing them all within the config folder, you will run into problems if you ever need to transfer one of the registrations to another USB stick, as unRaid will not know which registration file to transfer, and the incorrect registration may get blacklisted.  You should investigate and determine which key belongs to which USB stick and only have that particular key on that stick");
-	}
-}
-
 #################################################################
 # Checks for NerdPack installing inotifytools on unRaid 6.3RC6+ #
 #################################################################
@@ -1589,16 +1450,7 @@ function logline($filename) {
 	fclose($file);
 }
 
-function Ryzen63() {
-	global $fixPaths, $fixSettings, $autoUpdateOverride, $developerMode, $communityApplicationsInstalled, $dockerRunning, $ignoreList, $shareList, $unRaidVersion;
 
-	if ( version_compare($unRaidVersion,"6.4.0-rc1","<") ) {
-		$output = exec("lscpu | grep Ryzen");
-		if ( $output ) {
-			addWarning("Ryzen CPU on unRaid 6.3","It is <b>highly</b> recommended to only use a Ryzen CPU if you are running unRaid version 6.4+");
-		}
-	}
-}
 			
 function lessThan2G() {
 	global $fixPaths, $fixSettings, $autoUpdateOverride, $developerMode, $communityApplicationsInstalled, $dockerRunning, $ignoreList, $shareList, $unRaidVersion;
@@ -1677,20 +1529,6 @@ function moverLogging() {
   }
 }	
 
-function zenStates() {
-	global $fixPaths, $fixSettings, $autoUpdateOverride, $developerMode, $communityApplicationsInstalled, $dockerRunning, $ignoreList, $shareList,$unRaidVersion;
-
-	if ( version_compare($unRaidVersion,"6.4.0-rc1","<") ) {
-		return;
-	}
-	$output = exec("lscpu | grep Ryzen");
-	if ( $output ) {
-		$output = exec("cat /boot/config/go | grep  /usr/local/sbin/zenstates");
-		if ( ! $output ) {
-			addWarning("You have a Ryzen CPU, but <font color='purple']>Zenstates not installed.","Adding zenstates to your 'go' file can improve the stability of your system.  See this thread for more details <a href='https://lime-technology.com/forums/topic/66327-unraid-os-version-641-stable-release-update-notes/' target='_blank'>6.4.1 Upgrade Notes</a>");
-		}
-	}
-}
 
 function phpWarnings() {
 	global $fixPaths, $fixSettings, $autoUpdateOverride, $developerMode, $communityApplicationsInstalled, $dockerRunning, $ignoreList, $shareList,$unRaidVersion;
