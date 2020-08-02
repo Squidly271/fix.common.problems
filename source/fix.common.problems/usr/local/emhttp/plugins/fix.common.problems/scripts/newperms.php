@@ -14,6 +14,13 @@ if ( $settings['excludedPerms'] ) {
     $excludedShares[$excluded] = $excluded;
   }
 }
+$dockerSettings = @parse_ini_file("/boot/config/docker.cfg");
+if ($dockerSettings) {
+	if ( is_dir($dockerSettings['DOCKER_IMAGE_FILE']) ) {
+		$path = explode("/",$dockerSettings['DOCKER_IMAGE_FILE']);
+		$excludedShares[$path[3]] = $path[3];
+	}
+}
 
 $disks = my_parse_ini_file("/var/local/emhttp/disks.ini", true);
 

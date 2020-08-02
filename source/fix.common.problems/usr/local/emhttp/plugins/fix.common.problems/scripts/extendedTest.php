@@ -145,6 +145,13 @@ if ( $settings['excludedPerms'] ) {
     $excludedDirectory[$excluded] = $excluded;
   }
 }
+$dockerSettings = @parse_ini_file("/boot/config/docker.cfg");
+if ($dockerSettings) {
+	if ( is_dir($dockerSettings['DOCKER_IMAGE_FILE']) ) {
+		$path = explode("/",$dockerSettings['DOCKER_IMAGE_FILE']);
+		$excludedDirectory[$path[3]] = $path[3];
+	}
+}
 
 if ( ! empty($excludedDirectory) ) {
   echoResult("<b>The following user shares will be excluded from the permissions tests:</b>\n\n");
@@ -153,7 +160,6 @@ if ( ! empty($excludedDirectory) ) {
   }
   echoResult("\n");
 }
-
 $disks = my_parse_ini_file("/var/local/emhttp/disks.ini",true);
 scanDirectory("/mnt/user");
 
