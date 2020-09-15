@@ -2,8 +2,8 @@
 <!DOCTYPE PLUGIN [
 <!ENTITY name      "fix.common.problems">
 <!ENTITY author    "Andrew Zawadzki">
-<!ENTITY version   "2020.08.02">
-<!ENTITY md5       "016e6ca0d76aa7353d7481f78aa5db68">
+<!ENTITY version   "2020.09.15">
+<!ENTITY md5       "cd141c468cf7afabb43508c6160f63d1">
 <!ENTITY launch    "Settings/FixProblems">
 <!ENTITY plugdir   "/usr/local/emhttp/plugins/&name;">
 <!ENTITY github    "Squidly271/fix.common.problems">
@@ -13,6 +13,9 @@
 <PLUGIN name="&name;" author="&author;" version="&version;" launch="&launch;" pluginURL="&pluginURL;" icon="warning" min="6.7.0">
 
 <CHANGES>
+###2020.09.15
+- Compatibility Fix for Unraid 6.9+
+
 ###2020.08.02
 - Automatically exclude the docker folder (if docker set to use folder instead of image) from Extended Tests and Docker Safe New Perms
 

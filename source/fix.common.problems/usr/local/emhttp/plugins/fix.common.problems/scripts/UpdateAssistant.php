@@ -1,6 +1,8 @@
 #!/usr/bin/php
 <?PHP
-require_once("/usr/local/emhttp/plugins/dynamix.plugin.manager/include/PluginHelpers.php");
+$docroot = $docroot ?? $_SERVER['DOCUMENT_ROOT'] ?: '/usr/local/emhttp';
+
+require_once("$docroot/plugins/dynamix.plugin.manager/include/PluginHelpers.php");
 
 $nextBranch = ( $argv[1] == "next" );
 
