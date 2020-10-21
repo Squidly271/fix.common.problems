@@ -34,7 +34,7 @@ $covid =  $retval ? false : (! exec('docker ps -a | grep foldingathome') && ! ex
 <script src="<?autov("/webGui/javascript/jquery.filetree.js")?>"></script>
 <script>
 
-var URL = "/plugins/<?=$plugin?>/include/fixExec.php";
+var caURL = "/plugins/<?=$plugin?>/include/fixExec.php";
 
 function myAlert(description,textdescription,textimage,imagesize, outsideClick, showCancel, showConfirm, alertType) {
   if ( !outsideClick ) outsideClick = false;
@@ -70,7 +70,7 @@ function ignoreError(error,type,button) {
     html: true
   },
   function() {
-    $.post(URL,{action:"ignoreError",error:error});
+    $.post(caURL,{action:"ignoreError",error:error});
       swal({
         title: "Ignored!",
         text: "On future scans, <font color='green'><b>"+error+"</b></font> will not generate a "+type+".  This will still however be logged in the syslog.",
@@ -96,7 +96,7 @@ function readdError(error,button) {
     html: true
   },
   function() {
-    $.post(URL,{action:"readdError",error:error});
+    $.post(caURL,{action:"readdError",error:error});
       swal({
         title: "Added!",
         text: "On future scans, <font color='red'><b>"+error+"</b></font> will generate either a warning or an error",
@@ -122,7 +122,7 @@ function readdAll() {
     html: true
   },
   function() {
-    $.post(URL,{action:"readdAll"});
+    $.post(caURL,{action:"readdAll"});
       swal({
         title: "Re-Added",
         text: "On future scans, all errors / warnings found will generate an error / warning",
@@ -144,7 +144,7 @@ function extendedTest() {
     html: true,
     type: "warning"
   }, function() {
-    $.post(URL,{action:'runExtended'});
+    $.post(caURL,{action:'runExtended'});
   });
 }
 
@@ -158,7 +158,7 @@ function troubleshoot() {
     type: "warning",
     closeOnConfirm: false
   }, function() {
-    $.post(URL,{action:'troubleshoot'});
+    $.post(caURL,{action:'troubleshoot'});
     $("#troubleshoot").val("Troubleshooting running");
     $("#troubleshoot").prop("disabled",true);
     swal({
@@ -186,7 +186,7 @@ fixScan.on('message',function(data) {
 		if ( results.errors ) {
 			myCloseAlert();
 			$("#settings").html(results.errors);
-			$.post(URL,{action:'getTimeStamp'}, function(timestamp) {
+			$.post(caURL,{action:'getTimeStamp'}, function(timestamp) {
 				if (timestamp) {
 					timestamp = timestamp.replace("*","");
 					$("#timestamp").html(timestamp);
@@ -242,12 +242,12 @@ $(function() {
 		alert("Ad blocker detected.  Ad blockers can interfere with the GUI of unRaid, and it is recommended to whitelist your server in the ad-blocker settings");
   }
 	
-  $.post(URL,{action:'getTimeStamp'},function(data) {
+  $.post(caURL,{action:'getTimeStamp'},function(data) {
     if (data) {
       if ( (data.charAt(0)) == "*" ) {
         rescan();
       } else {
-        $.post(URL,{action:'displayErrors'}, function(errors) {
+        $.post(caURL,{action:'displayErrors'}, function(errors) {
           if (errors) {
             $("#settings").html(errors);
           }
@@ -258,7 +258,7 @@ $(function() {
   });
 });
 function checkExtended() {
-  $.post(URL,{action:'checkExtendedStatus'},function(data) {
+  $.post(caURL,{action:'checkExtendedStatus'},function(data) {
     if (data) {
       $("#extendedStatus").html(data);
     }
@@ -268,27 +268,27 @@ function checkExtended() {
 function rescan() {
   $("#extendedStatus").html("Scanning...");
   myAlert("Scanning","Now Scanning your system for common problems.  This may take a minute.<br><br><span id='currentTest'></span>","","",false,false,false,"warning");
-  $.post(URL,{action:'scan'});
+  $.post(caURL,{action:'scan'});
 	fixScan.start();
 }
 function acknowledgeUncleanReboot(button)
 {
-  $.post(URL,{action:'acknowledgeUncleanReboot'});
+  $.post(caURL,{action:'acknowledgeUncleanReboot'});
   $("#"+button).hide();
 }
 
 function acknowledgeOOM(button) {
-  $.post(URL,{action:'acknowledgeOOM'});
+  $.post(caURL,{action:'acknowledgeOOM'});
   $("#"+button).hide();
 }
 
 function acknowledgeTrace(button) {
-  $.post(URL,{action:'acknowledgeTrace'});
+  $.post(caURL,{action:'acknowledgeTrace'});
   $("#"+button).hide();
 }
 
 function acknowledgeMCE(button) {
-  $.post(URL,{action:'acknowledgeMCE'});
+  $.post(caURL,{action:'acknowledgeMCE'});
   $("#"+button).hide();
 }
 function excludeSelected() {
@@ -322,7 +322,7 @@ function apply() {
   var logIgnored = $("#logIgnored").val();
   var excludedPerms = $("#excludedPerms").val();
   
-  $.post(URL,{action:'apply',excludedPerms:excludedPerms,logIgnored:logIgnored,frequency:frequency,notifications:notifications,disableSpinUp:disableSpinUp,hacksPerDay:hacksPerDay});
+  $.post(caURL,{action:'apply',excludedPerms:excludedPerms,logIgnored:logIgnored,frequency:frequency,notifications:notifications,disableSpinUp:disableSpinUp,hacksPerDay:hacksPerDay});
   $("#applyButton").prop("disabled",true);
 }
 
