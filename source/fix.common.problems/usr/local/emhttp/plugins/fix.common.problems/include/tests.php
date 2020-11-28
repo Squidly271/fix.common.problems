@@ -210,13 +210,13 @@ function outsideCommunication() {
 function writeToDriveTest() {
 	global $fixPaths, $fixSettings, $autoUpdateOverride, $developerMode, $communityApplicationsInstalled, $dockerRunning, $ignoreList, $shareList, $unRaidVersion;
 
-	$availableDrives = array_diff(scandir("/mnt/"),array(".","..","user","user0","disks","RecycleBin"));
+	$availableDrives = array_diff(scandir("/mnt/"),array(".","..","user","user0","disks","remotes","RecycleBin"));
 	$disksIni = my_parse_ini_file($fixPaths['disks.ini'],true);
 	$disksPresent = array_keys(array_filter($disksIni, function($k) {
 		return ($k['status'] !== "DISK_NP" && $k['name'] !== "parity" && $k['name'] !== "parity2");
 	}));
 	$cachePools = array_keys(array_filter($disksIni, function($k) {
-		return ! preg_match("/disk\d(\d|$)|(parity|parity2|disks|flash|diskP|diskQ)/",$k['name']);
+		return ! preg_match("/disk\d(\d|$)|(parity|parity2|disks|remotes|flash|diskP|diskQ)/",$k['name']);
 	}));
 	
 
@@ -645,7 +645,7 @@ function UDmountedSlaveMode() {
 				if ( is_array($docker['Volumes']) ) {
 					foreach ($docker['Volumes'] as $volume) {
 						$volumePassed = explode(":",$volume);
-						if ( startsWith($volumePassed[0],"/mnt/disks/") ) {
+						if ( startsWith($volumePassed[0],"/mnt/disks/") || startsWith($volumePassed[0],"/mnt/remotes") ) {
 							if ( ! stripos($volumePassed[2],"slave") ) {
 								addError("Docker application <b>".$docker['Name']."</b> has volumes being passed that are mounted by <em>Unassigned Devices</em>, but they are not mounted with the slave option","To help with a trouble free experience with this application, you need to pass any volumes mounted with Unassigned Devices using the slave option.  Fix it here: ".addLinkButton("Docker","/Docker"));
 							}

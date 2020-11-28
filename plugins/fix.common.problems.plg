@@ -2,8 +2,8 @@
 <!DOCTYPE PLUGIN [
 <!ENTITY name      "fix.common.problems">
 <!ENTITY author    "Andrew Zawadzki">
-<!ENTITY version   "2020.10.21">
-<!ENTITY md5       "7f7ed27af9b795979861bae639ee3e4e">
+<!ENTITY version   "2020.11.28">
+<!ENTITY md5       "cad5fba670f5f4f5af9e49bf69f44e73">
 <!ENTITY launch    "Settings/FixProblems">
 <!ENTITY plugdir   "/usr/local/emhttp/plugins/&name;">
 <!ENTITY github    "Squidly271/fix.common.problems">
@@ -13,6 +13,9 @@
 <PLUGIN name="&name;" author="&author;" version="&version;" launch="&launch;" pluginURL="&pluginURL;" icon="warning" min="6.7.0">
 
 <CHANGES>
+###2020.11.28
+- Handle changes to Unassigned Devices SMB mounts
+
 ###2020.10.21
 - Compatibility Fixes
 
