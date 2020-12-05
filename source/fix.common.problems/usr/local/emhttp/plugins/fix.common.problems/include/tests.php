@@ -1203,6 +1203,8 @@ function checkWebUI() {
 function cacheOnlyNoCache() {
 	global $fixPaths, $fixSettings, $autoUpdateOverride, $developerMode, $communityApplicationsInstalled, $dockerRunning, $ignoreList, $shareList, $unRaidVersion;
 
+	if ( version_compare($unRaidVersion,"6.9.0-beta1",">") ) return;
+
 	if ( is_dir("/mnt/cache") ) { return; }
 	foreach ($shareList as $share) {
 		if ( ! is_file("/boot/config/shares/$share.cfg") ) {
