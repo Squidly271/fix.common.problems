@@ -864,7 +864,7 @@ function HPApresent() {
 		if ( ! startsWith($disk['name'],"parity") ) { continue; }  # only test for parity disks
 
 		if ( $fixSettings['disableSpinUp'] == "true" ) {
-			if ( stripos($disk['color'],"blink") ) {
+			if ( stripos($disk['color'],"blink") || $disk['spundown'] == "1") {
 				continue;
 			}
 		}
@@ -1645,7 +1645,7 @@ function writeCacheDisabled() {
 	$disksIni = my_parse_ini_file($fixPaths['disks.ini'],true);	
 	foreach ($disksIni as $drive) {	
 		if ( $fixSettings['disableSpinUp'] == "true" ) {
-			if ( stripos($drive['color'],"blink") ) {
+			if ( stripos($drive['color'],"blink") || $drive['spundown'] == "1") {
 				continue;
 			}
 		}
