@@ -73,7 +73,7 @@ $fixSettings = readJsonFile($fixPaths['settings']);
 $ignoreList = readJsonFile($fixPaths['ignoreList']);
 
 if ( ! $fixSettings['notifications'] ) { $fixSettings['notifications'] = "all"; }
-if ( ! $fixSettings['disableSpinUp'] ) { $fixSettings['disableSpinUp'] = "false"; }
+if ( ! $fixSettings['disableSpinUp'] ) { $fixSettings['disableSpinUp'] = "true"; }
 if ( ! $fixSettings['hacksPerDay'] ) { $fixSettings['hacksPerDay'] = 10; }
 if ( ! $fixSettings['logIgnored']) { $fixSettings['logIgnored'] = "yes"; }
 
