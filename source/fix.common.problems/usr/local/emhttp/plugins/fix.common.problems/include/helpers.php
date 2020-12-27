@@ -142,7 +142,7 @@ function checkPluginUpdate($filename) {
 	if ( $upgradeVersion != "0" ) {	
 
 		$OSversion = plugin("min","/tmp/plugins/$filename") ?: $unRaidVersion;
-		if ( strcmp($unRaidVersion,$OSversion) < 0 ) {
+		if ( version_compare($unRaidVersion,$OSversion,"<") ) {
 			return false;
 		}
 	}

@@ -2,8 +2,8 @@
 <!DOCTYPE PLUGIN [
 <!ENTITY name      "fix.common.problems">
 <!ENTITY author    "Andrew Zawadzki">
-<!ENTITY version   "2020.12.19">
-<!ENTITY md5       "4c064ff48d0565f44a1c865f85494550">
+<!ENTITY version   "2020.12.27">
+<!ENTITY md5       "869185e20efa82a70cdf369c61b7e6a0">
 <!ENTITY launch    "Settings/FixProblems">
 <!ENTITY plugdir   "/usr/local/emhttp/plugins/&name;">
 <!ENTITY github    "Squidly271/fix.common.problems">
@@ -13,6 +13,9 @@
 <PLUGIN name="&name;" author="&author;" version="&version;" launch="&launch;" pluginURL="&pluginURL;" icon="warning" min="6.7.0">
 
 <CHANGES>
+###2020.12.27
+- Fix update test on incompatible updates
+
 ###2020.12.19
 - Fix incosistency in default settings
 
