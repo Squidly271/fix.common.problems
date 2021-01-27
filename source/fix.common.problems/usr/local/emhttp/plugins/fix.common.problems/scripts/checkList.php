@@ -1,7 +1,7 @@
 <?
 ###############################################################
 #                                                             #
-# Fix Common Problems copyright 2015-2020, Andrew Zawadzki    #
+# Fix Common Problems copyright 2015-2021, Andrew Zawadzki    #
 #                                                             #
 ###############################################################
 
@@ -90,6 +90,7 @@ $checkList = "
 * Check for UD installed but not UD+
 * Check for unRaid being mitigated against sysdream
 * Check for CA Notifications being enabled
+* Legecy methods of device isolation (6.9+)
 
 <h2>Troubleshooting Mode</h2>
 

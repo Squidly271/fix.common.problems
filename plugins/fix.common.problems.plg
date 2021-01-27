@@ -2,8 +2,8 @@
 <!DOCTYPE PLUGIN [
 <!ENTITY name      "fix.common.problems">
 <!ENTITY author    "Andrew Zawadzki">
-<!ENTITY version   "2020.12.27">
-<!ENTITY md5       "869185e20efa82a70cdf369c61b7e6a0">
+<!ENTITY version   "2021.01.27">
+<!ENTITY md5       "73788d5e76d0f6be9b790086b68aa58e">
 <!ENTITY launch    "Settings/FixProblems">
 <!ENTITY plugdir   "/usr/local/emhttp/plugins/&name;">
 <!ENTITY github    "Squidly271/fix.common.problems">
@@ -13,6 +13,9 @@
 <PLUGIN name="&name;" author="&author;" version="&version;" launch="&launch;" pluginURL="&pluginURL;" icon="warning" min="6.7.0">
 
 <CHANGES>
+###2021.01.27
+- Add test for legacy methods of device isolation
+
 ###2020.12.27
 - Fix update test on incompatible updates
 
@@ -543,7 +546,7 @@ rm -rf /tmp/fix.common.problems/errors.json
 echo ""
 echo "----------------------------------------------------"
 echo " &name; has been installed."
-echo " Copyright 2016-2020, Andrew Zawadzki"
+echo " Copyright 2016-2021, Andrew Zawadzki"
 echo " Version: &version;"
 echo "----------------------------------------------------"
 echo ""

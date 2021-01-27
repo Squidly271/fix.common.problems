@@ -3,7 +3,7 @@
 
 ###############################################################
 #                                                             #
-# Fix Common Problems copyright 2015-2020, Andrew Zawadzki    #
+# Fix Common Problems copyright 2015-2021, Andrew Zawadzki    #
 #                                                             #
 ###############################################################
 
@@ -171,7 +171,8 @@ if ( $troubleshooting ) {
 	"flashSyslog",
 	"unassignedDevicesPlus",
 	"sysdream",
-	"caNotifications"
+	"caNotifications",
+	"legacyVFIO"
 	);
 	foreach ($tests as $test) {
 		if ( $disableNotifications ) {

@@ -34,7 +34,7 @@ table {background-color:transparent;}
       </tr>
     </table></center>
     <br>
-    <center><em><font size='1'>Copyright 2015-2020 Andrew Zawadzki</font></em></center>
+    <center><em><font size='1'>Copyright 2015-2021 Andrew Zawadzki</font></em></center>
     <center><a href='https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=7M7CBCVU732XG' target='_blank' rel='noreferrer'><img src='https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif'></a></center>
     <br><center><a href='https://forums.lime-technology.com/topic/47266-plugin-ca-fix-common-problems/' target='_blank'>Plugin Support Thread</a></center>
   ";

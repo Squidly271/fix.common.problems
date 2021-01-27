@@ -2,7 +2,7 @@
 
 ###############################################################
 #                                                             #
-# Fix Common Problems copyright 2015-2020, Andrew Zawadzki    #
+# Fix Common Problems copyright 2015-2021, Andrew Zawadzki    #
 #                                                             #
 ###############################################################
 
@@ -1745,4 +1745,22 @@ function caNotifications() {
 		}
 	}
 }	
+
+function legacyVFIO() {
+	global $fixPaths, $fixSettings, $autoUpdateOverride, $developerMode, $communityApplicationsInstalled, $dockerRunning, $ignoreList, $shareList,$unRaidVersion;
+
+	if ( version_compare($unRaidVersion,"6.9.0-rc2","<") ) {
+		return;
+	}
+	$cmdline = explode(' ',trim(file_get_contents('/proc/cmdline')));
+	foreach ($cmdline as $cmd) {
+		if ((strpos($cmd,'vfio-pci.ids')!==false) || (strpos($cmd,'xen-pciback.hide')!==false)) {
+			$found = true;
+			break;
+		}
+	}
+	if ($found) {
+		addWarning("Legacy PCI Stubbing found","vfio-pci.ids or xen-pciback.hide found within syslinux.cfg.  For best results on Unraid 6.9+, it is recommended to remove those methods of isolating devices for use within a VM and instead utilize the options within Tools - System Devices");
+	}
+}
 ?>
