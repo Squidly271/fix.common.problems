@@ -204,6 +204,7 @@ if ( ! is_file("/boot/config/plugins/fix.common.problems.plg") ) {
 } else {
 	file_put_contents("/boot/update.assistant.tmp","blah");
 	$test = file_get_contents("/boot/update.assistant.tmp");
+	@unlink("/boot/update.assistant.tmp");
 	if ( $test != "blah" ) {
 		ISSUE("Unable to write to flash drive.  Either full, read-only, or dropped offline");
 	} else {
