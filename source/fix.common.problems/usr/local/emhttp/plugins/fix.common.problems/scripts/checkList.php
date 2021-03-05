@@ -91,6 +91,7 @@ $checkList = "
 * Check for unRaid being mitigated against sysdream
 * Check for CA Notifications being enabled
 * Legecy methods of device isolation (6.9+)
+* Network bonding issues
 
 <h2>Troubleshooting Mode</h2>
 

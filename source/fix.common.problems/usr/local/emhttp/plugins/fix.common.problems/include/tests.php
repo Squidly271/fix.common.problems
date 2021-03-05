@@ -1763,4 +1763,92 @@ function legacyVFIO() {
 		addWarning("Legacy PCI Stubbing found","vfio-pci.ids or xen-pciback.hide found within syslinux.cfg.  For best results on Unraid 6.9+, it is recommended to remove those methods of isolating devices for use within a VM and instead utilize the options within Tools - System Devices");
 	}
 }
+
+function getNics () {
+  $eths = [];
+  for ($i=0; $i<10; $i++) {
+    $ethi="eth".$i; // $ethi is a string
+    global $$ethi;
+    $eth=$$ethi;    // $eth is an array
+    if (!empty($eth)) {
+      array_push($eths, $ethi);
+    }
+  }
+  return $eths;
+}
+
+function checkBonding () {
+  // bonding modes defined on Eth0.page
+  // 0 = "balance-rr" (complex - requires configuration of network switch)
+  // 1 = "active-backup" (simple - no special network switch configuration is required)
+  // 2 = "balance-xor" (complex)
+  // 3 = "broadcast" (complex)
+  // 4 = "802.3ad" (complex)
+  // 5 = "balance-tlb" (simple)
+  // 6 = "balance-alb" (simple)
+  // https://wiki.linuxfoundation.org/networking/bonding#switch_configuration
+  $complexBond = [0,2,3,4];
+  $eths = getNics();
+  foreach ($eths as $ethi) {
+    global $$ethi;
+    $eth=$$ethi;
+    if ($eth["BONDING"] === "yes") {
+      if ($eth["BONDING_MODE"] && in_array($eth["BONDING_MODE"], $complexBond)) {
+        addWarning("Complex bonding mode on $ethi","You have configured $ethi with a bonding mode that requires additional configuration on your network switch. If your switch is not configured to support this mode you should change $ethi to the default bonding mode of 'active-backup'. If your switch is properly configured you can ignore this warning. ".addLinkButton("Network Settings","/Settings/NetworkSettings"));
+      }
+    }
+  }
+  
+}
+
+function getNetwork4($eth) {
+  // subnets defined on Eth0.page
+  $masks["255.0.0.0"] = "8";
+  $masks["255.255.0.0"] = "16";
+  $masks["255.255.128.0"] = "17";
+  $masks["255.255.192.0"] = "18";
+  $masks["255.255.224.0"] = "19";
+  $masks["255.255.240.0"] = "20";
+  $masks["255.255.248.0"] = "21";
+  $masks["255.255.252.0"] = "22";
+  $masks["255.255.254.0"] = "23";
+  $masks["255.255.255.0"] = "24";
+  $masks["255.255.255.128"] = "25";
+  $masks["255.255.255.192"] = "26";
+  $masks["255.255.255.224"] = "27";
+  $masks["255.255.255.240"] = "28";
+  $masks["255.255.255.248"] = "29";
+  $masks["255.255.255.252"] = "30";
+
+  $network = "";
+  if ($eth && $eth['IPADDR:0'] && $eth['NETMASK:0']) {
+    // calculation from WG0.page
+    $mask4 = $masks[$eth['NETMASK:0']];
+    $network4 = long2ip(ip2long($eth['IPADDR:0']) & (0x100000000-2**(32-$mask4)));
+  }
+  return $network4;
+} 
+
+function checkSameNetwork() {
+  // https://www.ni.com/en-us/support/documentation/supplemental/11/best-practices-for-using-multiple-network-interfaces--nics--with.html#section--1358462000
+  $networks4 = [];
+  $eths = getNics();
+  foreach ($eths as $ethi) {
+    global $$ethi;
+    $eth=$$ethi;
+    $network4=getNetwork4($eth);
+    if ($network4) {
+      if ($networks4[$network4]) {
+        $othernic=$networks4[$network4];
+        if ($eth["BONDNICS"] && strpos($eth["BONDNICS"].",", $othernic.",") > -1) {
+          // both nics are part of the same bond, is probably ok
+        } else {
+          addError("Multiple NICs on the same IPv4 network","$othernic and $ethi both have IP addresses on the $network4 network. This is rarely a valid configuration. ".addLinkButton("Network Settings","/Settings/NetworkSettings"));
+        }
+      } else {
+        $networks4[$network4]=$ethi;
+      }
+    }
+  }
+}
 ?>

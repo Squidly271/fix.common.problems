@@ -172,7 +172,9 @@ if ( $troubleshooting ) {
 	"unassignedDevicesPlus",
 	"sysdream",
 	"caNotifications",
-	"legacyVFIO"
+	"legacyVFIO",
+	"checkBonding",
+	"checkSameNetwork"
 	);
 	foreach ($tests as $test) {
 		if ( $disableNotifications ) {

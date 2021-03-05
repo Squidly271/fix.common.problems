@@ -28,8 +28,6 @@ if ( is_dir("/mnt/user") ) {
 }
 $unRaid67 = version_compare(unRaidVersion(),"6.7.0-rc1",">");
 
-exec('docker info',$output,$retval);
-$covid =  $retval ? false : (! exec('docker ps -a | grep foldingathome') && ! exec('docker ps -a | grep boinc') );
 ?>
 <script src="<?autov("/webGui/javascript/jquery.filetree.js")?>"></script>
 <script>
@@ -205,11 +203,6 @@ $(function() {
 		caPluginUpdateCheck("fix.common.problems.plg",{name:"Fix Common Problems"});
 	}
 	
-	if ( typeof addBannerWarning === "function" ) {
-		<?if ($covid):?>
-			addBannerWarning("You can install either BOINC or FOLDING@HOME software on your server to let it help fight the spread of COVID-19.  See <a href='https://unraid.net/blog/help-take-the-fight-to-covid-19-with-boinc-or-folding-home' target='_blank'>HERE</a> for more detail");
-		<?endif;?>
-	}
   if ( "<?=$userEnabled?>" == "true" ) {
     $("#userOnly").show();
     setInterval(function() {
@@ -292,22 +285,21 @@ function acknowledgeMCE(button) {
   $("#"+button).hide();
 }
 function excludeSelected() {
-				$el = $( "#excludedFoldersList input:checked" );
+	$el = $( "#excludedFoldersList input:checked" );
 
-				if( $el.length === 0 )
-				{
-					checked = "";
-				}
-				else {
-					var checked = $el
-						.map(function() {
-							return $(this).parent().find('a:first').text();
-						})
-						.get()
-						.join(',');
-						}
-    $("#excludedPerms").val(checked);
-    enableApply();
+	if( $el.length === 0 )
+	{
+		checked = "";
+	}	else {
+		var checked = $el
+		.map(function() {
+			return $(this).parent().find('a:first').text();
+		})
+		.get()
+		.join(',');
+	}
+  $("#excludedPerms").val(checked);
+  enableApply();
 }
 
 function enableApply() {
