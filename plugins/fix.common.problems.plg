@@ -2,8 +2,8 @@
 <!DOCTYPE PLUGIN [
 <!ENTITY name      "fix.common.problems">
 <!ENTITY author    "Andrew Zawadzki">
-<!ENTITY version   "2021.03.05">
-<!ENTITY md5       "51effe1a98771d80eed8d7b855317437">
+<!ENTITY version   "2021.03.07">
+<!ENTITY md5       "47f613dbf35a2c75af9df4d6f9e03280">
 <!ENTITY launch    "Settings/FixProblems">
 <!ENTITY plugdir   "/usr/local/emhttp/plugins/&name;">
 <!ENTITY github    "Squidly271/fix.common.problems">
@@ -13,6 +13,9 @@
 <PLUGIN name="&name;" author="&author;" version="&version;" launch="&launch;" pluginURL="&pluginURL;" icon="warning" min="6.7.0">
 
 <CHANGES>
+###2021.03.07
+- Add in tests for packages within /boot/extra
+
 ###2021.03.05
 - Add in some network tests (Thanks ljm42)
 

@@ -92,6 +92,7 @@ $checkList = "
 * Check for CA Notifications being enabled
 * Legecy methods of device isolation (6.9+)
 * Network bonding issues
+* Extra packages within /boot/extra
 
 <h2>Troubleshooting Mode</h2>
 

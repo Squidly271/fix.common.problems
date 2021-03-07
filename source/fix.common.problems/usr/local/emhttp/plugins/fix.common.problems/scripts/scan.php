@@ -174,7 +174,8 @@ if ( $troubleshooting ) {
 	"caNotifications",
 	"legacyVFIO",
 	"checkBonding",
-	"checkSameNetwork"
+	"checkSameNetwork",
+	"extraPackages"
 	);
 	foreach ($tests as $test) {
 		if ( $disableNotifications ) {
