@@ -2,8 +2,8 @@
 <!DOCTYPE PLUGIN [
 <!ENTITY name      "fix.common.problems">
 <!ENTITY author    "Andrew Zawadzki">
-<!ENTITY version   "2021.03.07">
-<!ENTITY md5       "47f613dbf35a2c75af9df4d6f9e03280">
+<!ENTITY version   "2021.03.10">
+<!ENTITY md5       "8c3c7c8e0fb9636f28935988a8e39c8b">
 <!ENTITY launch    "Settings/FixProblems">
 <!ENTITY plugdir   "/usr/local/emhttp/plugins/&name;">
 <!ENTITY github    "Squidly271/fix.common.problems">
@@ -13,6 +13,9 @@
 <PLUGIN name="&name;" author="&author;" version="&version;" launch="&launch;" pluginURL="&pluginURL;" icon="warning" min="6.7.0">
 
 <CHANGES>
+###2021.03.10
+- Permission Fix
+
 ###2021.03.07
 - Add in tests for packages within /boot/extra
 
