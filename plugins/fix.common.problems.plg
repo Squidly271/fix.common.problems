@@ -2,8 +2,8 @@
 <!DOCTYPE PLUGIN [
 <!ENTITY name      "fix.common.problems">
 <!ENTITY author    "Andrew Zawadzki">
-<!ENTITY version   "2021.03.14">
-<!ENTITY md5       "6525848a3edbf5db72e7a0ea1dc22489">
+<!ENTITY version   "2021.03.14a">
+<!ENTITY md5       "c779461f5c8ae8bba204d64cac06a4bc">
 <!ENTITY launch    "Settings/FixProblems">
 <!ENTITY plugdir   "/usr/local/emhttp/plugins/&name;">
 <!ENTITY github    "Squidly271/fix.common.problems">
