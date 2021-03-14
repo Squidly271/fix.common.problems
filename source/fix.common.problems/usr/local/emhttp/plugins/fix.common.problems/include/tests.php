@@ -670,12 +670,12 @@ function FTPrunning() {
 	foreach ($output as $line) {
 		if ($line[0] != "#") {
 			if ( is_file("/boot/config/vsftpd.user_list") ) {
-				addWarning("unRaid's built in <b>FTP server</b> is running","Opening up your unRaid server directly to the internet is an extremely bad idea. - You <b>will</b> get hacked.  If you require an FTP server running on your server, use one of the FTP docker applications instead.  They will be more secure than the built in one".addLinkButton("FTP Server Settings","/Settings/FTP")." If you are only using the built in FTP server locally on your network you can ignore this warning, but ensure that you have not forwarded any ports from your router to your server.  Note that there is a bug in unRaid 6.1.9 and 6.2b21 where if you disable the service, it will come back alive after a reboot.  This check is looking at whether you have users authenticated to use the ftp server");
+				addWarning("unRaid&apos;s built in <b>FTP server</b> is running","Opening up your unRaid server directly to the internet is an extremely bad idea. - You <b>will</b> get hacked.  If you require an FTP server running on your server, use one of the FTP docker applications instead.  They will be more secure than the built in one".addLinkButton("FTP Server Settings","/Settings/FTP")." If you are only using the built in FTP server locally on your network you can ignore this warning, but ensure that you have not forwarded any ports from your router to your server.  Note that there is a bug in unRaid 6.1.9 and 6.2b21 where if you disable the service, it will come back alive after a reboot.  This check is looking at whether you have users authenticated to use the ftp server");
 			}
 			break;
 		} else {
 			if ( is_file("/boot/config/vsftpd.user_list") ) {
-				addWarning("unRaid's built in <b>FTP server</b> is currently disabled, but users are defined","There is a &quot;feature&quot; within 6.1.9 and 6.2 beta 21 where after the server is reset, the FTP server will be automatically re-enabled regardless if you want it to be or not.  Remove the users here".addLinkButton("FTP Settings","/Settings/FTP"));
+				addWarning("unRaid&apos;s built in <b>FTP server</b> is currently disabled, but users are defined","There is a &quot;feature&quot; within 6.1.9 and 6.2 beta 21 where after the server is reset, the FTP server will be automatically re-enabled regardless if you want it to be or not.  Remove the users here".addLinkButton("FTP Settings","/Settings/FTP"));
 			}
 		}
 	}
@@ -1857,6 +1857,20 @@ function extraPackages() {
 
 	if ( ! empty(glob("/boot/extra/*.txz")) ) {
 		addWarning("Extra Packages Found","Extra packages being installed were found in /boot/extra.  It is not recommended to install any packages this way.  The recommended way is via the NerdPack / DevPack plugins");
+	}
+}
+
+function authorizedKeysInGo() {
+	global $fixPaths, $fixSettings, $autoUpdateOverride, $developerMode, $communityApplicationsInstalled, $dockerRunning, $ignoreList, $shareList,$unRaidVersion;
+
+	if ( version_compare($unRaidVersion,"6.9.0","<") ) return;
+	$go = file("/boot/config/go");
+	foreach ($go as $line) {
+		if (startsWith(trim($line),"#")) continue;
+		if (strpos($line,"authorized_keys") ) {
+			addWarning("Setting up of authorized keys possibly found in go file","It is recommended to not set up authorized keys for you server via go, but rather like this ".addLinkButton("SSH Improvements","https://wiki.unraid.net/Unraid_OS_6.9.0#SSH_Improvements"));
+			break;
+		}
 	}
 }
 ?>

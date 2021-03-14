@@ -175,7 +175,8 @@ if ( $troubleshooting ) {
 	"legacyVFIO",
 	"checkBonding",
 	"checkSameNetwork",
-	"extraPackages"
+	"extraPackages",
+	"authorizedKeysInGo"
 	);
 	foreach ($tests as $test) {
 		if ( $disableNotifications ) {
