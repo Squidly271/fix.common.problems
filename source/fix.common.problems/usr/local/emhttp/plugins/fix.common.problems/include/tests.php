@@ -1760,7 +1760,7 @@ function legacyVFIO() {
 		}
 	}
 	if ($found) {
-		addWarning("Legacy PCI Stubbing found","vfio-pci.ids or xen-pciback.hide found within syslinux.cfg.  For best results on Unraid 6.9+, it is recommended to remove those methods of isolating devices for use within a VM and instead utilize the options within Tools - System Devices");
+		addWarning("Legacy PCI Stubbing found","vfio-pci.ids or xen-pciback.hide found within syslinux.cfg.  For best results on Unraid 6.9+, it is recommended to remove those methods of isolating devices for use within a VM and instead utilize the options within Tools - System Devices.  See <a href='https://forums.unraid.net/topic/93781-guide-bind-devices-to-vfio-pci-for-easy-passthrough-to-vms/' target='_blank'>HERE</a> for more details");
 	}
 }
 

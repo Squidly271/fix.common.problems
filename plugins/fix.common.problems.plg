@@ -2,8 +2,8 @@
 <!DOCTYPE PLUGIN [
 <!ENTITY name      "fix.common.problems">
 <!ENTITY author    "Andrew Zawadzki">
-<!ENTITY version   "2021.03.14a">
-<!ENTITY md5       "c779461f5c8ae8bba204d64cac06a4bc">
+<!ENTITY version   "2021.03.17">
+<!ENTITY md5       "923fe4363237afd17daab882460f106a">
 <!ENTITY launch    "Settings/FixProblems">
 <!ENTITY plugdir   "/usr/local/emhttp/plugins/&name;">
 <!ENTITY github    "Squidly271/fix.common.problems">
@@ -13,6 +13,9 @@
 <PLUGIN name="&name;" author="&author;" version="&version;" launch="&launch;" pluginURL="&pluginURL;" icon="warning" min="6.7.0">
 
 <CHANGES>
+###2021.03.17
+- Add link to vfio tests
+
 ###2021.03.14
 - Add in tests for authorized keys in go
 - Fix FTP test couldn't be readded from ignore list
