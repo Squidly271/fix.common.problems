@@ -1398,6 +1398,7 @@ function templateURLMissing() {
 					if ( ($app['Repository'] === str_replace(":latest","",$dockerImage) ) || ($app['Repository'] === $dockerImage) ) {
 						$name = $dockerInstalled['Name'];
 						$xmlfile = $myTemplates[$name]['template'];
+						if ( ! is_file($xmlfile) ) continue;
 						$template = simplexml_load_file($xmlfile);
 						$template_url = my_xml_decode($template->TemplateURL);
 						$warning = null;

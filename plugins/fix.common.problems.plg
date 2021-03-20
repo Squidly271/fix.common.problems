@@ -2,8 +2,8 @@
 <!DOCTYPE PLUGIN [
 <!ENTITY name      "fix.common.problems">
 <!ENTITY author    "Andrew Zawadzki">
-<!ENTITY version   "2021.03.20">
-<!ENTITY md5       "dfddc2ddcae77ce6591263ab90003326">
+<!ENTITY version   "2021.03.20a">
+<!ENTITY md5       "de3c17d89d0d7fb8ee21367d29c1087c">
 <!ENTITY launch    "Settings/FixProblems">
 <!ENTITY plugdir   "/usr/local/emhttp/plugins/&name;">
 <!ENTITY github    "Squidly271/fix.common.problems">
@@ -14,6 +14,7 @@
 
 <CHANGES>
 ###2021.03.20
+- Check for template existing before testing for templateURL wrong
 - Add in to Update assistant and FCP tests for reserved names as user shares
 - Change Trim plugin tests to check if running 6.9.0+ and btrfs formatted drives
 
