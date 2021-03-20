@@ -2,8 +2,8 @@
 <!DOCTYPE PLUGIN [
 <!ENTITY name      "fix.common.problems">
 <!ENTITY author    "Andrew Zawadzki">
-<!ENTITY version   "2021.03.17">
-<!ENTITY md5       "923fe4363237afd17daab882460f106a">
+<!ENTITY version   "2021.03.20">
+<!ENTITY md5       "dfddc2ddcae77ce6591263ab90003326">
 <!ENTITY launch    "Settings/FixProblems">
 <!ENTITY plugdir   "/usr/local/emhttp/plugins/&name;">
 <!ENTITY github    "Squidly271/fix.common.problems">
@@ -13,6 +13,10 @@
 <PLUGIN name="&name;" author="&author;" version="&version;" launch="&launch;" pluginURL="&pluginURL;" icon="warning" min="6.7.0">
 
 <CHANGES>
+###2021.03.20
+- Add in to Update assistant and FCP tests for reserved names as user shares
+- Change Trim plugin tests to check if running 6.9.0+ and btrfs formatted drives
+
 ###2021.03.17
 - Add link to vfio tests
 

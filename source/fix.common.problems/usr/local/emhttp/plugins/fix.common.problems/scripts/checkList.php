@@ -93,6 +93,8 @@ $checkList = "
 * Legecy methods of device isolation (6.9+)
 * Network bonding issues
 * Extra packages within /boot/extra
+* Authorized keys being set up via go file
+* Using reserved names as share names
 
 <h2>Troubleshooting Mode</h2>
 

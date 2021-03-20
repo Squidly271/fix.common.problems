@@ -176,7 +176,8 @@ if ( $troubleshooting ) {
 	"checkBonding",
 	"checkSameNetwork",
 	"extraPackages",
-	"authorizedKeysInGo"
+	"authorizedKeysInGo",
+	"reservedUserName"
 	);
 	foreach ($tests as $test) {
 		if ( $disableNotifications ) {

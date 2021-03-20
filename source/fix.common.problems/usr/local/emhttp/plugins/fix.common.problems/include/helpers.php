@@ -38,7 +38,7 @@ function addError($description,$action) {
 
   $originalDescription = $description;
   $description = str_replace("'","&#39;",$description);
-  $newError['error'] = "<font color='red'>$description</font>";
+  $newError['error'] = "<font color='#f17272'>$description</font>";
   $newError['suggestion'] = $action;
   
   if ( $ignoreList[strip_tags($description)] ) {

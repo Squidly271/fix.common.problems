@@ -266,6 +266,20 @@ if ( is_dir("/mnt/cache") ) {
 	OK("Cache drive not installed");
 }
 
+echo "\nChecking for reserved name being used as a user share\n";
+$reservedNames = ["parity","parity2","parity3","diskP","diskQ","diskR","disk","disks","flash","boot","user","user0","dev","disk0","disk1","disk2","disk3","disk4","disk5","disk6","disk7","disk8","disk9","disk10","disk11","disk12","disk13","disk14","disk15","disk16","disk17","disk18","disk19","disk20","disk21","disk22","disk23","disk24","disk25","disk26","disk27","disk28","disk29","disk30","disk31"];
+$flag = false;
+foreach ($reservedNames as $reservedName) {
+	if ( is_dir("/mnt/user/$reservedName") ) {
+		$flag = true;
+		ISSUE("You have a share named $reservedName.  Since 6.9.0, this is now a reserved name and cannot be used as a share.  You will need to rename this share for the system to work properly");
+	}
+}
+if ( ! $flag )
+	OK("No user shares using reserved names were found");
+
+
+echo "\nChecking for extra.cfg\n";
 # check for extra.cfg
 if ( version_compare($newUnRaidVersion,"6.7.9",">") ) {
 	if ( is_file("/boot/config/extra.cfg") ) {

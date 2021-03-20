@@ -1353,9 +1353,21 @@ function SSDcacheNoTrim() {
 	global $fixPaths, $fixSettings, $autoUpdateOverride, $developerMode, $communityApplicationsInstalled, $dockerRunning, $ignoreList, $shareList, $unRaidVersion;
 
 	$disks = parse_ini_file("/var/local/emhttp/disks.ini",true);
-	if ( ! is_array($disks['cache']) ) { return; }
-	if ( (! $disks['cache']['rotational']) && (! is_file("/var/log/plugins/dynamix.ssd.trim.plg")) && ( $disks['cache']['status'] != "DISK_NP") ) {
-		addWarning("Dynamix SSD Trim Plugin Not installed","Your cache drive is an SSD Drive, but you do not have the Dynamix SSD Trim plugin installed.  Your performance will suffer.  Install the plugin via the Apps Tab (Community Applications)");
+	if ( version_compare($unRaidVersion,"6.9.0","<") ) {
+		if ( ! is_array($disks['cache']) ) { return; }
+		if ( (! $disks['cache']['rotational']) && (! is_file("/var/log/plugins/dynamix.ssd.trim.plg")) && ( $disks['cache']['status'] != "DISK_NP") ) {
+			addWarning("Dynamix SSD Trim Plugin Not installed","Your cache drive is an SSD Drive, but you do not have the Dynamix SSD Trim plugin installed.  Your performance will suffer.  Install the plugin via the Apps Tab (Community Applications)");
+		}
+	} else {
+		foreach ( $disks as $disk ) {
+			if ( $disk['type'] !== "Cache" ) continue;
+			if ( $disk['rotational'] ) continue;
+			if ( strpos($disk['fsType'],"btrfs") !== false ) continue;
+			if ( is_file("/var/log/plugins/dynamix.ssd.trim.plg") )
+				continue;
+			addWarning("Dynamix SSD Trim Plugin Not installed","Your cache drive is an SSD Drive, but you do not have the Dynamix SSD Trim plugin installed.  Your performance will suffer.  Install the plugin via the Apps Tab (Community Applications)");
+			break;
+		}
 	}
 }
 
@@ -1870,6 +1882,20 @@ function authorizedKeysInGo() {
 		if (strpos($line,"authorized_keys") ) {
 			addWarning("Setting up of authorized keys possibly found in go file","It is recommended to not set up authorized keys for you server via go, but rather like <a href='https://wiki.unraid.net/Unraid_OS_6.9.0#SSH_Improvements' target='_blank'>THIS</a>");
 			break;
+		}
+	}
+}
+
+function reservedUserName() {
+	global $fixPaths, $fixSettings, $autoUpdateOverride, $developerMode, $communityApplicationsInstalled, $dockerRunning, $ignoreList, $shareList,$unRaidVersion;
+	
+	if ( version_compare($unRaidVersion,"6.9.0","<") ) return;
+
+	$reservedNames = ["parity","parity2","parity3","diskP","diskQ","diskR","disk","disks","flash","boot","user","user0","dev","disk0","disk1","disk2","disk3","disk4","disk5","disk6","disk7","disk8","disk9","disk10","disk11","disk12","disk13","disk14","disk15","disk16","disk17","disk18","disk19","disk20","disk21","disk22","disk23","disk24","disk25","disk26","disk27","disk28","disk29","disk30","disk31"];
+	$flag = false;
+	foreach ($reservedNames as $reservedName) {
+		if ( is_dir("/mnt/user/$reservedName") ) {
+			addError("Reserved user share {$reservedName}","You have a share named $reservedName.  Since 6.9.0, this is now a reserved name and cannot be used as a share.  You will need to rename this share at the command prompt for the system to work properly. See <a href='https://forums.unraid.net/topic/103966-solved-690-upgrade-user-shares-gone/?tab=comments#comment-960763' target='_blank'>HERE</a>");
 		}
 	}
 }
