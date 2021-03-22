@@ -1362,6 +1362,7 @@ function SSDcacheNoTrim() {
 		foreach ( $disks as $disk ) {
 			if ( $disk['type'] !== "Cache" ) continue;
 			if ( $disk['rotational'] ) continue;
+			if ( ! $disk['fsType'] ) continue;
 			if ( strpos($disk['fsType'],"btrfs") !== false ) continue;
 			if ( is_file("/var/log/plugins/dynamix.ssd.trim.plg") )
 				continue;
