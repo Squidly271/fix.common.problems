@@ -95,6 +95,7 @@ $checkList = "
 * Extra packages within /boot/extra
 * Authorized keys being set up via go file
 * Using reserved names as share names
+* Check for root password set
 
 <h2>Troubleshooting Mode</h2>
 

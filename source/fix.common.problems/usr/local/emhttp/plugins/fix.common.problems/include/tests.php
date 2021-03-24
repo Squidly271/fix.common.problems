@@ -1901,4 +1901,12 @@ function reservedUserName() {
 		}
 	}
 }
+
+function rootPassword() {
+	global $fixPaths, $fixSettings, $autoUpdateOverride, $developerMode, $communityApplicationsInstalled, $dockerRunning, $ignoreList, $shareList,$unRaidVersion;
+
+	$passwordCheck = exec("passwd --status root");
+	if ( strpos($passwordCheck,"NP") )
+		addError("No root password set","It is very highly advised to have a password set for the root user.  Change it here ".addlinkButton("ROOT USER","/Users/UserEdit?name=root"));
+} 
 ?>

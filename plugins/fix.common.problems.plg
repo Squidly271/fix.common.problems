@@ -2,8 +2,8 @@
 <!DOCTYPE PLUGIN [
 <!ENTITY name      "fix.common.problems">
 <!ENTITY author    "Andrew Zawadzki">
-<!ENTITY version   "2021.03.22">
-<!ENTITY md5       "b457e867ccb342948f62185aded368d0">
+<!ENTITY version   "2021.03.24">
+<!ENTITY md5       "d5b28defa4c4ef845cee0d3912f573f9">
 <!ENTITY launch    "Settings/FixProblems">
 <!ENTITY plugdir   "/usr/local/emhttp/plugins/&name;">
 <!ENTITY github    "Squidly271/fix.common.problems">
@@ -13,6 +13,9 @@
 <PLUGIN name="&name;" author="&author;" version="&version;" launch="&launch;" pluginURL="&pluginURL;" icon="warning" min="6.7.0">
 
 <CHANGES>
+###2021.03.24
+- Check for root password set
+
 ###2021.03.22
 - SSD Trim tests - take into consideration multi-device pools
 
