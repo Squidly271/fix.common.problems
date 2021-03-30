@@ -1364,6 +1364,7 @@ function SSDcacheNoTrim() {
 			if ( $disk['rotational'] ) continue;
 			if ( ! $disk['fsType'] ) continue;
 			if ( strpos($disk['fsType'],"btrfs") !== false ) continue;
+			if ( ! $disk['status'] == "DISK_OK" ) continue;
 			if ( is_file("/var/log/plugins/dynamix.ssd.trim.plg") )
 				continue;
 			addWarning("Dynamix SSD Trim Plugin Not installed","Your cache drive is an SSD Drive, but you do not have the Dynamix SSD Trim plugin installed.  Your performance will suffer.  Install the plugin via the Apps Tab (Community Applications)");
