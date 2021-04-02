@@ -76,7 +76,7 @@ function cacheOnlyFilesOnArray() {
 					$contents = array_diff(scandir("/mnt/user0/$share"),array(".",".."));
 					if ( ! empty($contents) ) {
 						$shareURL = str_replace(" ","+",$share);
-						addWarning("Share <b>$share</b> set to <em>cache-only</em>, but files / folders exist on the array","You should change the share's settings appropriately ".addLinkButton("$share Settings","/Shares/Share?name=$shareURL")." or use the dolphin / krusader docker applications to move the offending files accordingly.  Note that there are some valid use cases for a set up like this.  In particular: <a href='https://lime-technology.com/forum/index.php?topic=40777.msg385753' target='_blank'>THIS</a>");
+						addWarning("Share <b>$share</b> set to <em>cache-only</em>, but files / folders exist on the array","You should change the shares settings appropriately ".addLinkButton("$share Settings","/Shares/Share?name=$shareURL")." or use the dolphin / krusader docker applications to move the offending files accordingly.  Note that there are some valid use cases for a set up like this.  In particular: <a href='https://lime-technology.com/forum/index.php?topic=40777.msg385753' target='_blank'>THIS</a>");
 					}
 				}
 			}
@@ -100,7 +100,7 @@ function arrayOnlyFilesOnCache() {
 					$contents = array_diff(scandir("/mnt/cache/$share"),array(".",".."));
 					if ( ! empty($contents) ) {
 						$shareURL = str_replace(" ","+",$share);
-						addWarning("Share <b>$share</b> set to <em>not use the cache</em>, but files / folders exist on the cache drive","You should change the share's settings appropriately ".addLinkButton("$share Settings","/Shares/Share?name=$shareURL")."or use the dolphin / krusader docker applications to move the offending files accordingly.  Note that there are some valid use cases for a set up like this.  In particular: <a href='https://lime-technology.com/forum/index.php?topic=40777.msg385753' target='_blank'>THIS</a>");
+						addWarning("Share <b>$share</b> set to <em>not use the cache</em>, but files / folders exist on the cache drive","You should change the shares settings appropriately ".addLinkButton("$share Settings","/Shares/Share?name=$shareURL")."or use the dolphin / krusader docker applications to move the offending files accordingly.  Note that there are some valid use cases for a set up like this.  In particular: <a href='https://lime-technology.com/forum/index.php?topic=40777.msg385753' target='_blank'>THIS</a>");
 					}
 				}
 			}
@@ -199,7 +199,7 @@ function outsideCommunication() {
 	global $fixPaths, $fixSettings, $autoUpdateOverride, $developerMode, $communityApplicationsInstalled, $dockerRunning, $ignoreList, $shareList;
 
 	if ( ! @file_get_contents($fixPaths['moderation']) || ! strlen(@file_get_contents($fixPaths['moderation'])) ) {
-		addError("Unable to communicate with GitHub.com","Reset your modem / router or try again later, or set your ".addLinkButton("DNS Settings","/Settings/NetworkSettings")." to 8.8.8.8 and 8.8.4.4  Also make sure that you have a Gateway address set up (Your Router's IP address).  Additionally, this may also mean that GitHub is currently down.  This error means that you may not be able to update your OS or plugins");
+		addError("Unable to communicate with GitHub.com","Reset your modem / router or try again later, or set your ".addLinkButton("DNS Settings","/Settings/NetworkSettings")." to 8.8.8.8 and 8.8.4.4  Also make sure that you have a Gateway address set up (Your Routers IP address).  Additionally, this may also mean that GitHub is currently down.  This error means that you may not be able to update your OS or plugins");
 	}
 }
 
@@ -374,7 +374,7 @@ function SSDinArray() {
 	foreach ( $disks as $disk ) {
 		if ( $disk['rotational'] == "0" ) {
 			if ( startsWith($disk['name'],"disk") ) {
-				addWarning("<b>".$disk['name']." (".$disk['id'].")</b> is an SSD.","SSD's are not currently supported within the array, and their background garbage collection *may* impact your ability to rebuild a disk");
+				addWarning("<b>".$disk['name']." (".$disk['id'].")</b> is an SSD.","SSDs are not currently supported within the array, and their background garbage collection *may* impact your ability to rebuild a disk");
 			}
 		}
 	}
@@ -670,12 +670,12 @@ function FTPrunning() {
 	foreach ($output as $line) {
 		if ($line[0] != "#") {
 			if ( is_file("/boot/config/vsftpd.user_list") ) {
-				addWarning("unRaid&apos;s built in <b>FTP server</b> is running","Opening up your unRaid server directly to the internet is an extremely bad idea. - You <b>will</b> get hacked.  If you require an FTP server running on your server, use one of the FTP docker applications instead.  They will be more secure than the built in one".addLinkButton("FTP Server Settings","/Settings/FTP")." If you are only using the built in FTP server locally on your network you can ignore this warning, but ensure that you have not forwarded any ports from your router to your server.  Note that there is a bug in unRaid 6.1.9 and 6.2b21 where if you disable the service, it will come back alive after a reboot.  This check is looking at whether you have users authenticated to use the ftp server");
+				addWarning("unRaids built in <b>FTP server</b> is running","Opening up your unRaid server directly to the internet is an extremely bad idea. - You <b>will</b> get hacked.  If you require an FTP server running on your server, use one of the FTP docker applications instead.  They will be more secure than the built in one".addLinkButton("FTP Server Settings","/Settings/FTP")." If you are only using the built in FTP server locally on your network you can ignore this warning, but ensure that you have not forwarded any ports from your router to your server.  Note that there is a bug in unRaid 6.1.9 and 6.2b21 where if you disable the service, it will come back alive after a reboot.  This check is looking at whether you have users authenticated to use the ftp server");
 			}
 			break;
 		} else {
 			if ( is_file("/boot/config/vsftpd.user_list") ) {
-				addWarning("unRaid&apos;s built in <b>FTP server</b> is currently disabled, but users are defined","There is a &quot;feature&quot; within 6.1.9 and 6.2 beta 21 where after the server is reset, the FTP server will be automatically re-enabled regardless if you want it to be or not.  Remove the users here".addLinkButton("FTP Settings","/Settings/FTP"));
+				addWarning("unRaids built in <b>FTP server</b> is currently disabled, but users are defined","There is a &quot;feature&quot; within 6.1.9 and 6.2 beta 21 where after the server is reset, the FTP server will be automatically re-enabled regardless if you want it to be or not.  Remove the users here".addLinkButton("FTP Settings","/Settings/FTP"));
 			}
 		}
 	}
@@ -882,7 +882,7 @@ function HPApresent() {
 				} else {
 					$func = "addOther";
 				}
-				$func("Disk <b>".$disk['name']."</b> has an HPA partition enabled on it","If this is your parity disk, then you <b>must</b> remove the HPA partition, because its presence will impact the ability (<b>as in you may not be able to do it</b>) rebuild a disabled drive and/or expand your array.  It is not so important if this is present on a data/cache disk.  See assistance on unRaid's forums for help with the commands to fix this issue.  <a href='http://lime-technology.com/wiki/index.php/UnRAID_Topical_Index#HPA' target='_blank'>Sample of forum posts</a>  This issue mainly affects hard drives that are currently installed in, or have been in a system with a Gigabyte motherboard");
+				$func("Disk <b>".$disk['name']."</b> has an HPA partition enabled on it","If this is your parity disk, then you <b>must</b> remove the HPA partition, because its presence will impact the ability (<b>as in you may not be able to do it</b>) rebuild a disabled drive and/or expand your array.  It is not so important if this is present on a data/cache disk.  See assistance on unRaids forums for help with the commands to fix this issue.  <a href='http://lime-technology.com/wiki/index.php/UnRAID_Topical_Index#HPA' target='_blank'>Sample of forum posts</a>  This issue mainly affects hard drives that are currently installed in, or have been in a system with a Gigabyte motherboard");
 				break;
 			}
 		}
@@ -989,7 +989,7 @@ function uncleanReboot() {
 	global $fixPaths, $fixSettings, $autoUpdateOverride, $developerMode, $communityApplicationsInstalled, $dockerRunning, $ignoreList, $shareList;
 
 	if ( is_file($fixPaths['uncleanReboot']) ) {
-		addError("<b>unclean shutdown</b> detected of your server",addButton("Acknowledge Error","acknowledgeUncleanReboot(this.id);")."Your server has performed an unclean shutdown.  You need to investigate adding a UPS (if this was due to a power failure) or if one is already present, properly setting up its settings".addLinkButton("UPS Settings","/Settings/UPSsettings")."  If this is a recurring issue (ie: random resets / crashes, etc) then you should run memtest from unRaid's boot menu for <b>at least</b> one complete pass.  If there are no memory issues, then you might want to look at putting this plugin into <b>troubleshooting mode</b> before posting for support on the unRaid forums.  Note: if you do not acknowledge this error you will continually get this notification.");
+		addError("<b>unclean shutdown</b> detected of your server",addButton("Acknowledge Error","acknowledgeUncleanReboot(this.id);")."Your server has performed an unclean shutdown.  You need to investigate adding a UPS (if this was due to a power failure) or if one is already present, properly setting up its settings".addLinkButton("UPS Settings","/Settings/UPSsettings")."  If this is a recurring issue (ie: random resets / crashes, etc) then you should run memtest from unRaids boot menu for <b>at least</b> one complete pass.  If there are no memory issues, then you might want to look at putting this plugin into <b>troubleshooting mode</b> before posting for support on the unRaid forums.  Note: if you do not acknowledge this error you will continually get this notification.");
 	}
 }
 
@@ -1067,7 +1067,7 @@ function checkForHack() {
 			if ( is_array($errorDay) ) {
 				$currentDay = $errorDay['Day'];
 				if ( count($errorDay) > $fixSettings['hacksPerDay'] ) {
-					addError("<font size='3'>Possible <b>Hack Attempt</b> on $currentMonth $currentDay","On $currentMonth $currentDay there were <b>".count($errorDay)."</b> invalid login attempts.  This could either be yourself attempting to login to your server (SSH / Telnet) with the wrong user or password, or <b>you could be actively be the victim of hack attacks</b>.  A common cause of this would be placing your server within your router's DMZ, or improperly forwarding ports.  <font color='red'><b><h2>This is a major issue and needs to be addressed IMMEDIATELY</h2></b>NOTE: Because this check is done against the logged entries in the syslog, the only way to clear it is to either increase the number of allowed invalid logins per day (if determined that it is not a hack attempt) or to reset your server.  It is not recommended under any circumstance to ignore this error");
+					addError("<font size='3'>Possible <b>Hack Attempt</b> on $currentMonth $currentDay","On $currentMonth $currentDay there were <b>".count($errorDay)."</b> invalid login attempts.  This could either be yourself attempting to login to your server (SSH / Telnet) with the wrong user or password, or <b>you could be actively be the victim of hack attacks</b>.  A common cause of this would be placing your server within your routers DMZ, or improperly forwarding ports.  <font color='red'><b><h2>This is a major issue and needs to be addressed IMMEDIATELY</h2></b>NOTE: Because this check is done against the logged entries in the syslog, the only way to clear it is to either increase the number of allowed invalid logins per day (if determined that it is not a hack attempt) or to reset your server.  It is not recommended under any circumstance to ignore this error");
 				}
 			}
 		}
@@ -1188,7 +1188,7 @@ function checkWebUI() {
 				$defaultUI     = str_replace("&amp;","&",$defaultUI);
 				$templateWebUI = str_replace("&amp;","&",$templateWebUI);
 				if ( htmlspecialchars($templateWebUI) != htmlspecialchars($defaultUI) ) {
-					addWarning("Docker application <b>".$dockerApp['Name']."</b> does not have the same webUI interface as what the template author specified","The webUI the author specified is $defaultUI and the webUI you are using is $templateWebUI.  If you are specifying an absolute port (IE: <b>PORT:xxxx</b> is missing from your specified webUI address, then you will have issues should you ever have to change the host port on the docker applications's settings.  In the same vein, specifying an absolute IP address in the webUI will cause issues should your server's IP address ever change.  Note that the PORT:xxxx refers to the <b>Container's</b> port, not the host port.  There may however be perfectly valid reasons to change the default webUI entry on the application.  You can fix this problem here:".addLinkButton("Docker","/Docker"));
+					addWarning("Docker application <b>".$dockerApp['Name']."</b> does not have the same webUI interface as what the template author specified","The webUI the author specified is $defaultUI and the webUI you are using is $templateWebUI.  If you are specifying an absolute port (IE: <b>PORT:xxxx</b> is missing from your specified webUI address, then you will have issues should you ever have to change the host port on the docker applications settings.  In the same vein, specifying an absolute IP address in the webUI will cause issues should your servers IP address ever change.  Note that the PORT:xxxx refers to the <b>Containers</b> port, not the host port.  There may however be perfectly valid reasons to change the default webUI entry on the application.  You can fix this problem here:".addLinkButton("Docker","/Docker"));
 				}
 				break;
 			}
@@ -1245,7 +1245,7 @@ function noCPUscaling() {
 	$output = trim($output);
 
 	if ( ! $output ) {
-		addOther("CPU possibly will not throttle down frequency at idle","Your CPU is running constantly at 100% and will not throttle down when it's idle (to save heat / power).  This is because there is currently no CPU Scaling Driver Installed.  Seek assistance on the unRaid forums with this issue");
+		addOther("CPU possibly will not throttle down frequency at idle","Your CPU is running constantly at 100% and will not throttle down when its idle (to save heat / power).  This is because there is currently no CPU Scaling Driver Installed.  Seek assistance on the unRaid forums with this issue");
 	}
 }
 
@@ -1312,7 +1312,7 @@ function inotifyExhausted() {
 
 	$inotifyResult = passthru("inotifywatch $filename -t 1 > /dev/null 2>&1",$returnValue);
 	if ( $returnValue ) {
-		addWarning("Possibly out of inotify watches","Many plugins (dynamix File Integrity, File Activity, Ransomware Protection and others utilize inotify watches to run.  Your system is returning an error when attempting to watch a file.  You may need to increase the maximum number of watches available (usually can be set within the plugin's settings");
+		addWarning("Possibly out of inotify watches","Many plugins (dynamix File Integrity, File Activity, Ransomware Protection and others utilize inotify watches to run.  Your system is returning an error when attempting to watch a file.  You may need to increase the maximum number of watches available (usually can be set within the plugins settings");
 	}
 	@unlink($filename);
 }
@@ -1343,7 +1343,7 @@ function reiserCache() {
 
 	$disks = parse_ini_file("/var/local/emhttp/disks.ini",true);
 	if ( ($disks['cache']['fsType'] == "reiserfs") && ( ! $disks['cache']['rotational'] ) ) {
-		addWarning("SSD Cache Drive formatted as reiserFS","You have an SSD cache drive which has been formatted as reiserFS.  ReiserFS does not support trim, so you will encounter performance issues.  You should convert the cache drive's format to XFS (or to BTRFS if you are planning a future cache-pool)");
+		addWarning("SSD Cache Drive formatted as reiserFS","You have an SSD cache drive which has been formatted as reiserFS.  ReiserFS does not support trim, so you will encounter performance issues.  You should convert the cache drives format to XFS (or to BTRFS if you are planning a future cache-pool)");
 	}
 }
 ################################################
@@ -1428,7 +1428,7 @@ function marvelControllerTest() {
 	exec("lspci -k",$testResults);
 	foreach ($testResults as $line) {
 		if (strpos($line,"Kernel driver in use: mvsas") ) {
-			addWarning("Marvel Hard Drive Controller Installed","It appears that your server has a Marvel based hard drive controller installed within it.  <b>Some</b> users with Marvel based controllers exhibit random drives dropping offline, recurring parity errors during checks etc.  This tends to be exacberated if VT-D / IOMMU is enabled in the BIOS.  Generally, LSI based controllers would be preferred over Marvel based controllers because of these issues.  <strong>Note that these issues are out of Limetech's hands</strong>.  Depending upon the exact combination of hardware present in your server, you may not have any problems whatsoever.  <strong><em>If you have no problems, then this warning can be safely ignored</em></strong>, but future versions of unRaid (and later Kernel versions) may (or may not) present you with the previously mentioned issues."); 
+			addWarning("Marvel Hard Drive Controller Installed","It appears that your server has a Marvel based hard drive controller installed within it.  <b>Some</b> users with Marvel based controllers exhibit random drives dropping offline, recurring parity errors during checks etc.  This tends to be exacberated if VT-D / IOMMU is enabled in the BIOS.  Generally, LSI based controllers would be preferred over Marvel based controllers because of these issues.  <strong>Note that these issues are out of Limetechs hands</strong>.  Depending upon the exact combination of hardware present in your server, you may not have any problems whatsoever.  <strong><em>If you have no problems, then this warning can be safely ignored</em></strong>, but future versions of unRaid (and later Kernel versions) may (or may not) present you with the previously mentioned issues."); 
 			break;
 		}
 	}
@@ -1588,7 +1588,7 @@ function CPUSet() {
 		$Name = (string)$xml->Name;
 		if ( ! $info[$Name] ) continue;
 		if (strlen($xml->CPUset) && strpos($xml->ExtraParams,"cpuset-cpus")) {
-			addError("Docker Application $Name has duplicated entries for CPU pinning","Under unRaid version 6.6+, CPU pinning for docker applications via the extra parameters has been deprecated.  On this template, you have CPU pinning (--cpuset-cpus) contained in the extraparameters section of the template, and have also checked off one or more CPU's to pin the container to via the UI.  You should edit the container via the ".addLinkButton("Docker Tab","/Docker")." and remove the pinning from the extra parameters field");
+			addError("Docker Application $Name has duplicated entries for CPU pinning","Under unRaid version 6.6+, CPU pinning for docker applications via the extra parameters has been deprecated.  On this template, you have CPU pinning (--cpuset-cpus) contained in the extraparameters section of the template, and have also checked off one or more CPUs to pin the container to via the UI.  You should edit the container via the ".addLinkButton("Docker Tab","/Docker")." and remove the pinning from the extra parameters field");
 		}
 		if (strpos($xml->ExtraParams,"cpuset-cpus")) {
 			addWarning("Docker Application $Name has CPU cores pinned via the extra parameters (--cpuset-cpus)","Under unRaid version 6.6+, CPU pinning for docker applications should be handled via the CPU Pinning section.  Fix it here: ".addLinkButton("Docker Tab","/Docker")." and remove the CPU pinning from the extra parameters section.  Note that if you DO NOT fix this, then you will NOT be able to change CPU pinning for the application via the GUI");
@@ -1632,7 +1632,7 @@ function isolatedCPUdockerCollision() {
 			}
 		}
 		if ( $flag > 1 ) {
-			addError("Docker Application $name has multiple CPUs pinned to isolated CPUs","Unless you know exactly what you are doing, pinning a docker application to multiple isolated CPUs will only allow the application to execute on a single isolated core ".addLinkButton("CPU Set","/Settings/CPUset")." and adjust either the Isolated CPUs or the application's CPU pinning");
+			addError("Docker Application $name has multiple CPUs pinned to isolated CPUs","Unless you know exactly what you are doing, pinning a docker application to multiple isolated CPUs will only allow the application to execute on a single isolated core ".addLinkButton("CPU Set","/Settings/CPUset")." and adjust either the Isolated CPUs or the applications CPU pinning");
 		}
 	}
 }
@@ -1741,11 +1741,11 @@ function sysdream() {
 	global $fixPaths, $fixSettings, $autoUpdateOverride, $developerMode, $communityApplicationsInstalled, $dockerRunning, $ignoreList, $shareList,$unRaidVersion;
 
 	if ( version_compare($unRaidVersion,"6.7.2",">") && version_compare($unRaidVersion,"6.8.1","<") ) {
-		addError("Vulnerable unRaid Version","You are currently running unRaid version $unRaidVersion.  This version is susceptible to a would be attacker being able to bypass the login credentials and potentially run inject code into your server's software.  You should upgrade your OS to 6.8.2+.  See <a href='https://forums.unraid.net/topic/88253-critical-security-vulnerabilies-discovered/' target='_blank'>HERE</a> for more details");
+		addError("Vulnerable unRaid Version","You are currently running unRaid version $unRaidVersion.  This version is susceptible to a would be attacker being able to bypass the login credentials and potentially run inject code into your servers software.  You should upgrade your OS to 6.8.2+.  See <a href='https://forums.unraid.net/topic/88253-critical-security-vulnerabilies-discovered/' target='_blank'>HERE</a> for more details");
 	}
 	if ( version_compare($unRaidVersion,"6.6.0",">=") && version_compare($unRaidVersion,"6.7.2","<=") ) {
 		if ( ! is_file("/var/log/plugins/sysdream.plg") ) {
-			addError("Vulnerable unRaid Version","You are currently running unRaid version $unRaidVersion.  This version is susceptible to a would be attacker being able to bypass the login credentials and potentially run inject code into your server's software.  There is a plugin available within the Apps tab (sysdream) to mitigate this security vulnerabilty that should be installed.  See <a href='https://forums.unraid.net/topic/88253-critical-security-vulnerabilies-discovered/' target='_blank'>HERE</a> for more details");
+			addError("Vulnerable unRaid Version","You are currently running unRaid version $unRaidVersion.  This version is susceptible to a would be attacker being able to bypass the login credentials and potentially run inject code into your servers software.  There is a plugin available within the Apps tab (sysdream) to mitigate this security vulnerabilty that should be installed.  See <a href='https://forums.unraid.net/topic/88253-critical-security-vulnerabilies-discovered/' target='_blank'>HERE</a> for more details");
 		}
 	}
 }

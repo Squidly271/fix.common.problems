@@ -2,7 +2,7 @@
 <!DOCTYPE PLUGIN [
 <!ENTITY name      "fix.common.problems">
 <!ENTITY author    "Andrew Zawadzki">
-<!ENTITY version   "2021.03.30a">
+<!ENTITY version   "2021.04.02">
 <!ENTITY md5       "00dd5a876cea02c4a9f51a72e352cbf4">
 <!ENTITY launch    "Settings/FixProblems">
 <!ENTITY plugdir   "/usr/local/emhttp/plugins/&name;">
@@ -13,6 +13,9 @@
 <PLUGIN name="&name;" author="&author;" version="&version;" launch="&launch;" pluginURL="&pluginURL;" icon="warning" min="6.7.0">
 
 <CHANGES>
+###2021.04.02
+- Remote FTP test.  No longer applicable
+
 ###2021.03.30
 - Fix spurious SSD Trim tests
 
