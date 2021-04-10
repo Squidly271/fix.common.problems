@@ -1909,5 +1909,18 @@ function rootPassword() {
 	$passwordCheck = exec("passwd --status root");
 	if ( strpos($passwordCheck,"NP") )
 		addError("No root password set","It is very highly advised to have a password set for the root user.  Change it here ".addlinkButton("ROOT USER","/Users/UserEdit?name=root"));
-} 
+}
+
+function xmrig() {
+	global $fixPaths, $fixSettings, $autoUpdateOverride, $developerMode, $communityApplicationsInstalled, $dockerRunning, $ignoreList, $shareList,$unRaidVersion;
+
+	if ( stripos(file_get_contents("/boot/config/go"),"xmrig") ) {
+		addWarning("Possible mining software being installed in go file","Your go file (/boot/config/go) contains a reference to xmrig.  This may mean that your system has been compromised and is installing mining software on your server");
+	}
+	exec("ps -aux | grep -i xmrig",$output);
+
+	if ( count($output) > 2 ) {
+		addWarning("Possible mining software running","xmrig is currently running in your server.  If you are purposely running mining software then this warning is safe to ignore.  If you are not then your system has been possibly compromised (or you have installed a random docker via CA's dockerHub search that contains mining software");
+	}
+}
 ?>

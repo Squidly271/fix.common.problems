@@ -140,7 +140,7 @@ if ( $troubleshooting ) {
 	"illegalShareName",
 	"writeToDriveTest",
 	"flashDriveFull",
-	"cacheFloorTests",
+	/* "cacheFloorTests", */
 	"checkForHack",
 	"checkForModeration",
 	"pluginNotCompatible",
@@ -178,7 +178,8 @@ if ( $troubleshooting ) {
 	"extraPackages",
 	"authorizedKeysInGo",
 	"reservedUserName",
-	"rootPassword"
+	"rootPassword",
+	"xmrig"
 	);
 	foreach ($tests as $test) {
 		if ( $disableNotifications ) {

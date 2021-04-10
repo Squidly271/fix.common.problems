@@ -2,8 +2,8 @@
 <!DOCTYPE PLUGIN [
 <!ENTITY name      "fix.common.problems">
 <!ENTITY author    "Andrew Zawadzki">
-<!ENTITY version   "2021.04.02">
-<!ENTITY md5       "690005c834ba59b258bfe287b416aeb6">
+<!ENTITY version   "2021.04.10">
+<!ENTITY md5       "823cf48f013d89e684c4001406dc32b6">
 <!ENTITY launch    "Settings/FixProblems">
 <!ENTITY plugdir   "/usr/local/emhttp/plugins/&name;">
 <!ENTITY github    "Squidly271/fix.common.problems">
@@ -13,6 +13,9 @@
 <PLUGIN name="&name;" author="&author;" version="&version;" launch="&launch;" pluginURL="&pluginURL;" icon="warning" min="6.7.0">
 
 <CHANGES>
+###2021.04.10
+- Check for xmrig running
+
 ###2021.04.02
 - Remote FTP test.  No longer applicable
 
