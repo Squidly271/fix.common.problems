@@ -1883,7 +1883,7 @@ function authorizedKeysInGo() {
 	foreach ($go as $line) {
 		if (startsWith(trim($line),"#")) continue;
 		if (strpos($line,"authorized_keys") ) {
-			addWarning("Setting up of authorized keys possibly found in go file","It is recommended to not set up authorized keys for you server via go, but rather like <a href='https://wiki.unraid.net/Unraid_OS_6.9.0#SSH_Improvements' target='_blank'>THIS</a>");
+			addWarning("Setting up of authorized keys possibly found in go file","It is recommended to not set up authorized keys for you server via go, but rather like <a href='https://wiki.unraid.net/Manual/Release_Notes/Unraid_OS_6.9.0#SSH_Improvements' target='_blank'>THIS</a>");
 			break;
 		}
 	}
