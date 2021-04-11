@@ -1923,4 +1923,22 @@ function xmrig() {
 		addWarning("Possible mining software running","xmrig is currently running in your server.  If you are purposely running mining software then this warning is safe to ignore.  If you are not then your system has been possibly compromised (or you have installed a random docker via CA's dockerHub search that contains mining software");
 	}
 }
+
+function shareSpace69() {
+	global $fixPaths, $fixSettings, $autoUpdateOverride, $developerMode, $communityApplicationsInstalled, $dockerRunning, $ignoreList, $shareList,$unRaidVersion;
+
+	if ( $unRaidVersion != "6.9.2" ) return;
+	
+	foreach ($shareList as $share) {
+		if ( ! is_dir("/mnt/user/$share") ) continue;
+		if ( ! strpos($share," ") ) continue;
+		if ( ! is_file("/boot/config/shares/$share.cfg") ) continue;
+		if ( ! strpos($share," ") ) continue;
+		$sharecfg = parse_ini_file("/boot/config/shares/$share.cfg");
+		if ( $sharecfg['shareUseCache'] == "prefer" && is_dir("/mnt/{$sharecfg['shareCachePool']}") ) {
+			addWarning("Share <em>$share</em> set to prefer a cache pool, but will not move","Due to a current issue in Unraid 6.9.2, shares with spaces in them will never get moved to the cache pool.  Advised to rename the share without using a space");
+		}
+	}
+}
+	
 ?>

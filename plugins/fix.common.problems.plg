@@ -2,8 +2,8 @@
 <!DOCTYPE PLUGIN [
 <!ENTITY name      "fix.common.problems">
 <!ENTITY author    "Andrew Zawadzki">
-<!ENTITY version   "2021.04.10">
-<!ENTITY md5       "823cf48f013d89e684c4001406dc32b6">
+<!ENTITY version   "2021.04.11">
+<!ENTITY md5       "2f0f8d69ebf448826d136143ebe2d198">
 <!ENTITY launch    "Settings/FixProblems">
 <!ENTITY plugdir   "/usr/local/emhttp/plugins/&name;">
 <!ENTITY github    "Squidly271/fix.common.problems">
@@ -13,6 +13,9 @@
 <PLUGIN name="&name;" author="&author;" version="&version;" launch="&launch;" pluginURL="&pluginURL;" icon="warning" min="6.7.0">
 
 <CHANGES>
+###2021.04.11
+- Test for 6.9.2 shares with a space set to cache-prefer
+
 ###2021.04.10
 - Check for xmrig running
 

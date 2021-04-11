@@ -179,7 +179,8 @@ if ( $troubleshooting ) {
 	"authorizedKeysInGo",
 	"reservedUserName",
 	"rootPassword",
-	"xmrig"
+	"xmrig",
+	"shareSpace69"
 	);
 	foreach ($tests as $test) {
 		if ( $disableNotifications ) {

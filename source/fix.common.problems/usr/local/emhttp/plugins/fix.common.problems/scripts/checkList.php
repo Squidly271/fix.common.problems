@@ -96,6 +96,8 @@ $checkList = "
 * Authorized keys being set up via go file
 * Using reserved names as share names
 * Check for root password set
+* Check for xmrig (possible hack)
+* 6.9.2 Check for Spaces in shares set to use cache: Prefer
 
 <h2>Troubleshooting Mode</h2>
 
