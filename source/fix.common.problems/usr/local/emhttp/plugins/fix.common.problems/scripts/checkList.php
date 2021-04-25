@@ -30,7 +30,6 @@ $checkList = "
 * Look for missing disks
 * Look for read errors
 * Look for file system errors
-* Look for SSD's within the Array
 * Check if plugins are up to date (and ignore if autoupdate settings are enabled in CA)
 * Check for docker applications updates available
 * Check individual docker application's /config mappings set to /mnt/user (should be /mnt/cache) (skipped 6.2-rc3+)
@@ -42,7 +41,6 @@ $checkList = "
 * Check for shares with both included and excluded disks having overlaps
 * Check for global share settings both included and excluded disks set
 * Check for global share settings with included and excluded disks having overlaps
-* Check for docker containers having UD mounted volumes not being passed with slave option
 * Check for only supported file system types (reiserFS, xfs, btrfs) on array / cache devices
 * Check for flash drive formatted as fat32
 * Check for built-in FTP server running

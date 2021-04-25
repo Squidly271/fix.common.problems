@@ -123,7 +123,7 @@ if ( $troubleshooting ) {
 	"missingDisksPresent",
 	"readErrorsPresent",
 	"fileSystemErrors",
-	"SSDinArray",
+/*	"SSDinArray", Not necessary per JorgeB */
 	"pluginsUpToDate",
 	"dockerUpToDate",
 	"dockerConfigUserShare",
@@ -133,7 +133,7 @@ if ( $troubleshooting ) {
 	"scheduledParityChecks",
 	"shareIncludeExcludeSet",
 	"shareIncludeExcludeSameDisk",
-	"UDmountedSlaveMode",
+	/* "UDmountedSlaveMode", Doesn't appear to be necessary anymore */
 	"FTPrunning",
 	"checkNotifications",
 	"blacklistedPluginsInstalled",
@@ -207,12 +207,12 @@ if ( ! $errors && ! $warnings && ! $otherWarnings && ! $ignored ) {
 	writeJsonFile($fixPaths['errors'],$allErrors);
 	if ( $errors ) {
 		foreach ($errors as $error) {
-			$message .= "**** ".strip_tags($error['error'])." ****   ";
+			$message .= strip_tags($error['error'])."\n";
 		}
 	}
 	if ( $warnings ) {
 		foreach ($warnings as $warning) {
-			$message .= "**** ".strip_tags($warning['error'])." ****   ";
+			$message .= strip_tags($warning['error'])."\n";
 		}
 	}
 	$unRaidSettings = parse_ini_file("/usr/local/emhttp/state/var.ini");
