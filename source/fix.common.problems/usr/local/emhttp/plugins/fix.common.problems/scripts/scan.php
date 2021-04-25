@@ -207,12 +207,12 @@ if ( ! $errors && ! $warnings && ! $otherWarnings && ! $ignored ) {
 	writeJsonFile($fixPaths['errors'],$allErrors);
 	if ( $errors ) {
 		foreach ($errors as $error) {
-			$message .= strip_tags($error['error'])."\n";
+			$message .= "* **".strip_tags($error['error'])."** \n";
 		}
 	}
 	if ( $warnings ) {
 		foreach ($warnings as $warning) {
-			$message .= strip_tags($warning['error'])."\n";
+			$message .= "* ".strip_tags($warning['error'])." \n";
 		}
 	}
 	$unRaidSettings = parse_ini_file("/usr/local/emhttp/state/var.ini");
