@@ -2,8 +2,8 @@
 <!DOCTYPE PLUGIN [
 <!ENTITY name      "fix.common.problems">
 <!ENTITY author    "Andrew Zawadzki">
-<!ENTITY version   "2021.04.25a">
-<!ENTITY md5       "f8bc363318fd5c808525df5efd0ade0c">
+<!ENTITY version   "2021.04.28">
+<!ENTITY md5       "134891d1043c3fbc45117fd7363f5cde">
 <!ENTITY launch    "Settings/FixProblems">
 <!ENTITY plugdir   "/usr/local/emhttp/plugins/&name;">
 <!ENTITY github    "Squidly271/fix.common.problems">
@@ -13,6 +13,9 @@
 <PLUGIN name="&name;" author="&author;" version="&version;" launch="&launch;" pluginURL="&pluginURL;" icon="warning" min="6.7.0">
 
 <CHANGES>
+###2021.04.28
+- Debug xmrig tests
+
 ###2021.04.25
 - Remove some tests no longer applicable
 - Better formatting on emails being sent out (if used)

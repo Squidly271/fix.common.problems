@@ -1920,6 +1920,9 @@ function xmrig() {
 	exec("ps -aux | grep -i xmrig",$output);
 
 	if ( count($output) > 2 ) {
+		foreach ($output as $line) {
+			logger("FCP Debug Log: $line");
+		}
 		addWarning("Possible mining software running","xmrig is currently running in your server.  If you are purposely running mining software then this warning is safe to ignore.  If you are not then your system has been possibly compromised (or you have installed a random docker via CA's dockerHub search that contains mining software");
 	}
 }
