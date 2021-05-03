@@ -1917,9 +1917,9 @@ function xmrig() {
 	if ( stripos(file_get_contents("/boot/config/go"),"xmrig") ) {
 		addWarning("Possible mining software being installed in go file","Your go file (/boot/config/go) contains a reference to xmrig.  This may mean that your system has been compromised and is installing mining software on your server");
 	}
-	exec("ps -aux | grep -i xmrig",$output);
+	exec("ps -aux | grep -v grep | grep -i xmrig",$output);
 
-	if ( count($output) > 2 ) {
+	if ( count($output) ) {
 		foreach ($output as $line) {
 			logger("FCP Debug Log: $line");
 		}
