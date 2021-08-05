@@ -62,7 +62,6 @@ $checkList = "
 * Check for plugins incompatible for your unRaid version
 * Check for cache only shares, but no cache drive
 * Check for user shares named the same as a disk share
-* Check for CPU Scaling Driver installed
 * Check for extra parameters set via Repository section instead of Extra Parameters Section (docker Apps)
 * Check for Out Of Memory errors
 * Check for MCE errors

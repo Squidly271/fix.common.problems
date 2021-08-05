@@ -146,7 +146,6 @@ if ( $troubleshooting ) {
 	"pluginNotCompatible",
 	"cacheOnlyNoCache",
 	"shareNameSameAsDiskName",
-	"noCPUscaling",
 	"extraParamInRepository",
 	"outOfMemory",
 	"mceCheck",

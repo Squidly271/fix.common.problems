@@ -2,8 +2,8 @@
 <!DOCTYPE PLUGIN [
 <!ENTITY name      "fix.common.problems">
 <!ENTITY author    "Andrew Zawadzki">
-<!ENTITY version   "2021.05.03">
-<!ENTITY md5       "36d55a9ac16dbb321581f4d6686f6906">
+<!ENTITY version   "2021.08.05">
+<!ENTITY md5       "28271a759e6b795e4595ed77d22a18eb">
 <!ENTITY launch    "Settings/FixProblems">
 <!ENTITY plugdir   "/usr/local/emhttp/plugins/&name;">
 <!ENTITY github    "Squidly271/fix.common.problems">
@@ -13,6 +13,9 @@
 <PLUGIN name="&name;" author="&author;" version="&version;" launch="&launch;" pluginURL="&pluginURL;" icon="warning" min="6.7.0">
 
 <CHANGES>
+###2021.08.05
+- Remove Scaling governor tests - not relevant anymore
+
 ###2021.05.03
 - Catch duplicate xmrig tests
 
