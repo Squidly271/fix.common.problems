@@ -1943,5 +1943,22 @@ function shareSpace69() {
 		}
 	}
 }
+
+function testTLD() {
+	global $fixPaths, $fixSettings, $autoUpdateOverride, $developerMode, $communityApplicationsInstalled, $dockerRunning, $ignoreList, $shareList,$unRaidVersion, $unRaidVars;
+
+	if ( version_compare($unRaidVersion,"6.9.0","<") ) return;
+
+	$unRaidVars = my_parse_ini_file($fixPaths['var.ini']);
+	$TLD = explode(".",trim($unRaidVars['LOCAL_TLD']))[0];
+
+	if ( !$TLD )
+		addWarning("Blank TLD","The TLD set within Settings - Management settings is blank.  This should be set to local.  (A blank entry is only valid if both NetBIOS and SMBv1 are both enabled.  Due to security issues, SMBv1 is deprecated and/or disabled in modern operating systems, including Windows)  Fix this here:  ".addLinkButton(" Management Settings","Settings/ManagementAccess"));
+	elseif (strlen($TLD) < 2 || strlen($TLD) > 63 || preg_match("/[^a-zA-Z0-9\-]+/m",$TLD) )
+		addWarning("Invalid characters in TLD","Invalid characters found in TLD.  Minimum 2 characters, maximum 63, Only a-z, A-Z, 0-9 and - (hyphen) allowed.  Fix there here:  ".addLinkButton("Management Settings","Settings/ManagementAccess"));
+}
+		
+	
+	
 	
 ?>

@@ -179,7 +179,8 @@ if ( $troubleshooting ) {
 	"reservedUserName",
 	"rootPassword",
 	"xmrig",
-	"shareSpace69"
+	"shareSpace69",
+	"testTLD"
 	);
 	foreach ($tests as $test) {
 		if ( $disableNotifications ) {

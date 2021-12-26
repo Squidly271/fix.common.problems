@@ -2,8 +2,8 @@
 <!DOCTYPE PLUGIN [
 <!ENTITY name      "fix.common.problems">
 <!ENTITY author    "Andrew Zawadzki">
-<!ENTITY version   "2021.08.05">
-<!ENTITY md5       "28271a759e6b795e4595ed77d22a18eb">
+<!ENTITY version   "2021.12.26">
+<!ENTITY md5       "d4f455460e7d5cf64dfe6cf2598c07ce">
 <!ENTITY launch    "Settings/FixProblems">
 <!ENTITY plugdir   "/usr/local/emhttp/plugins/&name;">
 <!ENTITY github    "Squidly271/fix.common.problems">
@@ -13,6 +13,9 @@
 <PLUGIN name="&name;" author="&author;" version="&version;" launch="&launch;" pluginURL="&pluginURL;" icon="warning" min="6.7.0">
 
 <CHANGES>
+###2021.12.26
+- Check for blank or invalid characters within TLD
+
 ###2021.08.05
 - Remove Scaling governor tests - not relevant anymore
 
