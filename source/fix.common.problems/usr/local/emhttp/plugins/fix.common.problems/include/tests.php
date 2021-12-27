@@ -730,7 +730,7 @@ function blacklistedPluginsInstalled() {
 				addError("Blacklisted plugin <b>$plugin</b>","This plugin has been blacklisted and should no longer be used due to the following reason(s): <em><b>".$caModeration[$pluginURL]['ModeratorComment']."</b></em>  You should remove this plugin as its continued installation may cause adverse effects on your server.".addLinkButton("Plugins","/Plugins"));
 			}
 			if ( $caModeration[$pluginURL]['Deprecated'] ) {
-				addWarning("Deprecated plugin <b>$plugin</b>","This plugin has been deprecate and should no longer be used due to the following reason(s): <em><b>".$caModeration[$pluginURL]['ModeratorComment']."</b></em>  While this plugin should still be functional, it is no recommended to continue to use it.".addLinkButton("Plugins","/Plugins"));
+				addWarning("Deprecated plugin <b>$plugin</b>","This plugin has been deprecated and should no longer be used due to the following reason(s): <em><b>".$caModeration[$pluginURL]['ModeratorComment']."</b></em>  While this plugin should still be functional, it is no recommended to continue to use it.".addLinkButton("Plugins","/Plugins"));
 			}
 		}
 	} else {
@@ -1957,7 +1957,51 @@ function testTLD() {
 	elseif (strlen($TLD) < 2 || strlen($TLD) > 63 || preg_match("/[^a-zA-Z0-9\-]+/m",$TLD) )
 		addWarning("Invalid characters in TLD","Invalid characters found in TLD.  Minimum 2 characters, maximum 63, Only a-z, A-Z, 0-9 and - (hyphen) allowed.  Fix there here:  ".addLinkButton("Management Settings","Settings/ManagementAccess"));
 }
-		
+
+##################################
+# Check for non CA known plugins #
+##################################
+
+function unknownPluginInstalled() {
+	global $fixPaths, $fixSettings, $autoUpdateOverride, $developerMode, $communityApplicationsInstalled, $dockerRunning, $ignoreList, $shareList;
+
+	$templates = readJsonFile($fixPaths['templates']);
+	if ( ! $developerMode ) {
+		$pluginList = array_diff(scandir("/var/log/plugins"),array(".",".."));
+
+		if ( is_array($templates['applist']) ) {
+			foreach ($templates['applist'] as $template) {
+				if ($template['Plugin']) {
+					$allPlugins[] = $template;
+				}
+			}
+			if ( ! $allPlugins ) { return; }
+			foreach ($pluginList as $plugin) {
+				if ( is_file("/boot/config/plugins/$plugin") && pathinfo($plugin,PATHINFO_EXTENSION) == "plg" ) {
+					if ( ( $plugin == "fix.common.problems.plg") || ( $plugin == "dynamix.plg" ) || ($plugin == "unRAIDServer.plg") || ($plugin == "community.applications.plg") ) {
+						continue;
+					}
+					$pluginURL = exec("/usr/local/emhttp/plugins/dynamix.plugin.manager/scripts/plugin pluginURL /var/log/plugins/$plugin");
+					$flag = false;
+					foreach ($allPlugins as $checkPlugin) {
+						if ( is_array($checkPlugin['PluginURL']) ) {                  # due to coppit
+							$checkPlugin['PluginURL'] = $checkPlugin['PluginURL'][1];
+						}
+						if ( $plugin == basename($checkPlugin['PluginURL']) ) {
+							$flag = true;
+							break;
+						}
+					}
+					if ( ! $flag ) {
+						addWarning("The plugin <b>$plugin</b> is not known to Community Applications and is possibly incompatible with your server","As a <em>general</em> rule, if the plugin is not known to Community Applications, then it is not compatible with your server.  It is recommended to uninstall this plugin ".addLinkButton("Plugins","/Plugins"));
+					}
+				}
+			}
+		} else {
+			addOther("Could not perform <b>unknown plugins</b> installed checks","The download of the application feed failed.");
+		}
+	}
+}	
 	
 	
 	

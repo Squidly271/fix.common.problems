@@ -180,7 +180,8 @@ if ( $troubleshooting ) {
 	"rootPassword",
 	"xmrig",
 	"shareSpace69",
-	"testTLD"
+	"testTLD",
+	"unknownPluginInstalled"
 	);
 	foreach ($tests as $test) {
 		if ( $disableNotifications ) {
