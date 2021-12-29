@@ -1956,6 +1956,43 @@ function testTLD() {
 		addWarning("Blank TLD","The TLD set within Settings - Management settings is blank.  This should be set to local.  (A blank entry is only valid if both NetBIOS and SMBv1 are both enabled.  Due to security issues, SMBv1 is deprecated and/or disabled in modern operating systems, including Windows)  Fix this here:  ".addLinkButton(" Management Settings","Settings/ManagementAccess"));
 	elseif (strlen($TLD) < 2 || strlen($TLD) > 63 || preg_match("/[^a-zA-Z0-9\-]+/m",$TLD) )
 		addWarning("Invalid characters in TLD","Invalid characters found in TLD.  Minimum 2 characters, maximum 63, Only a-z, A-Z, 0-9 and - (hyphen) allowed.  Fix there here:  ".addLinkButton("Management Settings","Settings/ManagementAccess"));
+	elseif ( $TLD != "local" ) {
+  // when TLD is "local", mdns is used for name resolution
+  // if TLD is something else, then ensure there is a DNS record that resolves correctly
+
+  // do DNS lookup of servername.TLD
+  $host = $var['NAME'].".".$TLD;
+  $result = @dns_get_record($host, DNS_A);
+  $ip = ($result) ? $result[0]['ip'] : '';
+
+  // determine local ip
+  $internalip = ipaddr('eth0');
+
+  // warn if servername.TLD does not resolve correctly
+  if (!$ip) {
+    addWarning("Invalid TLD", "There is no DNS entry for $host, recommend setting your TLD to local or adding a DNS entry for $host.");
+  } elseif ($internalip != $ip) {
+    addWarning("Invalid DNS entry for TLD", "The DNS entry for $host resolves to $ip, you should ensure that it resolves to $internalip");
+  }
+
+}
+
+if (!function_exists('ipaddr')) { 
+  function ipaddr($ethX='eth0') {
+    global $$ethX;
+    switch ($$ethX['PROTOCOL:0']) {
+    case 'ipv4':
+      return $$ethX['IPADDR:0'];
+    case 'ipv6':
+      return $$ethX['IPADDR6:0'];
+    case 'ipv4+ipv6':
+      return [$$ethX['IPADDR:0'],$$ethX['IPADDR6:0']];
+    default:
+      return $$ethX['IPADDR:0'];
+    }
+  }
+}
+
 }
 
 ##################################
