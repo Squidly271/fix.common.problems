@@ -2040,6 +2040,19 @@ function unknownPluginInstalled() {
 	}
 }	
 	
-	
+function testDockerOptsIp() {
+  $dockerCfg = my_parse_ini_file($fixPaths['docker.cfg']);
+  $matches = null;
+  preg_match('/^.*--ip=(\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}).*$/', $dockerCfg['DOCKER_OPTS'], $matches
+);
+  if ($matches && $matches[1]) {
+    $dockerOptIp = $matches[1];
+    $internalip = ipaddr('eth0');
+    if ($dockerOptIp != $internalip) {
+      addWarning("Docker Opts IP issue", "DOCKER_OPTS in /boot/config/docker.cfg references IP $docke
+rOptIp, it should probably reference $internalip instead (or completely remove the reference altogether).  This has to be done via a manual edit of the docker.cfg file on the flash drive");
+    }
+  }
+}	
 	
 ?>

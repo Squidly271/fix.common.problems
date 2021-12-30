@@ -181,7 +181,8 @@ if ( $troubleshooting ) {
 	"xmrig",
 	"shareSpace69",
 	"testTLD",
-	"unknownPluginInstalled"
+	"unknownPluginInstalled",
+	"testDockerOptsIp"
 	);
 	foreach ($tests as $test) {
 		if ( $disableNotifications ) {

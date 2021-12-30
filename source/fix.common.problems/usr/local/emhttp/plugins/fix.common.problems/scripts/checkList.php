@@ -96,6 +96,7 @@ $checkList = "
 * Check for xmrig (possible hack)
 * 6.9.2 Check for Spaces in shares set to use cache: Prefer
 * Check for invalid TLD naming
+* Check for legacy method of setting docker host IP address
 
 <h2>Troubleshooting Mode</h2>
 
