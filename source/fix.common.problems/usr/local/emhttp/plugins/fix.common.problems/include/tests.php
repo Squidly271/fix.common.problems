@@ -1961,7 +1961,7 @@ function testTLD() {
   // if TLD is something else, then ensure there is a DNS record that resolves correctly
 
   // do DNS lookup of servername.TLD
-  $host = $unRaidVars['NAME'].".".$TLD;
+  $host = $unRaidVars['NAME'].".".$unRaidVars['LOCAL_TLD'];
   $result = @dns_get_record($host, DNS_A);
   $ip = ($result) ? $result[0]['ip'] : '';
 
