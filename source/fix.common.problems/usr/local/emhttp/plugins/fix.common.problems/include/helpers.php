@@ -34,22 +34,22 @@ if ( ! function_exists("my_parse_ini_string") ) {
 #############################
 
 function addError($description,$action) {
-  global $errors, $ignoreList, $ignored, $fixSettings;
+	global $errors, $ignoreList, $ignored, $fixSettings;
 
-  $originalDescription = $description;
-  $description = str_replace("'","&#39;",$description);
-  $newError['error'] = "<font color='#f17272'>$description</font>";
-  $newError['suggestion'] = $action;
-  
-  if ( $ignoreList[strip_tags($description)] ) {
-    $ignored[] = $newError;
-    if ( $fixSettings['logIgnored'] == "yes" ) {
-      logger("Fix Common Problems: Error: ".strip_tags($description),true);
-    }
-  } else {
-    $errors[] = $newError;
-    logger("Fix Common Problems: Error: ".strip_tags($description),false);
-  }
+	$originalDescription = $description;
+	$description = str_replace("'","&#39;",$description);
+	$newError['error'] = "<font color='#f17272'>$description</font>";
+	$newError['suggestion'] = $action;
+	
+	if ( $ignoreList[strip_tags($description)] ) {
+		$ignored[] = $newError;
+		if ( $fixSettings['logIgnored'] == "yes" ) {
+			logger("Fix Common Problems: Error: ".strip_tags($description),true);
+		}
+	} else {
+		$errors[] = $newError;
+		logger("Fix Common Problems: Error: ".strip_tags($description),false);
+	}
 }
 
 #############################
@@ -59,22 +59,22 @@ function addError($description,$action) {
 #############################
 
 function addWarning($description,$action) {
-  global $warnings, $ignoreList, $ignored, $fixSettings;
-  
-  $originalDescription = $description;
-  $description = str_replace("'","&#39;",$description);
-  $newWarning['error'] = "$description";
-  $newWarning['suggestion'] = $action;
-  
-  if ( $ignoreList[strip_tags($originalDescription)] ) {
-    $ignored[] = $newWarning;
-    if ( $fixSettings['logIgnored'] == "yes" ) {
-      logger("Fix Common Problems: Warning: ".strip_tags($description),true);
-    }
-  } else {
-    $warnings[] = $newWarning;
-    logger("Fix Common Problems: Warning: ".strip_tags($description),false);
-  }
+	global $warnings, $ignoreList, $ignored, $fixSettings;
+	
+	$originalDescription = $description;
+	$description = str_replace("'","&#39;",$description);
+	$newWarning['error'] = "$description";
+	$newWarning['suggestion'] = $action;
+	
+	if ( $ignoreList[strip_tags($originalDescription)] ) {
+		$ignored[] = $newWarning;
+		if ( $fixSettings['logIgnored'] == "yes" ) {
+			logger("Fix Common Problems: Warning: ".strip_tags($description),true);
+		}
+	} else {
+		$warnings[] = $newWarning;
+		logger("Fix Common Problems: Warning: ".strip_tags($description),false);
+	}
 }
 
 #####################################
@@ -84,21 +84,21 @@ function addWarning($description,$action) {
 #####################################
 
 function addOther($description,$action) {
-  global $otherWarnings, $ignoreList, $ignored, $fixSettings;
+	global $otherWarnings, $ignoreList, $ignored, $fixSettings;
 
-  $originalDescription = $description;
-  $description = str_replace("'","&#39;",$description);
-  $newWarning['error'] = "$description";
-  $newWarning['suggestion'] = $action;
-  if ( $ignoreList[strip_tags($originalDescription)] ) {
-    $ignored[] = $newWarning;
-    if ( $fixSettings['logIgnored'] == "yes" ) {
-      logger("Fix Common Problems: Other Warning: ".strip_tags($description),true);
-    }
-  } else {
-    logger("Fix Common Problems: Other Warning: ".strip_tags($description));
-    $otherWarnings[] = $newWarning;
-  }
+	$originalDescription = $description;
+	$description = str_replace("'","&#39;",$description);
+	$newWarning['error'] = "$description";
+	$newWarning['suggestion'] = $action;
+	if ( $ignoreList[strip_tags($originalDescription)] ) {
+		$ignored[] = $newWarning;
+		if ( $fixSettings['logIgnored'] == "yes" ) {
+			logger("Fix Common Problems: Other Warning: ".strip_tags($description),true);
+		}
+	} else {
+		logger("Fix Common Problems: Other Warning: ".strip_tags($description));
+		$otherWarnings[] = $newWarning;
+	}
 }
 
 ############################################
@@ -108,8 +108,8 @@ function addOther($description,$action) {
 ############################################
 
 function addLinkButton($buttonName,$link) {
-  $link = str_replace("'","&quot;",$link);
-  return "<input type='button' value='$buttonName' onclick='window.location.href=&quot;/FixProblems/$link&quot;'>";
+	$link = str_replace("'","&quot;",$link);
+	return "<input type='button' value='$buttonName' onclick='window.location.href=&quot;/FixProblems/$link&quot;'>";
 }
 
 ########################################
@@ -119,9 +119,9 @@ function addLinkButton($buttonName,$link) {
 ########################################
 
 function addButton($buttonName,$action) {
-  $action = str_replace("'","&quot;",$action);
-  $id = mt_rand();
-  return "<input type='button' id='$id' value='$buttonName' onclick='$action'>";
+	$action = str_replace("'","&quot;",$action);
+	$id = mt_rand();
+	return "<input type='button' id='$id' value='$buttonName' onclick='$action'>";
 }
 
 ###########################################################################
@@ -131,14 +131,14 @@ function addButton($buttonName,$action) {
 ###########################################################################
 
 function checkPluginUpdate($filename) {
-  global $unRaidVersion;
-  $filename = basename($filename);
-  $installedVersion = plugin("version","/var/log/plugins/$filename");
-  if ( is_file("/tmp/plugins/$filename") ) {
-    $upgradeVersion = plugin("version","/tmp/plugins/$filename");
-  } else {
-    $upgradeVersion = "0";
-  }
+	global $unRaidVersion;
+	$filename = basename($filename);
+	$installedVersion = plugin("version","/var/log/plugins/$filename");
+	if ( is_file("/tmp/plugins/$filename") ) {
+		$upgradeVersion = plugin("version","/tmp/plugins/$filename");
+	} else {
+		$upgradeVersion = "0";
+	}
 	if ( $upgradeVersion != "0" ) {	
 
 		$OSversion = plugin("min","/tmp/plugins/$filename") ?: $unRaidVersion;
@@ -146,20 +146,20 @@ function checkPluginUpdate($filename) {
 			return false;
 		}
 	}
-  if ( $installedVersion < $upgradeVersion ) {
-    $unRaid = plugin("unRAID","/tmp/plugins/$filename");
-    if ( $unRaid === false || version_compare($unRaidVersion,$unRaid,">=") ) {
-      return true;
-    } else {
-      return false;
-    }
-  }
-  return false;
+	if ( $installedVersion < $upgradeVersion ) {
+		$unRaid = plugin("unRAID","/tmp/plugins/$filename");
+		if ( $unRaid === false || version_compare($unRaidVersion,$unRaid,">=") ) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+	return false;
 }
 
 function pluginVersion($fullPath) {
-  $version = exec("/usr/local/emhttp/plugins/dynamix.plugin.manager/scripts/plugin version $fullPath");
-  return $version;
+	$version = exec("/usr/local/emhttp/plugins/dynamix.plugin.manager/scripts/plugin version $fullPath");
+	return $version;
 }
 
 ###################################################################################
@@ -169,14 +169,14 @@ function pluginVersion($fullPath) {
 ###################################################################################
 
 function randomFile($basePath) {
-  global $communityPaths;
-  while (true) {
-    $filename = $basePath."/".mt_rand().".tmp";
-    if ( ! is_file($filename) ) {
-      break;
-    }
-  }
-  return $filename;
+	global $communityPaths;
+	while (true) {
+		$filename = $basePath."/".mt_rand().".tmp";
+		if ( ! is_file($filename) ) {
+			break;
+		}
+	}
+	return $filename;
 }
 
 ##################################################################
@@ -186,11 +186,11 @@ function randomFile($basePath) {
 ##################################################################
 
 function readJsonFile($filename) {
-  return @json_decode(@file_get_contents($filename),true);
+	return @json_decode(@file_get_contents($filename),true);
 }
 
 function writeJsonFile($filename,$jsonArray) {
-  file_put_contents($filename,json_encode($jsonArray, JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT));
+	file_put_contents($filename,json_encode($jsonArray, JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT));
 }
 
 ##############################################################
@@ -202,27 +202,27 @@ function writeJsonFile($filename,$jsonArray) {
 ##############################################################
 
 function findAppdata($volumes) {
-  $path = false;
-  $dockerOptions = @my_parse_ini_file("/boot/config/docker.cfg");
-  $defaultShareName = basename($dockerOptions['DOCKER_APP_CONFIG_PATH']);
-  $shareName = str_replace("/mnt/user/","",$defaultShareName);
-  $shareName = str_replace("/mnt/cache/","",$defaultShareName);
-  if ( ! is_file("/boot/config/shares/$shareName.cfg") ) { 
-    $shareName = "****";
-  }
-  file_put_contents("/tmp/test",$defaultShareName);
-  if ( is_array($volumes) ) {
-    foreach ($volumes as $volume) {
-      $temp = explode(":",$volume);
-      $testPath = strtolower($temp[1]);
-    
-      if ( (startsWith($testPath,"/config")) || (startsWith($temp[0],"/mnt/user/$shareName")) || (startsWith($temp[0],"/mnt/cache/$shareName")) ) {
-        $path = $temp[0];
-        break;
-      }
-    }
-  }
-  return $path;
+	$path = false;
+	$dockerOptions = @my_parse_ini_file("/boot/config/docker.cfg");
+	$defaultShareName = basename($dockerOptions['DOCKER_APP_CONFIG_PATH']);
+	$shareName = str_replace("/mnt/user/","",$defaultShareName);
+	$shareName = str_replace("/mnt/cache/","",$defaultShareName);
+	if ( ! is_file("/boot/config/shares/$shareName.cfg") ) { 
+		$shareName = "****";
+	}
+	file_put_contents("/tmp/test",$defaultShareName);
+	if ( is_array($volumes) ) {
+		foreach ($volumes as $volume) {
+			$temp = explode(":",$volume);
+			$testPath = strtolower($temp[1]);
+		
+			if ( (startsWith($testPath,"/config")) || (startsWith($temp[0],"/mnt/user/$shareName")) || (startsWith($temp[0],"/mnt/cache/$shareName")) ) {
+				$path = $temp[0];
+				break;
+			}
+		}
+	}
+	return $path;
 }
 
 ############################################
@@ -232,11 +232,11 @@ function findAppdata($volumes) {
 ############################################
 
 function logger($string,$ignored = false) {
-  if ( $ignored ) {
-    $string .= " ** Ignored";
-  }
-  $string = htmlspecialchars_decode($string, ENT_QUOTES); 
-  shell_exec('logger "'.$string.'"');
+	if ( $ignored ) {
+		$string .= " ** Ignored";
+	}
+	$string = htmlspecialchars_decode($string, ENT_QUOTES); 
+	shell_exec('logger "'.$string.'"');
 }
 
 ###########################################
@@ -246,8 +246,8 @@ function logger($string,$ignored = false) {
 ###########################################
 
 function notify($event,$subject,$description,$message,$type="normal") {
-  $command = '/usr/local/emhttp/plugins/dynamix/scripts/notify -e "'.$event.'" -s "'.$subject.'" -d "'.$description.'" -m "'.$message.'" -i "'.$type.'" -l "/Settings/FixProblems"';
-  shell_exec($command);
+	$command = '/usr/local/emhttp/plugins/dynamix/scripts/notify -e "'.$event.'" -s "'.$subject.'" -d "'.$description.'" -m "'.$message.'" -i "'.$type.'" -l "/Settings/FixProblems"';
+	shell_exec($command);
 }
 
 #################################################################
@@ -257,7 +257,7 @@ function notify($event,$subject,$description,$message,$type="normal") {
 #################################################################
 
 function startsWith($haystack, $needle) {
-  return $needle === "" || strripos($haystack, $needle, -strlen($haystack)) !== FALSE;
+	return $needle === "" || strripos($haystack, $needle, -strlen($haystack)) !== FALSE;
 }
 
 ###############################################
@@ -267,8 +267,8 @@ function startsWith($haystack, $needle) {
 ###############################################
 
 function download_url($url, $path = "", $bg = false){
-  exec("curl --compressed --max-time 60 --silent --insecure --location --fail ".($path ? " -o '$path' " : "")." $url ".($bg ? ">/dev/null 2>&1 &" : "2>/dev/null"), $out, $exit_code );
-  return ($exit_code === 0 ) ? implode("\n", $out) : false;
+	exec("curl --compressed --max-time 60 --silent --insecure --location --fail ".($path ? " -o '$path' " : "")." $url ".($bg ? ">/dev/null 2>&1 &" : "2>/dev/null"), $out, $exit_code );
+	return ($exit_code === 0 ) ? implode("\n", $out) : false;
 }
 
 ##########################
@@ -278,8 +278,8 @@ function download_url($url, $path = "", $bg = false){
 ##########################
 
 function unRaidVersion() {
-  $unRaidVersion = my_parse_ini_file("/etc/unraid-version");
-  return $unRaidVersion['version'];
+	$unRaidVersion = my_parse_ini_file("/etc/unraid-version");
+	return $unRaidVersion['version'];
 }
 
 #################################################################
@@ -305,56 +305,56 @@ function versionCheck($template) {
 
 function readXmlFile($xmlfile) {
 	if ( ! is_file($xmlfile) ) { return false; }
-  $doc = new DOMDocument();
-  $doc->load($xmlfile);
-  if ( ! $doc ) { return false; }
-    $o['WebUI']       = $doc->getElementsByTagName( "WebUI" )->item(0)->nodeValue;
+	$doc = new DOMDocument();
+	$doc->load($xmlfile);
+	if ( ! $doc ) { return false; }
+		$o['WebUI']       = $doc->getElementsByTagName( "WebUI" )->item(0)->nodeValue;
 
-  $o['Path']        = $xmlfile;
-  $o['Repository']  = stripslashes($doc->getElementsByTagName( "Repository" )->item(0)->nodeValue);
-  $o['Author']      = preg_replace("#/.*#", "", $o['Repository']);
-  $o['Name']        = stripslashes($doc->getElementsByTagName( "Name" )->item(0)->nodeValue);
-  $o['DockerHubName'] = strtolower($o['Name']);
-  $o['Beta']        = strtolower(stripslashes($doc->getElementsByTagName( "Beta" )->item(0)->nodeValue));
-  $o['Changes']     = $doc->getElementsByTagName( "Changes" )->item(0)->nodeValue;
-  $o['Date']        = $doc->getElementsByTagName( "Date" ) ->item(0)->nodeValue;
-  $o['Project']     = $doc->getElementsByTagName( "Project" ) ->item(0)->nodeValue;
-  $o['SortAuthor']  = $o['Author'];
-  $o['SortName']    = $o['Name'];
-  $o['MinVer']      = $doc->getElementsByTagName( "MinVer" ) ->item(0)->nodeValue;
-  $o['MaxVer']      = $doc->getElementsByTagName( "MaxVer" ) ->item(0)->nodeValue;
-  $o['Overview']    = $doc->getElementsByTagName("Overview")->item(0)->nodeValue;
-  if ( strlen($o['Overview']) > 0 ) {
-    $o['Description'] = stripslashes($doc->getElementsByTagName( "Overview" )->item(0)->nodeValue);
-    $o['Description'] = preg_replace('#\[([^\]]*)\]#', '<$1>', $o['Description']);
-  } else {
-    $o['Description'] = $doc->getElementsByTagName( "Description" )->item(0)->nodeValue;
-  }
-  $o['Plugin']      = $doc->getElementsByTagName( "Plugin" ) ->item(0)->nodeValue;
-  $o['PluginURL']   = $doc->getElementsByTagName( "PluginURL" ) ->item(0)->nodeValue;
-  $o['PluginAuthor']= $doc->getElementsByTagName( "PluginAuthor" ) ->item(0)->nodeValue;
+	$o['Path']        = $xmlfile;
+	$o['Repository']  = stripslashes($doc->getElementsByTagName( "Repository" )->item(0)->nodeValue);
+	$o['Author']      = preg_replace("#/.*#", "", $o['Repository']);
+	$o['Name']        = stripslashes($doc->getElementsByTagName( "Name" )->item(0)->nodeValue);
+	$o['DockerHubName'] = strtolower($o['Name']);
+	$o['Beta']        = strtolower(stripslashes($doc->getElementsByTagName( "Beta" )->item(0)->nodeValue));
+	$o['Changes']     = $doc->getElementsByTagName( "Changes" )->item(0)->nodeValue;
+	$o['Date']        = $doc->getElementsByTagName( "Date" ) ->item(0)->nodeValue;
+	$o['Project']     = $doc->getElementsByTagName( "Project" ) ->item(0)->nodeValue;
+	$o['SortAuthor']  = $o['Author'];
+	$o['SortName']    = $o['Name'];
+	$o['MinVer']      = $doc->getElementsByTagName( "MinVer" ) ->item(0)->nodeValue;
+	$o['MaxVer']      = $doc->getElementsByTagName( "MaxVer" ) ->item(0)->nodeValue;
+	$o['Overview']    = $doc->getElementsByTagName("Overview")->item(0)->nodeValue;
+	if ( strlen($o['Overview']) > 0 ) {
+		$o['Description'] = stripslashes($doc->getElementsByTagName( "Overview" )->item(0)->nodeValue);
+		$o['Description'] = preg_replace('#\[([^\]]*)\]#', '<$1>', $o['Description']);
+	} else {
+		$o['Description'] = $doc->getElementsByTagName( "Description" )->item(0)->nodeValue;
+	}
+	$o['Plugin']      = $doc->getElementsByTagName( "Plugin" ) ->item(0)->nodeValue;
+	$o['PluginURL']   = $doc->getElementsByTagName( "PluginURL" ) ->item(0)->nodeValue;
+	$o['PluginAuthor']= $doc->getElementsByTagName( "PluginAuthor" ) ->item(0)->nodeValue;
 
 # support both spellings
-  $o['Licence']     = $doc->getElementsByTagName( "License" ) ->item(0)->nodeValue;
-  $o['Licence']     = $doc->getElementsByTagName( "Licence" ) ->item(0)->nodeValue;
-  $o['Category']    = $doc->getElementsByTagName ("Category" )->item(0)->nodeValue;
+	$o['Licence']     = $doc->getElementsByTagName( "License" ) ->item(0)->nodeValue;
+	$o['Licence']     = $doc->getElementsByTagName( "Licence" ) ->item(0)->nodeValue;
+	$o['Category']    = $doc->getElementsByTagName ("Category" )->item(0)->nodeValue;
 
-  if ( $o['Plugin'] ) {
-    $o['Author']     = $o['PluginAuthor'];
-    $o['Repository'] = $o['PluginURL'];
-    $o['Category']   .= " Plugins: ";
-    $o['SortAuthor'] = $o['Author'];
-    $o['SortName']   = $o['Name'];
-  }
-  $o['Description'] = preg_replace('#\[([^\]]*)\]#', '<$1>', $o['Description']);
-  $o['Overview']    = $doc->getElementsByTagName("Overview")->item(0)->nodeValue;
+	if ( $o['Plugin'] ) {
+		$o['Author']     = $o['PluginAuthor'];
+		$o['Repository'] = $o['PluginURL'];
+		$o['Category']   .= " Plugins: ";
+		$o['SortAuthor'] = $o['Author'];
+		$o['SortName']   = $o['Name'];
+	}
+	$o['Description'] = preg_replace('#\[([^\]]*)\]#', '<$1>', $o['Description']);
+	$o['Overview']    = $doc->getElementsByTagName("Overview")->item(0)->nodeValue;
 
-  $o['Announcement'] = $Repo['forum'];
-  $o['Support']     = ($doc->getElementsByTagName( "Support" )->length ) ? $doc->getElementsByTagName( "Support" )->item(0)->nodeValue : $Repo['forum'];
-  $o['Support']     = $o['Support'];
-  $o['IconWeb']     = stripslashes($doc->getElementsByTagName( "Icon" )->item(0)->nodeValue);
-  
-  return $o;
+	$o['Announcement'] = $Repo['forum'];
+	$o['Support']     = ($doc->getElementsByTagName( "Support" )->length ) ? $doc->getElementsByTagName( "Support" )->item(0)->nodeValue : $Repo['forum'];
+	$o['Support']     = $o['Support'];
+	$o['IconWeb']     = stripslashes($doc->getElementsByTagName( "Icon" )->item(0)->nodeValue);
+	
+	return $o;
 }
 
 #########################################################
@@ -364,41 +364,41 @@ function readXmlFile($xmlfile) {
 #########################################################
 
 function getAppData() {
-  $dockerRunning = is_dir("/var/lib/docker/tmp");
-  $excludedShares = array();
-  
-  if ( $dockerRunning ) {
-    $DockerClient = new DockerClient();
-    $info = $DockerClient->getDockerContainers();
+	$dockerRunning = is_dir("/var/lib/docker/tmp");
+	$excludedShares = array();
+	
+	if ( $dockerRunning ) {
+		$DockerClient = new DockerClient();
+		$info = $DockerClient->getDockerContainers();
 
-    foreach ($info as $docker) {
-      $appData = findAppData($docker['Volumes']);
-      if ( ! $appData ) {
-        continue;
-      }
-      $appData = str_replace("/mnt/cache/","/mnt/user/",$appData);
-      $appData = str_replace("/mnt/user/","",$appData);
-      $pathinfo = explode("/",$appData);
-      $excludedShares[$pathinfo[0]] = $pathinfo[0];
-    }
-  }  
-  $dockerOptions = @my_parse_ini_file("/boot/config/docker.cfg");
-  $sharename = $dockerOptions['DOCKER_APP_CONFIG_PATH'];
-  if ( $sharename ) {
-    $sharename = str_replace("/mnt/cache/","",$sharename);
-    $sharename = str_replace("/mnt/user/","",$sharename);
-    $pathinfo = explode("/",$sharename);
-    $excludedShares[$pathinfo[0]] = $pathinfo[0];
-  }
-  
-  if ( is_file("/boot/config/plugins/ca.backup/BackupOptions.json") ) {
-    $backupOptions = readJsonFile("/boot/config/plugins/ca.backup/BackupOptions.json");
-    $backupDestination = $backupOptions['destinationShare'];
-    $backupShare = explode("/",$backupDestination);
-    $excludedShares[$backupShare[0]] = $backupShare[0]." (Community Applications Backup Appdata Destination)";
-  }
+		foreach ($info as $docker) {
+			$appData = findAppData($docker['Volumes']);
+			if ( ! $appData ) {
+				continue;
+			}
+			$appData = str_replace("/mnt/cache/","/mnt/user/",$appData);
+			$appData = str_replace("/mnt/user/","",$appData);
+			$pathinfo = explode("/",$appData);
+			$excludedShares[$pathinfo[0]] = $pathinfo[0];
+		}
+	}  
+	$dockerOptions = @my_parse_ini_file("/boot/config/docker.cfg");
+	$sharename = $dockerOptions['DOCKER_APP_CONFIG_PATH'];
+	if ( $sharename ) {
+		$sharename = str_replace("/mnt/cache/","",$sharename);
+		$sharename = str_replace("/mnt/user/","",$sharename);
+		$pathinfo = explode("/",$sharename);
+		$excludedShares[$pathinfo[0]] = $pathinfo[0];
+	}
+	
+	if ( is_file("/boot/config/plugins/ca.backup/BackupOptions.json") ) {
+		$backupOptions = readJsonFile("/boot/config/plugins/ca.backup/BackupOptions.json");
+		$backupDestination = $backupOptions['destinationShare'];
+		$backupShare = explode("/",$backupDestination);
+		$excludedShares[$backupShare[0]] = $backupShare[0]." (Community Applications Backup Appdata Destination)";
+	}
 
-  return $excludedShares;  
+	return $excludedShares;  
 }
 
 #############################################################
@@ -446,18 +446,18 @@ function searchArray($array,$key,$value) {
 	return $result;
 }
 function curl_socket($socket, $url, $postdata = NULL) {
-    $ch = curl_init($url);
-    curl_setopt($ch, CURLOPT_UNIX_SOCKET_PATH, $socket);
-    if ($postdata !== NULL) {
-        curl_setopt($ch, CURLOPT_POST, 1);
-        curl_setopt($ch, CURLOPT_POSTFIELDS, $postdata);
-    }
-    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-    curl_exec($ch);
-    curl_close($ch);
+		$ch = curl_init($url);
+		curl_setopt($ch, CURLOPT_UNIX_SOCKET_PATH, $socket);
+		if ($postdata !== NULL) {
+				curl_setopt($ch, CURLOPT_POST, 1);
+				curl_setopt($ch, CURLOPT_POSTFIELDS, $postdata);
+		}
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+		curl_exec($ch);
+		curl_close($ch);
 }
 function publish($endpoint, $message){
-    curl_socket("/var/run/nginx.socket", "http://localhost/pub/$endpoint?buffer_length=1", $message);
+		curl_socket("/var/run/nginx.socket", "http://localhost/pub/$endpoint?buffer_length=1", $message);
 }
 
 ###############################################
@@ -477,5 +477,29 @@ if (!function_exists('ipaddr')) {
 		return $$ethX['IPADDR:0'];
 		}
 	}
+}
+##############
+# From Larry #
+##############
+function getCertCn($file, $hostname) {
+	if (!file_exists($file)) return '';
+
+	// read the cert
+	$data = null;
+	exec("/usr/bin/openssl x509 -noout -subject -nameopt multiline -in ".escapeshellarg($file), $data);
+	$data = implode("\n", $data);
+
+	// determine cn
+	preg_match('/ *commonName *= (.*)/', $data, $matches);
+	$cn = trim($matches[1]);
+	
+	// if Unraid LE cert, no need to check
+	if ( (strpos($cn, ".myunraid.net") !== false) or (strpos($cn, ".unraid.net") !== false) ) {
+			return '';
+	}
+
+	// handle custom wildcard certs
+	$cn = str_replace('*', $hostname, $cn);
+	return $cn;
 }
 ?>
