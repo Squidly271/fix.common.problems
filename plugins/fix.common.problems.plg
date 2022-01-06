@@ -2,8 +2,8 @@
 <!DOCTYPE PLUGIN [
 <!ENTITY name      "fix.common.problems">
 <!ENTITY author    "Andrew Zawadzki">
-<!ENTITY version   "2022.01.01a">
-<!ENTITY md5       "86a0f844fccad1c2cb901f8f270dc941">
+<!ENTITY version   "2022.01.06">
+<!ENTITY md5       "4718696f9ee917160297bac01c90b731">
 <!ENTITY launch    "Settings/FixProblems">
 <!ENTITY plugdir   "/usr/local/emhttp/plugins/&name;">
 <!ENTITY github    "Squidly271/fix.common.problems">
@@ -13,6 +13,9 @@
 <PLUGIN name="&name;" author="&author;" version="&version;" launch="&launch;" pluginURL="&pluginURL;" icon="warning" min="6.7.0">
 
 <CHANGES>
+###2022.01.06
+- Further TLD / Certificate Tests
+
 ###2022.01.01
 - Additional tests on TLD
 - Re-add unknown plugin tests
