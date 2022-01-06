@@ -1950,49 +1950,45 @@ function testTLD() {
 	if ( version_compare($unRaidVersion,"6.9.0","<") ) return;
 
 	$unRaidVars = my_parse_ini_file($fixPaths['var.ini']);
-	$TLD = explode(".",trim($unRaidVars['LOCAL_TLD']))[0];
+	$expected_host = "{$unRaidVars['NAME']}".($unRaidVars['LOCAL_TLD'] ? ".{$unRaidVars['LOCAL_TLD']}" : '');
 
-	if ( !$TLD )
-		addWarning("Blank TLD","The TLD set within Settings - Management settings is blank.  This should be set to local.  (A blank entry is only valid if both NetBIOS and SMBv1 are both enabled.  Due to security issues, SMBv1 is deprecated and/or disabled in modern operating systems, including Windows)  Fix this here:  ".addLinkButton(" Management Settings","Settings/ManagementAccess"));
-	elseif (strlen($TLD) < 2 || strlen($TLD) > 63 || preg_match("/[^a-zA-Z0-9\-]+/m",$TLD) )
+	$cert_path = "/boot/config/ssl/certs/";
+	$https_1_cert = "{$unRaidVars['NAME']}_unraid_bundle.pem";
+  	$https_2_cert = 'certificate_bundle.pem';
+
+    // if there are custom certs, ensure the subject matches $unRaidVars['NAME'].$unRaidVars['LOCAL_TLD']
+    $https_1_cn = getCertCn("{$cert_path}{$https_1_cert}", $unRaidVars['NAME']);
+	if ($https_1_cn && $https_1_cn != $expected_host) {
+		addWarning("Invalid Certificate 1","Your {$https_1_cert} certificate is for '{$https_1_cn}' but your system's hostname is '{$expected_host}'. Either adjust the system name and local TLD to match the certificate, or get a certificate that matches your settings. Even if things generally work now, this mismatch could cause issues in future versions of Unraid.  The local TLD can be adjusted here:  ".addLinkButton(" Management Settings","Settings/ManagementAccess"));
+	}
+	$https_2_cn = getCertCn("{$cert_path}{$https_2_cert}", $unRaidVars['NAME']);
+	if ($https_2_cn && $https_2_cn != $expected_host) {
+		addWarning("Invalid Certificate 2","Your {$https_2_cert} certificate is for '{$https_2_cn}' but your system's hostname is '{$expected_host}'. Either adjust the system name and local TLD to match the certificate, or get a certificate that matches your settings. Even if things generally work now, this mismatch could cause issues in future versions of Unraid.  The local TLD can be adjusted here:  ".addLinkButton(" Management Settings","Settings/ManagementAccess"));
+	}
+
+	$TLDmain = explode(".",trim($unRaidVars['LOCAL_TLD']))[0];
+	if ( !$unRaidVars['LOCAL_TLD'] )
+		addWarning("Blank TLD","The TLD set within Settings - Management settings is blank.  This should be set to 'local' or an actual domain name.  (A blank entry is only valid if both NetBIOS and SMBv1 are both enabled.  Due to security issues, SMBv1 is deprecated and/or disabled in modern operating systems, including Windows)  Fix this here:  ".addLinkButton(" Management Settings","Settings/ManagementAccess"));
+	elseif (strlen($TLDmain) < 2 || strlen($TLDmain) > 63 || preg_match("/[^a-zA-Z0-9\-]+/m",$TLDmain) )
 		addWarning("Invalid characters in TLD","Invalid characters found in TLD.  Minimum 2 characters, maximum 63, Only a-z, A-Z, 0-9 and - (hyphen) allowed.  Fix it here:  ".addLinkButton("Management Settings","Settings/ManagementAccess"));
-	elseif ( $TLD != "local" ) {
-  // when TLD is "local", mdns is used for name resolution
-  // if TLD is something else, then ensure there is a DNS record that resolves correctly
+	elseif ( $unRaidVars['LOCAL_TLD'] != "local" ) {
+		// when TLD is "local", mdns is used for name resolution
+		// if TLD is something else, then ensure there is a DNS record that resolves correctly
 
-  // do DNS lookup of servername.TLD
-  $host = $unRaidVars['NAME'].".".$unRaidVars['LOCAL_TLD'];
-  $result = @dns_get_record($host, DNS_A);
-  $ip = ($result) ? $result[0]['ip'] : '';
+		// do DNS lookup of servername.TLD
+		$result = @dns_get_record($expected_host, DNS_A);
+		$ip = ($result) ? $result[0]['ip'] : '';
 
-  // determine local ip
-  $internalip = ipaddr('eth0');
+		// determine local ip
+		$internalip = ipaddr('eth0');
 
-  // warn if servername.TLD does not resolve correctly
-  if (!$ip) {
-    addWarning("Invalid TLD", "There is no DNS entry for $host, recommend setting your TLD to local or adding a DNS entry for $host.  Fix it here:  ".addLinkButton("Management Settings","Settings/ManagementAccess"));
-  } elseif ($internalip != $ip) {
-    addWarning("Invalid DNS entry for TLD", "The DNS entry for $host resolves to $ip, you should ensure that it resolves to $internalip.  Fix it here:  ".addLinkButton("Management Settings","Settings/ManagementAccess"));
-  }
-
-}
-
-if (!function_exists('ipaddr')) { 
-  function ipaddr($ethX='eth0') {
-    global $$ethX;
-    switch ($$ethX['PROTOCOL:0']) {
-    case 'ipv4':
-      return $$ethX['IPADDR:0'];
-    case 'ipv6':
-      return $$ethX['IPADDR6:0'];
-    case 'ipv4+ipv6':
-      return [$$ethX['IPADDR:0'],$$ethX['IPADDR6:0']];
-    default:
-      return $$ethX['IPADDR:0'];
-    }
-  }
-}
-
+		// warn if servername.TLD does not resolve correctly
+		if (!$ip) {
+			addWarning("Invalid TLD", "There is no DNS entry for '{$expected_host}', recommend setting your TLD to 'local' or adding a DNS entry for '{$expected_host}'.  Fix it here:  ".addLinkButton("Management Settings","Settings/ManagementAccess"));
+		} elseif ($internalip != $ip) {
+			addWarning("Invalid DNS entry for TLD", "The DNS entry for '{$expected_host}' resolves to {$ip}, you should ensure that it resolves to {$internalip}.  Fix it here:  ".addLinkButton("Management Settings","Settings/ManagementAccess"));
+		}
+	}
 }
 
 ##################################
