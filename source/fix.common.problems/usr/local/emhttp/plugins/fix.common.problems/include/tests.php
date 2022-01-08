@@ -1958,11 +1958,11 @@ function testTLD() {
 
 		// if there are custom certs, ensure the subject matches $unRaidVars['NAME'].$unRaidVars['LOCAL_TLD']
 		$https_1_cn = getCertCn("{$cert_path}{$https_1_cert}", $unRaidVars['NAME']);
-	if ($https_1_cn && $https_1_cn != $expected_host) {
+	if ($https_1_cn && strtolower($https_1_cn) != strtolower($expected_host) ) {
 		addWarning("Invalid Certificate 1","Your {$https_1_cert} certificate is for '{$https_1_cn}' but your system's hostname is '{$expected_host}'. Either adjust the system name and local TLD to match the certificate, or get a certificate that matches your settings. Even if things generally work now, this mismatch could cause issues in future versions of Unraid.  The local TLD can be adjusted here:  ".addLinkButton(" Management Settings","Settings/ManagementAccess"));
 	}
 	$https_2_cn = getCertCn("{$cert_path}{$https_2_cert}", $unRaidVars['NAME']);
-	if ($https_2_cn && $https_2_cn != $expected_host) {
+	if ($https_2_cn && strtolower($https_2_cn) != strtolower($expected_host) ) {
 		addWarning("Invalid Certificate 2","Your {$https_2_cert} certificate is for '{$https_2_cn}' but your system's hostname is '{$expected_host}'. Either adjust the system name and local TLD to match the certificate, or get a certificate that matches your settings. Even if things generally work now, this mismatch could cause issues in future versions of Unraid.  The local TLD can be adjusted here:  ".addLinkButton(" Management Settings","Settings/ManagementAccess"));
 	}
 
