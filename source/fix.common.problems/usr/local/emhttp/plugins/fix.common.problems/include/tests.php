@@ -1953,10 +1953,11 @@ function testTLD() {
 
 	$cert_path = "/boot/config/ssl/certs/";
 	$https_1_cert = "{$unRaidVars['NAME']}_unraid_bundle.pem";
-		$https_2_cert = 'certificate_bundle.pem';
+	$https_2_cert = 'certificate_bundle.pem';
 
-		// if there are custom certs, ensure the subject matches $unRaidVars['NAME'].$unRaidVars['LOCAL_TLD']
-		$https_1_cn = getCertCn("{$cert_path}{$https_1_cert}", $unRaidVars['NAME']);
+	// if there are custom certs, ensure the subject matches $unRaidVars['NAME'].$unRaidVars['LOCAL_TLD']
+	// getCertCn will ignore Self-signed certs, as Unraid 6.10 will automatically fix them
+	$https_1_cn = getCertCn("{$cert_path}{$https_1_cert}", $unRaidVars['NAME']);
 	if ($https_1_cn && strtolower($https_1_cn) != strtolower($expected_host) ) {
 		addWarning("Invalid Certificate 1","Your {$https_1_cert} certificate is for '{$https_1_cn}' but your system's hostname is '{$expected_host}'. Either adjust the system name and local TLD to match the certificate, or get a certificate that matches your settings. Even if things generally work now, this mismatch could cause issues in future versions of Unraid.  The local TLD can be adjusted here:  ".addLinkButton(" Management Settings","Settings/ManagementAccess"));
 	}
@@ -1978,14 +1979,18 @@ function testTLD() {
 		$result = @dns_get_record($expected_host, DNS_A);
 		$ip = ($result) ? $result[0]['ip'] : '';
 
-		// determine local ip
-		$internalip = ipaddr('eth0');
-
-		// warn if servername.TLD does not resolve correctly
-		if (!$ip) {
-			addWarning("Invalid TLD", "There is no DNS entry for '{$expected_host}', recommend setting your TLD to 'local' or adding a DNS entry for '{$expected_host}'.  Fix it here:  ".addLinkButton("Management Settings","Settings/ManagementAccess"));
-		} elseif ($internalip != $ip) {
-			addWarning("Invalid DNS entry for TLD", "The DNS entry for '{$expected_host}' resolves to {$ip}, you should ensure that it resolves to {$internalip}.  Fix it here:  ".addLinkButton("Management Settings","Settings/ManagementAccess"));
+		// determine local ipv4
+		$ethX = 'eth0';
+		global $$ethX;
+		$internalip = $$ethX['IPADDR:0'];
+		if ($internalip) {
+			$dnsserver = $$ethX['DNS_SERVER1'];
+			// warn if servername.TLD does not resolve correctly
+			if (!$ip) {
+				addWarning("Missing DNS entry for host", "Using DNS server {$dnsserver}, Unraid is unable to resolve '{$expected_host}'. If this url resolves for your client computers using a different DNS server, you can probably ignore this warning. Otherwise, you should set your TLD to 'local' or add a DNS entry for '{$expected_host}' that points to {$internalip}.  The local TLD can be adjusted here:   ".addLinkButton("Management Settings","Settings/ManagementAccess"));				
+			} elseif ($internalip != $ip) {
+				addWarning("Wrong DNS entry for host", "Using DNS server {$dnsserver}, the DNS entry for '{$expected_host}' resolves to {$ip}. If this url resolves correctly for your client computers using a different DNS server, you can probably ignore this warning. Otherwise, you should ensure that it resolves to {$internalip}.");
+			}
 		}
 	}
 }
@@ -2041,7 +2046,8 @@ function testDockerOptsIp() {
 	preg_match('/^.*--ip=(\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}).*$/', $dockerCfg['DOCKER_OPTS'], $matches);
 	if ($matches && $matches[1]) {
 		$dockerOptIp = $matches[1];
-		$internalip = ipaddr('eth0');
+		$ethX = 'eth0';
+		$internalip = is_array(ipaddr($ethX)) ? ipaddr($ethX)[0] : ipaddr($ethX);
 		if ($dockerOptIp != $internalip) {
 			addWarning("Docker Opts IP issue", "DOCKER_OPTS in /boot/config/docker.cfg references IP $dockerOptIp, it should probably reference $internalip instead (or completely remove the reference altogether).  This has to be done via a manual edit of the docker.cfg file on the flash drive");
 		}
