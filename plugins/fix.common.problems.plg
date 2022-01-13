@@ -14,7 +14,7 @@
 
 <CHANGES>
 ###2022.01.13
-- Enhancements to TLD tests
+- Enhancements to certificate tests
 - If FCP not up to date issue a warning instead of error
 
 ###2022.01.06
