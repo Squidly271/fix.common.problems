@@ -489,13 +489,18 @@ function getCertCn($file, $hostname) {
 	exec("/usr/bin/openssl x509 -noout -subject -nameopt multiline -in ".escapeshellarg($file), $data);
 	$data = implode("\n", $data);
 
+	// Unraid 6.10 will automatically fix any issues with self-signed certs, ignore
+	if (strpos($data, "Self-signed") !== false){
+		return '';
+	}
+
 	// determine cn
 	preg_match('/ *commonName *= (.*)/', $data, $matches);
 	$cn = trim($matches[1]);
 	
 	// if Unraid LE cert, no need to check
 	if ( (strpos($cn, ".myunraid.net") !== false) or (strpos($cn, ".unraid.net") !== false) ) {
-			return '';
+		return '';
 	}
 
 	// handle custom wildcard certs
