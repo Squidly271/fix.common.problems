@@ -400,7 +400,7 @@ function pluginsUpToDate() {
 					if ( strtolower(pathinfo($Plugin, PATHINFO_EXTENSION)) == "plg" ) {
 						if ( checkPluginUpdate($Plugin) ) {
 							if ( $Plugin == "fix.common.problems.plg" ) {
-								addError("Plugin <b>$Plugin</b> is not up to date","Upgrade the plugin here: ".addLinkButton("Plugins","/Plugins"));
+								addWarning("Plugin <b>$Plugin</b> is not up to date","Upgrade the plugin here: ".addLinkButton("Plugins","/Plugins"));
 							} else {
 								if ( $Plugin == "unRAIDServer.plg" ) {
 									$uptodateVersion = pluginVersion("/tmp/plugins/$Plugin");
@@ -1971,7 +1971,7 @@ function testTLD() {
 		addWarning("Blank TLD","The TLD set within Settings - Management settings is blank.  This should be set to 'local' or an actual domain name.  (A blank entry is only valid if both NetBIOS and SMBv1 are both enabled.  Due to security issues, SMBv1 is deprecated and/or disabled in modern operating systems, including Windows)  Fix this here:  ".addLinkButton(" Management Settings","Settings/ManagementAccess"));
 	elseif (strlen($TLDmain) < 2 || strlen($TLDmain) > 63 || preg_match("/[^a-zA-Z0-9\-]+/m",$TLDmain) )
 		addWarning("Invalid characters in TLD","Invalid characters found in TLD.  Minimum 2 characters, maximum 63, Only a-z, A-Z, 0-9 and - (hyphen) allowed.  Fix it here:  ".addLinkButton("Management Settings","Settings/ManagementAccess"));
-	elseif ( $unRaidVars['LOCAL_TLD'] != "local" ) {
+	elseif ( strtolower($unRaidVars['LOCAL_TLD']) != "local" ) {
 		// when TLD is "local", mdns is used for name resolution
 		// if TLD is something else, then ensure there is a DNS record that resolves correctly
 

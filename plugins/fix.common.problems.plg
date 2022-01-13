@@ -2,8 +2,8 @@
 <!DOCTYPE PLUGIN [
 <!ENTITY name      "fix.common.problems">
 <!ENTITY author    "Andrew Zawadzki">
-<!ENTITY version   "2022.01.06">
-<!ENTITY md5       "4718696f9ee917160297bac01c90b731">
+<!ENTITY version   "2022.01.13">
+<!ENTITY md5       "02938120ddde4564e85c9c32ab8fc0b7">
 <!ENTITY launch    "Settings/FixProblems">
 <!ENTITY plugdir   "/usr/local/emhttp/plugins/&name;">
 <!ENTITY github    "Squidly271/fix.common.problems">
@@ -13,6 +13,10 @@
 <PLUGIN name="&name;" author="&author;" version="&version;" launch="&launch;" pluginURL="&pluginURL;" icon="warning" min="6.7.0">
 
 <CHANGES>
+###2022.01.13
+- Enhancements to TLD tests
+- If FCP not up to date issue a warning instead of error
+
 ###2022.01.06
 - Further TLD / Certificate Tests
 
