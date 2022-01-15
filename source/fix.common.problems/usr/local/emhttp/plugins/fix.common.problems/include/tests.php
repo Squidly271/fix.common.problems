@@ -555,7 +555,7 @@ function scheduledParityChecks() {
 		$dynamixSettings = my_parse_ini_file("/boot/config/plugins/dynamix/dynamix.cfg",true);
 
 		if ( $dynamixSettings['parity']['mode'] == "0" ) {
-			addWarning("Scheduled <b>Parity Checks</b> are not enabled","It is highliy recommended to schedule parity checks for your system (most users choose monthly).  This is so that you know if unRaid has the ability to rebuild a failed drive if it needs to.  Set the schedule here: ".addLinkButton("Scheduler","/Settings/Scheduler"));
+			addWarning("Scheduled <b>Parity Checks</b> are not enabled","It is highly recommended to schedule parity checks for your system (most users choose monthly).  This is so that you know if unRaid has the ability to rebuild a failed drive if it needs to.  Set the schedule here: ".addLinkButton("Scheduler","/Settings/Scheduler"));
 		}
 	}
 }

@@ -133,7 +133,7 @@ if ( $troubleshooting ) {
 	"scheduledParityChecks",
 	"shareIncludeExcludeSet",
 	"shareIncludeExcludeSameDisk",
-	/* "UDmountedSlaveMode", Doesn't appear to be necessary anymore */
+	"UDmountedSlaveMode",
 	"FTPrunning",
 	"checkNotifications",
 	"blacklistedPluginsInstalled",
