@@ -152,7 +152,7 @@ if ( $troubleshooting ) {
 	"inotifyExhausted",
 	"reiserCache",
 	"SSDcacheNoTrim",
-	"templateURLMissing",
+//	"templateURLMissing",
 	"marvelControllerTest",
 	"breadTest",
 	"lessThan2G",

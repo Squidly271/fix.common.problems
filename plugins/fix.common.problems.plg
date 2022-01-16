@@ -2,8 +2,8 @@
 <!DOCTYPE PLUGIN [
 <!ENTITY name      "fix.common.problems">
 <!ENTITY author    "Andrew Zawadzki">
-<!ENTITY version   "2022.01.15">
-<!ENTITY md5       "60182adee5c4c839b4a630bf9b599dd2">
+<!ENTITY version   "2022.01.16">
+<!ENTITY md5       "ded6a281d1c05506ebfa51264bed6be0">
 <!ENTITY launch    "Settings/FixProblems">
 <!ENTITY plugdir   "/usr/local/emhttp/plugins/&name;">
 <!ENTITY github    "Squidly271/fix.common.problems">
@@ -13,6 +13,9 @@
 <PLUGIN name="&name;" author="&author;" version="&version;" launch="&launch;" pluginURL="&pluginURL;" icon="warning" min="6.7.0">
 
 <CHANGES>
+###2022.01.16
+- Remove TemplateURL tests
+
 ###2022.01.15
 - Fixed: Typo
 - Re-added: Slave Mode tests on UD mounts for docker containers
