@@ -182,7 +182,8 @@ if ( $troubleshooting ) {
 	"shareSpace69",
 	"testTLD",
 	"unknownPluginInstalled",
-	"testDockerOptsIp"
+	"testDockerOptsIp",
+	"wrongCachePoolFiles"
 	);
 	foreach ($tests as $test) {
 		if ( $disableNotifications ) {

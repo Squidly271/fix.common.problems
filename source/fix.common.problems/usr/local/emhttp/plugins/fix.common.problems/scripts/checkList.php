@@ -97,6 +97,8 @@ $checkList = "
 * Check for invalid TLD naming
 * Check for legacy method of setting docker host IP address
 * Slave mode on UD mounted disks / shares for docker containers
+* Check for non-existent cache pools being referenced in share settings
+* Check for files stored within a cache pool that isn't allowed within a share's settings
 
 <h2>Troubleshooting Mode</h2>
 

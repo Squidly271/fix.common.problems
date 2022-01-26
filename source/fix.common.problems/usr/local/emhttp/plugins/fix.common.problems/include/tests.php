@@ -28,17 +28,18 @@ $unRaidVersion                  - Currently installed version of unRaid
 
 # NOTE: This sets the global variables $shareList so it needs to be run first of all the tests
 
-function isArrayStarted() {
-	global $fixPaths, $fixSettings, $autoUpdateOverride, $developerMode, $communityApplicationsInstalled, $dockerRunning, $ignoreList, $shareList;
+if ( is_dir("/mnt/user") ) {
+	$shareList = array_diff(scandir("/mnt/user"),array(".",".."));
+} else {
+	$shareList = array();
+}
+$unRaidVars = my_parse_ini_file($fixPaths['var.ini']);
 
-	if ( is_dir("/mnt/user") ) {
-		$shareList = array_diff(scandir("/mnt/user"),array(".",".."));
-	} else {
-		$shareList = array();
-		$unRaidVars = my_parse_ini_file($fixPaths['var.ini']);
-		if ( $unRaidVars['mdState'] != "STARTED" ) {
-			addOther("Array is not started","Most (but not all) tests require the array to be started in order to run.  There may be more errors / warnings than what is listed here");
-		}
+function isArrayStarted() {
+	global $shareList,$unRaidVars, $fixPaths, $fixSettings, $autoUpdateOverride, $developerMode, $communityApplicationsInstalled, $dockerRunning, $ignoreList, $shareList;
+
+	if ( $unRaidVars['mdState'] != "STARTED" ) {
+		addOther("Array is not started","Most (but not all) tests require the array to be started in order to run.  There may be more errors / warnings than what is listed here");
 	}
 }
 
@@ -84,6 +85,47 @@ function cacheOnlyFilesOnArray() {
 	}
 }
 
+######################################
+# Look for files on wrong cache pool #
+######################################
+function wrongCachePoolFiles() {
+	global $fixPaths, $fixSettings, $autoUpdateOverride, $developerMode, $communityApplicationsInstalled, $dockerRunning, $ignoreList, $shareList, $unRaidVersion;
+
+	if ( version_compare($unRaidVersion,"6.9.2","<") ) return;
+	$disks = my_parse_ini_file($fixPaths['disks.ini'],true);
+	foreach ($disks as $disk) {
+		if ( $disk['type'] == "Cache" )
+			$pools[] = $disk['name'];
+	}
+	if ( ! $pools ) return;
+	
+	if ( version_compare($unRaidVersion,"6.10.0-rc2",">") ) {
+		$msg = "Either adjust which pool this share should be using or manually move the files with Dynamix File Manager";
+	} else {
+		$msg = "You will either have to manually move the files at the command prompt, or seek assistance on the forums";
+	}
+
+	foreach ( $shareList as $share) {
+		$shareCfg = my_parse_ini_file("/boot/config/shares/$share.cfg");
+		if ( ! $shareCfg ) continue;
+		if ( $shareCfg['shareUseCache'] == "only" || $shareCfg['shareUseCache'] == "prefer" || $shareCfg['shareUseCache'] == "yes" ) {
+			$sharePool = $shareCfg['shareCachePool'];
+			if ( !is_dir("/mnt/$sharePool") ) {
+				addWarning("Share <b>$share</b> references non existent pool <b>$sharePool</b>","If you have renamed a pool this will have to be adjusted in the share's settings".addLinkButton("Share Settings","/Shares/Share?name=$share"));
+				continue;
+			}
+			foreach ( $pools as $pool ) {
+				if ( $pool == $sharePool ) {
+					continue;
+				}
+				if ( is_dir("/mnt/$pool/$share") ) {
+					addWarning("Share <b>$share</b> set to use pool <b>$sharePool</b>, but files / folders exist on the $pool pool",$msg);
+				}
+			}
+		}
+	}
+}
+		
 #######################################################
 # Check for don't use cache, but files on cache drive #
 #######################################################
@@ -356,8 +398,13 @@ function fileSystemErrors() {
 	global $fixPaths, $fixSettings, $autoUpdateOverride, $developerMode, $communityApplicationsInstalled, $dockerRunning, $ignoreList, $shareList;
 
 	$disks = my_parse_ini_file($fixPaths['disks.ini'],true);
+	$vars = my_parse_ini_file($fixPaths['var.ini'],true);
+	if ( $vars['mdState'] !== "STARTED" ) return;
+	if ( $vars['sbClean'] !== "no" ) return;
+	
 	foreach ( $disks as $disk ) {
-		if ( $disk['fsError'] ) {
+		if ( !$disk['fsStatus'] || $disk['fsStatus'] == "-" ) continue;
+		if ( strtolower($disk['fsStatus']) !== "mounted" ) {
 			addError("<b>".$disk['name']." (".$disk['id'].")</b> has file system errors (".$disk['fsError'].")","If the disk if XFS / REISERFS, stop the array, restart the Array in Maintenance mode, and run the file system checks.  If the disk is BTRFS, then see <a href='https://forums.lime-technology.com/topic/46802-faq-for-unraid-v6/?page=2&tab=comments#comment-543490' target='_blank'>this post</a>.  <b>If the disk is listed as being unmountable, and it has data on it, whatever you do do not hit the format button.  Seek assistance <a href='http://lime-technology.com/forum/index.php?board=71.0' target='_blank'>HERE</a>");
 		}
 	}
@@ -972,7 +1019,7 @@ function sharePermission() {
 	global $fixPaths, $fixSettings, $autoUpdateOverride, $developerMode, $communityApplicationsInstalled, $dockerRunning, $ignoreList, $shareList;
 
 	foreach ($shareList as $share) {
-	if ( ! is_dir("/mnt/user/$share") ) { continue; }
+		if ( ! is_dir("/mnt/user/$share") ) { continue; }
 		$sharePermission = substr(sprintf("%o",fileperms("/mnt/user/$share")),-4);
 
 		if ( $sharePermission != "0777" ) {
