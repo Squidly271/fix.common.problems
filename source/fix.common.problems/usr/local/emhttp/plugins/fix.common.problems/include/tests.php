@@ -693,7 +693,7 @@ function UDmountedSlaveMode() {
 					foreach ($docker['Volumes'] as $volume) {
 						$volumePassed = explode(":",$volume);
 						if ( startsWith($volumePassed[0],"/mnt/disks/") || startsWith($volumePassed[0],"/mnt/remotes") ) {
-							if ( ! stripos($volumePassed[2],"slave") ) {
+							if ( ! stripos($volumePassed[2],"slave") && ! stripos($volumePassed[2],"shared") ) {
 								addError("Docker application <b>".$docker['Name']."</b> has volumes being passed that are mounted by <em>Unassigned Devices</em>, but they are not mounted with the slave option","To help with a trouble free experience with this application, you need to pass any volumes mounted with Unassigned Devices using the slave option.  Fix it here: ".addLinkButton("Docker","/Docker"));
 							}
 						}
