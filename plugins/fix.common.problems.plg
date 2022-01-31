@@ -2,8 +2,8 @@
 <!DOCTYPE PLUGIN [
 <!ENTITY name      "fix.common.problems">
 <!ENTITY author    "Andrew Zawadzki">
-<!ENTITY version   "2022.01.26a">
-<!ENTITY md5       "299a843f94cabb0eec907b8eddd81ab4">
+<!ENTITY version   "2022.01.31">
+<!ENTITY md5       "b8a91cd835cf168bc376d7bd1b382ae1">
 <!ENTITY launch    "Settings/FixProblems">
 <!ENTITY plugdir   "/usr/local/emhttp/plugins/&name;">
 <!ENTITY github    "Squidly271/fix.common.problems">
@@ -13,6 +13,10 @@
 <PLUGIN name="&name;" author="&author;" version="&version;" launch="&launch;" pluginURL="&pluginURL;" icon="warning" min="6.7.0">
 
 <CHANGES>
+###2022.01.31
+- Fixes to cache pool tests
+- Ignore Slave test if UD share is mounted as Shared
+
 ###2022.01.26
 - Check for non-existent cache pools being referenced in a share's setting
 - Check for files stored on a cache pool other than what is dictated by the share's settings

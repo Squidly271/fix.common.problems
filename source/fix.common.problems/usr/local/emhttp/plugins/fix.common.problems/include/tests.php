@@ -94,7 +94,7 @@ function wrongCachePoolFiles() {
 	if ( version_compare($unRaidVersion,"6.9.2","<") ) return;
 	$disks = my_parse_ini_file($fixPaths['disks.ini'],true);
 	foreach ($disks as $disk) {
-		if ( $disk['type'] == "Cache" )
+		if ( $disk['type'] == "Cache" && $disk['status'] !== "DISK_NP")
 			$pools[] = $disk['name'];
 	}
 	if ( ! $pools ) return;
