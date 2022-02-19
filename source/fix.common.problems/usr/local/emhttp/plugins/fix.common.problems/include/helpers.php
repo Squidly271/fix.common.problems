@@ -33,13 +33,15 @@ if ( ! function_exists("my_parse_ini_string") ) {
 #                           #
 #############################
 
-function addError($description,$action) {
+function addError($description,$action,$url="") {
 	global $errors, $ignoreList, $ignored, $fixSettings;
 
 	$originalDescription = $description;
 	$description = str_replace("'","&#39;",$description);
 	$newError['error'] = "<font color='#f17272'>$description</font>";
 	$newError['suggestion'] = $action;
+	if ( $url )
+		$newWarning['suggestion'] .= "&nbsp;&nbsp;<a href='$url' target='_blank'>More Information</a>";
 	
 	if ( $ignoreList[strip_tags($description)] ) {
 		$ignored[] = $newError;
@@ -58,13 +60,15 @@ function addError($description,$action) {
 #                           #
 #############################
 
-function addWarning($description,$action) {
+function addWarning($description,$action,$url="") {
 	global $warnings, $ignoreList, $ignored, $fixSettings;
 	
 	$originalDescription = $description;
 	$description = str_replace("'","&#39;",$description);
 	$newWarning['error'] = "$description";
 	$newWarning['suggestion'] = $action;
+	if ( $url )
+		$newWarning['suggestion'] .= "&nbsp;&nbsp;<a href='$url' target='_blank'>More Information</a>";
 	
 	if ( $ignoreList[strip_tags($originalDescription)] ) {
 		$ignored[] = $newWarning;
@@ -83,13 +87,16 @@ function addWarning($description,$action) {
 #                                   #
 #####################################
 
-function addOther($description,$action) {
+function addOther($description,$action,$url="") {
 	global $otherWarnings, $ignoreList, $ignored, $fixSettings;
 
 	$originalDescription = $description;
 	$description = str_replace("'","&#39;",$description);
 	$newWarning['error'] = "$description";
 	$newWarning['suggestion'] = $action;
+	if ( $url )
+		$newWarning['suggestion'] .= "&nbsp;&nbsp;<a href='$url' target='_blank'>More Information</a>";
+	
 	if ( $ignoreList[strip_tags($originalDescription)] ) {
 		$ignored[] = $newWarning;
 		if ( $fixSettings['logIgnored'] == "yes" ) {

@@ -55,7 +55,7 @@ function impliedArrayFilesOnCache() {
 		if ( ! is_file("/boot/config/shares/$share.cfg") ) {
 			if ( is_dir("/mnt/cache/$share") ) {
 				$shareURL = str_replace(" ","+",$share);
-				addWarning("Share <b>$share</b> is an implied <em>array-only</em> share, but files / folders exist on the cache","Set <b><em>Use Cache</em></b> appropriately, then rerun this analysis. ".addLinkButton("$share Settings","/Shares/Share?name=$shareURL"));
+				addWarning("Share <b>$share</b> is an implied <em>array-only</em> share, but files / folders exist on the cache","Set <b><em>Use Cache</em></b> appropriately, then rerun this analysis. ".addLinkButton("$share Settings","/Shares/Share?name=$shareURL"),"https://forums.unraid.net/topic/120220-fix-common-problems-more-information/?tab=comments#comment-1098680");
 			}
 		}
 	}
@@ -77,7 +77,7 @@ function cacheOnlyFilesOnArray() {
 					$contents = array_diff(scandir("/mnt/user0/$share"),array(".",".."));
 					if ( ! empty($contents) ) {
 						$shareURL = str_replace(" ","+",$share);
-						addWarning("Share <b>$share</b> set to <em>cache-only</em>, but files / folders exist on the array","You should change the shares settings appropriately ".addLinkButton("$share Settings","/Shares/Share?name=$shareURL")." or use the dolphin / krusader docker applications to move the offending files accordingly.  Note that there are some valid use cases for a set up like this.  In particular: <a href='https://lime-technology.com/forum/index.php?topic=40777.msg385753' target='_blank'>THIS</a>");
+						addWarning("Share <b>$share</b> set to <em>cache-only</em>, but files / folders exist on the array","You should change the shares settings appropriately ".addLinkButton("$share Settings","/Shares/Share?name=$shareURL")." or use the dolphin / krusader docker applications to move the offending files accordingly.  Note that there are some valid use cases for a set up like this.  In particular: <a href='https://lime-technology.com/forum/index.php?topic=40777.msg385753' target='_blank'>THIS</a>","https://forums.unraid.net/topic/120220-fix-common-problems-more-information/?tab=comments#comment-1098683");
 					}
 				}
 			}
@@ -111,7 +111,7 @@ function wrongCachePoolFiles() {
 		if ( $shareCfg['shareUseCache'] == "only" || $shareCfg['shareUseCache'] == "prefer" || $shareCfg['shareUseCache'] == "yes" ) {
 			$sharePool = $shareCfg['shareCachePool'] ?: "cache";
 			if ( !is_dir("/mnt/$sharePool") ) {
-				addWarning("Share <b>$share</b> references non existent pool <b>$sharePool</b>","If you have renamed a pool this will have to be adjusted in the share's settings".addLinkButton("Share Settings","/Shares/Share?name=$share"));
+				addWarning("Share <b>$share</b> references non existent pool <b>$sharePool</b>","If you have renamed a pool this will have to be adjusted in the share's settings".addLinkButton("Share Settings","/Shares/Share?name=$share"),"https://forums.unraid.net/topic/120220-fix-common-problems-more-information/?tab=comments#comment-1098686");
 				continue;
 			}
 			foreach ( $pools as $pool ) {
@@ -119,7 +119,7 @@ function wrongCachePoolFiles() {
 					continue;
 				}
 				if ( is_dir("/mnt/$pool/$share") ) {
-					addWarning("Share <b>$share</b> set to use pool <b>$sharePool</b>, but files / folders exist on the $pool pool",$msg);
+					addWarning("Share <b>$share</b> set to use pool <b>$sharePool</b>, but files / folders exist on the $pool pool",$msg,"https://forums.unraid.net/topic/120220-fix-common-problems-more-information/?tab=comments#comment-1098686");
 				}
 			}
 		}
@@ -142,7 +142,7 @@ function arrayOnlyFilesOnCache() {
 					$contents = array_diff(scandir("/mnt/cache/$share"),array(".",".."));
 					if ( ! empty($contents) ) {
 						$shareURL = str_replace(" ","+",$share);
-						addWarning("Share <b>$share</b> set to <em>not use the cache</em>, but files / folders exist on the cache drive","You should change the shares settings appropriately ".addLinkButton("$share Settings","/Shares/Share?name=$shareURL")."or use the dolphin / krusader docker applications to move the offending files accordingly.  Note that there are some valid use cases for a set up like this.  In particular: <a href='https://lime-technology.com/forum/index.php?topic=40777.msg385753' target='_blank'>THIS</a>");
+						addWarning("Share <b>$share</b> set to <em>not use the cache</em>, but files / folders exist on the cache drive","You should change the shares settings appropriately ".addLinkButton("$share Settings","/Shares/Share?name=$shareURL")."or use the dolphin / krusader docker applications to move the offending files accordingly.  Note that there are some valid use cases for a set up like this.  In particular: <a href='https://lime-technology.com/forum/index.php?topic=40777.msg385753' target='_blank'>THIS</a>","https://forums.unraid.net/topic/120220-fix-common-problems-more-information/?tab=comments#comment-1098688");
 					}
 				}
 			}
@@ -166,7 +166,7 @@ function pluginUpdateCheck() {
 		} else {
 			$func = "addWarning";
 		}
-		$func("<b>Plugin Update Check</b> not enabled","Highly recommended to have dynamix check for plugin updates (including for the webUI".addLinkButton("Notification Settings","/Settings/Notifications"));
+		$func("<b>Plugin Update Check</b> not enabled","Highly recommended to have dynamix check for plugin updates (including for the webUI".addLinkButton("Notification Settings","/Settings/Notifications"),"https://forums.unraid.net/topic/120220-fix-common-problems-more-information/?tab=comments#comment-1098690");
 	}
 }
 
@@ -183,7 +183,7 @@ function dockerUpdateCheck() {
 
 	if ( $dockerRunning ) {
 		if ( ! is_file("/boot/config/plugins/dynamix/docker-update.cron") ) {
-			addWarning("<b>Docker Update Check</b> not enabled","Recommended to enable update checks for docker applications".addLinkButton("Notification Settings","/Settings/Notifications"));
+			addWarning("<b>Docker Update Check</b> not enabled","Recommended to enable update checks for docker applications".addLinkButton("Notification Settings","/Settings/Notifications"),"https://forums.unraid.net/topic/120220-fix-common-problems-more-information/?tab=comments#comment-1098691");
 		}
 	}
 }
@@ -209,7 +209,7 @@ function autoUpdateCheck() {
 				} else {
 					$func = "addWarning";
 				}
-				$func("This plugin <b>(Fix Common Problems)</b> not set to auto update",addLinkButton("Auto Update Settings","/Settings/AutoUpdate")."Recommended to enable auto updates for this plugin to enable further problem solving / fixes");
+				$func("This plugin <b>(Fix Common Problems)</b> not set to auto update",addLinkButton("Auto Update Settings","/Settings/AutoUpdate")."Recommended to enable auto updates for this plugin to enable further problem solving / fixes","https://forums.unraid.net/topic/120220-fix-common-problems-more-information/?tab=comments#comment-1098693");
 			}
 		}
 	}
@@ -226,7 +226,7 @@ function sameShareDifferentCase() {
 		$dupShareList = array_diff(scandir("/mnt/user/"),array(".","..",$share));
 		foreach ($dupShareList as $dup) {
 			if ( strtolower($share) === strtolower($dup) ) {
-				addError("Same share ($share) exists in a different case","This will confuse SMB shares.  Manual intervention required.  Use the dolphin / krusader docker app to combine the shares into one unified spelling");
+				addError("Same share ($share) exists in a different case","This will confuse SMB shares.  Manual intervention required.  Use the dolphin / krusader docker app to combine the shares into one unified spelling","https://forums.unraid.net/topic/120220-fix-common-problems-more-information/?tab=comments#comment-1098695");
 				break;
 			}
 		}
@@ -241,7 +241,7 @@ function outsideCommunication() {
 	global $fixPaths, $fixSettings, $autoUpdateOverride, $developerMode, $communityApplicationsInstalled, $dockerRunning, $ignoreList, $shareList;
 
 	if ( ! @file_get_contents($fixPaths['moderation']) || ! strlen(@file_get_contents($fixPaths['moderation'])) ) {
-		addError("Unable to communicate with GitHub.com","Reset your modem / router or try again later, or set your ".addLinkButton("DNS Settings","/Settings/NetworkSettings")." to 8.8.8.8 and 8.8.4.4  Also make sure that you have a Gateway address set up (Your Routers IP address).  Additionally, this may also mean that GitHub is currently down.  This error means that you may not be able to update your OS or plugins");
+		addError("Unable to communicate with GitHub.com","Reset your modem / router or try again later, or set your ".addLinkButton("DNS Settings","/Settings/NetworkSettings")." to 8.8.8.8 and 8.8.4.4  Also make sure that you have a Gateway address set up (Your Routers IP address).  Additionally, this may also mean that GitHub is currently down.  This error means that you may not be able to update your OS or plugins","https://forums.unraid.net/topic/120220-fix-common-problems-more-information/?tab=comments#comment-1098696");
 	}
 }
 
@@ -270,11 +270,11 @@ function writeToDriveTest() {
 			}
 		}
 		if ( is_file("/mnt/$drive") ) {
-			addError("File $drive present within /mnt","Generally speaking, most times when files get created within /mnt it is a result of an improperly configured application.  This error may or may not cause issues for you");
+			addError("File $drive present within /mnt","Generally speaking, most times when files get created within /mnt it is a result of an improperly configured application.  This error may or may not cause issues for you","https://forums.unraid.net/topic/120220-fix-common-problems-more-information/?tab=comments#comment-1098777");
 			continue;
 		}
 		if ( ! in_array($drive,$disksPresent ) && ! in_array($drive,$cachePools) ) {
-			addError("Invalid folder $drive contained within /mnt","Generally speaking, most times when other folders get created within /mnt it is a result of an improperly configured application.  This error may or may not cause issues for you");
+			addError("Invalid folder $drive contained within /mnt","Generally speaking, most times when other folders get created within /mnt it is a result of an improperly configured application.  This error may or may not cause issues for you","https://forums.unraid.net/topic/120220-fix-common-problems-more-information/?tab=comments#comment-1098777");
 			continue;
 		}
 	
@@ -283,7 +283,7 @@ function writeToDriveTest() {
 		@file_put_contents($filename,"test");
 		$result = @file_get_contents($filename);
 		if ( $result != "test" ) {
-			addError("Unable to write to $drive","Drive mounted read-only or completely full.  Begin Investigation Here: ".addLinkButton("unRaid Main","/Main"));
+			addError("Unable to write to $drive","Drive mounted read-only or completely full.  Begin Investigation Here: ".addLinkButton("unRaid Main","/Main"),"https://forums.unraid.net/topic/120220-fix-common-problems-more-information/?tab=comments#comment-1098699");
 		}
 		@unlink($filename);
 	}
@@ -336,7 +336,7 @@ function dockerAppdataCacheOnly() {
 		if ( is_file("/boot/config/shares/$sharename.cfg") ) {
 			$shareSettings = my_parse_ini_file("/boot/config/shares/$sharename.cfg");
 			if ( ( $shareSettings['shareUseCache'] != "only" ) && ( $shareSettings['shareUseCache'] != "prefer" ) ) {
-				addError("<b>Default docker appdata</b> location is not a cache-only share","If the appdata share is not set to be cache-only, then the mover program will cause your docker applications to become inoperable when it runs (6.1.x). Under 6.2+, this setting should not affect the operation of the application, but it will definitely impact significantly the performance of the application.  Fix it via ".addLinkButton("$sharename Settings","/Shares/Share?name=$sharename"));
+				addError("<b>Default docker appdata</b> location is not a cache-only share","If the appdata share is not set to be cache-only, then the mover program will cause your docker applications to become inoperable when it runs (6.1.x). Under 6.2+, this setting should not affect the operation of the application, but it will definitely impact significantly the performance of the application.  Fix it via ".addLinkButton("$sharename Settings","/Shares/Share?name=$sharename"),"https://forums.unraid.net/topic/120220-fix-common-problems-more-information/?tab=comments#comment-1098704");
 			}
 		}
 	}
@@ -529,10 +529,10 @@ function varLogFilled() {
 	}
 
 	if ( $used > 80 ) {
-		addError("<b>/var/log</b> is getting full (currently $used % used)","Either your server has an extremely long uptime, or your syslog could be potentially being spammed with error messages.  A reboot of your server will at least temporarily solve this problem, but ideally you should seek assistance in the forums and post your ".addLinkButton("Diagnostics","/Tools/Diagnostics"));
+		addError("<b>/var/log</b> is getting full (currently $used % used)","Either your server has an extremely long uptime, or your syslog could be potentially being spammed with error messages.  A reboot of your server will at least temporarily solve this problem, but ideally you should seek assistance in the forums and post your ".addLinkButton("Diagnostics","/Tools/Diagnostics"),"https://forums.unraid.net/topic/120220-fix-common-problems-more-information/?tab=comments#comment-1098706");
 	} else {
 		if ( $used > 50 ) {
-			addWarning("<b>/var/log</b> is getting full (currently $used % used)","Either your server has an extremely long uptime, or your syslog could be potentially being spammed with error messages.  A reboot of your server will at least temporarily solve this problem, but ideally you should seek assistance in the forums and post your ".addLinkButton("Diagnostics","/Tools/Diagnostics"));
+			addWarning("<b>/var/log</b> is getting full (currently $used % used)","Either your server has an extremely long uptime, or your syslog could be potentially being spammed with error messages.  A reboot of your server will at least temporarily solve this problem, but ideally you should seek assistance in the forums and post your ".addLinkButton("Diagnostics","/Tools/Diagnostics"),"https://forums.unraid.net/topic/120220-fix-common-problems-more-information/?tab=comments#comment-1098706");
 		}
 	}
 }
@@ -552,10 +552,10 @@ function dockerImageFull() {
 		$used = str_replace("%","",$status[4]);
 
 		if ( $used > 90 ) {
-			addError("<b>Docker image</b> file is getting full (currently $used % used)","You should either increase the available image size to the docker image here ".addLinkButton("Docker Settings","/Settings/DockerSettings")."or investigate the possibility of docker applications storing completed downloads / incomplete downloads / etc within the actual docker image here: ".addLinkButton("Docker","/Docker"));
+			addError("<b>Docker image</b> file is getting full (currently $used % used)","You should either increase the available image size to the docker image here ".addLinkButton("Docker Settings","/Settings/DockerSettings")."or investigate the possibility of docker applications storing completed downloads / incomplete downloads / etc within the actual docker image here: ".addLinkButton("Docker","/Docker"),"https://forums.unraid.net/topic/120220-fix-common-problems-more-information/?tab=comments#comment-1098699");
 		} else {
 			if ( $used > 80 ) {
-				addWarning("<b>Docker image</b> file is getting full (currently $used % used)","You should either increase the available image size to the docker image here ".addLinkButton("Docker Settings","/Settings/DockerSettings")."or investigate the possibility of docker applications storing completed downloads / incomplete downloads / etc within the actual docker image here: ".addLinkButton("Docker","/Docker"));
+				addWarning("<b>Docker image</b> file is getting full (currently $used % used)","You should either increase the available image size to the docker image here ".addLinkButton("Docker Settings","/Settings/DockerSettings")."or investigate the possibility of docker applications storing completed downloads / incomplete downloads / etc within the actual docker image here: ".addLinkButton("Docker","/Docker"),"https://forums.unraid.net/topic/120220-fix-common-problems-more-information/?tab=comments#comment-1098699");
 			}
 		}
 	}
@@ -581,10 +581,10 @@ function rootfsFull() {
 		}
 
 		if ( $used > 90 ) {
-			addError("<b>Rootfs</b> file is getting full (currently $used % used)","Possibly an application is storing excessive amount of data in /tmp.  Seek assistance on the forums and post your ".addLinkButton("Diagnostics","/Tools/Diagnostics"));
+			addError("<b>Rootfs</b> file is getting full (currently $used % used)","Possibly an application is storing excessive amount of data in /tmp.  Seek assistance on the forums and post your ".addLinkButton("Diagnostics","/Tools/Diagnostics"),"https://forums.unraid.net/topic/120220-fix-common-problems-more-information/?tab=comments#comment-1098710");
 		} else {
 			if ( $used > 75 ) {
-				addWarning("<b>Rootfs</b> file is getting full (currently $used % used)","Possibly an application is storing excessive amount of data in /tmp.  Seek assistance on the forums and post your ".addLinkButton("Diagnostics","/Tools/Diagnostics"));
+				addWarning("<b>Rootfs</b> file is getting full (currently $used % used)","Possibly an application is storing excessive amount of data in /tmp.  Seek assistance on the forums and post your ".addLinkButton("Diagnostics","/Tools/Diagnostics"),"https://forums.unraid.net/topic/120220-fix-common-problems-more-information/?tab=comments#comment-1098710");
 			}
 		}
 	}
@@ -619,7 +619,7 @@ function shareIncludeExcludeSet() {
 			$shareCfg = my_parse_ini_file("/boot/config/shares/$share.cfg");
 			if ( $shareCfg['shareInclude'] && $shareCfg['shareExclude'] ) {
 				$shareURL = str_replace(" ","+",$share);
-				addWarning("Share <b>$share</b> is set for both included (".$shareCfg['shareInclude'].") and excluded (".$shareCfg['shareExclude'].") disks","While if you're careful this isn't a problem, there is absolutely no reason ever to specify BOTH included and excluded disks.  It is far easier and safer to only set either the included list or the excluded list.  Fix it here: ".addLinkButton("$share Settings","/Shares/Share?name=$shareURL"));
+				addWarning("Share <b>$share</b> is set for both included (".$shareCfg['shareInclude'].") and excluded (".$shareCfg['shareExclude'].") disks","While if you're careful this isn't a problem, there is absolutely no reason ever to specify BOTH included and excluded disks.  It is far easier and safer to only set either the included list or the excluded list.  Fix it here: ".addLinkButton("$share Settings","/Shares/Share?name=$shareURL"),"https://forums.unraid.net/topic/120220-fix-common-problems-more-information/?tab=comments#comment-1098712");
 			}
 		}
 	}
@@ -628,7 +628,7 @@ function shareIncludeExcludeSet() {
 	if ( is_file("/boot/config/share.cfg") ) {
 		$shareCfg = my_parse_ini_file("/boot/config/share.cfg");
 		if ( $shareCfg['shareUserInclude'] && $shareCfg['shareUserExclude'] ) {
-			addWarning("<b>Global Share Settings</b> is set for both included (".$shareCfg['shareUserInclude'].") and excluded (".$shareCfg['shareUserExclude'].") disks","While if you're careful this isn't a problem, there is absolutely no reason ever to specify BOTH included and excluded disks.  It is far easier and safer to only set either the included list or the excluded list.  Fix it here: ".addLinkButton("Global Share Settings","/Settings/ShareSettings"));
+			addWarning("<b>Global Share Settings</b> is set for both included (".$shareCfg['shareUserInclude'].") and excluded (".$shareCfg['shareUserExclude'].") disks","While if you're careful this isn't a problem, there is absolutely no reason ever to specify BOTH included and excluded disks.  It is far easier and safer to only set either the included list or the excluded list.  Fix it here: ".addLinkButton("Global Share Settings","/Settings/ShareSettings"),"https://forums.unraid.net/topic/120220-fix-common-problems-more-information/?tab=comments#comment-1098712");
 		}
 	}
 }
@@ -651,7 +651,7 @@ function shareIncludeExcludeSameDisk() {
 				foreach ($shareExclude as $excluded) {
 					if ( $included == $excluded ) {
 						$shareURL = str_replace(" ","+",$share);
-						addError("Share <b>$share</b> has the same disk ($included) set to be both included and excluded","The same disk cannot be both included and excluded.  There is also no reason to ever set both the included and excluded disks for a share.  Use one or the other.  Fix it here:".addLinkButton("$share Settings","/Shares/Share?name=$shareURL"));
+						addError("Share <b>$share</b> has the same disk ($included) set to be both included and excluded","The same disk cannot be both included and excluded.  There is also no reason to ever set both the included and excluded disks for a share.  Use one or the other.  Fix it here:".addLinkButton("$share Settings","/Shares/Share?name=$shareURL"),"https://forums.unraid.net/topic/120220-fix-common-problems-more-information/?tab=comments#comment-1098712");
 					}
 				}
 			}
@@ -669,7 +669,7 @@ function shareIncludeExcludeSameDisk() {
 				foreach ($shareExclude as $excluded) {
 					if ( $included == $excluded ) {
 						$shareURL = str_replace(" ","+",$share);
-						addError("Share <b>Global Share Settings</b> has the same disk ($included) set to be both included and excluded","The same disk cannot be both included and excluded.  There is also no reason to ever set both the included and excluded disks for a share.  Use one or the other.  Fix it here:".addLinkButton("Global Share Settings","/Settings/ShareSettings"));
+						addError("Share <b>Global Share Settings</b> has the same disk ($included) set to be both included and excluded","The same disk cannot be both included and excluded.  There is also no reason to ever set both the included and excluded disks for a share.  Use one or the other.  Fix it here:".addLinkButton("Global Share Settings","/Settings/ShareSettings"),"https://forums.unraid.net/topic/120220-fix-common-problems-more-information/?tab=comments#comment-1098712");
 					}
 				}
 			}
@@ -694,7 +694,7 @@ function UDmountedSlaveMode() {
 						$volumePassed = explode(":",$volume);
 						if ( startsWith($volumePassed[0],"/mnt/disks/") || startsWith($volumePassed[0],"/mnt/remotes") ) {
 							if ( ! stripos($volumePassed[2],"slave") && ! stripos($volumePassed[2],"shared") ) {
-								addError("Docker application <b>".$docker['Name']."</b> has volumes being passed that are mounted by <em>Unassigned Devices</em>, but they are not mounted with the slave option","To help with a trouble free experience with this application, you need to pass any volumes mounted with Unassigned Devices using the slave option.  Fix it here: ".addLinkButton("Docker","/Docker"));
+								addWarning("Docker application <b>".$docker['Name']."</b> has volumes being passed that are mounted by <em>Unassigned Devices</em>, but they are not mounted with the slave option","To help with a trouble free experience with this application, you need to pass any volumes mounted with Unassigned Devices using the slave option.  Fix it here: ".addLinkButton("Docker","/Docker"),"https://forums.unraid.net/topic/120220-fix-common-problems-more-information/?tab=comments#comment-1098717");
 							}
 						}
 					}
@@ -793,6 +793,7 @@ function blacklistedPluginsInstalled() {
 
 function dockerAppsChangedPorts() {
 	global $fixPaths, $fixSettings, $autoUpdateOverride, $developerMode, $communityApplicationsInstalled, $dockerRunning, $ignoreList, $shareList;
+
 
 	if ( $dockerRunning ) {
 		$templates = readJsonFile($fixPaths['templates']);
@@ -1052,7 +1053,7 @@ function outOfMemory() {
 		return;
 	}
 	if ($output) {
-		addError("<b>Out Of Memory</b> errors detected on your server",addButton("Acknowledge Error","acknowledgeOOM(this.id);")."Your server has run out of memory, and processes (potentially required) are being killed off.  You should post your diagnostics and ask for assistance on the unRaid forums");
+		addError("<b>Out Of Memory</b> errors detected on your server",addButton("Acknowledge Error","acknowledgeOOM(this.id);")."Your server has run out of memory, and processes (potentially required) are being killed off.  You should post your diagnostics and ask for assistance on the unRaid forums","https://forums.unraid.net/topic/120220-fix-common-problems-more-information/?tab=comments#comment-1098721");
 	}
 }
 
@@ -1068,7 +1069,7 @@ function mceCheck() {
 		return;
 	}
 	if ($output) {
-		addError("<b>Machine Check Events</b> detected on your server",addButton("Acknowledge Error","acknowledgeMCE(this.id);")."Your server has detected hardware errors.  You should install mcelog via the NerdPack plugin, post your diagnostics and ask for assistance on the unRaid forums.  The output of mcelog (if installed) has been logged");
+		addError("<b>Machine Check Events</b> detected on your server",addButton("Acknowledge Error","acknowledgeMCE(this.id);")."Your server has detected hardware errors.  You should install mcelog via the NerdPack plugin, post your diagnostics and ask for assistance on the unRaid forums.  The output of mcelog (if installed) has been logged","https://forums.unraid.net/topic/120220-fix-common-problems-more-information/?tab=comments#comment-1098725");
 		if ( is_file("/usr/sbin/mcelog") ) {
 			$filename = randomFile("/tmp");
 			exec("mcelog > $filename 2>&1",$mcelog);
@@ -1114,7 +1115,7 @@ function checkForHack() {
 			if ( is_array($errorDay) ) {
 				$currentDay = $errorDay['Day'];
 				if ( count($errorDay) > $fixSettings['hacksPerDay'] ) {
-					addError("<font size='3'>Possible <b>Hack Attempt</b> on $currentMonth $currentDay","On $currentMonth $currentDay there were <b>".count($errorDay)."</b> invalid login attempts.  This could either be yourself attempting to login to your server (SSH / Telnet) with the wrong user or password, or <b>you could be actively be the victim of hack attacks</b>.  A common cause of this would be placing your server within your routers DMZ, or improperly forwarding ports.  <font color='red'><b><h2>This is a major issue and needs to be addressed IMMEDIATELY</h2></b>NOTE: Because this check is done against the logged entries in the syslog, the only way to clear it is to either increase the number of allowed invalid logins per day (if determined that it is not a hack attempt) or to reset your server.  It is not recommended under any circumstance to ignore this error");
+					addError("<font size='3'>Possible <b>Hack Attempt</b> on $currentMonth $currentDay","On $currentMonth $currentDay there were <b>".count($errorDay)."</b> invalid login attempts.  This could either be yourself attempting to login to your server (SSH / Telnet) with the wrong user or password, or <b>you could be actively be the victim of hack attacks</b>.  A common cause of this would be placing your server within your routers DMZ, or improperly forwarding ports.  <font color='red'><b><h2>This is a major issue and needs to be addressed IMMEDIATELY</h2></b>NOTE: Because this check is done against the logged entries in the syslog, the only way to clear it is to either increase the number of allowed invalid logins per day (if determined that it is not a hack attempt) or to reset your server.  It is not recommended under any circumstance to ignore this error","https://forums.unraid.net/topic/120220-fix-common-problems-more-information/?tab=comments#comment-1098729");
 				}
 			}
 		}
@@ -1172,7 +1173,7 @@ function pluginNotCompatible() {
 	$installedPlugins = array_diff(scandir("/var/log/plugins"),array(".",".."));
 	$templates = readJsonFile($fixPaths['templates']);
 	$moderation = readJsonFile($fixPaths['moderation']);
-	
+
 	$allApps = $templates['applist'];
 	if ( ! $allApps ) { return; }
 
@@ -1194,7 +1195,9 @@ function pluginNotCompatible() {
 						if ( $app['MaxVer'] ) {
 							$maxVer = "Maximum OS Version: {$app['MaxVer']}";
 						}
-						addWarning("<b>$plugin</b> Not Compatible with unRaid version $unRaidVersion","The author (or moderators of Community Applications) of the plugin template (<b>$pluginURL</b>) has specified that this plugin is incompatible with your version of unRaid ($unRaidVersion).  You should uninstall the plugin here:".addLinkButton("Plugins","/Plugins")." $minVer  $maxVer");
+						
+						$verMsg = $app['VerMessage'] ?: "The author (or moderators of Community Applications) of the plugin template (<b>$pluginURL</b>) has specified that this plugin is incompatible with your version of unRaid ($unRaidVersion).  You should uninstall the plugin here:";
+						addWarning("<b>$plugin</b> Not Compatible with unRaid version $unRaidVersion",$verMsg.addLinkButton("Plugins","/Plugins")." $minVer  $maxVer","https://forums.unraid.net/topic/120220-fix-common-problems-more-information/?tab=comments#comment-1098732");
 					}
 					break;
 				}
@@ -1276,7 +1279,7 @@ function shareNameSameAsDiskName() {
 	foreach ($disks as $disk) {
 		if ( $disk['name'] == "parity" ) { continue; }
 		if ( is_dir("/mnt/user/".$disk['name']) ) {
-			addError("Share <b>".$disk['name']."</b> is identically named to a <b>disk share</b>","While there *may be* (doubtful) valid use cases for having a share named identically to a disk share, this is only going to cause some confusion as if disk shares are enabled, then you will have duplicated share names, and possibly if disk shares are not enabled, then you might not be able to gain access to the share.  This is usually caused by moving the contents of one disk to another (XFS Conversion?) and an improperly placed <b>slash</b>.  The solution is to move the contents of the user share named ".$disk['name']." to be placed within a validly named share.  Ask for assistance on the forums for guidance on doing this.");
+			addError("Share <b>".$disk['name']."</b> is identically named to a <b>disk share</b>","While there *may be* (doubtful) valid use cases for having a share named identically to a disk share, this is only going to cause some confusion as if disk shares are enabled, then you will have duplicated share names, and possibly if disk shares are not enabled, then you might not be able to gain access to the share.  This is usually caused by moving the contents of one disk to another (XFS Conversion?) and an improperly placed <b>slash</b>.  The solution is to move the contents of the user share named ".$disk['name']." to be placed within a validly named share.  Ask for assistance on the forums for guidance on doing this.","https://forums.unraid.net/topic/120220-fix-common-problems-more-information/?tab=comments#comment-1098739");
 		}
 	}
 }
@@ -1490,7 +1493,7 @@ function breadTest() {
 			foreach (logline($syslog) as $logline) {
 				if ( strpos($logline,"Directory bread") ) {
 					if ( strpos($logline,"sda1") ) {
-						addError("Directory Bread Errors found","Directory Bread errors have been found.  This usually means (assuming that your flash drive didn't physically come disconnected) that your flash drive has dropped offline.  The most common solution to this is to try a different USB controller for your flash drive (USB2<-->USB3)");
+						addError("Directory Bread Errors found","Directory Bread errors have been found.  This usually means (assuming that your flash drive didn't physically come disconnected) that your flash drive has dropped offline.  The most common solution to this is to try a different USB controller for your flash drive (USB2<-->USB3)","https://forums.unraid.net/topic/120220-fix-common-problems-more-information/?tab=comments#comment-1098743");
 						$foundFlag = true;
 						break;
 					}
@@ -1695,7 +1698,7 @@ function testXML() {
 			$xml = file_get_contents($xmlfile);
 			$o = TypeConverter::xmlToArray($xml,TypeConverter::XML_GROUP);
 			if ( ! $o ) {
-				addError("$xmlfile corrupted","A corrupted xml file will wind up having unRaid display numerous php errors in various tabs on the UI.  You will need to delete or edit and fix the file manually");
+				addError("$xmlfile corrupted","A corrupted xml file will wind up having unRaid display numerous php errors in various tabs on the UI.  You will need to delete or edit and fix the file manually","https://forums.unraid.net/topic/120220-fix-common-problems-more-information/?tab=comments#comment-1098745");
 			}
 		}
 	}
@@ -1945,7 +1948,7 @@ function reservedUserName() {
 	$flag = false;
 	foreach ($reservedNames as $reservedName) {
 		if ( is_dir("/mnt/user/$reservedName") ) {
-			addError("Reserved user share {$reservedName}","You have a share named $reservedName.  Since 6.9.0, this is now a reserved name and cannot be used as a share.  You will need to rename this share at the command prompt for the system to work properly. See <a href='https://forums.unraid.net/topic/103966-solved-690-upgrade-user-shares-gone/?tab=comments#comment-960763' target='_blank'>HERE</a>");
+			addError("Reserved user share {$reservedName}","You have a share named $reservedName.  Since 6.9.0, this is now a reserved name and cannot be used as a share.  You will need to rename this share at the command prompt for the system to work properly. See <a href='https://forums.unraid.net/topic/103966-solved-690-upgrade-user-shares-gone/?tab=comments#comment-960763' target='_blank'>HERE</a>","https://forums.unraid.net/topic/120220-fix-common-problems-more-information/?tab=comments#comment-1098739");
 		}
 	}
 }
