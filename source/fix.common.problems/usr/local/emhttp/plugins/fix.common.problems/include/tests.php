@@ -1487,6 +1487,9 @@ function marvelControllerTest() {
 function breadTest() {
 	global $fixPaths, $fixSettings, $autoUpdateOverride, $developerMode, $communityApplicationsInstalled, $dockerRunning, $ignoreList, $shareList, $unRaidVersion;
 
+	if ( is_file("/boot/config/plugins/flash.remount.plg") )
+		return;
+	
 	$syslogs = dirContents("/var/log");
 	foreach ($syslogs as $syslog) {
 		if ( startsWith($syslog,"syslog") ) {

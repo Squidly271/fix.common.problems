@@ -41,7 +41,7 @@ function addError($description,$action,$url="") {
 	$newError['error'] = "<font color='#f17272'>$description</font>";
 	$newError['suggestion'] = $action;
 	if ( $url )
-		$newWarning['suggestion'] .= "&nbsp;&nbsp;<a href='$url' target='_blank'>More Information</a>";
+		$newError['suggestion'] .= "&nbsp;&nbsp;<a href='$url' target='_blank'>More Information</a>";
 	
 	if ( $ignoreList[strip_tags($description)] ) {
 		$ignored[] = $newError;
