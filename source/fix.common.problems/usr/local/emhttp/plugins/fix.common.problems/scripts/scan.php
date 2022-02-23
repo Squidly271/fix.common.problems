@@ -183,7 +183,8 @@ if ( $troubleshooting ) {
 	"testTLD",
 	"unknownPluginInstalled",
 	"testDockerOptsIp",
-	"wrongCachePoolFiles"
+	"wrongCachePoolFiles",
+	"corruptFlash"
 	);
 	foreach ($tests as $test) {
 		if ( $disableNotifications ) {

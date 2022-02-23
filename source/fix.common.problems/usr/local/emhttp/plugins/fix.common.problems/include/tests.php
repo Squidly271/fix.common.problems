@@ -2105,6 +2105,18 @@ function testDockerOptsIp() {
 			addWarning("Docker Opts IP issue", "DOCKER_OPTS in /boot/config/docker.cfg references IP $dockerOptIp, it should probably reference $internalip instead (or completely remove the reference altogether).  This has to be done via a manual edit of the docker.cfg file on the flash drive");
 		}
 	}
-}	
-	
+}
+
+function corruptFlash() {
+	global $fixPaths, $fixSettings, $autoUpdateOverride, $developerMode, $communityApplicationsInstalled, $dockerRunning, $ignoreList, $shareList;
+
+  $config = "/boot/config";
+  $files  = ['disk:0','docker:1','domain:1','flash:0','ident:1','share:0']; // config files to check
+  foreach ($files as $file) {
+    [$name,$need] = explode(':',$file);
+    if (($need && !file_exists("$config/$name.cfg")) || (file_exists("$config/$name.cfg") && !@parse_ini_file("$config/$name.cfg"))) {
+			addError("Possible flash corruption","Your flash drive has either dropped offline or has possible corruption on one or more required files.  Post your diagnostics in the forum for more assistance","https://forums.unraid.net/topic/120220-fix-common-problems-more-information/page/2/?tab=comments#comment-1100181");
+		}
+  }
+}
 ?>

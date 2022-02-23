@@ -99,6 +99,7 @@ $checkList = "
 * Slave mode on UD mounted disks / shares for docker containers
 * Check for non-existent cache pools being referenced in share settings
 * Check for files stored within a cache pool that isn't allowed within a share's settings
+* Check for flash drive corruption
 
 <h2>Troubleshooting Mode</h2>
 
