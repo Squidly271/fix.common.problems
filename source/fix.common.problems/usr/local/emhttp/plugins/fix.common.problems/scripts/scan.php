@@ -117,7 +117,7 @@ if ( $troubleshooting ) {
 	"autoUpdateCheck",
 	"sameShareDifferentCase",
 	"outsideCommunication",
-	"dockerImageOnDiskShare",
+/*	"dockerImageOnDiskShare", Doesn't run > 6.2 */
 	"dockerAppdataCacheOnly",
 	"disabledDisksPresent",
 	"missingDisksPresent",
