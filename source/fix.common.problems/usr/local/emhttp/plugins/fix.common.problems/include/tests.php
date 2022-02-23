@@ -14,12 +14,12 @@ have any dependencies from another test
 $fixPaths                       - various static local / remote paths
 $fixSettings                    - the user defined settings for this plugin
 $autoUpdateOverride             - set if auto-update errors should generate a warning instead
-$developerMode                  - a flag to signal certain tests to not run when the user is a developer of various items for unRaid (so that they are not bugged)
+$developerMode                  - a flag to signal certain tests to not run when the user is a developer of various items for Unraid (so that they are not bugged)
 $communityApplicationsInstalled - True if CA is installed
 $dockerRunning                  - True if docker is running
 $ignoreList                     - List of errors which are currently ignored (can be safely ignored unless there's a very valid reason to not actually run the test if its ignored, as ignored items will not generate a notification)
-$shareList                      - List of unRaid's user shares
-$unRaidVersion                  - Currently installed version of unRaid
+$shareList                      - List of Unraid's user shares
+$unRaidVersion                  - Currently installed version of Unraid
 */
 
 ###########################
@@ -283,7 +283,7 @@ function writeToDriveTest() {
 		@file_put_contents($filename,"test");
 		$result = @file_get_contents($filename);
 		if ( $result != "test" ) {
-			addError("Unable to write to $drive","Drive mounted read-only or completely full.  Begin Investigation Here: ".addLinkButton("unRaid Main","/Main"),"https://forums.unraid.net/topic/120220-fix-common-problems-more-information/?tab=comments#comment-1098699");
+			addError("Unable to write to $drive","Drive mounted read-only or completely full.  Begin Investigation Here: ".addLinkButton("Unraid Main","/Main"),"https://forums.unraid.net/topic/120220-fix-common-problems-more-information/?tab=comments#comment-1098699");
 		}
 		@unlink($filename);
 	}
@@ -353,7 +353,7 @@ function disabledDisksPresent() {
 
 	foreach ($disks as $disk) {
 		if ( startsWith($disk['status'],'DISK_DSBL') ) {
-			addError("<b>".$disk['name']." (".$disk['id'].")</b> is disabled","Begin Investigation Here: ".addLinkButton("unRaid Main","/Main"));
+			addError("<b>".$disk['name']." (".$disk['id'].")</b> is disabled","Begin Investigation Here: ".addLinkButton("Unraid Main","/Main"));
 		}
 	}
 }
@@ -369,7 +369,7 @@ function missingDisksPresent() {
 	foreach ($disks as $disk) {
 		if ( ( $disk['status'] == "DISK_NP") || ( $disk['status'] == "DISK_NP_DSBL" ) ) {
 			if ( $disk['id'] ) {
-				addError("<b>".$disk['name']." (".$disk['id'].")</b> is missing","unRaid believes that your hard drive is not connected to any SATA port.  Begin Investigation Here: ".addLinkButton("unRaid Main","/Main")."  And also look at the ".addLinkButton("Diagnostics","/Tools/Diagnostics"));
+				addError("<b>".$disk['name']." (".$disk['id'].")</b> is missing","Unraid believes that your hard drive is not connected to any SATA port.  Begin Investigation Here: ".addLinkButton("Unraid Main","/Main")."  And also look at the ".addLinkButton("Diagnostics","/Tools/Diagnostics"));
 			}
 		}
 	}
@@ -385,7 +385,7 @@ function readErrorsPresent() {
 	$disks = my_parse_ini_file($fixPaths['disks.ini'],true);
 	foreach ($disks as $disk) {
 		if ( $disk['numErrors'] ) {
-			addError("<b>".$disk['name']." (".$disk['id'].")</b> has read errors","If the disk has not been disabled, then unRaid has successfully rewritten the contents of the offending sectors back to the hard drive.  It would be a good idea to look at the S.M.A.R.T. Attributes for the drive in questionBegin Investigation Here: ".addLinkButton($disk['name']." Settings","/Main/Device?name=".$disk['name']));
+			addError("<b>".$disk['name']." (".$disk['id'].")</b> has read errors","If the disk has not been disabled, then Unraid has successfully rewritten the contents of the offending sectors back to the hard drive.  It would be a good idea to look at the S.M.A.R.T. Attributes for the drive in questionBegin Investigation Here: ".addLinkButton($disk['name']." Settings","/Main/Device?name=".$disk['name']));
 		}
 	}
 }
@@ -451,7 +451,7 @@ function pluginsUpToDate() {
 							} else {
 								if ( $Plugin == "unRAIDServer.plg" ) {
 									$uptodateVersion = pluginVersion("/tmp/plugins/$Plugin");
-									addWarning("<b>unRaid OS</b> not up to date","You are currently running <b>".unRaidVersion()."</b> and the latest version is <b>$uptodateVersion</b>.  It is recommended to upgrade here: ".addLinkButton("UpdateOS","/Tools/Update")." and review the release notes <a href='http://lime-technology.com/forum/index.php?board=1.0' target='_blank'>HERE</a>");
+									addWarning("<b>Unraid OS</b> not up to date","You are currently running <b>".unRaidVersion()."</b> and the latest version is <b>$uptodateVersion</b>.  It is recommended to upgrade here: ".addLinkButton("UpdateOS","/Tools/Update")." and review the release notes <a href='http://lime-technology.com/forum/index.php?board=1.0' target='_blank'>HERE</a>");
 								} else {
 									addWarning("Plugin <b>$Plugin</b> is not up to date","Upgrade the plugin here: ".addLinkButton("Plugins","/Plugins"));
 								}
@@ -602,7 +602,7 @@ function scheduledParityChecks() {
 		$dynamixSettings = my_parse_ini_file("/boot/config/plugins/dynamix/dynamix.cfg",true);
 
 		if ( $dynamixSettings['parity']['mode'] == "0" ) {
-			addWarning("Scheduled <b>Parity Checks</b> are not enabled","It is highly recommended to schedule parity checks for your system (most users choose monthly).  This is so that you know if unRaid has the ability to rebuild a failed drive if it needs to.  Set the schedule here: ".addLinkButton("Scheduler","/Settings/Scheduler"));
+			addWarning("Scheduled <b>Parity Checks</b> are not enabled","It is highly recommended to schedule parity checks for your system (most users choose monthly).  This is so that you know if Unraid has the ability to rebuild a failed drive if it needs to.  Set the schedule here: ".addLinkButton("Scheduler","/Settings/Scheduler"));
 		}
 	}
 }
@@ -706,7 +706,7 @@ function UDmountedSlaveMode() {
 
 
 #########################################
-# Check for unRaid's ftp server running #
+# Check for Unraid's ftp server running #
 #########################################
 
 function FTPrunning() {
@@ -717,7 +717,7 @@ function FTPrunning() {
 	foreach ($output as $line) {
 		if ($line[0] != "#") {
 			if ( is_file("/boot/config/vsftpd.user_list") ) {
-				addWarning("unRaids built in <b>FTP server</b> is running","Opening up your unRaid server directly to the internet is an extremely bad idea. - You <b>will</b> get hacked.  If you require an FTP server running on your server, use one of the FTP docker applications instead.  They will be more secure than the built in one".addLinkButton("FTP Server Settings","/Settings/FTP")." If you are only using the built in FTP server locally on your network you can ignore this warning, but ensure that you have not forwarded any ports from your router to your server.  Note that there is a bug in unRaid 6.1.9 and 6.2b21 where if you disable the service, it will come back alive after a reboot.  This check is looking at whether you have users authenticated to use the ftp server");
+				addWarning("unRaids built in <b>FTP server</b> is running","Opening up your Unraid server directly to the internet is an extremely bad idea. - You <b>will</b> get hacked.  If you require an FTP server running on your server, use one of the FTP docker applications instead.  They will be more secure than the built in one".addLinkButton("FTP Server Settings","/Settings/FTP")." If you are only using the built in FTP server locally on your network you can ignore this warning, but ensure that you have not forwarded any ports from your router to your server.  Note that there is a bug in Unraid 6.1.9 and 6.2b21 where if you disable the service, it will come back alive after a reboot.  This check is looking at whether you have users authenticated to use the ftp server");
 			}
 			break;
 		} else {
@@ -858,41 +858,41 @@ function illegalShareName() {
 
 	foreach ($shareList as $share) {
 		if ( strpos($share, '\\') != false ) {
-			addError("Share <b>$share</b> contains the \\ character which is an illegal character on Windows systems.","You may run into issues with Windows and/or other programs attempting to access this share.  You will most likely have to use the command prompt in order to rectify this error.  Ask for assistance on the unRaid forums");
+			addError("Share <b>$share</b> contains the \\ character which is an illegal character on Windows systems.","You may run into issues with Windows and/or other programs attempting to access this share.  You will most likely have to use the command prompt in order to rectify this error.  Ask for assistance on the Unraid forums");
 		}
 		if ( strpos($share,"/") != false ) {
-			addError("Share <b>$share</b> contains the / character which is an illegal character on Windows / Linux systems.","You may run into issues with Windows and/or other programs attempting to access this share.  You will most likely have to use the command prompt in order to rectify this error.  Ask for assistance on the unRaid forums.  You probably also have some disk corruption, as this folder should be impossible to create");
+			addError("Share <b>$share</b> contains the / character which is an illegal character on Windows / Linux systems.","You may run into issues with Windows and/or other programs attempting to access this share.  You will most likely have to use the command prompt in order to rectify this error.  Ask for assistance on the Unraid forums.  You probably also have some disk corruption, as this folder should be impossible to create");
 		}
 		if ( strpos($share,":") ) {
-			addError("Share <b>$share</b> contains the : character which is an illegal character on Windows / MAC systems.","You will most likely have to use the command prompt in order to rectify this error.  Ask for assistance on the unRaid forums");
+			addError("Share <b>$share</b> contains the : character which is an illegal character on Windows / MAC systems.","You will most likely have to use the command prompt in order to rectify this error.  Ask for assistance on the Unraid forums");
 		}
 		if ( strpos($share,"*") != false ) {
-			addError("Share <b>$share</b> contains the * character which is an illegal character on Windows systems.","You may also run into issues with non-Windows systems when using this character.  You will most likely have to use the command prompt in order to rectify this error.  Ask for assistance on the unRaid forums");
+			addError("Share <b>$share</b> contains the * character which is an illegal character on Windows systems.","You may also run into issues with non-Windows systems when using this character.  You will most likely have to use the command prompt in order to rectify this error.  Ask for assistance on the Unraid forums");
 		}
 		if ( strpos($share,"?") != false ) {
-			addError("Share <b>$share</b> contains the ? character which is an illegal character on Windows systems.","You may run into issues with Windows and/or other programs attempting to access this share.  You will most likely have to use the command prompt in order to rectify this error.  Ask for assistance on the unRaid forums");
+			addError("Share <b>$share</b> contains the ? character which is an illegal character on Windows systems.","You may run into issues with Windows and/or other programs attempting to access this share.  You will most likely have to use the command prompt in order to rectify this error.  Ask for assistance on the Unraid forums");
 		}
 		if ( strpos($share,'"') != false ) {
-			addError("Share <b>$share</b> contains the \" character which is an illegal character on Windows systems.","You may run into issues with Windows and/or other programs attempting to access this share.  You will most likely have to use the command prompt in order to rectify this error.  Ask for assistance on the unRaid forums");
+			addError("Share <b>$share</b> contains the \" character which is an illegal character on Windows systems.","You may run into issues with Windows and/or other programs attempting to access this share.  You will most likely have to use the command prompt in order to rectify this error.  Ask for assistance on the Unraid forums");
 		}
 		if ( strpos($share,"<") != false ) {
-			addError("Share <b>$share</b> contains the < character which is an illegal character on Windows systems.","You may run into issues with Windows and/or other programs attempting to access this share  You may also run into issues with non-Windows systems when using this character.  You will most likely have to use the command prompt in order to rectify this error.  Ask for assistance on the unRaid forums");
+			addError("Share <b>$share</b> contains the < character which is an illegal character on Windows systems.","You may run into issues with Windows and/or other programs attempting to access this share  You may also run into issues with non-Windows systems when using this character.  You will most likely have to use the command prompt in order to rectify this error.  Ask for assistance on the Unraid forums");
 		}
 		if ( strpos($share,">") != false ) {
-			addError("Share <b>$share</b> contains the > character which is an illegal character on Windows systems.","You may run into issues with Windows and/or other programs attempting to access this share.  You will most likely have to use the command prompt in order to rectify this error.  Ask for assistance on the unRaid forums");
+			addError("Share <b>$share</b> contains the > character which is an illegal character on Windows systems.","You may run into issues with Windows and/or other programs attempting to access this share.  You will most likely have to use the command prompt in order to rectify this error.  Ask for assistance on the Unraid forums");
 		}
 		if ( strpos($share,"|") != false ) {
-			addError("Share <b>$share</b> contains the | character which is an illegal character on Windows systems.","You may run into issues with Windows and/or other programs attempting to access this share.  You will most likely have to use the command prompt in order to rectify this error.  Ask for assistance on the unRaid forums");
+			addError("Share <b>$share</b> contains the | character which is an illegal character on Windows systems.","You may run into issues with Windows and/or other programs attempting to access this share.  You will most likely have to use the command prompt in order to rectify this error.  Ask for assistance on the Unraid forums");
 		}
 		if ( trim($share) == "" ) {
-			addError("Share <b>\"$share\"</b> contains only spaces which is illegal Windows systems.","You may run into issues with Windows and/or other programs attempting to access this share/  You will most likely have to use the command prompt in order to rectify this error.  Ask for assistance on the unRaid forums");
+			addError("Share <b>\"$share\"</b> contains only spaces which is illegal Windows systems.","You may run into issues with Windows and/or other programs attempting to access this share/  You will most likely have to use the command prompt in order to rectify this error.  Ask for assistance on the Unraid forums");
 		}
 		if ( substr($share, -1) == "." ) {
-			addError("Share <b>$share</b> ends with the . character which is an illegal character to end a file / folder name  on Windows systems.","You may run into issues with Windows and/or other programs attempting to access this share.  You will most likely have to use the command prompt in order to rectify this error.  Ask for assistance on the unRaid forums");
+			addError("Share <b>$share</b> ends with the . character which is an illegal character to end a file / folder name  on Windows systems.","You may run into issues with Windows and/or other programs attempting to access this share.  You will most likely have to use the command prompt in order to rectify this error.  Ask for assistance on the Unraid forums");
 		}
 	# control characters in file names are a standard part of OSX
 	/*   if ( ! ctype_print($share) ) {
-			addError("Share <b>$share</b> contains control character which should be illegal characters on any OS.","You may run into issues with programs attempting to access this share.  You will most likely have to use the command prompt in order to rectify this error.  Ask for assistance on the unRaid forums");
+			addError("Share <b>$share</b> contains control character which should be illegal characters on any OS.","You may run into issues with programs attempting to access this share.  You will most likely have to use the command prompt in order to rectify this error.  Ask for assistance on the Unraid forums");
 		} */
 	}
 }
@@ -1037,7 +1037,7 @@ function uncleanReboot() {
 	global $fixPaths, $fixSettings, $autoUpdateOverride, $developerMode, $communityApplicationsInstalled, $dockerRunning, $ignoreList, $shareList;
 
 	if ( is_file($fixPaths['uncleanReboot']) ) {
-		addError("<b>unclean shutdown</b> detected of your server",addButton("Acknowledge Error","acknowledgeUncleanReboot(this.id);")."Your server has performed an unclean shutdown.  You need to investigate adding a UPS (if this was due to a power failure) or if one is already present, properly setting up its settings".addLinkButton("UPS Settings","/Settings/UPSsettings")."  If this is a recurring issue (ie: random resets / crashes, etc) then you should run memtest from unRaids boot menu for <b>at least</b> one complete pass.  If there are no memory issues, then you might want to look at putting this plugin into <b>troubleshooting mode</b> before posting for support on the unRaid forums.  Note: if you do not acknowledge this error you will continually get this notification.");
+		addError("<b>unclean shutdown</b> detected of your server",addButton("Acknowledge Error","acknowledgeUncleanReboot(this.id);")."Your server has performed an unclean shutdown.  You need to investigate adding a UPS (if this was due to a power failure) or if one is already present, properly setting up its settings".addLinkButton("UPS Settings","/Settings/UPSsettings")."  If this is a recurring issue (ie: random resets / crashes, etc) then you should run memtest from unRaids boot menu for <b>at least</b> one complete pass.  If there are no memory issues, then you might want to look at putting this plugin into <b>troubleshooting mode</b> before posting for support on the Unraid forums.  Note: if you do not acknowledge this error you will continually get this notification.");
 	}
 }
 
@@ -1053,7 +1053,7 @@ function outOfMemory() {
 		return;
 	}
 	if ($output) {
-		addError("<b>Out Of Memory</b> errors detected on your server",addButton("Acknowledge Error","acknowledgeOOM(this.id);")."Your server has run out of memory, and processes (potentially required) are being killed off.  You should post your diagnostics and ask for assistance on the unRaid forums","https://forums.unraid.net/topic/120220-fix-common-problems-more-information/?tab=comments#comment-1098721");
+		addError("<b>Out Of Memory</b> errors detected on your server",addButton("Acknowledge Error","acknowledgeOOM(this.id);")."Your server has run out of memory, and processes (potentially required) are being killed off.  You should post your diagnostics and ask for assistance on the Unraid forums","https://forums.unraid.net/topic/120220-fix-common-problems-more-information/?tab=comments#comment-1098721");
 	}
 }
 
@@ -1069,7 +1069,7 @@ function mceCheck() {
 		return;
 	}
 	if ($output) {
-		addError("<b>Machine Check Events</b> detected on your server",addButton("Acknowledge Error","acknowledgeMCE(this.id);")."Your server has detected hardware errors.  You should install mcelog via the NerdPack plugin, post your diagnostics and ask for assistance on the unRaid forums.  The output of mcelog (if installed) has been logged","https://forums.unraid.net/topic/120220-fix-common-problems-more-information/?tab=comments#comment-1098725");
+		addError("<b>Machine Check Events</b> detected on your server",addButton("Acknowledge Error","acknowledgeMCE(this.id);")."Your server has detected hardware errors.  You should install mcelog via the NerdPack plugin, post your diagnostics and ask for assistance on the Unraid forums.  The output of mcelog (if installed) has been logged","https://forums.unraid.net/topic/120220-fix-common-problems-more-information/?tab=comments#comment-1098725");
 		if ( is_file("/usr/sbin/mcelog") ) {
 			$filename = randomFile("/tmp");
 			exec("mcelog > $filename 2>&1",$mcelog);
@@ -1196,8 +1196,8 @@ function pluginNotCompatible() {
 							$maxVer = "Maximum OS Version: {$app['MaxVer']}";
 						}
 						
-						$verMsg = $app['VerMessage'] ?: "The author (or moderators of Community Applications) of the plugin template (<b>$pluginURL</b>) has specified that this plugin is incompatible with your version of unRaid ($unRaidVersion).  You should uninstall the plugin here:";
-						addWarning("<b>$plugin</b> Not Compatible with unRaid version $unRaidVersion",$verMsg.addLinkButton("Plugins","/Plugins")." $minVer  $maxVer","https://forums.unraid.net/topic/120220-fix-common-problems-more-information/?tab=comments#comment-1098732");
+						$verMsg = $app['VerMessage'] ?: "The author (or moderators of Community Applications) of the plugin template (<b>$pluginURL</b>) has specified that this plugin is incompatible with your version of Unraid ($unRaidVersion).  You should uninstall the plugin here:";
+						addWarning("<b>$plugin</b> Not Compatible with Unraid version $unRaidVersion",$verMsg.addLinkButton("Plugins","/Plugins")." $minVer  $maxVer","https://forums.unraid.net/topic/120220-fix-common-problems-more-information/?tab=comments#comment-1098732");
 					}
 					break;
 				}
@@ -1262,7 +1262,7 @@ function cacheOnlyNoCache() {
 		}
 		$shareCfg = my_parse_ini_file("/boot/config/shares/$share.cfg");
 		if ( $shareCfg['shareUseCache'] == "only" ){
-			addError("Share <b>$share</b> set to use cache only, but the cache drive is not present","Setting a share to be cache-only, but without a cache drive present can have unpredictable results at best, and in some cases can prevent proper operation of any application attempting to use that share.  Fix it here:".addLinkButton("$share Settings","/Shares/Share?name=$share")."  Alternatively, depending upon your version of unRaid, you may have to manually delete this file: <b>/config/shares/$share.cfg</b> from the flash drive to fix this issue");
+			addError("Share <b>$share</b> set to use cache only, but the cache drive is not present","Setting a share to be cache-only, but without a cache drive present can have unpredictable results at best, and in some cases can prevent proper operation of any application attempting to use that share.  Fix it here:".addLinkButton("$share Settings","/Shares/Share?name=$share")."  Alternatively, depending upon your version of Unraid, you may have to manually delete this file: <b>/config/shares/$share.cfg</b> from the flash drive to fix this issue");
 		}
 	}
 }
@@ -1295,7 +1295,7 @@ function noCPUscaling() {
 	$output = trim($output);
 
 	if ( ! $output ) {
-		addOther("CPU possibly will not throttle down frequency at idle","Your CPU is running constantly at 100% and will not throttle down when its idle (to save heat / power).  This is because there is currently no CPU Scaling Driver Installed.  Seek assistance on the unRaid forums with this issue");
+		addOther("CPU possibly will not throttle down frequency at idle","Your CPU is running constantly at 100% and will not throttle down when its idle (to save heat / power).  This is because there is currently no CPU Scaling Driver Installed.  Seek assistance on the Unraid forums with this issue");
 	}
 }
 
@@ -1323,7 +1323,7 @@ function extraParamInRepository() {
 }
 
 #################################################################
-# Checks for NerdPack installing inotifytools on unRaid 6.3RC6+ #
+# Checks for NerdPack installing inotifytools on Unraid 6.3RC6+ #
 #################################################################
 function inotifyToolsNerdPack() {
 	global $fixPaths, $fixSettings, $autoUpdateOverride, $developerMode, $communityApplicationsInstalled, $dockerRunning, $ignoreList, $shareList, $unRaidVersion;
@@ -1342,7 +1342,7 @@ function inotifyToolsNerdPack() {
 			continue;
 		}
 		if ( $nerdPackCFG[$cfg] == "yes" ) {
-			addWarning("inotify-tools set to install","inotify-tools is set to be installed by the NerdPack plugin.  This package is now included in unRaid 6.3RC6+, and NerdPack should be set to not install it.  Fix this here: ".addLinkButton("NerdPack Settings","/Settings/NerdPack"));
+			addWarning("inotify-tools set to install","inotify-tools is set to be installed by the NerdPack plugin.  This package is now included in Unraid 6.3RC6+, and NerdPack should be set to not install it.  Fix this here: ".addLinkButton("NerdPack Settings","/Settings/NerdPack"));
 		}
 	}
 }
@@ -1478,7 +1478,7 @@ function marvelControllerTest() {
 	exec("lspci -k",$testResults);
 	foreach ($testResults as $line) {
 		if (strpos($line,"Kernel driver in use: mvsas") ) {
-			addWarning("Marvel Hard Drive Controller Installed","It appears that your server has a Marvel based hard drive controller installed within it.  <b>Some</b> users with Marvel based controllers exhibit random drives dropping offline, recurring parity errors during checks etc.  This tends to be exacberated if VT-D / IOMMU is enabled in the BIOS.  Generally, LSI based controllers would be preferred over Marvel based controllers because of these issues.  <strong>Note that these issues are out of Limetechs hands</strong>.  Depending upon the exact combination of hardware present in your server, you may not have any problems whatsoever.  <strong><em>If you have no problems, then this warning can be safely ignored</em></strong>, but future versions of unRaid (and later Kernel versions) may (or may not) present you with the previously mentioned issues."); 
+			addWarning("Marvel Hard Drive Controller Installed","It appears that your server has a Marvel based hard drive controller installed within it.  <b>Some</b> users with Marvel based controllers exhibit random drives dropping offline, recurring parity errors during checks etc.  This tends to be exacberated if VT-D / IOMMU is enabled in the BIOS.  Generally, LSI based controllers would be preferred over Marvel based controllers because of these issues.  <strong>Note that these issues are out of Limetechs hands</strong>.  Depending upon the exact combination of hardware present in your server, you may not have any problems whatsoever.  <strong><em>If you have no problems, then this warning can be safely ignored</em></strong>, but future versions of Unraid (and later Kernel versions) may (or may not) present you with the previously mentioned issues."); 
 			break;
 		}
 	}
@@ -1529,7 +1529,7 @@ function lessThan2G() {
 	$raw = explode(" ",$file);
 	
 	if ($raw[0] < 1500000 ) {
-		addWarning("Less than 2GB Memory Installed","Your system currently has {$raw[0]} {$raw[1]} memory installed.  For a trouble-free experience with unRaid, the functional minimum for a basic NAS server is 2GB of memory.  You should add more memory");
+		addWarning("Less than 2GB Memory Installed","Your system currently has {$raw[0]} {$raw[1]} memory installed.  For a trouble-free experience with Unraid, the functional minimum for a basic NAS server is 2GB of memory.  You should add more memory");
 	}
 }
 
@@ -1559,12 +1559,12 @@ function checkDockerCompatible() {
 		if ( ! versionCheck($template) ) {
 			unset($verMsg);
 			if ( $template['MinVer'] ) {
-				$verMsg = "Minimum OS Version: unRaid v{$template['MinVer']} ";
+				$verMsg = "Minimum OS Version: Unraid v{$template['MinVer']} ";
 			}
 			if ( $template['MaxVer'] ) {
-				$verMsg .= "Maximum OS Version: unRaid v{$template['MaxVer']}";
+				$verMsg .= "Maximum OS Version: Unraid v{$template['MaxVer']}";
 			}
-			addWarning("{$template['Name']} ({$template['Repository']}) Incompatible","{$template['Name']} has been flagged as being incompatible with your version of unRaid.  $verMsg");
+			addWarning("{$template['Name']} ({$template['Repository']}) Incompatible","{$template['Name']} has been flagged as being incompatible with your version of Unraid.  $verMsg");
 		}
 	}
 }
@@ -1641,10 +1641,10 @@ function CPUSet() {
 		$Name = (string)$xml->Name;
 		if ( ! $info[$Name] ) continue;
 		if (strlen($xml->CPUset) && strpos($xml->ExtraParams,"cpuset-cpus")) {
-			addError("Docker Application $Name has duplicated entries for CPU pinning","Under unRaid version 6.6+, CPU pinning for docker applications via the extra parameters has been deprecated.  On this template, you have CPU pinning (--cpuset-cpus) contained in the extraparameters section of the template, and have also checked off one or more CPUs to pin the container to via the UI.  You should edit the container via the ".addLinkButton("Docker Tab","/Docker")." and remove the pinning from the extra parameters field");
+			addError("Docker Application $Name has duplicated entries for CPU pinning","Under Unraid version 6.6+, CPU pinning for docker applications via the extra parameters has been deprecated.  On this template, you have CPU pinning (--cpuset-cpus) contained in the extraparameters section of the template, and have also checked off one or more CPUs to pin the container to via the UI.  You should edit the container via the ".addLinkButton("Docker Tab","/Docker")." and remove the pinning from the extra parameters field");
 		}
 		if (strpos($xml->ExtraParams,"cpuset-cpus")) {
-			addWarning("Docker Application $Name has CPU cores pinned via the extra parameters (--cpuset-cpus)","Under unRaid version 6.6+, CPU pinning for docker applications should be handled via the CPU Pinning section.  Fix it here: ".addLinkButton("Docker Tab","/Docker")." and remove the CPU pinning from the extra parameters section.  Note that if you DO NOT fix this, then you will NOT be able to change CPU pinning for the application via the GUI");
+			addWarning("Docker Application $Name has CPU cores pinned via the extra parameters (--cpuset-cpus)","Under Unraid version 6.6+, CPU pinning for docker applications should be handled via the CPU Pinning section.  Fix it here: ".addLinkButton("Docker Tab","/Docker")." and remove the CPU pinning from the extra parameters section.  Note that if you DO NOT fix this, then you will NOT be able to change CPU pinning for the application via the GUI");
 	}	}
 }
 
@@ -1701,7 +1701,7 @@ function testXML() {
 			$xml = file_get_contents($xmlfile);
 			$o = TypeConverter::xmlToArray($xml,TypeConverter::XML_GROUP);
 			if ( ! $o ) {
-				addError("$xmlfile corrupted","A corrupted xml file will wind up having unRaid display numerous php errors in various tabs on the UI.  You will need to delete or edit and fix the file manually","https://forums.unraid.net/topic/120220-fix-common-problems-more-information/?tab=comments#comment-1098745");
+				addError("$xmlfile corrupted","A corrupted xml file will wind up having Unraid display numerous php errors in various tabs on the UI.  You will need to delete or edit and fix the file manually","https://forums.unraid.net/topic/120220-fix-common-problems-more-information/?tab=comments#comment-1098745");
 			}
 		}
 	}
@@ -1794,11 +1794,11 @@ function sysdream() {
 	global $fixPaths, $fixSettings, $autoUpdateOverride, $developerMode, $communityApplicationsInstalled, $dockerRunning, $ignoreList, $shareList,$unRaidVersion;
 
 	if ( version_compare($unRaidVersion,"6.7.2",">") && version_compare($unRaidVersion,"6.8.1","<") ) {
-		addError("Vulnerable unRaid Version","You are currently running unRaid version $unRaidVersion.  This version is susceptible to a would be attacker being able to bypass the login credentials and potentially run inject code into your servers software.  You should upgrade your OS to 6.8.2+.  See <a href='https://forums.unraid.net/topic/88253-critical-security-vulnerabilies-discovered/' target='_blank'>HERE</a> for more details");
+		addError("Vulnerable Unraid Version","You are currently running Unraid version $unRaidVersion.  This version is susceptible to a would be attacker being able to bypass the login credentials and potentially run inject code into your servers software.  You should upgrade your OS to 6.8.2+.  See <a href='https://forums.unraid.net/topic/88253-critical-security-vulnerabilies-discovered/' target='_blank'>HERE</a> for more details");
 	}
 	if ( version_compare($unRaidVersion,"6.6.0",">=") && version_compare($unRaidVersion,"6.7.2","<=") ) {
 		if ( ! is_file("/var/log/plugins/sysdream.plg") ) {
-			addError("Vulnerable unRaid Version","You are currently running unRaid version $unRaidVersion.  This version is susceptible to a would be attacker being able to bypass the login credentials and potentially run inject code into your servers software.  There is a plugin available within the Apps tab (sysdream) to mitigate this security vulnerabilty that should be installed.  See <a href='https://forums.unraid.net/topic/88253-critical-security-vulnerabilies-discovered/' target='_blank'>HERE</a> for more details");
+			addError("Vulnerable Unraid Version","You are currently running Unraid version $unRaidVersion.  This version is susceptible to a would be attacker being able to bypass the login credentials and potentially run inject code into your servers software.  There is a plugin available within the Apps tab (sysdream) to mitigate this security vulnerabilty that should be installed.  See <a href='https://forums.unraid.net/topic/88253-critical-security-vulnerabilies-discovered/' target='_blank'>HERE</a> for more details");
 		}
 	}
 }
