@@ -1862,7 +1862,7 @@ function checkBonding () {
 		$eth=$$ethi;
 		if ($eth["BONDING"] === "yes") {
 			if ($eth["BONDING_MODE"] && in_array($eth["BONDING_MODE"], $complexBond)) {
-				addWarning("Complex bonding mode on $ethi","You have configured $ethi with a bonding mode that requires additional configuration on your network switch. If your switch is not configured to support this mode you should change $ethi to the default bonding mode of 'active-backup'. If your switch is properly configured you can ignore this warning. ".addLinkButton("Network Settings","/Settings/NetworkSettings"));
+				addWarning("Complex bonding mode on $ethi","You have configured $ethi with a bonding mode that requires additional configuration on your network switch. If your switch is not configured to support this mode you should change $ethi to the default bonding mode of 'active-backup'. If your switch is properly configured you can ignore this warning. ".addLinkButton("Network Settings","/Settings/NetworkSettings"),"https://forums.unraid.net/topic/120220-fix-common-problems-more-information/page/2/?tab=comments#comment-1100015");
 			}
 		}
 	}
@@ -1911,7 +1911,7 @@ function checkSameNetwork() {
 				if ($eth["BONDNICS"] && strpos($eth["BONDNICS"].",", $othernic.",") > -1) {
 					// both nics are part of the same bond, is probably ok
 				} else {
-					addError("Multiple NICs on the same IPv4 network","$othernic and $ethi both have IP addresses on the $network4 network. This is rarely a valid configuration. ".addLinkButton("Network Settings","/Settings/NetworkSettings"));
+					addError("Multiple NICs on the same IPv4 network","$othernic and $ethi both have IP addresses on the $network4 network. This is rarely a valid configuration. ".addLinkButton("Network Settings","/Settings/NetworkSettings"),"https://forums.unraid.net/topic/120220-fix-common-problems-more-information/page/2/?tab=comments#comment-1100014");
 				}
 			} else {
 				$networks4[$network4]=$ethi;
@@ -2012,16 +2012,16 @@ function testTLD() {
 	// getCertCn will ignore Self-signed certs, as Unraid 6.10 will automatically fix them
 	$https_1_cn = getCertCn("{$cert_path}{$https_1_cert}", $unRaidVars['NAME']);
 	if ($https_1_cn && strtolower($https_1_cn) != strtolower($expected_host) ) {
-		addWarning("Invalid Certificate 1","Your {$https_1_cert} certificate is for '{$https_1_cn}' but your system's hostname is '{$expected_host}'. Either adjust the system name and local TLD to match the certificate, or get a certificate that matches your settings. Even if things generally work now, this mismatch could cause issues in future versions of Unraid.  The local TLD can be adjusted here:  ".addLinkButton(" Management Settings","Settings/ManagementAccess"));
+		addWarning("Invalid Certificate 1","Your {$https_1_cert} certificate is for '{$https_1_cn}' but your system's hostname is '{$expected_host}'. Either adjust the system name and local TLD to match the certificate, or get a certificate that matches your settings. Even if things generally work now, this mismatch could cause issues in future versions of Unraid.  The local TLD can be adjusted here:  ".addLinkButton(" Management Settings","Settings/ManagementAccess"),"https://forums.unraid.net/topic/120220-fix-common-problems-more-information/page/2/?tab=comments#comment-1099982");
 	}
 	$https_2_cn = getCertCn("{$cert_path}{$https_2_cert}", $unRaidVars['NAME']);
 	if ($https_2_cn && strtolower($https_2_cn) != strtolower($expected_host) ) {
-		addWarning("Invalid Certificate 2","Your {$https_2_cert} certificate is for '{$https_2_cn}' but your system's hostname is '{$expected_host}'. Either adjust the system name and local TLD to match the certificate, or get a certificate that matches your settings. Even if things generally work now, this mismatch could cause issues in future versions of Unraid.  The local TLD can be adjusted here:  ".addLinkButton(" Management Settings","Settings/ManagementAccess"));
+		addWarning("Invalid Certificate 2","Your {$https_2_cert} certificate is for '{$https_2_cn}' but your system's hostname is '{$expected_host}'. Either adjust the system name and local TLD to match the certificate, or get a certificate that matches your settings. Even if things generally work now, this mismatch could cause issues in future versions of Unraid.  The local TLD can be adjusted here:  ".addLinkButton(" Management Settings","Settings/ManagementAccess"),"https://forums.unraid.net/topic/120220-fix-common-problems-more-information/page/2/?tab=comments#comment-1099982");
 	}
 
 	$TLDmain = explode(".",trim($unRaidVars['LOCAL_TLD']))[0];
 	if ( !$unRaidVars['LOCAL_TLD'] )
-		addWarning("Blank TLD","The TLD set within Settings - Management settings is blank.  This should be set to 'local' or an actual domain name.  (A blank entry is only valid if both NetBIOS and SMBv1 are both enabled.  Due to security issues, SMBv1 is deprecated and/or disabled in modern operating systems, including Windows)  Fix this here:  ".addLinkButton(" Management Settings","Settings/ManagementAccess"));
+		addWarning("Blank TLD","The TLD set within Settings - Management settings is blank.  This should be set to 'local' or an actual domain name.  (A blank entry is only valid if both NetBIOS and SMBv1 are both enabled.  Due to security issues, SMBv1 is deprecated and/or disabled in modern operating systems, including Windows)  Fix this here:  ".addLinkButton(" Management Settings","Settings/ManagementAccess"),"https://forums.unraid.net/topic/120220-fix-common-problems-more-information/?tab=comments#comment-1099981");
 	elseif (strlen($TLDmain) < 2 || strlen($TLDmain) > 63 || preg_match("/[^a-zA-Z0-9\-]+/m",$TLDmain) )
 		addWarning("Invalid characters in TLD","Invalid characters found in TLD.  Minimum 2 characters, maximum 63, Only a-z, A-Z, 0-9 and - (hyphen) allowed.  Fix it here:  ".addLinkButton("Management Settings","Settings/ManagementAccess"));
 	elseif ( strtolower($unRaidVars['LOCAL_TLD']) != "local" ) {
@@ -2040,9 +2040,9 @@ function testTLD() {
 			$dnsserver = $$ethX['DNS_SERVER1'];
 			// warn if servername.TLD does not resolve correctly
 			if (!$ip) {
-				addWarning("Missing DNS entry for host", "Using DNS server {$dnsserver}, Unraid is unable to resolve '{$expected_host}'. If this url resolves for your client computers using a different DNS server, you can probably ignore this warning. Otherwise, you should set your TLD to 'local' or add a DNS entry for '{$expected_host}' that points to {$internalip}.  The local TLD can be adjusted here:   ".addLinkButton("Management Settings","Settings/ManagementAccess"));				
+				addWarning("Missing DNS entry for host", "Using DNS server {$dnsserver}, Unraid is unable to resolve '{$expected_host}'. If this url resolves for your client computers using a different DNS server, you can probably ignore this warning. Otherwise, you should set your TLD to 'local' or add a DNS entry for '{$expected_host}' that points to {$internalip}.  The local TLD can be adjusted here:   ".addLinkButton("Management Settings","Settings/ManagementAccess"),"https://forums.unraid.net/topic/120220-fix-common-problems-more-information/page/2/?tab=comments#comment-1099984");				
 			} elseif ($internalip != $ip) {
-				addWarning("Wrong DNS entry for host", "Using DNS server {$dnsserver}, the DNS entry for '{$expected_host}' resolves to {$ip}. If this url resolves correctly for your client computers using a different DNS server, you can probably ignore this warning. Otherwise, you should ensure that it resolves to {$internalip}.");
+				addWarning("Wrong DNS entry for host", "Using DNS server {$dnsserver}, the DNS entry for '{$expected_host}' resolves to {$ip}. If this url resolves correctly for your client computers using a different DNS server, you can probably ignore this warning. Otherwise, you should ensure that it resolves to {$internalip}.","https://forums.unraid.net/topic/120220-fix-common-problems-more-information/page/2/?tab=comments#comment-1099984");
 			}
 		}
 	}
@@ -2110,12 +2110,18 @@ function testDockerOptsIp() {
 function corruptFlash() {
 	global $fixPaths, $fixSettings, $autoUpdateOverride, $developerMode, $communityApplicationsInstalled, $dockerRunning, $ignoreList, $shareList;
 
-  $config = "/boot/config";
-  $files  = ['disk:0','docker:1','domain:1','flash:0','ident:1','share:0']; // config files to check
-  foreach ($files as $file) {
-    [$name,$need] = explode(':',$file);
-    if (($need && !file_exists("$config/$name.cfg")) || (file_exists("$config/$name.cfg") && !@parse_ini_file("$config/$name.cfg"))) {
-			addError("Possible flash corruption","Your flash drive has either dropped offline or has possible corruption on one or more required files.  Post your diagnostics in the forum for more assistance","https://forums.unraid.net/topic/120220-fix-common-problems-more-information/page/2/?tab=comments#comment-1100181");
+	$paths = ["/boot/config","/boot/config/shares","/boot/config/plugins/*"];
+	$excluded = ["/boot/config/case-model.cfg","/boot/config/plugins/dynamix/case-model.cfg"];
+	$files = [];
+	foreach ($paths as $path) {
+		$files = array_merge($files,glob("$path/*.cfg"));
+	}
+	foreach ($files as $file) {
+		if ( in_array($file,$excluded) ) continue;
+		if ( !@parse_ini_file($file,true) ) {
+			if ( trim(@file_get_contents($file)) ) {
+				addError("$file corrupted","Your flash drive has possible corruption on $file.  Post your diagnostics in the forum for more assistance","https://forums.unraid.net/topic/120220-fix-common-problems-more-information/page/2/?tab=comments#comment-1100181");
+			}
 		}
   }
 }
