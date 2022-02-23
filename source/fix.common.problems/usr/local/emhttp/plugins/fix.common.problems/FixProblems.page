@@ -177,22 +177,27 @@ function checkList() {
 }
 
 var fixScan = new NchanSubscriber('/sub/fixscan');
+var fixScanCount = 0;
 fixScan.on('message',function(data) {
 	if (data) {
 	console.log(data);
 		var results = JSON.parse(data)
 		if ( results.errors ) {
-			myCloseAlert();
-			$("#settings").html(results.errors);
-			$.post(caURL,{action:'getTimeStamp'}, function(timestamp) {
-				if (timestamp) {
-					timestamp = timestamp.replace("*","");
-					$("#timestamp").html(timestamp);
-				}
-			});
-			fixScan.stop();
+			if ( fixScanCount == 1 ) {
+				myCloseAlert();
+				$("#settings").html(results.errors);
+				$.post(caURL,{action:'getTimeStamp'}, function(timestamp) {
+					if (timestamp) {
+						timestamp = timestamp.replace("*","");
+						$("#timestamp").html(timestamp);
+					}
+				});
+				fixScan.stop();
+				fixScanCount = 0;
+			}
 		}
 		if ( results.test ) {
+			fixScanCount = 1;
 			$("#currentTest").html(results.test);
 		}
 	}
