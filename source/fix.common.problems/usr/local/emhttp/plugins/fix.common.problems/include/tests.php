@@ -2111,10 +2111,11 @@ function corruptFlash() {
 	global $fixPaths, $fixSettings, $autoUpdateOverride, $developerMode, $communityApplicationsInstalled, $dockerRunning, $ignoreList, $shareList;
 
 	$paths = ["/boot/config","/boot/config/shares","/boot/config/plugins/*"];
-	$excluded = ["/boot/config/case-model.cfg","/boot/config/plugins/dynamix/case-model.cfg","/boot/config/network-rules.cfg"];
+	$excluded = ["/boot/config/case-model.cfg","/boot/config/plugins/dynamix/case-model.cfg","/boot/config/network-rules.cfg","/boot/config/plugins/corefreq/corefreq.cfg"];
 	$files = [];
 	foreach ($paths as $path) {
 		$files = array_merge($files,glob("$path/*.cfg"));
+		$files = array_merge($files,glob("$path/*.ini"));
 	}
 	foreach ($files as $file) {
 		if ( in_array($file,$excluded) ) continue;
