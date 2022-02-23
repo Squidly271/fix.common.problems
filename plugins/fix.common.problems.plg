@@ -2,8 +2,8 @@
 <!DOCTYPE PLUGIN [
 <!ENTITY name      "fix.common.problems">
 <!ENTITY author    "Andrew Zawadzki">
-<!ENTITY version   "2022.01.31">
-<!ENTITY md5       "b8a91cd835cf168bc376d7bd1b382ae1">
+<!ENTITY version   "2022.02.23">
+<!ENTITY md5       "9300b926f77b8ce96dd99518c3aa2ee0">
 <!ENTITY launch    "Settings/FixProblems">
 <!ENTITY plugdir   "/usr/local/emhttp/plugins/&name;">
 <!ENTITY github    "Squidly271/fix.common.problems">
@@ -13,6 +13,15 @@
 <PLUGIN name="&name;" author="&author;" version="&version;" launch="&launch;" pluginURL="&pluginURL;" icon="warning" min="6.7.0">
 
 <CHANGES>
+###2022.02.23
+- Add in More Information links to most test results
+- Ignore bread test if the flash remount plugin is installed
+- Fix Unraid branding
+- Add in flash corruption tests
+- Fixed progress window immediately disappearing under certain circumstances
+- Removed a test no longer applicable
+- Remove references to troubleshooting mode in the What is Checked
+
 ###2022.01.31
 - Fixes to cache pool tests
 - Ignore Slave test if UD share is mounted as Shared
