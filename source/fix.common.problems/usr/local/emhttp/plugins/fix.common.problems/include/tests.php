@@ -2111,7 +2111,7 @@ function corruptFlash() {
 	global $fixPaths, $fixSettings, $autoUpdateOverride, $developerMode, $communityApplicationsInstalled, $dockerRunning, $ignoreList, $shareList;
 
 	$paths = ["/boot/config","/boot/config/shares","/boot/config/plugins/*"];
-	$excluded = ["/boot/config/case-model.cfg","/boot/config/plugins/dynamix/case-model.cfg","/boot/config/network-rules.cfg","/boot/config/plugins/corefreq/corefreq.cfg","/boot/config/plugins/open-vm-tools/open-vm-tools.cfg"];
+	$excluded = ["/boot/config/case-model.cfg","/boot/config/plugins/dynamix/case-model.cfg","/boot/config/network-rules.cfg","/boot/config/plugins/corefreq/corefreq.cfg","/boot/config/plugins/open-vm-tools/open-vm-tools.cfg","/boot/config/plugins/ca.turbo/settings.ini"];
 	$files = [];
 	foreach ($paths as $path) {
 		$files = array_merge($files,glob("$path/*.cfg"));
@@ -2120,7 +2120,8 @@ function corruptFlash() {
 	foreach ($files as $file) {
 		if ( in_array($file,$excluded) ) continue;
 		if ( !@parse_ini_file($file,true) ) {
-			if ( trim(@file_get_contents($file)) ) {
+			$test = @file_get_contents($file);
+			if ( trim($test) && ! json_decode($test) ) {
 				addError("$file corrupted","Your flash drive has possible corruption on $file.  Post your diagnostics in the forum for more assistance","https://forums.unraid.net/topic/120220-fix-common-problems-more-information/page/2/?tab=comments#comment-1100181");
 			}
 		}

@@ -2,8 +2,8 @@
 <!DOCTYPE PLUGIN [
 <!ENTITY name      "fix.common.problems">
 <!ENTITY author    "Andrew Zawadzki">
-<!ENTITY version   "2022.02.23a">
-<!ENTITY md5       "9cadea2544a9f0a9dc4b7c73bd4a376f">
+<!ENTITY version   "2022.02.25">
+<!ENTITY md5       "3acaf7468c6526f0ac0da6f0896ea69f">
 <!ENTITY launch    "Settings/FixProblems">
 <!ENTITY plugdir   "/usr/local/emhttp/plugins/&name;">
 <!ENTITY github    "Squidly271/fix.common.problems">
@@ -13,6 +13,9 @@
 <PLUGIN name="&name;" author="&author;" version="&version;" launch="&launch;" pluginURL="&pluginURL;" icon="warning" min="6.7.0">
 
 <CHANGES>
+###2022.02.24
+- Attempt to parse corruption tests as JSON
+
 ###2022.02.23
 - Add in More Information links to most test results
 - Ignore bread test if the flash remount plugin is installed
