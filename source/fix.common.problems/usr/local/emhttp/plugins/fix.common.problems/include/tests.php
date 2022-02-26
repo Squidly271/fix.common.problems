@@ -2111,7 +2111,7 @@ function corruptFlash() {
 	global $fixPaths, $fixSettings, $autoUpdateOverride, $developerMode, $communityApplicationsInstalled, $dockerRunning, $ignoreList, $shareList;
 
 	$paths = ["/boot/config","/boot/config/shares","/boot/config/plugins/*"];
-	$excluded = ["/boot/config/case-model.cfg","/boot/config/plugins/dynamix/case-model.cfg","/boot/config/network-rules.cfg","/boot/config/plugins/corefreq/corefreq.cfg","/boot/config/plugins/open-vm-tools/open-vm-tools.cfg","/boot/config/plugins/ca.turbo/settings.ini"];
+	$excluded = ["/boot/config/case-model.cfg","/boot/config/plugins/dynamix/case-model.cfg","/boot/config/network-rules.cfg","/boot/config/plugins/corefreq/corefreq.cfg","/boot/config/plugins/open-vm-tools/open-vm-tools.cfg","/boot/config/plugins/ca.turbo/settings.ini","/boot/config/plugins/prometheus_fritzbox_exporter/settings.cfg"];
 	$files = [];
 	foreach ($paths as $path) {
 		$files = array_merge($files,glob("$path/*.cfg"));
