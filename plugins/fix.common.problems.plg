@@ -2,8 +2,8 @@
 <!DOCTYPE PLUGIN [
 <!ENTITY name      "fix.common.problems">
 <!ENTITY author    "Andrew Zawadzki">
-<!ENTITY version   "2022.02.26">
-<!ENTITY md5       "baceeb5945003666b82b19cbe3c8ae0c">
+<!ENTITY version   "2022.03.01">
+<!ENTITY md5       "8e138324b55dce8856418f832e3997bd">
 <!ENTITY launch    "Settings/FixProblems">
 <!ENTITY plugdir   "/usr/local/emhttp/plugins/&name;">
 <!ENTITY github    "Squidly271/fix.common.problems">
@@ -13,6 +13,9 @@
 <PLUGIN name="&name;" author="&author;" version="&version;" launch="&launch;" pluginURL="&pluginURL;" icon="warning" min="6.7.0">
 
 <CHANGES>
+###2022.03.01
+- Further exceptions on corruption test
+
 ###2022.02.26
 - Further exceptions on corruption test
 
