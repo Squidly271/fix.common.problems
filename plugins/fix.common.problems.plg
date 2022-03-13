@@ -2,8 +2,8 @@
 <!DOCTYPE PLUGIN [
 <!ENTITY name      "fix.common.problems">
 <!ENTITY author    "Andrew Zawadzki">
-<!ENTITY version   "2022.03.12">
-<!ENTITY md5       "c071ef126ad56c30920feb76b1aae2f8">
+<!ENTITY version   "2022.03.13">
+<!ENTITY md5       "8b9d0c65eb733d20ddebbd2e5d8ee4e4">
 <!ENTITY launch    "Settings/FixProblems">
 <!ENTITY plugdir   "/usr/local/emhttp/plugins/&name;">
 <!ENTITY github    "Squidly271/fix.common.problems">
@@ -13,6 +13,9 @@
 <PLUGIN name="&name;" author="&author;" version="&version;" launch="&launch;" pluginURL="&pluginURL;" icon="warning" min="6.7.0">
 
 <CHANGES>
+###2022.03.13
+- Don't scan plugins folder for corruption tests
+
 ###2022.03.12
 - Compatibility with new features in Unassigned Devices
 
