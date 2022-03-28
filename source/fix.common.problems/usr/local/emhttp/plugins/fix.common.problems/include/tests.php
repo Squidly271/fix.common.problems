@@ -2008,6 +2008,13 @@ function testTLD() {
 	$https_1_cert = "{$unRaidVars['NAME']}_unraid_bundle.pem";
 	$https_2_cert = 'certificate_bundle.pem';
 
+	// if < 6.10 and USE_SSL is no and certificate_bundle.pem exists, recommend to delete certificate_bundle.pem before upgrading to 6.10
+	if ( version_compare($unRaidVersion,"6.9.9","<") ) {
+		if ($unRaidVars['USE_SSL']=="no" && file_exists($cert_path.$https_2_cert)) {
+			addWarning("Unused Certificate","SSL is disabled, but an SSL certificate exists. To prevent unexpected port conflicts when upgrading to 6.10, we recommend that you delete the unused certificate. ","https://forums.unraid.net/topic/120220-fix-common-problems-more-information/page/2/#comment-1111311");
+		}
+	}
+
 	// if there are custom certs, ensure the subject matches $unRaidVars['NAME'].$unRaidVars['LOCAL_TLD']
 	// getCertCn will ignore Self-signed certs, as Unraid 6.10 will automatically fix them
 	$https_1_cn = getCertCn("{$cert_path}{$https_1_cert}", $unRaidVars['NAME']);
