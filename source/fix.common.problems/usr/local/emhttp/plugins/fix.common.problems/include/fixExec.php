@@ -146,11 +146,12 @@ switch ($_POST['action']) {
     break;
   
   case 'checkExtendedStatus':
+		sleep(1);
     $status = @file_get_contents($fixPaths['extendedStatus']);
     $running = is_file($fixPaths['extendedPID']);
     $o = "";
     if ( $running ) {
-      $o .= "$status<script>$('#extendedTest').prop('disabled',true);</script>";
+      $o .= "Extended Test Running<script>$('#extendedTest').prop('disabled',true);</script>";
       $o .= "<script>$('#extendedLog').prop('disabled',true);</script>";
     } else {
       $o .= "Not Running <script>$('#extendedTest').prop('disabled',false);</script>";

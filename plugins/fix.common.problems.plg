@@ -2,8 +2,8 @@
 <!DOCTYPE PLUGIN [
 <!ENTITY name      "fix.common.problems">
 <!ENTITY author    "Andrew Zawadzki">
-<!ENTITY version   "2022.03.29">
-<!ENTITY md5       "b9fa11253b5486010aa7148c04b3f210">
+<!ENTITY version   "2022.04.14">
+<!ENTITY md5       "f68503066db022e9fca1a0070e17ce27">
 <!ENTITY launch    "Settings/FixProblems">
 <!ENTITY plugdir   "/usr/local/emhttp/plugins/&name;">
 <!ENTITY github    "Squidly271/fix.common.problems">
@@ -13,6 +13,9 @@
 <PLUGIN name="&name;" author="&author;" version="&version;" launch="&launch;" pluginURL="&pluginURL;" icon="warning" min="6.7.0">
 
 <CHANGES>
+###2022.04.14
+- Don't use polling to determine if the extended test is still running.  After the notification user just needs to reload the page
+
 ###2022.03.18
 - Compatibility with Dynamix File Manager
 

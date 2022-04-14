@@ -143,6 +143,8 @@ function extendedTest() {
     type: "warning"
   }, function() {
     $.post(caURL,{action:'runExtended'});
+		$("#extendedTest,#extendedLog").prop("disabled",true);
+		$("#extendedStatus").html("Extended Test Running");
   });
 }
 
@@ -210,9 +212,7 @@ $(function() {
 	
   if ( "<?=$userEnabled?>" == "true" ) {
     $("#userOnly").show();
-    setInterval(function() {
     checkExtended();
-    }, 1000);
   } else {
     $("#userOnly").hide();
   }
@@ -255,6 +255,7 @@ $(function() {
     }
   });
 });
+
 function checkExtended() {
   $.post(caURL,{action:'checkExtendedStatus'},function(data) {
     if (data) {
