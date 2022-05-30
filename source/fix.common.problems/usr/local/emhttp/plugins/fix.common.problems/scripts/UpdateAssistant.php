@@ -289,6 +289,19 @@ if ( version_compare($newUnRaidVersion,"6.7.9",">") ) {
 	}
 }
 
+echo "\nChecking for tg3 driver and IOMMU enabled\n";
+	$iommu_groups = shell_exec("find /sys/kernel/iommu_groups/ -type l");
+	if ( $iommu_groups ) {
+		if ( shell_exec("lsmod | grep tg3") ) {
+			ISSUE("It appears that you have an ethernet adapter using the tg3 driver and IOMMU enabled.  This combination has been found to potentially cause serious data corruption issues.  Disable IOMMU in the BIOS");
+		} else {
+			OK("tg3 driver not present");
+		}
+	} else {
+		OK("IOMMU not enabled, tg3 driver test not applicable");
+	}
+
+
 if ($ISSUES_FOUND) {
 	echo "\n\n<font color='red'>Issues have been found with your server that may hinder the OS upgrade.  You should rectify those problems before upgrading</font>\n";
 } else {
