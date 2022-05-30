@@ -14,7 +14,7 @@
 
 <CHANGES>
 ###2022.05.30
-- Add tg3 & IOMMU test to Upgrade Assistant
+- Add tg3 &amp; IOMMU test to Upgrade Assistant
 
 ###2022.04.14
 - Don't use polling to determine if the extended test is still running.  After the notification user just needs to reload the page
