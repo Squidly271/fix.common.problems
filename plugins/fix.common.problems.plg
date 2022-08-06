@@ -2,8 +2,8 @@
 <!DOCTYPE PLUGIN [
 <!ENTITY name      "fix.common.problems">
 <!ENTITY author    "Andrew Zawadzki">
-<!ENTITY version   "2022.05.30">
-<!ENTITY md5       "0dcf8c9fa013bea6c9f794f245227e95">
+<!ENTITY version   "2022.08.06">
+<!ENTITY md5       "ff984998fd4d0d9f8a7c364afb62a739">
 <!ENTITY launch    "Settings/FixProblems">
 <!ENTITY plugdir   "/usr/local/emhttp/plugins/&name;">
 <!ENTITY github    "Squidly271/fix.common.problems">
@@ -13,6 +13,9 @@
 <PLUGIN name="&name;" author="&author;" version="&version;" launch="&launch;" pluginURL="&pluginURL;" icon="warning" min="6.7.0">
 
 <CHANGES>
+###2022.08.06
+- Misc updates
+
 ###2022.05.30
 - Add tg3 &amp; IOMMU test to Upgrade Assistant
 
