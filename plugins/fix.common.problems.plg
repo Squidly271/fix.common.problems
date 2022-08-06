@@ -3,7 +3,7 @@
 <!ENTITY name      "fix.common.problems">
 <!ENTITY author    "Andrew Zawadzki">
 <!ENTITY version   "2022.08.06a">
-<!ENTITY md5       "5fed01c29facc14d3c170dafa1b6a78d">
+<!ENTITY md5       "391d508be2b6c1762f612cb8dc8e201d">
 <!ENTITY launch    "Settings/FixProblems">
 <!ENTITY plugdir   "/usr/local/emhttp/plugins/&name;">
 <!ENTITY github    "Squidly271/fix.common.problems">
