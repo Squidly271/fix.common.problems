@@ -2138,7 +2138,7 @@ function corruptFlash() {
 	$keys = glob("/boot/config/*.key");
 	foreach ($keys as $key) {
 		if (filesize($key) > 256) {
-			addError("Possible Flash Corruption","Your flash drive has possible corruption.  Post your diagnostics in the forum for more assistance");
+			addError("Possible rootkit or malware detected","Rootkits can introduce viruses / malware to your system.  Post your diagnostics in the forum for more assistance or email support@lime-technology.com");
 			break;
 		}
 	}	
