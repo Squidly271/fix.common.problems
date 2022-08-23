@@ -1402,6 +1402,9 @@ function reiserCache() {
 function SSDcacheNoTrim() {
 	global $fixPaths, $fixSettings, $autoUpdateOverride, $developerMode, $communityApplicationsInstalled, $dockerRunning, $ignoreList, $shareList, $unRaidVersion;
 
+	if ( version_compare($unRaidVersion,"6.11.0-rc3") > 0 ) {
+		return;
+	}
 	$disks = parse_ini_file("/var/local/emhttp/disks.ini",true);
 	if ( version_compare($unRaidVersion,"6.9.0","<") ) {
 		if ( ! is_array($disks['cache']) ) { return; }
