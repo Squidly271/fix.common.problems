@@ -2,8 +2,8 @@
 <!DOCTYPE PLUGIN [
 <!ENTITY name      "fix.common.problems">
 <!ENTITY author    "Andrew Zawadzki">
-<!ENTITY version   "2022.08.23">
-<!ENTITY md5       "6669cb78a488237559010a54d5c941a5">
+<!ENTITY version   "2022.08.24">
+<!ENTITY md5       "3cfbe916dc204ab79943856aaebe769b">
 <!ENTITY launch    "Settings/FixProblems">
 <!ENTITY plugdir   "/usr/local/emhttp/plugins/&name;">
 <!ENTITY github    "Squidly271/fix.common.problems">
@@ -13,6 +13,9 @@
 <PLUGIN name="&name;" author="&author;" version="&version;" launch="&launch;" pluginURL="&pluginURL;" icon="warning" min="6.7.0">
 
 <CHANGES>
+###2022.08.24
+- Remove NerdPack reference from one test
+
 ###2022.08.23
 - Don't run SSD Trim tests on OS versions 6.11.0-rc4+
 

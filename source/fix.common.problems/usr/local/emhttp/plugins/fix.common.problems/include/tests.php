@@ -1927,7 +1927,7 @@ function extraPackages() {
 	global $fixPaths, $fixSettings, $autoUpdateOverride, $developerMode, $communityApplicationsInstalled, $dockerRunning, $ignoreList, $shareList,$unRaidVersion;
 
 	if ( ! empty(glob("/boot/extra/*.txz")) ) {
-		addWarning("Extra Packages Found","Extra packages being installed were found in /boot/extra.  It is not recommended to install any packages this way.  The recommended way is via the NerdPack / DevPack plugins");
+		addWarning("Extra Packages Found","Extra packages being installed were found in /boot/extra.  It is not recommended to install any packages this way.");
 	}
 }
 
