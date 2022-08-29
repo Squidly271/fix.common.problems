@@ -2,8 +2,8 @@
 <!DOCTYPE PLUGIN [
 <!ENTITY name      "fix.common.problems">
 <!ENTITY author    "Andrew Zawadzki">
-<!ENTITY version   "2022.08.24">
-<!ENTITY md5       "3cfbe916dc204ab79943856aaebe769b">
+<!ENTITY version   "2022.08.29">
+<!ENTITY md5       "793bceb022ce81ad444a94cb899fc098">
 <!ENTITY launch    "Settings/FixProblems">
 <!ENTITY plugdir   "/usr/local/emhttp/plugins/&name;">
 <!ENTITY github    "Squidly271/fix.common.problems">
@@ -13,6 +13,9 @@
 <PLUGIN name="&name;" author="&author;" version="&version;" launch="&launch;" pluginURL="&pluginURL;" icon="warning" min="6.7.0">
 
 <CHANGES>
+###2022.08.29
+- Fix upgrade assistant and TG3 tests
+
 ###2022.08.24
 - Remove NerdPack reference from one test
 
