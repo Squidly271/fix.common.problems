@@ -1923,6 +1923,17 @@ function checkSameNetwork() {
 	}
 }
 
+function jumboFrames() {
+	$eths = getNics();
+	foreach ($eths as $ethi) {
+	  global $$ethi;
+	  $eth=$$ethi;
+	  if (!empty($eth["MTU"]) && $eth["MTU"] != "1500") {
+		addWarning("Jumbo frames detected on $ethi","$ethi is configured with a non-standard MTU of {$eth['MTU']}, aka Jumbo Frames. It is highly recommended that you change the 'Desired MTU' back to the default of 1500. If you are confident the entire network is setup correctly you can ignore this warning. ".addLinkButton("Network Settings","/Settings/NetworkSettings"),"https://forums.unraid.net/topic/120220-fix-common-problems-more-information/page/2/#comment-1167702");
+	  }
+	}
+}
+
 function extraPackages() {
 	global $fixPaths, $fixSettings, $autoUpdateOverride, $developerMode, $communityApplicationsInstalled, $dockerRunning, $ignoreList, $shareList,$unRaidVersion;
 
