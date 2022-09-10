@@ -174,6 +174,7 @@ if ( $troubleshooting ) {
 	"legacyVFIO",
 	"checkBonding",
 	"checkSameNetwork",
+	"jumboFrames",
 	"extraPackages",
 	"authorizedKeysInGo",
 	"reservedUserName",
