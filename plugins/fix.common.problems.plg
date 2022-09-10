@@ -2,8 +2,8 @@
 <!DOCTYPE PLUGIN [
 <!ENTITY name      "fix.common.problems">
 <!ENTITY author    "Andrew Zawadzki">
-<!ENTITY version   "2022.09.10">
-<!ENTITY md5       "1452d601e39af4cddff00d1d9d4f841c">
+<!ENTITY version   "2022.09.10a">
+<!ENTITY md5       "c2c3acba40d38812facb18a49b96667f">
 <!ENTITY launch    "Settings/FixProblems">
 <!ENTITY plugdir   "/usr/local/emhttp/plugins/&name;">
 <!ENTITY github    "Squidly271/fix.common.problems">
@@ -15,6 +15,7 @@
 <CHANGES>
 ###2022.09.10
 - Add test for jumbo frames
+- Add test for ReiserFS on Unraid 6.11+
 
 ###2022.08.29
 - Fix upgrade assistant and TG3 tests

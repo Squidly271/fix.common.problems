@@ -1395,6 +1395,13 @@ function reiserCache() {
 	if ( ($disks['cache']['fsType'] == "reiserfs") && ( ! $disks['cache']['rotational'] ) ) {
 		addWarning("SSD Cache Drive formatted as reiserFS","You have an SSD cache drive which has been formatted as reiserFS.  ReiserFS does not support trim, so you will encounter performance issues.  You should convert the cache drives format to XFS (or to BTRFS if you are planning a future cache-pool)");
 	}
+	if ( version_compare($unRaidVersion,"6.11.0-rc1",">") ) {
+		foreach ($disks as $disk) {
+			if ($disk['fsType'] == "reiserfs") {
+			addWarning("ResierFS on {$disk['name']} {$disk['fsType']}","ReiserFS is deprecated, and will be removed from the Linux Kernal in future releases.  Highly recommended to convert to XFS to prevent data loss in future releases of the OS","https://wiki.unraid.net/index.php/File_System_Conversion");
+			}
+		}
+	}
 }
 ################################################
 # Check for SSD Cache, but not SSD trim plugin #
