@@ -2145,7 +2145,7 @@ function corruptFlash() {
   }
 
 	if ( version_compare($unRaidVersion,"6.11.0-rc2",">") ) return;	
-	$keys = glob("/boot/config/*.key");
+	$keys = glob("/boot/config.key");
 	foreach ($keys as $key) {
 		if (filesize($key) > 256) {
 			addError("Possible rootkit or malware detected","Rootkits can introduce viruses / malware to your system.  Post your diagnostics in the forum for more assistance or email support@lime-technology.com");
@@ -2162,6 +2162,22 @@ function jumboFrames() {
 	  if (!empty($eth["MTU"]) && $eth["MTU"] > "1500") {
 		addWarning("Jumbo Frames detected on $ethi","$ethi is configured with a non-standard MTU of {$eth['MTU']}, aka Jumbo Frames. It is highly recommended that you change the 'Desired MTU' back to the default of 1500. If you are confident the entire network is setup correctly you can ignore this warning. ".addLinkButton("Network Settings","/Settings/NetworkSettings"),"https://forums.unraid.net/topic/120220-fix-common-problems-more-information/page/2/#comment-1167702");
 	  }
+	}
+}
+
+function eth0NoIP() {
+	$eths = parse_ini_file("/var/local/emhttp/network.ini",true);
+	
+	foreach ( $eths as $eth => $config) {
+ 		if ( $eth == "eth0" && filter_var($config['IPADDR:0'],FILTER_VALIDATE_IP) )
+			return;
+		
+		if ( $eth == "eth0" )
+			continue;
+		
+		if ( filter_var($config['IPADDR:0'],FILTER_VALIDATE_IP) ) {
+			addWarning("eth0 does not have a valid IP address","eth0 does not have a valid IP address, but $eth does.  For the best experience, you should go to ".addLinkButton("Network Settings","/Settings/NetworkSettings")." and adjust the settings (Interface Rules) so that eth0 is your primary NIC");
+		}
 	}
 }
 

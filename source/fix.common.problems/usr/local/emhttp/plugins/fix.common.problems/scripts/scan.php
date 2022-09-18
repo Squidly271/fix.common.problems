@@ -108,6 +108,7 @@ if ( $troubleshooting ) {
 	rootfsFull();
 } else {
 	$tests = array("HPApresent",
+	"eth0NoIP",
 	"isArrayStarted",
 	"impliedArrayFilesOnCache",
 	"cacheOnlyFilesOnArray",
