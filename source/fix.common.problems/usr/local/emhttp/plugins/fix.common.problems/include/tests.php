@@ -2176,7 +2176,8 @@ function eth0NoIP() {
 			continue;
 		
 		if ( filter_var($config['IPADDR:0'],FILTER_VALIDATE_IP) ) {
-			addWarning("eth0 does not have a valid IP address","eth0 does not have a valid IP address, but $eth does.  For the best experience, you should go to ".addLinkButton("Network Settings","/Settings/NetworkSettings")." and adjust the settings (Interface Rules) so that eth0 is your primary NIC");
+			addError("eth0 does not have a valid IP address","eth0 does not have a valid IP address, but $eth does.  For the best experience, you should go to ".addLinkButton("Network Settings","/Settings/NetworkSettings")." and adjust the settings (Interface Rules) so that eth0 is your primary NIC");
+			break;
 		}
 	}
 }
