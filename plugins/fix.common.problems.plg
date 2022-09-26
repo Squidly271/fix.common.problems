@@ -2,8 +2,8 @@
 <!DOCTYPE PLUGIN [
 <!ENTITY name      "fix.common.problems">
 <!ENTITY author    "Andrew Zawadzki">
-<!ENTITY version   "2022.09.10a">
-<!ENTITY md5       "c2c3acba40d38812facb18a49b96667f">
+<!ENTITY version   "2022.09.26">
+<!ENTITY md5       "822a59ef13492710a50d72dd3c06f873">
 <!ENTITY launch    "Settings/FixProblems">
 <!ENTITY plugdir   "/usr/local/emhttp/plugins/&name;">
 <!ENTITY github    "Squidly271/fix.common.problems">
@@ -13,6 +13,9 @@
 <PLUGIN name="&name;" author="&author;" version="&version;" launch="&launch;" pluginURL="&pluginURL;" icon="warning" min="6.7.0">
 
 <CHANGES>
+###2022.09.26
+- Test for eth0 not having a valid IP address
+
 ###2022.09.10
 - Add test for jumbo frames
 - Add test for ReiserFS on Unraid 6.11+

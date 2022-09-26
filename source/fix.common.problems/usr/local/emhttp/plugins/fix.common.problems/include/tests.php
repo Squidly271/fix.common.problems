@@ -2169,14 +2169,14 @@ function eth0NoIP() {
 	$eths = parse_ini_file("/var/local/emhttp/network.ini",true);
 	
 	foreach ( $eths as $eth => $config) {
- 		if ( $eth == "eth0" && filter_var($config['IPADDR:0'],FILTER_VALIDATE_IP) )
+ 		if ( $eth == "eth0" && (filter_var($config['IPADDR:0'],FILTER_VALIDATE_IP) || filter_var($config['IPADDR6:0'],FILTER_VALIDATE_IP)) )
 			return;
 		
 		if ( $eth == "eth0" )
 			continue;
 		
-		if ( filter_var($config['IPADDR:0'],FILTER_VALIDATE_IP) ) {
-			addError("eth0 does not have a valid IP address","eth0 does not have a valid IP address, but $eth does.  For the best experience, you should go to ".addLinkButton("Network Settings","/Settings/NetworkSettings")." and adjust the settings (Interface Rules) so that eth0 is your primary NIC");
+		if ( filter_var($config['IPADDR:0'],FILTER_VALIDATE_IP) || filter_var($config['IPADDR6:0'],FILTER_VALIDATE_IP) ) {
+			addError("eth0 does not have a valid IP address","eth0 does not have a valid IP address, but $eth does.  For the best experience, you should go to ".addLinkButton("Network Settings","/Settings/NetworkSettings")." and adjust the settings (Interface Rules) so that eth0 is your primary NIC","https://forums.unraid.net/topic/120220-fix-common-problems-more-information/page/2/#comment-1170361");
 			break;
 		}
 	}
