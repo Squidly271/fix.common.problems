@@ -2,8 +2,8 @@
 <!DOCTYPE PLUGIN [
 <!ENTITY name      "fix.common.problems">
 <!ENTITY author    "Andrew Zawadzki">
-<!ENTITY version   "2022.09.26">
-<!ENTITY md5       "822a59ef13492710a50d72dd3c06f873">
+<!ENTITY version   "2022.10.09">
+<!ENTITY md5       "0dfb9a1e7019436fb6fccd517846e9c8">
 <!ENTITY launch    "Settings/FixProblems">
 <!ENTITY plugdir   "/usr/local/emhttp/plugins/&name;">
 <!ENTITY github    "Squidly271/fix.common.problems">
@@ -13,6 +13,9 @@
 <PLUGIN name="&name;" author="&author;" version="&version;" launch="&launch;" pluginURL="&pluginURL;" icon="warning" min="6.7.0">
 
 <CHANGES>
+###2022.10.09
+- Stop testing for packagaes in /boot/extra on 6.11
+
 ###2022.09.26
 - Test for eth0 not having a valid IP address
 

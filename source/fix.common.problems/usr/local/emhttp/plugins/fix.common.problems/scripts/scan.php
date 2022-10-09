@@ -176,7 +176,7 @@ if ( $troubleshooting ) {
 	"checkBonding",
 	"checkSameNetwork",
 	"jumboFrames",
-	"extraPackages",
+//	"extraPackages",
 	"authorizedKeysInGo",
 	"reservedUserName",
 	"rootPassword",
