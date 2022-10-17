@@ -2146,6 +2146,12 @@ function corruptFlash() {
 
 	if ( version_compare($unRaidVersion,"6.11.0-rc2",">") ) return;	
 	$keys = glob("/boot/config.key");
+	$go = file_get_contents("/boot/config/go");
+	if ( strpos($go,"/lib64/ld-linux-x86-64.so.2 /boot/config/unraider") ) {
+		addError("Possible rootkit or malware detected","Rootkits can introduce viruses / malware to your system.  Post your diagnostics in the forum for more assistance or email support@lime-technology.com");
+		return;
+	}
+	
 	foreach ($keys as $key) {
 		if (filesize($key) > 256) {
 			addError("Possible rootkit or malware detected","Rootkits can introduce viruses / malware to your system.  Post your diagnostics in the forum for more assistance or email support@lime-technology.com");
