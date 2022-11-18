@@ -58,7 +58,7 @@ function displayErrors() {
     $o .= "<thead><th width='25%'>Ignored Errors & Warnings</th><th width='60%'>Suggested Fix</th><th></th></thead>";
     foreach ($ignored as $ignore) {
       $o .= "<tr><td>".$ignore['error']."</td><td>".$ignore['suggestion']."</td>";
-      $o .= "<td><input type='button' id='".mt_rand()."' value='Monitor Warning / Error' onclick='readdError(&quot;".strip_tags($ignore['error'])."&quot;,this.id);';></td></tr>";
+      $o .= "<td><input type='button' id='".mt_rand()."' value='Monitor Warning / Error' onclick='readdError(&quot;".strip_tags(htmlentities($ignore['error'],ENT_QUOTES))."&quot;,this.id);';></td></tr>";
     }
     $o .= "</table>";
     $o .= "<center>";
@@ -69,7 +69,7 @@ function displayErrors() {
     $o .= "<thead><th width='85%'>All Ignored Errors & Warnings</th><th></th></thead>";
     $ignores = array_keys($ignoreList);
     foreach ($ignores as $ignore) {
-      $o .= "<tr><td>$ignore</td><td><input type='button' id='".mt_rand()."' value='Monitor Warning / Error' onclick='readdError(&quot;$ignore&quot;,this.id);'</td></tr>";
+      $o .= "<tr><td>$ignore</td><td><input type='button' id='".mt_rand()."' value='Monitor Warning / Error' onclick='readdError(&quot;".htmlentities($ignore,ENT_QUOTES)."&quot;,this.id);'</td></tr>";
     }
     $o .= "</table>";
   }

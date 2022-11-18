@@ -2,8 +2,8 @@
 <!DOCTYPE PLUGIN [
 <!ENTITY name      "fix.common.problems">
 <!ENTITY author    "Andrew Zawadzki">
-<!ENTITY version   "2022.10.17">
-<!ENTITY md5       "21db3705583a2c278d3258873d1a43ee">
+<!ENTITY version   "2022.11.18">
+<!ENTITY md5       "80651bc4604e618fc429498608b988d3">
 <!ENTITY launch    "Settings/FixProblems">
 <!ENTITY plugdir   "/usr/local/emhttp/plugins/&name;">
 <!ENTITY github    "Squidly271/fix.common.problems">
@@ -13,6 +13,9 @@
 <PLUGIN name="&name;" author="&author;" version="&version;" launch="&launch;" pluginURL="&pluginURL;" icon="warning" min="6.7.0">
 
 <CHANGES>
+###2022.11.18
+- Fixed: Errors containing an apostrophe couldn't be re-monitored once ignored
+
 ###2022.10.17
 - Coding refinements
 
