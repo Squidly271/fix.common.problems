@@ -97,7 +97,7 @@ function wrongCachePoolFiles() {
 		if ( $disk['type'] == "Cache" && $disk['status'] !== "DISK_NP")
 			$pools[] = $disk['name'];
 	}
-	if ( ! $pools ) return;
+	if ( ! isset($pools) ) return;
 	
 	if ( version_compare($unRaidVersion,"6.10.0-rc2",">") ) {
 		$msg = "Either adjust which pool this share should be using or manually move the files with Dynamix File Manager";
@@ -202,8 +202,8 @@ function autoUpdateCheck() {
 			$autoUpdateSettings['community.applications.plg'] = "true";
 			$autoUpdateSettings['fix.common.problems.plg'] = "true";
 		}
-		if ( $autoUpdateSettings['Global'] != "true" ) {
-			if ( $autoUpdateSettings['fix.common.problems.plg'] != "true" ) {
+		if ( ($autoUpdateSettings['Global'] ?? "") != "true" ) {
+			if ( ($autoUpdateSettings['fix.common.problems.plg'] ?? "") != "true" ) {
 				if ( $autoUpdateOverride ) {
 					$func = "addWarning";
 				} else {
@@ -436,13 +436,13 @@ function pluginsUpToDate() {
 	global $communityPaths, $unRaidVersion;
 
 	$autoUpdateSettings = readJsonFile($communityPaths['autoUpdateSettings']);
-	if ( $autoUpdateSettings['Global'] != "true" ) {
+	if ( ($autoUpdateSettings['Global'] ?? "") != "true" ) {
 		$installedPlugins = array_diff(scandir("/var/log/plugins"),array(".",".."));
 		foreach ($installedPlugins as $Plugin) {
 			if ( $Plugin == "community.applications.plg" ) {
 				continue;
 			}
-			if ( $autoUpdateSettings[$Plugin] != "true" ) {
+			if ( ($autoUpdateSettings[$Plugin] ?? "") != "true" ) {
 				if ( is_file("/var/log/plugins/$Plugin") ) {
 					if ( strtolower(pathinfo($Plugin, PATHINFO_EXTENSION)) == "plg" ) {
 						if ( checkPluginUpdate($Plugin) ) {
@@ -601,7 +601,7 @@ function scheduledParityChecks() {
 	if ( is_file("/boot/config/plugins/dynamix/dynamix.cfg") ) {
 		$dynamixSettings = my_parse_ini_file("/boot/config/plugins/dynamix/dynamix.cfg",true);
 
-		if ( $dynamixSettings['parity']['mode'] == "0" ) {
+		if ( ($dynamixSettings['parity']['mode'] ?? "") == "0" ) {
 			addWarning("Scheduled <b>Parity Checks</b> are not enabled","It is highly recommended to schedule parity checks for your system (most users choose monthly).  This is so that you know if Unraid has the ability to rebuild a failed drive if it needs to.  Set the schedule here: ".addLinkButton("Scheduler","/Settings/Scheduler"));
 		}
 	}
@@ -773,10 +773,10 @@ function blacklistedPluginsInstalled() {
 				continue;
 			}
 			$pluginURL = getRedirectedURL(exec("/usr/local/emhttp/plugins/dynamix.plugin.manager/scripts/plugin pluginURL /var/log/plugins/$plugin"));
-			if ( $caModeration[$pluginURL]['Blacklist'] ) {
+			if ( isset($caModeration[$pluginURL]['Blacklist']) ) {
 				addError("Blacklisted plugin <b>$plugin</b>","This plugin has been blacklisted and should no longer be used due to the following reason(s): <em><b>".$caModeration[$pluginURL]['ModeratorComment']."</b></em>  You should remove this plugin as its continued installation may cause adverse effects on your server.".addLinkButton("Plugins","/Plugins"));
 			}
-			if ( $caModeration[$pluginURL]['Deprecated'] ) {
+			if ( isset($caModeration[$pluginURL]['Deprecated']) ) {
 				addWarning("Deprecated plugin <b>$plugin</b>","This plugin has been deprecated and should no longer be used due to the following reason(s): <em><b>".$caModeration[$pluginURL]['ModeratorComment']."</b></em>  While this plugin should still be functional, it is no recommended to continue to use it.".addLinkButton("Plugins","/Plugins"));
 			}
 		}
@@ -1108,6 +1108,7 @@ function checkForHack() {
 		$errors[$month][$day]['Day'] = $day;
 		$errors[$month][$day][] = $line;
 	}
+	if ( ! isset($errors) ) return;
 	if ( ! is_array($errors) ) { return; }
 	foreach ($errors as $errorMonth) {
 		$currentMonth = $errorMonth['Month'];
@@ -1141,21 +1142,21 @@ function checkForModeration() {
 		$image = $dockerApp['Image'];
 		$Repository = str_replace(":latest","",$image);
 
-		unset($comments);
-		if ( $moderation[$image]['ModeratorComment'] ) {
+		$comments = [];
+		if ( isset($moderation[$image]['ModeratorComment']) ) {
 			$comments = $moderation[$image];
 		}
-		if ( $moderation[$Repository]['ModeratorComment'] ) {
+		if ( isset($moderation[$Repository]['ModeratorComment']) ) {
 			$comments = $moderation[$Repository];
 		}
-		if ( ! $comments ) {
+		if ( empty($comments) ) {
 			continue;
 		}
-		if ( $comments['Blacklist'] ) {
+		if ( isset($comments['Blacklist']) ) {
 			addWarning("Docker application <b>".$dockerApp['Name']."</b> has moderator comments listed","<b>".$dockerApp['Name']."</b> (".$dockerApp['Image'].") has the following comments: ".$comments['ModeratorComment']."  Additionally, this application has been blacklisted from Community Applications for that reason.");
 			continue;
 		}
-		if ( $comments['Deprecated'] ) {
+		if ( isset($comments['Deprecated']) ) {
 			addWarning("Docker application <b>".$dockerApp['Name']."</b> has moderator comments listed","<b>".$dockerApp['Name']."</b> (".$dockerApp['Image'].") has the following comments: ".$comments['ModeratorComment']."  This application has been deprecated from Community Applications for that reason.  While still functional, it is no longer recommended to utilize it.");
 		} else {
 			addOther("Docker application <b>".$dockerApp['Name']."</b> has moderator comments listed","<b>".$dockerApp['Name']."</b> (".$dockerApp['Image'].") has the following comments: ".$comments['ModeratorComment']."");
@@ -1183,20 +1184,20 @@ function pluginNotCompatible() {
 		$pluginURL = getRedirectedURL(exec("/usr/local/emhttp/plugins/dynamix.plugin.manager/scripts/plugin pluginURL /var/log/plugins/$plugin"));
 
 		foreach ( $allApps as $app ) {
-			if ( $app['Plugin'] ) {
+			if ( isset($app['Plugin']) ) {
 				if ( $app['PluginURL'] == $pluginURL ) {
-					if ( $moderation[$pluginURL] ) {
+					if ( isset($moderation[$pluginURL]) ) {
 						$app = array_merge($app,$moderation[$pluginURL]);
 					}
 					if ( ! versionCheck($app) ) {
-						if ( $app['MinVer'] ) {
+						if ( isset($app['MinVer']) ) {
 						  $minVer = "Minimum OS Version: {$app['MinVer']}";
 						}
-						if ( $app['MaxVer'] ) {
+						if ( isset($app['MaxVer']) ) {
 							$maxVer = "Maximum OS Version: {$app['MaxVer']}";
 						}
 						
-						$verMsg = $app['VerMessage'] ?: "The author (or moderators of Community Applications) of the plugin template (<b>$pluginURL</b>) has specified that this plugin is incompatible with your version of Unraid ($unRaidVersion).  You should uninstall the plugin here:";
+						$verMsg = $app['VerMessage'] ?? "The author (or moderators of Community Applications) of the plugin template (<b>$pluginURL</b>) has specified that this plugin is incompatible with your version of Unraid ($unRaidVersion).  You should uninstall the plugin here:";
 						addWarning("<b>$plugin</b> Not Compatible with Unraid version $unRaidVersion",$verMsg.addLinkButton("Plugins","/Plugins")." $minVer  $maxVer","https://forums.unraid.net/topic/120220-fix-common-problems-more-information/?tab=comments#comment-1098732");
 					}
 					break;
@@ -1392,12 +1393,15 @@ function reiserCache() {
 	global $fixPaths, $fixSettings, $autoUpdateOverride, $developerMode, $communityApplicationsInstalled, $dockerRunning, $ignoreList, $shareList, $unRaidVersion;
 
 	$disks = parse_ini_file("/var/local/emhttp/disks.ini",true);
-	if ( ($disks['cache']['fsType'] == "reiserfs") && ( ! $disks['cache']['rotational'] ) ) {
-		addWarning("SSD Cache Drive formatted as reiserFS","You have an SSD cache drive which has been formatted as reiserFS.  ReiserFS does not support trim, so you will encounter performance issues.  You should convert the cache drives format to XFS (or to BTRFS if you are planning a future cache-pool)");
+	
+	if ( isset($disks['cache']['fsType']) ) {
+		if ( ($disks['cache']['fsType'] == "reiserfs") && ( ! $disks['cache']['rotational'] ) ) {
+			addWarning("SSD Cache Drive formatted as reiserFS","You have an SSD cache drive which has been formatted as reiserFS.  ReiserFS does not support trim, so you will encounter performance issues.  You should convert the cache drives format to XFS (or to BTRFS if you are planning a future cache-pool)");
+		}
 	}
 	if ( version_compare($unRaidVersion,"6.11.0-rc1",">") ) {
 		foreach ($disks as $disk) {
-			if ($disk['fsType'] == "reiserfs") {
+			if ( isset($disk['fsType']) && $disk['fsType'] == "reiserfs") {
 			addWarning("ResierFS on {$disk['name']} {$disk['fsType']}","ReiserFS is deprecated, and will be removed from the Linux Kernal in future releases.  Highly recommended to convert to XFS to prevent data loss in future releases of the OS","https://wiki.unraid.net/index.php/File_System_Conversion");
 			}
 		}
@@ -1500,6 +1504,7 @@ function breadTest() {
 	if ( is_file("/boot/config/plugins/flash.remount.plg") )
 		return;
 	
+	$foundFlag = false;
 	$syslogs = dirContents("/var/log");
 	foreach ($syslogs as $syslog) {
 		if ( startsWith($syslog,"syslog") ) {
@@ -1563,7 +1568,7 @@ function checkDockerCompatible() {
 		$index = searchArray($allApps,"Repository",$Repository[0]);
 		if ( $index === false ) { continue;}
 		$template = $allApps[$index];
-		if ( $moderation[$Repository[0]] ) {
+		if ( isset($moderation[$Repository[0]]) ) {
 			$template = array_merge($template,$moderation[$Repository[0]]);
 		}
 		if ( ! versionCheck($template) ) {
@@ -1667,12 +1672,13 @@ function isolatedCPUdockerCollision() {
 	$cmdLine = explode(" ",file_get_contents("/proc/cmdline"));
 #	$cmdLine = explode(" ","BOOT_IMAGE=/bzimage pcie_acs_override=downstream isolcpus=1,3 initrd=/bzroot,/bzroot-gui");
 	
+	
 	foreach ($cmdLine as $option) {
 		if (strpos($option,"isolcpus") !== false ) {
 			$isolatedCPUs = explode("=",$option)[1];
 		}
 	}
-	$cpus = explode(",",$isolatedCPUs);
+	$cpus = explode(",",$isolatedCPUs ?? "");
 	foreach ($cpus as $test) {
 		if (strpos($test,"-")) {
 			$range = explode("-",$test);
@@ -1830,6 +1836,7 @@ function legacyVFIO() {
 	if ( version_compare($unRaidVersion,"6.9.0-rc2","<") ) {
 		return;
 	}
+	$found = false;
 	$cmdline = explode(' ',trim(file_get_contents('/proc/cmdline')));
 	foreach ($cmdline as $cmd) {
 		if ((strpos($cmd,'vfio-pci.ids')!==false) || (strpos($cmd,'xen-pciback.hide')!==false)) {
@@ -1916,7 +1923,7 @@ function checkSameNetwork() {
 		$eth=$$ethi;
 		$network4=getNetwork4($eth);
 		if ($network4) {
-			if ($networks4[$network4]) {
+			if ( isset($networks4[$network4]) ) {
 				$othernic=$networks4[$network4];
 				if ($eth["BONDNICS"] && strpos($eth["BONDNICS"].",", $othernic.",") > -1) {
 					// both nics are part of the same bond, is probably ok
@@ -2078,7 +2085,7 @@ function unknownPluginInstalled() {
 
 		if ( is_array($templates['applist']) ) {
 			foreach ($templates['applist'] as $template) {
-				if ($template['Plugin']) {
+				if (isset($template['Plugin'])) {
 					$allPlugins[] = $template;
 				}
 			}
@@ -2111,8 +2118,12 @@ function unknownPluginInstalled() {
 }	
 	
 function testDockerOptsIp() {
+	global $fixPaths;
+	
 	$dockerCfg = my_parse_ini_file($fixPaths['docker.cfg']);
 	$matches = null;
+	if ( ! ( $dockerCfg['DOCKER_OPTS'] ?? null ) )
+		return;
 	preg_match('/^.*--ip=(\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}).*$/', $dockerCfg['DOCKER_OPTS'], $matches);
 	if ($matches && $matches[1]) {
 		$dockerOptIp = $matches[1];
@@ -2125,7 +2136,7 @@ function testDockerOptsIp() {
 }
 
 function corruptFlash() {
-	global $fixPaths, $fixSettings, $autoUpdateOverride, $developerMode, $communityApplicationsInstalled, $dockerRunning, $ignoreList, $shareList;
+	global $fixPaths, $unRaidVersion, $fixSettings, $autoUpdateOverride, $developerMode, $communityApplicationsInstalled, $dockerRunning, $ignoreList, $shareList;
 
 	$paths = ["/boot/config","/boot/config/shares","/boot/config/plugins/dynamix"];
 	$excluded = ["/boot/config/case-model.cfg","/boot/config/plugins/dynamix/case-model.cfg","/boot/config/network-rules.cfg","/boot/config/plugins/corefreq/corefreq.cfg","/boot/config/plugins/open-vm-tools/open-vm-tools.cfg","/boot/config/plugins/ca.turbo/settings.ini","/boot/config/plugins/prometheus_fritzbox_exporter/settings.cfg","/boot/config/plugins/iscsi-initiator/targets.cfg","/boot/config/old.network-rules.cfg","/boot/config/plugins/prometheus_node_exporter/settings.cfg","/boot/config/syslinux.cfg","/boot/config/editor.cfg"];

@@ -18,6 +18,9 @@ require_once("/usr/local/emhttp/plugins/dynamix.plugin.manager/include/PluginHel
 
 if ( ! function_exists("my_parse_ini_file") ) {
 	function my_parse_ini_file($file,$mode=false,$scanner_mode=INI_SCANNER_NORMAL) {
+		if ( ! $file ) {
+			return false;
+		}
 		return parse_ini_string(preg_replace('/^#.*\\n/m', "", @file_get_contents($file)),$mode,$scanner_mode);
 	}
 }
@@ -43,7 +46,7 @@ function addError($description,$action,$url="") {
 	if ( $url )
 		$newError['suggestion'] .= "&nbsp;&nbsp;<a href='$url' target='_blank'>More Information</a>";
 	
-	if ( $ignoreList[strip_tags($description)] ) {
+	if ( isset($ignoreList[strip_tags($description)]) ) {
 		$ignored[] = $newError;
 		if ( $fixSettings['logIgnored'] == "yes" ) {
 			logger("Fix Common Problems: Error: ".strip_tags($description),true);
@@ -70,7 +73,7 @@ function addWarning($description,$action,$url="") {
 	if ( $url )
 		$newWarning['suggestion'] .= "&nbsp;&nbsp;<a href='$url' target='_blank'>More Information</a>";
 	
-	if ( $ignoreList[strip_tags($originalDescription)] ) {
+	if ( isset($ignoreList[strip_tags($originalDescription)]) ) {
 		$ignored[] = $newWarning;
 		if ( $fixSettings['logIgnored'] == "yes" ) {
 			logger("Fix Common Problems: Warning: ".strip_tags($description),true);
@@ -97,7 +100,7 @@ function addOther($description,$action,$url="") {
 	if ( $url )
 		$newWarning['suggestion'] .= "&nbsp;&nbsp;<a href='$url' target='_blank'>More Information</a>";
 	
-	if ( $ignoreList[strip_tags($originalDescription)] ) {
+	if ( isset($ignoreList[strip_tags($originalDescription)]) ) {
 		$ignored[] = $newWarning;
 		if ( $fixSettings['logIgnored'] == "yes" ) {
 			logger("Fix Common Problems: Other Warning: ".strip_tags($description),true);
@@ -299,8 +302,8 @@ function unRaidVersion() {
 function versionCheck($template) {
 	global $unRaidVersion;
 
-	if ( $template['MinVer'] && ( version_compare($template['MinVer'],$unRaidVersion) > 0 ) ) { return false; }
-	if ( $template['MaxVer'] && ( version_compare($template['MaxVer'],$unRaidVersion) < 0 ) ) { return false; }
+	if ( isset($template['MinVer']) && ( version_compare($template['MinVer'],$unRaidVersion) > 0 ) ) { return false; }
+	if ( isset($template['MaxVer']) && ( version_compare($template['MaxVer'],$unRaidVersion) < 0 ) ) { return false; }
 	return true;
 }
 
@@ -318,45 +321,45 @@ function readXmlFile($xmlfile) {
 		$o['WebUI']       = $doc->getElementsByTagName( "WebUI" )->item(0)->nodeValue;
 
 	$o['Path']        = $xmlfile;
-	$o['Repository']  = stripslashes($doc->getElementsByTagName( "Repository" )->item(0)->nodeValue);
+	$o['Repository']  = stripslashes($doc->getElementsByTagName( "Repository" )->item(0)->nodeValue ?? "");
 	$o['Author']      = preg_replace("#/.*#", "", $o['Repository']);
-	$o['Name']        = stripslashes($doc->getElementsByTagName( "Name" )->item(0)->nodeValue);
+	$o['Name']        = stripslashes($doc->getElementsByTagName( "Name" )->item(0)->nodeValue ?? "");
 	$o['DockerHubName'] = strtolower($o['Name']);
-	$o['Beta']        = strtolower(stripslashes($doc->getElementsByTagName( "Beta" )->item(0)->nodeValue));
-	$o['Changes']     = $doc->getElementsByTagName( "Changes" )->item(0)->nodeValue;
-	$o['Date']        = $doc->getElementsByTagName( "Date" ) ->item(0)->nodeValue;
-	$o['Project']     = $doc->getElementsByTagName( "Project" ) ->item(0)->nodeValue;
-	$o['SortAuthor']  = $o['Author'];
-	$o['SortName']    = $o['Name'];
-	$o['MinVer']      = $doc->getElementsByTagName( "MinVer" ) ->item(0)->nodeValue;
-	$o['MaxVer']      = $doc->getElementsByTagName( "MaxVer" ) ->item(0)->nodeValue;
-	$o['Overview']    = $doc->getElementsByTagName("Overview")->item(0)->nodeValue;
+	$o['Beta']        = strtolower(stripslashes($doc->getElementsByTagName( "Beta" )->item(0)->nodeValue ?? ""));
+	$o['Changes']     = $doc->getElementsByTagName( "Changes" )->item(0)->nodeValue ?? null;
+	$o['Date']        = $doc->getElementsByTagName( "Date" ) ->item(0)->nodeValue ?? null;
+	$o['Project']     = $doc->getElementsByTagName( "Project" ) ->item(0)->nodeValue ?? null;
+	$o['SortAuthor']  = $o['Author'] ?? "";
+	$o['SortName']    = $o['Name'] ?? "";
+	$o['MinVer']      = $doc->getElementsByTagName( "MinVer" ) ->item(0)->nodeValue ?? null;
+	$o['MaxVer']      = $doc->getElementsByTagName( "MaxVer" ) ->item(0)->nodeValue ?? null;
+	$o['Overview']    = $doc->getElementsByTagName("Overview")->item(0)->nodeValue ?? null;
 	if ( strlen($o['Overview']) > 0 ) {
-		$o['Description'] = stripslashes($doc->getElementsByTagName( "Overview" )->item(0)->nodeValue);
+		$o['Description'] = stripslashes($doc->getElementsByTagName( "Overview" )->item(0)->nodeValue ?? "");
 		$o['Description'] = preg_replace('#\[([^\]]*)\]#', '<$1>', $o['Description']);
 	} else {
-		$o['Description'] = $doc->getElementsByTagName( "Description" )->item(0)->nodeValue;
+		$o['Description'] = $doc->getElementsByTagName( "Description" )->item(0)->nodeValue ?? "";
 	}
-	$o['Plugin']      = $doc->getElementsByTagName( "Plugin" ) ->item(0)->nodeValue;
-	$o['PluginURL']   = $doc->getElementsByTagName( "PluginURL" ) ->item(0)->nodeValue;
-	$o['PluginAuthor']= $doc->getElementsByTagName( "PluginAuthor" ) ->item(0)->nodeValue;
+	$o['Plugin']      = $doc->getElementsByTagName( "Plugin" ) ->item(0)->nodeValue ?? null;
+	$o['PluginURL']   = $doc->getElementsByTagName( "PluginURL" ) ->item(0)->nodeValue ?? null;
+	$o['PluginAuthor']= $doc->getElementsByTagName( "PluginAuthor" ) ->item(0)->nodeValue ?? null;
 
 # support both spellings
-	$o['Licence']     = $doc->getElementsByTagName( "License" ) ->item(0)->nodeValue;
-	$o['Licence']     = $doc->getElementsByTagName( "Licence" ) ->item(0)->nodeValue;
-	$o['Category']    = $doc->getElementsByTagName ("Category" )->item(0)->nodeValue;
+	$o['Licence']     = $doc->getElementsByTagName( "License" ) ->item(0)->nodeValue  ?? null;
+	$o['Licence']     = $doc->getElementsByTagName( "Licence" ) ->item(0)->nodeValue ?? null;
+	$o['Category']    = $doc->getElementsByTagName ("Category" )->item(0)->nodeValue ?? null;
 
-	if ( $o['Plugin'] ) {
+	if ( isset($o['Plugin']) ) {
 		$o['Author']     = $o['PluginAuthor'];
 		$o['Repository'] = $o['PluginURL'];
 		$o['Category']   .= " Plugins: ";
 		$o['SortAuthor'] = $o['Author'];
 		$o['SortName']   = $o['Name'];
 	}
-	$o['Description'] = preg_replace('#\[([^\]]*)\]#', '<$1>', $o['Description']);
-	$o['Overview']    = $doc->getElementsByTagName("Overview")->item(0)->nodeValue;
+	$o['Description'] = preg_replace('#\[([^\]]*)\]#', '<$1>', $o['Description']??"");
+	$o['Overview']    = $doc->getElementsByTagName("Overview")->item(0)->nodeValue ?? null;
 
-	$o['Announcement'] = $Repo['forum'];
+	$o['Announcement'] = $Repo['forum'] ??"";
 	$o['Support']     = ($doc->getElementsByTagName( "Support" )->length ) ? $doc->getElementsByTagName( "Support" )->item(0)->nodeValue : $Repo['forum'];
 	$o['Support']     = $o['Support'];
 	$o['IconWeb']     = stripslashes($doc->getElementsByTagName( "Icon" )->item(0)->nodeValue);
@@ -444,6 +447,8 @@ function searchArray($array,$key,$value) {
 	$result = false;
 	if (count($array) ) {
 		for ($i = 0; $i <= max(array_keys($array)); $i++) {
+			if ( !isset($array[$i][$key]) )
+				continue;
 			if ( $array[$i][$key] == $value ) {
 				$result = $i;
 				break;

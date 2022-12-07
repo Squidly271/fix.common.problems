@@ -4,7 +4,7 @@ $docroot = $docroot ?? $_SERVER['DOCUMENT_ROOT'] ?: '/usr/local/emhttp';
 
 require_once("$docroot/plugins/dynamix.plugin.manager/include/PluginHelpers.php");
 
-$nextBranch = ( $argv[1] == "next" );
+$nextBranch = ( ($argv[1] ?? "") == "next" );
 
 echo "Disclaimer:  This script is NOT definitive.  There may be other issues with your server that will affect compatibility.\n\n";
 
@@ -63,10 +63,10 @@ if ( $unRaid63 ) {
 }
 #check for plugins up to date
 echo "\nChecking for plugin updates\n";
-if ( ! $unRaid635 ) {
-	exec("plugin checkall");
-}
+exec("plugin checkall");
+
 $installedPlugs = glob("/var/log/plugins/*.plg");
+$updateFlag = false;
 foreach ($installedPlugs as $installedPlg) {
 	if ( basename($installedPlg) == "unRAIDServer.plg" ) { continue; }
 	if ( basename($installedPlg) == "unRAIDServer-.plg") { continue; }
@@ -97,16 +97,17 @@ if ( ! $appfeed ) {
 	echo "<font color='orange'>Unable to check</font>\n";
 } else {
 	foreach ($appfeed['applist'] as &$template) {
-		if ( ! $template['Plugin'] ) { continue; }
+		if ( ! isset($template['Plugin']) ) { continue; }
 		$template['redirectedURL'] = getRedirectedURL($template['PluginURL']);
 	}
 	foreach ($installedPlugs as $installedPlg) {
 		unset($pluginname);
+		$versionsFlag = false;
 		if ( basename($installedPlg) == "unRAIDServer.plg" ) { continue; }
 		if ( basename($installedPlg) == "unRAIDServer-.plg") { continue; }
 		if ( basename($installedPlg) == "dynamix.plg")       { continue; }
 		$pluginURL = plugin("pluginURL",$installedPlg);
-		if ( $moderation[$pluginURL]['MaxVer'] ) {
+		if ( isset($moderation[$pluginURL]['MaxVer']) ) {
 			if ( version_compare($newUnRaidVersion,$moderation[$pluginURL]['MaxVer'],">") ) {
 				$pluginName = plugin("name",$installedPlg);
 				
@@ -114,14 +115,14 @@ if ( ! $appfeed ) {
 				$versionsFlag = true;
 			}
 		}
-		if ( $moderation[$pluginURL]['DeprecatedMaxVer'] ) {
+		if ( isset($moderation[$pluginURL]['DeprecatedMaxVer']) ) {
 			if ( version_compare($newUnRaidVersion,$moderation[$pluginURL]['DeprecatedMaxVer'],">") ) {
 				$pluginName = plugin("name",$installedPlg);
 				ISSUE(basename($installedPlg)." is deprecated with $newUnRaidVersion.  It is recommended to uninstall this plugin. {$moderation[$pluginURL]['ModeratorComment']}");
 				$versionsFlag = true;
 			}
 		}
-		if ( filter_var($moderation[$pluginURL]['Deprecated'],FILTER_VALIDATE_BOOLEAN) ) {
+		if ( isset($moderation[$pluginURL]['Deprecated']) && filter_var($moderation[$pluginURL]['Deprecated'],FILTER_VALIDATE_BOOLEAN) ) {
 			ISSUE(basename($installedPlg)." is deprecated for ALL unRaid versions.  This does not necessarily mean you will have any issues with the plugin, but there are no guarantees.  It is recommended to uninstall the plugin");
 			$versionsFlag = true;
 		}
@@ -129,7 +130,7 @@ if ( ! $appfeed ) {
 		$pluginURL = getRedirectedURL($pluginURL);
 		if ( basename($installedPlg) != "unRAIDServer.plg" ) {
 			foreach ( $appfeed['applist'] as $template ) {
-				if ( ! $template['Plugin'] ) {
+				if ( ! isset($template['Plugin']) ) {
 					continue;
 				}
 				if (basename($installedPlg) == "ProFTPd.plg") {
@@ -176,6 +177,7 @@ if ( $output ) {
 
 # Check for disabled disks
 echo "\nChecking for disabled disks\n";
+$diskDSBLflag = false;
 foreach ($disks as $disk) {
 	if ($disk['status'] == 'DISK_DSBL') {
 		ISSUE("{$disk['name']} is disabled.  Highly recommended to fix this problem before upgrading your OS");
@@ -214,6 +216,7 @@ if ( ! is_file("/boot/config/plugins/fix.common.problems.plg") ) {
 	
 # Check for valid NETBIOS name
 echo "\nChecking for valid NETBIOS name\n";
+$netBIOSflag = false;
 $identity = @parse_ini_file("/boot/config/ident.cfg");
 if ( strlen($identity['NAME']) > 15 ) {
 	ISSUE("Server Name is not NETBIOS compliant (greater than 15 characters)  You may have trouble accessing your server.  Change in Settings - Identity");
@@ -303,7 +306,7 @@ if ( version_compare($newUnRaidVersion,"6.10.3","<") ) {
 	}
 }
 
-if ($ISSUES_FOUND) {
+if ( isset($ISSUES_FOUND)) {
 	echo "\n\n<font color='red'>Issues have been found with your server that may hinder the OS upgrade.  You should rectify those problems before upgrading</font>\n";
 } else {
 	echo "\n\n<font color='blue'>No issues were found with your server that may hinder the OS upgrade.  You should be good to go</font>\n";

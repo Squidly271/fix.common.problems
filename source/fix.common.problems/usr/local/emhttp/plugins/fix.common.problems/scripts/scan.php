@@ -24,7 +24,7 @@ libxml_use_internal_errors(true);
 ##################################################################################################################
 
 logger("Fix Common Problems Version ".exec("/usr/local/emhttp/plugins/dynamix.plugin.manager/scripts/plugin version /var/log/plugins/fix.common.problems.plg"));
-if ( $argv[1] == "troubleshoot" ) {
+if ( ($argv[1] ?? "") == "troubleshoot" ) {
 	$troubleshooting = true;
 /* 	logger("Fix Common Problems: Troubleshooting scan running");
 	$uptime = exec("uptime");
@@ -59,7 +59,7 @@ if ( $argv[1] == "troubleshoot" ) {
 
  */
 } else {
-	$disableNotifications = $argv[1];
+	$disableNotifications = ($argv[1] ?? "");
 }
 
 $autoUpdateOverride              = is_file("/boot/config/plugins/fix.common.problems/autoupdate-warning");
@@ -72,10 +72,10 @@ $unRaidVersion                   = unRaidVersion();
 $fixSettings = readJsonFile($fixPaths['settings']);
 $ignoreList = readJsonFile($fixPaths['ignoreList']);
 
-if ( ! $fixSettings['notifications'] ) { $fixSettings['notifications'] = "all"; }
-if ( ! $fixSettings['disableSpinUp'] ) { $fixSettings['disableSpinUp'] = "true"; }
-if ( ! $fixSettings['hacksPerDay'] ) { $fixSettings['hacksPerDay'] = 10; }
-if ( ! $fixSettings['logIgnored']) { $fixSettings['logIgnored'] = "yes"; }
+if ( ! ($fixSettings['notifications'] ?? "") ) { $fixSettings['notifications'] = "all"; }
+if ( ! ($fixSettings['disableSpinUp'] ?? "") ) { $fixSettings['disableSpinUp'] = "true"; }
+if ( ! ($fixSettings['hacksPerDay'] ?? "") ) { $fixSettings['hacksPerDay'] = 10; }
+if ( ! ($fixSettings['logIgnored'] ?? "") ) { $fixSettings['logIgnored'] = "yes"; }
 
 # download updated appfeed if necessary
 
@@ -103,7 +103,7 @@ download_url($fixPaths['moderationURL'],$fixPaths['moderation']);
 
 # start main
 
-if ( $troubleshooting ) {
+if ( $troubleshooting ?? false) {
 	varLogFilled();
 	rootfsFull();
 } else {
@@ -202,33 +202,34 @@ if ( $ignored && ( $fixSettings['logIgnored'] != "yes") ) {
 }
 
 
-if ( ! $errors && ! $warnings && ! $otherWarnings && ! $ignored ) {
+if ( ! isset($errors) && ! isset($warnings) && ! isset($otherWarnings) && ! isset($ignored) ) {
 	@unlink($fixPaths['errors']);
 } else {
-	$allErrors['errors'] = $errors;
-	$allErrors['warnings'] = $warnings;
-	$allErrors['other'] = $otherWarnings;
-	$allErrors['ignored'] = $ignored;
+	$allErrors['errors'] = $errors ?? null;
+	$allErrors['warnings'] = $warnings ?? null;
+	$allErrors['other'] = $otherWarnings ?? null;
+	$allErrors['ignored'] = $ignored ?? null;
 
 	writeJsonFile($fixPaths['errors'],$allErrors);
-	if ( $errors ) {
+	$message = "";
+	if ( isset($errors) ) {
 		foreach ($errors as $error) {
 			$message .= "* **".strip_tags($error['error'])."** \n";
 		}
 	}
-	if ( $warnings ) {
+	if ( isset($warnings) ) {
 		foreach ($warnings as $warning) {
 			$message .= "* ".strip_tags($warning['error'])." \n";
 		}
 	}
 	$unRaidSettings = parse_ini_file("/usr/local/emhttp/state/var.ini");
 	if ( ! $disableNotifications ) {
-		if ( $errors ) {
+		if ( isset($errors) ) {
 			if ( $fixSettings['notifications'] != "disabled" ) {
 				notify("Fix Common Problems - {$unRaidSettings['NAME']}","Errors have been found with your server ({$unRaidSettings['NAME']}).","Investigate at Settings / User Utilities / Fix Common Problems",$message,"alert");
 			}
 		} else {
-			if ( $warnings ) {
+			if ( isset($warnings) ) {
 				if ($fixSettings['notifications'] != "errors" ) {
 					notify("Fix Common Problems - {$unRaidSettings['NAME']}","Warnings have been found with your server.({$unRaidSettings['NAME']})","Investigate at Settings / User Utilities / Fix Common Problems",$message,"warning");
 				}

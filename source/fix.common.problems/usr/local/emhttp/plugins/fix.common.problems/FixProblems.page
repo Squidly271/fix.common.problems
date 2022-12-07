@@ -15,17 +15,17 @@ $plugin = "fix.common.problems";
 
 $settings = json_decode(@file_get_contents("/boot/config/plugins/fix.common.problems/settings.json"),true);
 
-if ( ! $settings['notifications'] ) { $settings['notifications'] = "all"; }
-if ( ! $settings['frequency'] ) { $settings['frequency'] = "disabled"; }
-if ( ! $settings['disableSpinUp'] ) { $settings['disableSpinUp'] = "true"; }
-if ( ! $settings['hacksPerDay'] ) { $settings['hacksPerDay'] = 10; }
-if ( ! $settings['logIgnored']) { $settings['logIgnored'] = "yes"; }
+if ( ! isset($settings['notifications']) ) { $settings['notifications'] = "all"; }
+if ( ! isset($settings['frequency']) ) { $settings['frequency'] = "disabled"; }
+if ( ! isset($settings['disableSpinUp']) ) { $settings['disableSpinUp'] = "true"; }
+if ( ! isset($settings['hacksPerDay']) ) { $settings['hacksPerDay'] = 10; }
+if ( ! isset($settings['logIgnored']) ) { $settings['logIgnored'] = "yes"; }
 
-if ( is_file("/tmp/fix.common.problems/troubleshoot") ) { $troubleshoot = true; }
+if ( is_file("/tmp/fix.common.problems/troubleshoot") ) { $troubleshoot = true; } else $troubleshoot = false;
 
 if ( is_dir("/mnt/user") ) {
   $userEnabled = "true";
-}
+} else $userEnabled = "false";
 $unRaid67 = version_compare(unRaidVersion(),"6.7.0-rc1",">");
 
 ?>
