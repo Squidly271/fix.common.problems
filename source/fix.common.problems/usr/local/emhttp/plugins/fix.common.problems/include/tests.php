@@ -1632,7 +1632,7 @@ function invalidIncludedDisk() {
 	
 	foreach ($shareList as $share) {
 		$shareCfg = my_parse_ini_file("/boot/config/shares/$share.cfg");
-		$includedDisks = explode(",",$shareCfg['shareInclude']);
+		$includedDisks = explode(",",$shareCfg['shareInclude'] ?? "");
 		foreach ($includedDisks as $disk) {
 			if ( ! is_dir("/mnt/$disk") ) {
 				addError("Share <b>$share</b> has $disk set in its included disk settings","$disk is not defined / installed in the array.  This will cause errors when writing to the array.  Fix it here: ".addLinkButton("$share Settings","/Shares/Share?name=$share")."  NOTE:  Because of how the UI works, $disk will not appear in on this page.  You will need to make a change (any change), then revert the change and hit apply to fix this issue");
@@ -1654,7 +1654,7 @@ function CPUSet() {
 	foreach ($userTemplates as $template) {
 		$xml = @simplexml_load_file($template);
 		$Name = (string)$xml->Name;
-		if ( ! $info[$Name] ) continue;
+		if ( ! isset($info[$Name]) ) continue;
 		if (strlen($xml->CPUset) && strpos($xml->ExtraParams,"cpuset-cpus")) {
 			addError("Docker Application $Name has duplicated entries for CPU pinning","Under Unraid version 6.6+, CPU pinning for docker applications via the extra parameters has been deprecated.  On this template, you have CPU pinning (--cpuset-cpus) contained in the extraparameters section of the template, and have also checked off one or more CPUs to pin the container to via the UI.  You should edit the container via the ".addLinkButton("Docker Tab","/Docker")." and remove the pinning from the extra parameters field");
 		}
