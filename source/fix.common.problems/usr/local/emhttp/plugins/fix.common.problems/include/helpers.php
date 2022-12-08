@@ -490,33 +490,84 @@ if (!function_exists('ipaddr')) {
 		}
 	}
 }
-##############
-# From Larry #
-##############
-function getCertCn($file, $hostname) {
-	if (!file_exists($file)) return '';
+##########################################
+# Certificate functions below from Larry #
+##########################################
 
-	// read the cert
+#######################
+# Polyfill from PHP 8 #
+#######################
+if (!function_exists('str_ends_with')) {
+	function str_ends_with($str, $end) {
+		return (@substr_compare($str, $end, -strlen($end))==0);
+	}
+}
+
+##########################################################
+# Returns array of all valid CNs for a given certificate #
+##########################################################
+function getCertCns($certfile, $hostname = null) {
+	if (!file_exists($certfile)) return false;
+	// Unraid supports subjectAltNames as of 6.10.3
+	// logic from rc.nginx, read commonName and all subjectAltName's
+	$cns = null;
+	exec(
+		"openssl x509 -noout -subject -nameopt multiline -in " . escapeshellarg($certfile) . "| sed -n 's/ *commonName *= //p';" .
+		"openssl x509 -noout -ext subjectAltName -in " . escapeshellarg($certfile) . " | grep -Eo 'DNS:[a-zA-Z 0-9.*-]*' | sed 's/DNS://g'",
+		$cns
+	);
+	$cns = array_unique($cns);
+	foreach ($cns as $cn) {
+		if ($hostname && !str_ends_with($cn,'.myunraid.net')) $cn = str_replace('*', $hostname, $cn); # support custom wildcard certs
+	}
+	return $cns;
+}
+
+##################################################
+# Checks whether cert is valid for expected_host #
+##################################################
+function checkCertCn($certfile, $hostname, $expected_host) {
+	if (!file_exists($certfile)) return false;
+	$cns = getCertCns($certfile, $hostname);
+	foreach ($cns as $cn) {
+		if (strtolower($cn) === strtolower($expected_host)) return true;
+	}
+	return false;
+}
+
+################################################
+# Checks whether cert is for unraid.net domain #
+################################################
+function isUnraidLegacyCert($certfile) {
+	if (!file_exists($certfile)) return false;
+	$cns = getCertCns($certfile);
+	foreach ($cns as $cn) {
+		if (str_ends_with($cn,'.unraid.net')) return true;
+	}
+	return false;
+}
+
+##################################################
+# Checks whether cert is for myunraid.net domain #
+##################################################
+function isUnraidWildcardCert($certfile) {
+	if (!file_exists($certfile)) return false;
+	$cns = getCertCns($certfile);
+	foreach ($cns as $cn) {
+		if (str_ends_with($cn,'.myunraid.net')) return true;
+	}
+	return false;
+}
+
+#################################################
+# Checks whether cert was self-signed by Unraid #
+#################################################
+function isUnraidSelfSignedCert($certfile) {
+	if (!file_exists($certfile)) return false;
 	$data = null;
-	exec("/usr/bin/openssl x509 -noout -subject -nameopt multiline -in ".escapeshellarg($file), $data);
+	exec("/usr/bin/openssl x509 -noout -subject -nameopt multiline -in ".escapeshellarg($certfile), $data);
 	$data = implode("\n", $data);
-
-	// Unraid 6.10 will automatically fix any issues with self-signed certs, ignore
-	if (strpos($data, "Self-signed") !== false){
-		return '';
-	}
-
-	// determine cn
-	preg_match('/ *commonName *= (.*)/', $data, $matches);
-	$cn = trim($matches[1]);
-	
-	// if Unraid LE cert, no need to check
-	if ( (strpos($cn, ".myunraid.net") !== false) or (strpos($cn, ".unraid.net") !== false) ) {
-		return '';
-	}
-
-	// handle custom wildcard certs
-	$cn = str_replace('*', $hostname, $cn);
-	return $cn;
+	if (strpos($data, "Self-signed") !== false) return true;
+	return false;
 }
 ?>
