@@ -2041,12 +2041,14 @@ function testTLD() {
 		}
 	}
 
-	if (isUnraidLegacyCert($cert_path.$https_2_cert)) {
-		// after 2023-JAN-01, unraid.net certificates will no longer be renewed
-		addWarning("Legacy certificate detected","Your unraid.net certificate needs to be upgraded to a myunraid.net certificate ASAP.", "https://unraid.net/blog/ssl-certificate-update");
-	} elseif (!isUnraidWildcardCert($cert_path.$https_2_cert)) {
-		// in 6.10.? the https_2_cert can only be used for unraid.net or myunraid.net certificates. Flag any custom certs here.
-		addWarning("Invalid Certificate 2","Your customized certificate '{$https_2_cert}' should be renamed to '{$https_1_cert}'. The {$https_2_cert} certificate is reserved for myunraid.net certificates.", "https://wiki.unraid.net/Manual/Security#Custom_Certificates");
+	if (file_exists($cert_path.$https_2_cert)) {
+		if (isUnraidLegacyCert($cert_path.$https_2_cert)) {
+			// after 2023-JAN-01, unraid.net certificates will no longer be renewed
+			addWarning("Legacy certificate detected","Your unraid.net certificate needs to be upgraded to a myunraid.net certificate ASAP.", "https://unraid.net/blog/ssl-certificate-update");
+		} elseif (!isUnraidWildcardCert($cert_path.$https_2_cert)) {
+			// in 6.10.? the https_2_cert can only be used for unraid.net or myunraid.net certificates. Flag any custom certs here.
+			addWarning("Invalid Certificate 2","Your customized certificate '{$https_2_cert}' should be renamed to '{$https_1_cert}'. The {$https_2_cert} certificate is reserved for myunraid.net certificates.", "https://wiki.unraid.net/Manual/Security#Custom_Certificates");
+		}
 	}
 
 	$TLDmain = explode(".",trim($unRaidVars['LOCAL_TLD']))[0];
