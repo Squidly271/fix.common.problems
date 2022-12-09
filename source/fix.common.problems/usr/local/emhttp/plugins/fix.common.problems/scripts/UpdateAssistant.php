@@ -96,12 +96,14 @@ $appfeed = download_json("https://raw.githubusercontent.com/Squidly271/AppFeed/m
 if ( ! $appfeed ) {
 	echo "<font color='orange'>Unable to check</font>\n";
 } else {
+	$redirectedURLs = [];
 	foreach ($appfeed['applist'] as &$template) {
 		if ( ! isset($template['Plugin']) ) { continue; }
-		$template['redirectedURL'] = getRedirectedURL($template['PluginURL']);
+		$redirectedurls[] = getRedirectedURL($template['PluginURL']);
 	}
+//	file_put_contents("/tmp/blah",print_r($appfeed,true));
 	foreach ($installedPlugs as $installedPlg) {
-		unset($pluginname);
+		unset($pluginName);
 		$versionsFlag = false;
 		if ( basename($installedPlg) == "unRAIDServer.plg" ) { continue; }
 		if ( basename($installedPlg) == "unRAIDServer-.plg") { continue; }
@@ -128,24 +130,10 @@ if ( ! $appfeed ) {
 		}
 		$foundAppFlag = false;
 		$pluginURL = getRedirectedURL($pluginURL);
-		if ( basename($installedPlg) != "unRAIDServer.plg" ) {
-			foreach ( $appfeed['applist'] as $template ) {
-				if ( ! isset($template['Plugin']) ) {
-					continue;
-				}
-				if (basename($installedPlg) == "ProFTPd.plg") {
-					echo "  $pluginURL   {$template['redirectedURL']}\n";
-				}
-				
-				if ( $pluginURL == $template['redirectedURL'] ) {
-					$foundAppFlag = true;
-					break;
-				}
-			}
-			if ( ! $foundAppFlag ) {
+		if ( ! in_array($pluginURL,$redirectedurls) ) {
 				ISSUE(basename($installedPlg)." is not known to Community Applications.  Compatibility for this plugin CANNOT be determined and it may cause you issues.");
-			}		
-		}
+		}		
+		
 	}
 	if ( ! $versionsFlag ) {
 		OK("All plugins are compatible");
