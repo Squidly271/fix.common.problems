@@ -2032,15 +2032,21 @@ function testTLD() {
 		}
 	}
 
-	// if there are custom certs, ensure the subject matches $unRaidVars['NAME'].$unRaidVars['LOCAL_TLD']
-	// getCertCn will ignore Self-signed certs, as Unraid 6.10 will automatically fix them
-	$https_1_cn = getCertCn("{$cert_path}{$https_1_cert}", $unRaidVars['NAME']);
-	if ($https_1_cn && strtolower($https_1_cn) != strtolower($expected_host) ) {
-		addWarning("Invalid Certificate 1","Your {$https_1_cert} certificate is for '{$https_1_cn}' but your system's hostname is '{$expected_host}'. Either adjust the system name and local TLD to match the certificate, or get a certificate that matches your settings. Even if things generally work now, this mismatch could cause issues in future versions of Unraid.  The local TLD can be adjusted here:  ".addLinkButton(" Management Settings","Settings/ManagementAccess"),"https://forums.unraid.net/topic/120220-fix-common-problems-more-information/page/2/?tab=comments#comment-1099982");
+	// don't check certs that are self-signed by Unraid, they had issues in 6.9 and will automatically be regenerated in 6.10+
+	if (!isUnraidSelfSignedCert($cert_path.$https_1_cert)) {
+		// check whether the certificate is valid for the expected_host
+		// this is primarily useful in Unraid 6.9, as a warning that the cert will be replaced when they upgrade to 6.10+
+		if (!checkCertCn($cert_path.$https_1_cert, $unRaidVars['NAME'], $expected_host)) {
+			addWarning("Invalid Certificate 1","Your {$https_1_cert} certificate is not valid for your system's hostname '{$expected_host}'. Either adjust the system name and local TLD to match the certificate, or get a certificate that matches your settings.","https://forums.unraid.net/topic/120220-fix-common-problems-more-information/page/2/?tab=comments#comment-1099982");
+		}
 	}
-	$https_2_cn = getCertCn("{$cert_path}{$https_2_cert}", $unRaidVars['NAME']);
-	if ($https_2_cn && strtolower($https_2_cn) != strtolower($expected_host) ) {
-		addWarning("Invalid Certificate 2","Your {$https_2_cert} certificate is for '{$https_2_cn}' but your system's hostname is '{$expected_host}'. Either adjust the system name and local TLD to match the certificate, or get a certificate that matches your settings. Even if things generally work now, this mismatch could cause issues in future versions of Unraid.  The local TLD can be adjusted here:  ".addLinkButton(" Management Settings","Settings/ManagementAccess"),"https://forums.unraid.net/topic/120220-fix-common-problems-more-information/page/2/?tab=comments#comment-1099982");
+
+	if (isUnraidLegacyCert($cert_path.$https_2_cert)) {
+		// after 2023-JAN-01, unraid.net certificates will no longer be renewed
+		addWarning("Legacy certificate detected","Your unraid.net certificate needs to be upgraded to a myunraid.net certificate ASAP.", "https://unraid.net/blog/ssl-certificate-update");
+	} elseif (!isUnraidWildcardCert($cert_path.$https_2_cert)) {
+		// in 6.10.? the https_2_cert can only be used for unraid.net or myunraid.net certificates. Flag any custom certs here.
+		addWarning("Invalid Certificate 2","Your customized certificate '{$https_2_cert}' should be renamed to '{$https_1_cert}'. The {$https_2_cert} certificate is reserved for myunraid.net certificates.", "https://wiki.unraid.net/Manual/Security#Custom_Certificates");
 	}
 
 	$TLDmain = explode(".",trim($unRaidVars['LOCAL_TLD']))[0];
@@ -2153,7 +2159,7 @@ function corruptFlash() {
 				addError("$file corrupted","Your flash drive has possible corruption on $file.  Post your diagnostics in the forum for more assistance","https://forums.unraid.net/topic/120220-fix-common-problems-more-information/page/2/?tab=comments#comment-1100181");
 			}
 		}
-  }
+	}
 
 	if ( version_compare($unRaidVersion,"6.11.0-rc2",">") ) return;	
 	$keys = glob("/boot/config.key");
@@ -2174,11 +2180,11 @@ function corruptFlash() {
 function jumboFrames() {
 	$eths = getNics();
 	foreach ($eths as $ethi) {
-	  global $$ethi;
-	  $eth=$$ethi;
-	  if (!empty($eth["MTU"]) && $eth["MTU"] > "1500") {
-		addWarning("Jumbo Frames detected on $ethi","$ethi is configured with a non-standard MTU of {$eth['MTU']}, aka Jumbo Frames. It is highly recommended that you change the 'Desired MTU' back to the default of 1500. If you are confident the entire network is setup correctly you can ignore this warning. ".addLinkButton("Network Settings","/Settings/NetworkSettings"),"https://forums.unraid.net/topic/120220-fix-common-problems-more-information/page/2/#comment-1167702");
-	  }
+		global $$ethi;
+		$eth=$$ethi;
+		if (!empty($eth["MTU"]) && $eth["MTU"] > "1500") {
+			addWarning("Jumbo Frames detected on $ethi","$ethi is configured with a non-standard MTU of {$eth['MTU']}, aka Jumbo Frames. It is highly recommended that you change the 'Desired MTU' back to the default of 1500. If you are confident the entire network is setup correctly you can ignore this warning. ".addLinkButton("Network Settings","/Settings/NetworkSettings"),"https://forums.unraid.net/topic/120220-fix-common-problems-more-information/page/2/#comment-1167702");
+		}
 	}
 }
 
