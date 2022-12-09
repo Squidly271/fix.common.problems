@@ -2,8 +2,8 @@
 <!DOCTYPE PLUGIN [
 <!ENTITY name      "fix.common.problems">
 <!ENTITY author    "Andrew Zawadzki">
-<!ENTITY version   "2022.11.18">
-<!ENTITY md5       "80651bc4604e618fc429498608b988d3">
+<!ENTITY version   "2022.12.09">
+<!ENTITY md5       "f9b2d5c1a4185ab0ef2db0b1dfb67f4f">
 <!ENTITY launch    "Settings/FixProblems">
 <!ENTITY plugdir   "/usr/local/emhttp/plugins/&name;">
 <!ENTITY github    "Squidly271/fix.common.problems">
@@ -13,6 +13,10 @@
 <PLUGIN name="&name;" author="&author;" version="&version;" launch="&launch;" pluginURL="&pluginURL;" icon="warning" min="6.7.0">
 
 <CHANGES>
+###2022.12.09
+- Fixed: PHP8 compliance
+- Added: Check for Legacy Unraid.net certificates
+
 ###2022.11.18
 - Fixed: Errors containing an apostrophe couldn't be re-monitored once ignored
 

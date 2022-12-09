@@ -1,6 +1,5 @@
 #!/usr/bin/php
 <?PHP
-
 ###############################################################
 #                                                             #
 # Fix Common Problems copyright 2015-2022, Andrew Zawadzki    #
