@@ -2,8 +2,8 @@
 <!DOCTYPE PLUGIN [
 <!ENTITY name      "fix.common.problems">
 <!ENTITY author    "Andrew Zawadzki">
-<!ENTITY version   "2022.12.09b">
-<!ENTITY md5       "fff84e39e39e7f2b94815aea54b685a9">
+<!ENTITY version   "2022.12.10">
+<!ENTITY md5       "4231879aa3ba5155e0fba9a051a476ad">
 <!ENTITY launch    "Settings/FixProblems">
 <!ENTITY plugdir   "/usr/local/emhttp/plugins/&name;">
 <!ENTITY github    "Squidly271/fix.common.problems">
@@ -13,6 +13,9 @@
 <PLUGIN name="&name;" author="&author;" version="&version;" launch="&launch;" pluginURL="&pluginURL;" icon="warning" min="6.7.0">
 
 <CHANGES>
+###2022.12.10
+- Remove Extended Tests
+
 ###2022.12.09
 - Fixed: PHP8 compliance
 - Added: Check for Legacy Unraid.net certificates

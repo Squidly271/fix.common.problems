@@ -336,7 +336,7 @@ function showCredits() {
 <a style='float:right;cursor:pointer' onclick='showCredits();'>Credits</a>
 <br>Note that certain errors due to how they are found will have an "Acknowledge" button.  Clicking the acknowledge button will prevent Fix Common Problems from finding these certain errors until the next reboot<br><br>
 <b>Errors / Warnings Listed are from the last <em>scheduled</em> scan.  Press Rescan to update with the current issues found<br></b><br>
-<div  style='width:600px;float:left;'>
+<div  style='width:600px'>
 <table>
 <tr>
   <td><b>Frequency to run background checks</b></td>
@@ -377,11 +377,12 @@ function showCredits() {
   </td>
 </tr>
 </table>
-</div><div style='margin-left:540px;'>
+</div>
+<div></div><!-- <div style='margin-left:540px;'>
 <b>Permission Test/Fix Excluded On: <input type='text' id='excludedPerms'</input><br>(Docker Appdata Folders and CA backup Destination is automatically excluded)</b><br>
 <center><input type='button' value='Exclude Selected' onclick='excludeSelected();'></center>
 <div id='excludedFoldersList' style='margin-left:240px;width:305px;max-height:150px;overflow:scroll;'></div><br>
-</div>
+</div> -->
 
 > <b>Frequency to run background checks</b> - Set to how often you would like this plugin to automatically scan your system for errors and warnings.<br>
 > <b>Send notifications on errors</b> determines under what circumstances the plugin will notify you through unRaid's notification system of any issues<br>
@@ -391,12 +392,12 @@ function showCredits() {
 
 <input type='button' id='applyButton' value='Apply' onclick='apply();' disabled><input type='button' value='Rescan' onclick='rescan();'><input type='button' onclick='done();' value='Done'>
 
-
+<!-- 
 <br><br><span id='userOnly'>
 <input type='button' id='extendedTest' value='Run Extended Test' onclick='extendedTest();'><a href='/plugins/fix.common.problems/scripts/showExtendedLog.php' target='_blank'><input type='button' value='View Results' id='extendedLog';></a> <font color='red'>Status:</font> <font color='green'> <span id='extendedStatus'></span></font>
 > Extended tests will perform more tests on every file in the array.
 </span>
-<center><b>Time of last scan: <span id='timestamp'></span></center></b>
+<center><b>Time of last scan: <span id='timestamp'></span></center></b> -->
 
 <div id="debugging"></div>
 <span id='settings'></span>
