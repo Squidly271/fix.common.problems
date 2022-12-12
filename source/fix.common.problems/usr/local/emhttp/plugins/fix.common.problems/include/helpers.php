@@ -517,7 +517,7 @@ function getCertCns($certfile, $hostname = null) {
 		$cns
 	);
 	$cns = array_unique($cns);
-	foreach ($cns as $cn) {
+	foreach ($cns as &$cn) {
 		if ($hostname && !str_ends_with($cn,'.myunraid.net')) $cn = str_replace('*', $hostname, $cn); # support custom wildcard certs
 	}
 	return $cns;
