@@ -2033,11 +2033,13 @@ function testTLD() {
 	}
 
 	// don't check certs that are self-signed by Unraid, they had issues in 6.9 and will automatically be regenerated in 6.10+
-	if (!isUnraidSelfSignedCert($cert_path.$https_1_cert)) {
-		// check whether the certificate is valid for the expected_host
-		// this is primarily useful in Unraid 6.9, as a warning that the cert will be replaced when they upgrade to 6.10+
-		if (!checkCertCn($cert_path.$https_1_cert, $unRaidVars['NAME'], $expected_host)) {
-			addWarning("Invalid Certificate 1","Your {$https_1_cert} certificate is not valid for your system's hostname '{$expected_host}'. Either adjust the system name and local TLD to match the certificate, or get a certificate that matches your settings.","https://forums.unraid.net/topic/120220-fix-common-problems-more-information/page/2/?tab=comments#comment-1099982");
+	if (file_exists($cert_path.$https_1_cert)) {
+		if (!isUnraidSelfSignedCert($cert_path.$https_1_cert)) {
+			// check whether the certificate is valid for the expected_host
+			// this is primarily useful in Unraid 6.9, as a warning that the cert will be replaced when they upgrade to 6.10+
+			if (!checkCertCn($cert_path.$https_1_cert, $unRaidVars['NAME'], $expected_host)) {
+				addWarning("Invalid Certificate 1","Your {$https_1_cert} certificate is not valid for your system's hostname '{$expected_host}'. Either adjust the system name and local TLD to match the certificate, or get a certificate that matches your settings.","https://forums.unraid.net/topic/120220-fix-common-problems-more-information/page/2/?tab=comments#comment-1099982");
+			}
 		}
 	}
 
