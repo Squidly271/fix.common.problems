@@ -187,6 +187,7 @@ if ( $troubleshooting ?? false) {
 	"wrongCachePoolFiles",
 	"corruptFlash"
 	);
+	$currentTest = 0;
 	foreach ($tests as $test) {
 		if ( $disableNotifications ) {
 			$currentTest++;

@@ -90,6 +90,7 @@ switch ($_POST['action']) {
   case 'scan':
     exec("/usr/local/emhttp/plugins/fix.common.problems/scripts/scan.php 1",$output);
     if ($output) {
+			$out = "";
       foreach ($output as $line) {
         $out .= $line."<br>";
       }

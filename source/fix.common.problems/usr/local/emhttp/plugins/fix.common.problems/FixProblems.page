@@ -229,7 +229,7 @@ $(function() {
   $("#disableSpinUp").val("<?=$settings['disableSpinUp']?>");
   $("#hacksPerDay").val("<?=$settings['hacksPerDay']?>");
   $("#logIgnored").val("<?=$settings['logIgnored']?>");
-  $("#excludedPerms").val("<?=$settings['excludedPerms']?>");
+  $("#excludedPerms").val("<?=$settings['excludedPerms'] ?? ""?>");
 
   if ( "<?=$troubleshoot?>" ) {
     $("#troubleshoot").prop("disabled",true);
