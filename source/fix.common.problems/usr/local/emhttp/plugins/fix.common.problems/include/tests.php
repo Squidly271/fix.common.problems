@@ -617,7 +617,7 @@ function shareIncludeExcludeSet() {
 	foreach ($shareList as $share) {
 		if ( is_file("/boot/config/shares/$share.cfg") ) {
 			$shareCfg = my_parse_ini_file("/boot/config/shares/$share.cfg");
-			if ( $shareCfg['shareInclude'] && $shareCfg['shareExclude'] ) {
+			if ( ($shareCfg['shareInclude'] ?? "") && ($shareCfg['shareExclude'] ?? "") ) {
 				$shareURL = str_replace(" ","+",$share);
 				addWarning("Share <b>$share</b> is set for both included (".$shareCfg['shareInclude'].") and excluded (".$shareCfg['shareExclude'].") disks","While if you're careful this isn't a problem, there is absolutely no reason ever to specify BOTH included and excluded disks.  It is far easier and safer to only set either the included list or the excluded list.  Fix it here: ".addLinkButton("$share Settings","/Shares/Share?name=$shareURL"),"https://forums.unraid.net/topic/120220-fix-common-problems-more-information/?tab=comments#comment-1098712");
 			}
@@ -643,8 +643,8 @@ function shareIncludeExcludeSameDisk() {
 	foreach ($shareList as $share) {
 		if ( is_file("/boot/config/shares/$share.cfg") ) {
 			$shareCfg = my_parse_ini_file("/boot/config/shares/$share.cfg");
-			if ( ! $shareCfg['shareInclude'] ) { continue; }
-			if ( ! $shareCfg['shareExclude'] ) { continue; }
+			if ( ! ($shareCfg['shareInclude'] ?? "") ) { continue; }
+			if ( ! ($shareCfg['shareExclude'] ?? "") ) { continue; }
 			$shareInclude = explode(",",$shareCfg['shareInclude']);
 			$shareExclude = explode(",",$shareCfg['shareExclude']);
 			foreach ($shareInclude as $included) {
@@ -737,18 +737,18 @@ function checkNotifications() {
 
 	$dynamixSettings = my_parse_ini_file("/boot/config/plugins/dynamix/dynamix.cfg",true);
 
-	if ( $dynamixSettings['notify']['alert'] == "0" ) {
+	if ( ($dynamixSettings['notify']['alert'] ?? "") == "0" ) {
 		addWarning("No destination (browser / email / agents set for <b>Alert level notifications</b>","Without a destination set for alerts, you will not know if any issue requiring your immediate attention happens on your server.  Fix it here:".addLinkButton("Notification Settings","/Settings/Notifications"));
 	}
 # Check for destination for Warning level notifications
 
-	if ( $dynamixSettings['notify']['warning'] == "0" ) {
+	if ( ($dynamixSettings['notify']['warning'] ?? "") == "0" ) {
 	 addWarning("No destination (browser / email / agents set for <b>Warning level notifications</b>","Without a destination set for alerts, you will not know if any issue requiring your attention happens on your server.  Fix it here:".addLinkButton("Notification Settings","/Settings/Notifications"));
 	}
 
 # Check for destination email address
 
-	$notificationsSet = $dynamixSettings['notify']['normal'] | $dynamixSettings['notify']['warning'] | $dynamixSettings['notify']['alert'];
+	$notificationsSet = ($dynamixSettings['notify']['normal'] ?? 0) | ($dynamixSettings['notify']['warning'] ?? 0) | ($dynamixSettings['notify']['alert'] ?? 0);
 	$emailSelected = ($notificationsSet & 2) == 2;
 
 	if ( $emailSelected ) {
@@ -1609,7 +1609,7 @@ function moverLogging() {
 	if ( ! is_dir("/mnt/cache") ) { return; }
 	
 	$iniFile = @parse_ini_file("/boot/config/share.cfg",true);
-	if ( strtolower($iniFile['shareMoverLogging']) == "yes" ) {
+	if ( strtolower(($iniFile['shareMoverLogging'] ?? "")) == "yes" ) {
 		addOther("Mover logging is enabled","It is generally recommended to disable mover logging as unless there are problems with the moving, it performs no useful function and merely fills up the syslog and makes other issues harder to diagnose.   Disable it here: ".addLinkButton("Scheduler","/Settings/Scheduler")."  (Go To Mover Settings)");
 	}
 }	
@@ -1620,7 +1620,7 @@ function phpWarnings() {
 
 	if ( ! is_file("/var/log/plugins/tips.and.tweaks.plg") ) { return; }
 	$tweaks = @parse_ini_file("/boot/config/plugins/tips.and.tweaks/tips.and.tweaks.cfg");
-	if ( $tweaks['PHP_WARNINGS'] == "yes" ) {
+	if ( ($tweaks['PHP_WARNINGS'] ?? "") == "yes" ) {
 		addOther("PHP Warnings are enabled","While this is not an error per se, if you are not a plugin developer, there is generally zero reason to enable this option, and under certain circumstances it can do nothing but spam your log with PHP warnings.  Fix it here: ".addLinkButton("Tips And Tweaks Settings","/Settings/TipsAndTweaks")."  (Go to Tweaks)");
 	}
 }
@@ -1696,7 +1696,7 @@ function isolatedCPUdockerCollision() {
 	foreach ($info as $name=>$container) {
 		$flag = 0;
 		foreach (explode(",",$container['cpuset']) as $dockerCPU) {
-			if ( $iso[$dockerCPU] ) {
+			if ( $iso[$dockerCPU] ?? false ) {
 				$flag++;
 			}
 		}
