@@ -2,8 +2,8 @@
 <!DOCTYPE PLUGIN [
 <!ENTITY name      "fix.common.problems">
 <!ENTITY author    "Andrew Zawadzki">
-<!ENTITY version   "2022.12.18">
-<!ENTITY md5       "9bcb01b3ae587faca30ed105b6c2ff38">
+<!ENTITY version   "2023.02.13">
+<!ENTITY md5       "79609f4ab97ead612826d7dcebe7a895">
 <!ENTITY launch    "Settings/FixProblems">
 <!ENTITY plugdir   "/usr/local/emhttp/plugins/&name;">
 <!ENTITY github    "Squidly271/fix.common.problems">
@@ -13,6 +13,9 @@
 <PLUGIN name="&name;" author="&author;" version="&version;" launch="&launch;" pluginURL="&pluginURL;" icon="warning" min="6.7.0">
 
 <CHANGES>
+###2023.02.13
+- PHP8 Commpliance
+
 ###2022.12.18
 - Re-add excluded folders option for New Perms
 

@@ -1,9 +1,8 @@
 #!/usr/bin/php
 <?PHP
-error_reporting(E_ALL);
 ###############################################################
 #                                                             #
-# Fix Common Problems copyright 2015-2022, Andrew Zawadzki    #
+# Fix Common Problems copyright 2015-2023, Andrew Zawadzki    #
 #                                                             #
 ###############################################################
 $docroot = $docroot ?? $_SERVER['DOCUMENT_ROOT'] ?: '/usr/local/emhttp';
