@@ -109,7 +109,7 @@ function wrongCachePoolFiles() {
 		$shareCfg = my_parse_ini_file("/boot/config/shares/$share.cfg");
 		if ( ! $shareCfg ) continue;
 		if ( $shareCfg['shareUseCache'] == "only" || $shareCfg['shareUseCache'] == "prefer" || $shareCfg['shareUseCache'] == "yes" ) {
-			$sharePool = $shareCfg['shareCachePool'] ?: "cache";
+			$sharePool = $shareCfg['shareCachePool'] ?? "cache";
 			if ( !is_dir("/mnt/$sharePool") ) {
 				addWarning("Share <b>$share</b> references non existent pool <b>$sharePool</b>","If you have renamed a pool this will have to be adjusted in the share's settings".addLinkButton("Share Settings","/Shares/Share?name=$share"),"https://forums.unraid.net/topic/120220-fix-common-problems-more-information/?tab=comments#comment-1098686");
 				continue;
