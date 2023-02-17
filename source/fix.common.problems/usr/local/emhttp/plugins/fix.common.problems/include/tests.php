@@ -109,7 +109,7 @@ function wrongCachePoolFiles() {
 		$shareCfg = my_parse_ini_file("/boot/config/shares/$share.cfg");
 		if ( ! $shareCfg ) continue;
 		if ( $shareCfg['shareUseCache'] == "only" || $shareCfg['shareUseCache'] == "prefer" || $shareCfg['shareUseCache'] == "yes" ) {
-			$sharePool = $shareCfg['shareCachePool'] ?? "cache";
+			$sharePool = $shareCfg['shareCachePool'] ?: "cache";
 			if ( !is_dir("/mnt/$sharePool") ) {
 				addWarning("Share <b>$share</b> references non existent pool <b>$sharePool</b>","If you have renamed a pool this will have to be adjusted in the share's settings".addLinkButton("Share Settings","/Shares/Share?name=$share"),"https://forums.unraid.net/topic/120220-fix-common-problems-more-information/?tab=comments#comment-1098686");
 				continue;
@@ -2209,4 +2209,11 @@ function eth0NoIP() {
 	}
 }
 
+function dockerUpdatePatch() {
+	global $fixPaths, $unRaidVersion, $fixSettings, $autoUpdateOverride, $developerMode, $communityApplicationsInstalled, $dockerRunning, $ignoreList, $shareList;
+
+	if ( version_compare($unRaidVersion,"6.11.0",">=") && version_compare($unRaidVersion,"6.11.5","<=") && ! is_file("/var/log/plugins/docker.patch.plg") ) {
+		addWarning("Docker Update Patch not installed","Due to changes at dockerHub, many installed docker applications will not properly return that an update is available.  You should install the docker update patch to alleviate this here ".addLinkButton("Docker Update Patch","/Apps?search=docker%20update%20patch%20squid"),"https://forums.unraid.net/topic/134016-fix-to-a-small-issue-with-updating-oci-docker-images/page/2/#comment-1220827");
+	}
+}
 ?>

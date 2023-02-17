@@ -184,7 +184,8 @@ if ( $troubleshooting ?? false) {
 	"unknownPluginInstalled",
 	"testDockerOptsIp",
 	"wrongCachePoolFiles",
-	"corruptFlash"
+	"corruptFlash",
+	"dockerUpdatePatch"
 	);
 	$currentTest = 0;
 	foreach ($tests as $test) {
