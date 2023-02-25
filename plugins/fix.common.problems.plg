@@ -2,8 +2,8 @@
 <!DOCTYPE PLUGIN [
 <!ENTITY name      "fix.common.problems">
 <!ENTITY author    "Andrew Zawadzki">
-<!ENTITY version   "2023.02.17">
-<!ENTITY md5       "fe0ff3ef0dbd659ff47f4e6b1530f9ea">
+<!ENTITY version   "2023.02.25">
+<!ENTITY md5       "d1df31d70a83e3367f44e6ccd033dd65">
 <!ENTITY launch    "Settings/FixProblems">
 <!ENTITY plugdir   "/usr/local/emhttp/plugins/&name;">
 <!ENTITY github    "Squidly271/fix.common.problems">
@@ -13,6 +13,9 @@
 <PLUGIN name="&name;" author="&author;" version="&version;" launch="&launch;" pluginURL="&pluginURL;" icon="warning" min="6.7.0">
 
 <CHANGES>
+###2023.02.25
+- PHP8 Upgrades
+
 ###2023.02.17
 - Docker Update Patch installed (6.11.x only)
 
