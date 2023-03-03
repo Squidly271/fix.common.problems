@@ -261,7 +261,7 @@ function writeToDriveTest() {
 		return ! preg_match("/disk\d(\d|$)|(parity|parity2|disks|remotes|addons|flash|diskP|diskQ)/",$k['name']);
 	}));
 	
-
+	$spunDown = "";
 	foreach ($availableDrives as $drive) {
 		if ( $fixSettings['disableSpinUp'] == "true" ) {
 			if ( isset($disksIni[$drive]) ) {
