@@ -258,7 +258,7 @@ function writeToDriveTest() {
 		return ($k['status'] !== "DISK_NP" && $k['name'] !== "parity" && $k['name'] !== "parity2");
 	}));
 	$cachePools = array_keys(array_filter($disksIni, function($k) {
-		return ! preg_match("/disk\d(\d|$)|(parity|parity2|disks|remotes|flash|diskP|diskQ)/",$k['name']);
+		return ! preg_match("/disk\d(\d|$)|(parity|parity2|disks|remotes|addons|flash|diskP|diskQ)/",$k['name']);
 	}));
 	
 
@@ -1179,8 +1179,8 @@ function pluginNotCompatible() {
 	if ( ! $allApps ) { return; }
 
 	foreach ($installedPlugins as $plugin) {
-		unset($minVer);
-		unset($maxVer);
+		$minVer = "";
+		$maxVer = "";
 		$pluginURL = getRedirectedURL(exec("/usr/local/emhttp/plugins/dynamix.plugin.manager/scripts/plugin pluginURL /var/log/plugins/$plugin"));
 
 		foreach ( $allApps as $app ) {
