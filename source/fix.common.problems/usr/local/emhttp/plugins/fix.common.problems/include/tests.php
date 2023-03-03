@@ -264,9 +264,11 @@ function writeToDriveTest() {
 
 	foreach ($availableDrives as $drive) {
 		if ( $fixSettings['disableSpinUp'] == "true" ) {
-			if ( stripos($disksIni[$drive]['color'],"blink") || $disksIni[$drive]['spundown'] == "1" ) {
-				$spunDown .= " $drive ";
-				continue;
+			if ( isset($disksIni[$drive]) ) {
+				if ( stripos($disksIni[$drive]['color'],"blink") || $disksIni[$drive]['spundown'] == "1" ) {
+					$spunDown .= " $drive ";
+					continue;
+				}
 			}
 		}
 		if ( is_file("/mnt/$drive") ) {
