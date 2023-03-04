@@ -252,7 +252,7 @@ function outsideCommunication() {
 function writeToDriveTest() {
 	global $fixPaths, $fixSettings, $autoUpdateOverride, $developerMode, $communityApplicationsInstalled, $dockerRunning, $ignoreList, $shareList, $unRaidVersion;
 
-	$availableDrives = array_diff(scandir("/mnt/"),array(".","..","user","user0","disks","remotes","RecycleBin","rootshare"));
+	$availableDrives = array_diff(scandir("/mnt/"),array(".","..","user","user0","addons","disks","remotes","RecycleBin","rootshare"));
 	$disksIni = my_parse_ini_file($fixPaths['disks.ini'],true);
 	$disksPresent = array_keys(array_filter($disksIni, function($k) {
 		return ($k['status'] !== "DISK_NP" && $k['name'] !== "parity" && $k['name'] !== "parity2");

@@ -2,8 +2,8 @@
 <!DOCTYPE PLUGIN [
 <!ENTITY name      "fix.common.problems">
 <!ENTITY author    "Andrew Zawadzki">
-<!ENTITY version   "2023.03.03">
-<!ENTITY md5       "b13db178e15cc3dcbdbcc770a13c50a0">
+<!ENTITY version   "2023.03.04">
+<!ENTITY md5       "2175f388b007da779209d941aaa70a1e">
 <!ENTITY launch    "Settings/FixProblems">
 <!ENTITY plugdir   "/usr/local/emhttp/plugins/&name;">
 <!ENTITY github    "Squidly271/fix.common.problems">
@@ -13,6 +13,9 @@
 <PLUGIN name="&name;" author="&author;" version="&version;" launch="&launch;" pluginURL="&pluginURL;" icon="warning" min="6.7.0">
 
 <CHANGES>
+###2023.03.04
+- UD fix
+
 ###2023.03.03
 - Adjust for new UD mount point recommendations
 - PHP8 Upgrades
