@@ -185,7 +185,8 @@ if ( $troubleshooting ?? false) {
 	"testDockerOptsIp",
 	"wrongCachePoolFiles",
 	"corruptFlash",
-	"dockerUpdatePatch"
+	"dockerUpdatePatch",
+	"macvlan"
 	);
 	$currentTest = 0;
 	foreach ($tests as $test) {

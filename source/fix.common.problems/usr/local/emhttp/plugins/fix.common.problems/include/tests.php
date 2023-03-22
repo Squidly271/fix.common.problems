@@ -1370,6 +1370,21 @@ function inotifyExhausted() {
 	@unlink($filename);
 }
 
+############################
+# Check for macvlan traces #
+############################
+function macvlan() {
+	global $fixPaths, $fixSettings, $autoUpdateOverride, $developerMode, $communityApplicationsInstalled, $dockerRunning, $ignoreList, $shareList, $unRaidVersion;
+
+	exec("cat /var/log/syslog | grep -i 'Modules linked in:'",$out);
+	if ($out) {
+		foreach ($out as $output) {
+			if (strpos($output,"macvlan") ) {
+				addError("macvlan call traces found","For the most stable system, you should switch the network driver in Settings - Docker (With the service stopped) from macvlan to instead be ipvlan","https://forums.unraid.net/topic/120220-fix-common-problems-more-information/page/2/#comment-1243020");
+			}
+		}
+	}
+}
 ################################
 # Check for IRQ x nobody cared #
 ################################
