@@ -9,7 +9,7 @@
   
   $settings = json_decode(@file_get_contents("/boot/config/plugins/fix.common.problems/settings.json"),true);
   
-  if ( ( ! $settings['frequency'] ) || ( $settings['frequency'] == "disabled" ) ) {
+  if ( ( ! ($settings['frequency']??false) ) || ( $settings['frequency'] == "disabled" ) ) {
     exit;
   }
   $path = "/etc/cron.".$settings['frequency']."/$script";
