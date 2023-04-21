@@ -1,4 +1,4 @@
-?xml version='1.0' standalone='yes'?>
+<?xml version='1.0' standalone='yes'?>
 <!DOCTYPE PLUGIN [
 <!ENTITY name      "fix.common.problems">
 <!ENTITY author    "Andrew Zawadzki">
