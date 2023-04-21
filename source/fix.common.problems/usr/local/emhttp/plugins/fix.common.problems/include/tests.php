@@ -77,7 +77,7 @@ function cacheOnlyFilesOnArray() {
 					$contents = array_diff(scandir("/mnt/user0/$share"),array(".",".."));
 					if ( ! empty($contents) ) {
 						$shareURL = str_replace(" ","+",$share);
-						addWarning("Share <b>$share</b> set to <em>cache-only</em>, but files / folders exist on the array","You should change the shares settings appropriately ".addLinkButton("$share Settings","/Shares/Share?name=$shareURL")." or use the dolphin / krusader docker applications to move the offending files accordingly.  Note that there are some valid use cases for a set up like this.  In particular: <a href='https://lime-technology.com/forum/index.php?topic=40777.msg385753' target='_blank'>THIS</a>","https://forums.unraid.net/topic/120220-fix-common-problems-more-information/?tab=comments#comment-1098683");
+						addWarning("Share <b>$share</b> set to <em>cache-only</em>, but files / folders exist on the array","You should change the shares settings appropriately ".addLinkButton("$share Settings","/Shares/Share?name=$shareURL")." or use the dolphin / krusader docker applications to move the offending files accordingly.  Note that there are some valid use cases for a set up like this.  In particular: <a href='https://forums.unraid.net/topic/39097-video-demo-managing-game-libraries-with-unraid-user-shares/#comment-381697' target='_blank'>THIS</a>","https://forums.unraid.net/topic/120220-fix-common-problems-more-information/?tab=comments#comment-1098683");
 					}
 				}
 			}
