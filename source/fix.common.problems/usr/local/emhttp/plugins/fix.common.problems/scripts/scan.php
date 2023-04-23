@@ -7,12 +7,20 @@
 ###############################################################
 $docroot = $docroot ?? $_SERVER['DOCUMENT_ROOT'] ?: '/usr/local/emhttp';
 
+
 require_once("/usr/local/emhttp/plugins/fix.common.problems/include/paths.php");
 require_once("/usr/local/emhttp/plugins/fix.common.problems/include/helpers.php");
 require_once("/usr/local/emhttp/plugins/dynamix.docker.manager/include/DockerClient.php");
 require_once("/usr/local/emhttp/plugins/fix.common.problems/include/tests.php");
 
 exec("mkdir -p ".$fixPaths['tempFiles']);
+
+if ( is_file($fixPaths['scanRunning']) && file_exists("/proc/".@file_get_contents($fixPaths['scanRunning'])) ) {
+	exit();
+}
+
+file_put_contents($fixPaths['scanRunning'],getmypid());
+
 libxml_use_internal_errors(true);
 
 ##################################################################################################################
@@ -24,38 +32,6 @@ libxml_use_internal_errors(true);
 logger("Fix Common Problems Version ".exec("/usr/local/emhttp/plugins/dynamix.plugin.manager/scripts/plugin version /var/log/plugins/fix.common.problems.plg"));
 if ( ($argv[1] ?? "") == "troubleshoot" ) {
 	$troubleshooting = true;
-/* 	logger("Fix Common Problems: Troubleshooting scan running");
-	$uptime = exec("uptime");
-	logger("Fix Common Problems: Uptime: $uptime");
-	unset($output);
-	exec("free",$output);
-	foreach ($output as $line) {
-		logger("Fix Common Problems: $line");
-	}
-
-	logger("Fix Common Problems: ps aux output (only CPU % > 0)");
-	unset($output);
-	exec("ps aux",$output);
-	logger("Fix Common Problems: ".$output[0]);
-	unset($output[0]);
-
-	foreach ($output as $line) {
-		$statusLine = preg_replace('!\s+!', ' ', $line);
-		$test = explode(" ",$statusLine);
-
-		if ( $test[2] > 0 ) {
-			logger("Fix Common Problems: $line");
-		}
-	}
-	unset($output);
-	exec("sensors -A",$output);
-	logger("Fix Common Problems: Sensors output:");
-	foreach ($output as $line) {
-		logger("Fix Common Problems: ".escapeshellarg($line));
-	}
-
-
- */
 } else {
 	$disableNotifications = ($argv[1] ?? "");
 }
@@ -186,7 +162,8 @@ if ( $troubleshooting ?? false) {
 	"wrongCachePoolFiles",
 	"corruptFlash",
 	"dockerUpdatePatch",
-	"macvlan"
+	"macvlan",
+	"legacyMyServers"
 	);
 	$currentTest = 0;
 	foreach ($tests as $test) {

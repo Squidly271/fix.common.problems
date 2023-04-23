@@ -35,4 +35,5 @@ $fixPaths['OOMacknowledge']             = $fixPaths['tempFiles']."/OOMFlag";
 $fixPaths['Traceacknowledge']           = $fixPaths['tempFiles']."/CallTraceFlag";
 $fixPaths['MCEacknowledge']             = $fixPaths['tempFiles']."/mceFlag";
 $fixPaths['docker.cfg']                 = "/boot/config/docker.cfg";
+$fixPaths['scanRunning']                = $fixPaths['tempFiles']."/scanRunning";
 ?>

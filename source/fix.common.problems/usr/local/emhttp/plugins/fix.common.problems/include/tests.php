@@ -2233,4 +2233,12 @@ function dockerUpdatePatch() {
 		addWarning("Docker Update Patch not installed","Due to changes at dockerHub, many installed docker applications will not properly return that an update is available.  You should install the docker update patch to alleviate this here ".addLinkButton("Docker Update Patch","/Apps?search=docker%20update%20patch%20squid"),"https://forums.unraid.net/topic/134016-fix-to-a-small-issue-with-updating-oci-docker-images/page/2/#comment-1220827");
 	}
 }
+
+function legacyMyServers() {
+	global $fixPaths, $unRaidVersion, $fixSettings, $autoUpdateOverride, $developerMode, $communityApplicationsInstalled, $dockerRunning, $ignoreList, $shareList;
+
+	if ( is_file("/var/log/plugins/dynamix.unraid.net.plg") && version_compare($unRaidVersion,"6.10.0","<") ) {
+		addError("MyServers installed on Legacy OS","MyServers/Connect is incompatible with your OS version.  You need to either uninstall MyServers/Connect or upgrade the OS to continue to enjoy the benefits of MyServers/Connect");
+	}
+}
 ?>
