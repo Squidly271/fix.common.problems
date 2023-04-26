@@ -2,8 +2,8 @@
 <!DOCTYPE PLUGIN [
 <!ENTITY name      "fix.common.problems">
 <!ENTITY author    "Andrew Zawadzki">
-<!ENTITY version   "2023.03.22">
-<!ENTITY md5       "970af6bc8436082f73f355ee4e0631c3">
+<!ENTITY version   "2023.04.26">
+<!ENTITY md5       "08b31286107ba2b8c01b6e9cb59b6363">
 <!ENTITY launch    "Settings/FixProblems">
 <!ENTITY plugdir   "/usr/local/emhttp/plugins/&name;">
 <!ENTITY github    "Squidly271/fix.common.problems">
@@ -13,6 +13,11 @@
 <PLUGIN name="&name;" author="&author;" version="&version;" launch="&launch;" pluginURL="&pluginURL;" icon="warning" min="6.7.0">
 
 <CHANGES>
+###2023.04.26
+- Check for legacy myservers installed on OS versions prior to 6.10
+- Update some broken links
+- PHP8 fixes
+
 ###2023.03.22
 - Look for macvlan traces
 
