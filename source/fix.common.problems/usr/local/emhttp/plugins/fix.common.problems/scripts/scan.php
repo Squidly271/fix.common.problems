@@ -109,7 +109,6 @@ if ( $troubleshooting ?? false) {
 	"shareIncludeExcludeSet",
 	"shareIncludeExcludeSameDisk",
 	"UDmountedSlaveMode",
-	"FTPrunning",
 	"checkNotifications",
 	"blacklistedPluginsInstalled",
 	"illegalShareName",
