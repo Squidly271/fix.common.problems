@@ -2,8 +2,8 @@
 <!DOCTYPE PLUGIN [
 <!ENTITY name      "fix.common.problems">
 <!ENTITY author    "Andrew Zawadzki">
-<!ENTITY version   "2023.07.16">
-<!ENTITY md5       "6740fb39732b1b071a3e9ddf695c0c70">
+<!ENTITY version   "2023.07.27">
+<!ENTITY md5       "27b30c40164bc9025ca4d6fa432f258b">
 <!ENTITY launch    "Settings/FixProblems">
 <!ENTITY plugdir   "/usr/local/emhttp/plugins/&name;">
 <!ENTITY github    "Squidly271/fix.common.problems">
@@ -13,6 +13,9 @@
 <PLUGIN name="&name;" author="&author;" version="&version;" launch="&launch;" pluginURL="&pluginURL;" icon="warning" min="6.7.0">
 
 <CHANGES>
+###2023.07.27
+- PHP8 Fixes
+
 ###2023.07.16
 - FTP Running fixes
 

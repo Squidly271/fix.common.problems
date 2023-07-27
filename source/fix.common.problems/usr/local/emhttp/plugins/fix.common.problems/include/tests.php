@@ -482,7 +482,7 @@ function dockerUpToDate() {
 		$updateStatus = readJsonFile($fixPaths['dockerUpdateStatus']);
 
 		foreach ($info as $docker) {
-			if ( $updateStatus[$docker['Image']]['status'] == 'false' ) {
+			if ( ($updateStatus[$docker['Image']]['status'] ?? null) == 'false' ) {
 				addWarning("Docker Application <b>".$docker['Name']."</b> has an update available for it","Install the updates here: ".addLinkButton("Docker","/Docker"));
 			}
 		}
