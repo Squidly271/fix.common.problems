@@ -196,7 +196,7 @@ function randomFile($basePath) {
 ##################################################################
 
 function readJsonFile($filename) {
-	return @json_decode(@file_get_contents($filename),true);
+	return @json_decode(@file_get_contents($filename),true) ?: [];
 }
 
 function writeJsonFile($filename,$jsonArray) {
