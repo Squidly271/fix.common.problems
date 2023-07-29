@@ -2,8 +2,8 @@
 <!DOCTYPE PLUGIN [
 <!ENTITY name      "fix.common.problems">
 <!ENTITY author    "Andrew Zawadzki">
-<!ENTITY version   "2023.07.27a">
-<!ENTITY md5       "e87b92aca2e1a148027b7ce5df5951c9">
+<!ENTITY version   "2023.07.29">
+<!ENTITY md5       "7d3ba11097ced29b71612108ccffc28b">
 <!ENTITY launch    "Settings/FixProblems">
 <!ENTITY plugdir   "/usr/local/emhttp/plugins/&name;">
 <!ENTITY github    "Squidly271/fix.common.problems">
@@ -13,6 +13,9 @@
 <PLUGIN name="&name;" author="&author;" version="&version;" launch="&launch;" pluginURL="&pluginURL;" icon="warning" min="6.7.0">
 
 <CHANGES>
+###2023.07.29
+- Fix PHP8 errors if network configuration is completely non-functional ;)
+
 ###2023.07.27
 - PHP8 Fixes
 

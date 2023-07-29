@@ -62,7 +62,7 @@ if ( is_file($fixPaths['templates']) ) {
 	download_url($fixPaths['application-feed-last-updated'],$tempFile);
 	$newList = readJsonFile($tempFile);
 	@unlink($tempFile);
-	if ( $newList['last_updated_timestamp'] != $templates['last_updated_timestamp'] ) {
+	if ( ($newList['last_updated_timestamp'] ?: inf) != ($templates['last_updated_timestamp'] ?? null) ) {
 		download_url($fixPaths['application-feed'],$fixPaths['templates']);
 		$templates = readJsonFile($fixPaths['templates']);
 	}
