@@ -1375,9 +1375,10 @@ function inotifyExhausted() {
 ############################
 function macvlan() {
 	global $fixPaths, $fixSettings, $autoUpdateOverride, $developerMode, $communityApplicationsInstalled, $dockerRunning, $ignoreList, $shareList, $unRaidVersion;
-
+	
 	if (version_compare($unRaidVersion,"6.12.0",">"))
-		return;
+      return;
+
 	exec("cat /var/log/syslog | grep -i 'Modules linked in:'",$out);
 	if ($out) {
 		foreach ($out as $output) {
