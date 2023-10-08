@@ -98,6 +98,7 @@ $checkList = "
 * Check for non-existent cache pools being referenced in share settings
 * Check for files stored within a cache pool that isn't allowed within a share's settings
 * Check for flash drive corruption
+* Check for Date and Time on server being incorrect by significant amount
 </strong>
 ";
 echo Markdown($checkList);

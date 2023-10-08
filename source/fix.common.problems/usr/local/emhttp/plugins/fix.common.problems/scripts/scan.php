@@ -82,6 +82,7 @@ if ( $troubleshooting ?? false) {
 	rootfsFull();
 } else {
 	$tests = array("HPApresent",
+	"checkServerDate",
 	"eth0NoIP",
 	"isArrayStarted",
 	"impliedArrayFilesOnCache",

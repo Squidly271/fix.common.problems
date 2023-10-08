@@ -2244,4 +2244,16 @@ function legacyMyServers() {
 		addError("MyServers installed on Legacy OS","MyServers/Connect is incompatible with your OS version.  You need to either uninstall MyServers/Connect or upgrade the OS to continue to enjoy the benefits of MyServers/Connect");
 	}
 }
+
+function checkServerDate() {
+	$currentDate = strtotime(date("Y-m-d"));
+	$caVersion = preg_replace("/[^0-9.]/","",plugin("version","/var/log/plugins/fix.common.problems.plg"));
+	if ( ! $caVersion )
+	  return true;
+	$caVersion = str_replace(".","-",$caVersion);
+	$caVersion = strtotime($caVersion);
+  
+	if ( ($caVersion - $currentDate) > 2592000 ) # 30 Days
+		addError("Date And Time Incorrect","The Date and Time on your server appears to be wrong.  This will directly impact being able to install any updates to the OS or applications, operation of the Apps tab and many other services on your server.  You should fix this here: ".addLinkButton("Date and Time","/Settings/DateTime"),"https://forums.unraid.net/topic/120220-fix-common-problems-more-information/page/2/#comment-1314425");
+}
 ?>
