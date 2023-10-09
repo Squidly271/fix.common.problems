@@ -469,6 +469,14 @@ function curl_socket($socket, $url, $postdata = NULL) {
 		curl_close($ch);
 }
 function publish($endpoint, $message){
+	global $fromDiagnostics;
+	
+	if ( $fromDiagnostics ) {
+		$msg = json_decode($message,true);
+		if ($msg) 
+			$message = "Fix Common Problems Scan: ".$msg['test'];
+		write($message);
+	}	else
 		curl_socket("/var/run/nginx.socket", "http://localhost/pub/$endpoint?buffer_length=1", $message);
 }
 
@@ -570,4 +578,19 @@ function isUnraidSelfSignedCert($certfile) {
 	if (strpos($data, "Self-signed") !== false) return true;
 	return false;
 }
+
+function write(...$messages){
+	$com = curl_init();
+	curl_setopt_array($com,[
+	  CURLOPT_URL => 'http://localhost/pub/diagnostics?buffer_length=1',
+	  CURLOPT_UNIX_SOCKET_PATH => '/var/run/nginx.socket',
+	  CURLOPT_POST => 1,
+	  CURLOPT_RETURNTRANSFER => true
+	]);
+	foreach ($messages as $message) {
+	  curl_setopt($com, CURLOPT_POSTFIELDS, $message);
+	  curl_exec($com);
+	}
+	curl_close($com);
+  }
 ?>

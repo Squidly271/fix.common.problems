@@ -36,6 +36,12 @@ if ( ($argv[1] ?? "") == "troubleshoot" ) {
 	$disableNotifications = ($argv[1] ?? "");
 }
 
+$fromDiagnostics = false;
+if ($disableNotifications == "diagnostics") {
+	$fromDiagnostics = true;
+	$disableNotification = "";
+}
+
 $autoUpdateOverride              = is_file("/boot/config/plugins/fix.common.problems/autoupdate-warning");
 $developerMode                   = is_file("/boot/config/plugins/fix.common.problems/developer");
 $communityApplicationsInstalled  = is_file("/var/log/plugins/community.applications.plg");
