@@ -98,7 +98,7 @@ function wrongCachePoolFiles() {
 			$pools[] = $disk['name'];
 	}
 	if ( ! isset($pools) ) return;
-	
+
 	if ( version_compare($unRaidVersion,"6.10.0-rc2",">") ) {
 		$msg = "Either adjust which pool this share should be using or manually move the files with Dynamix File Manager";
 	} else {
@@ -125,7 +125,7 @@ function wrongCachePoolFiles() {
 		}
 	}
 }
-		
+
 #######################################################
 # Check for don't use cache, but files on cache drive #
 #######################################################
@@ -157,7 +157,7 @@ function arrayOnlyFilesOnCache() {
 function pluginUpdateCheck() {
 	global $fixPaths, $communityPaths, $fixSettings, $autoUpdateOverride, $developerMode, $communityApplicationsInstalled, $dockerRunning, $ignoreList, $shareList;
 
-	
+
 	if ( is_file("/boot/config/plugins/ca.update.applications/plugin_update.cron") ) { return; }
 
 	if ( ! is_file("/boot/config/plugins/dynamix/plugin-check.cron") ) {
@@ -260,7 +260,7 @@ function writeToDriveTest() {
 	$cachePools = array_keys(array_filter($disksIni, function($k) {
 		return ! preg_match("/disk\d(\d|$)|(parity|parity2|disks|remotes|addons|flash|diskP|diskQ)/",$k['name']);
 	}));
-	
+
 	$spunDown = "";
 	foreach ($availableDrives as $drive) {
 		if ( $fixSettings['disableSpinUp'] == "true" ) {
@@ -279,7 +279,7 @@ function writeToDriveTest() {
 			addError("Invalid folder $drive contained within /mnt","Generally speaking, most times when other folders get created within /mnt it is a result of an improperly configured application.  This error may or may not cause issues for you","https://forums.unraid.net/topic/120220-fix-common-problems-more-information/?tab=comments#comment-1098777");
 			continue;
 		}
-	
+
 		$filename = randomFile("/mnt/$drive");
 
 		@file_put_contents($filename,"test");
@@ -403,7 +403,7 @@ function fileSystemErrors() {
 	$vars = my_parse_ini_file($fixPaths['var.ini'],true);
 	if ( $vars['mdState'] !== "STARTED" ) return;
 	if ( $vars['sbClean'] !== "no" ) return;
-	
+
 	foreach ( $disks as $disk ) {
 		if ( !isset($disk['fsStatus']) || !$disk['fsStatus'] || $disk['fsStatus'] == "-" ) continue;
 		if ( strtolower($disk['fsStatus']) !== "mounted" ) {
@@ -1198,7 +1198,7 @@ function pluginNotCompatible() {
 						if ( isset($app['MaxVer']) ) {
 							$maxVer = "Maximum OS Version: {$app['MaxVer']}";
 						}
-						
+
 						$verMsg = $app['VerMessage'] ?? "The author (or moderators of Community Applications) of the plugin template (<b>$pluginURL</b>) has specified that this plugin is incompatible with your version of Unraid ($unRaidVersion).  You should uninstall the plugin here:";
 						addWarning("<b>$plugin</b> Not Compatible with Unraid version $unRaidVersion",$verMsg.addLinkButton("Plugins","/Plugins")." $minVer  $maxVer","https://forums.unraid.net/topic/120220-fix-common-problems-more-information/?tab=comments#comment-1098732");
 					}
@@ -1375,7 +1375,7 @@ function inotifyExhausted() {
 ############################
 function macvlan() {
 	global $fixPaths, $fixSettings, $autoUpdateOverride, $developerMode, $communityApplicationsInstalled, $dockerRunning, $ignoreList, $shareList, $unRaidVersion;
-	
+
 	if (version_compare($unRaidVersion,"6.12.0",">"))
       return;
 
@@ -1413,7 +1413,7 @@ function reiserCache() {
 	global $fixPaths, $fixSettings, $autoUpdateOverride, $developerMode, $communityApplicationsInstalled, $dockerRunning, $ignoreList, $shareList, $unRaidVersion;
 
 	$disks = parse_ini_file("/var/local/emhttp/disks.ini",true);
-	
+
 	if ( isset($disks['cache']['fsType']) ) {
 		if ( ($disks['cache']['fsType'] == "reiserfs") && ( ! $disks['cache']['rotational'] ) ) {
 			addWarning("SSD Cache Drive formatted as reiserFS","You have an SSD cache drive which has been formatted as reiserFS.  ReiserFS does not support trim, so you will encounter performance issues.  You should convert the cache drives format to XFS (or to BTRFS if you are planning a future cache-pool)");
@@ -1512,7 +1512,7 @@ function marvelControllerTest() {
 	exec("lspci -k",$testResults);
 	foreach ($testResults as $line) {
 		if (strpos($line,"Kernel driver in use: mvsas") ) {
-			addWarning("Marvel Hard Drive Controller Installed","It appears that your server has a Marvel based hard drive controller installed within it.  <b>Some</b> users with Marvel based controllers exhibit random drives dropping offline, recurring parity errors during checks etc.  This tends to be exacberated if VT-D / IOMMU is enabled in the BIOS.  Generally, LSI based controllers would be preferred over Marvel based controllers because of these issues.  <strong>Note that these issues are out of Limetechs hands</strong>.  Depending upon the exact combination of hardware present in your server, you may not have any problems whatsoever.  <strong><em>If you have no problems, then this warning can be safely ignored</em></strong>, but future versions of Unraid (and later Kernel versions) may (or may not) present you with the previously mentioned issues."); 
+			addWarning("Marvel Hard Drive Controller Installed","It appears that your server has a Marvel based hard drive controller installed within it.  <b>Some</b> users with Marvel based controllers exhibit random drives dropping offline, recurring parity errors during checks etc.  This tends to be exacberated if VT-D / IOMMU is enabled in the BIOS.  Generally, LSI based controllers would be preferred over Marvel based controllers because of these issues.  <strong>Note that these issues are out of Limetechs hands</strong>.  Depending upon the exact combination of hardware present in your server, you may not have any problems whatsoever.  <strong><em>If you have no problems, then this warning can be safely ignored</em></strong>, but future versions of Unraid (and later Kernel versions) may (or may not) present you with the previously mentioned issues.");
 			break;
 		}
 	}
@@ -1523,7 +1523,7 @@ function breadTest() {
 
 	if ( is_file("/boot/config/plugins/flash.remount.plg") )
 		return;
-	
+
 	$foundFlag = false;
 	$syslogs = dirContents("/var/log");
 	foreach ($syslogs as $syslog) {
@@ -1542,7 +1542,7 @@ function breadTest() {
 			break;
 		}
 	}
-}	
+}
 
 function logline($filename) {
 	$file = fopen("/var/log/$filename","r");
@@ -1556,13 +1556,13 @@ function logline($filename) {
 }
 
 
-			
+
 function lessThan2G() {
 	global $fixPaths, $fixSettings, $autoUpdateOverride, $developerMode, $communityApplicationsInstalled, $dockerRunning, $ignoreList, $shareList, $unRaidVersion;
-	
+
 	$file = trim(str_replace("MemTotal:","",exec("cat /proc/meminfo | grep MemTotal:")));
 	$raw = explode(" ",$file);
-	
+
 	if ($raw[0] < 1500000 ) {
 		addWarning("Less than 2GB Memory Installed","Your system currently has {$raw[0]} {$raw[1]} memory installed.  For a trouble-free experience with Unraid, the functional minimum for a basic NAS server is 2GB of memory.  You should add more memory");
 	}
@@ -1627,12 +1627,12 @@ function moverLogging() {
 	global $fixPaths, $fixSettings, $autoUpdateOverride, $developerMode, $communityApplicationsInstalled, $dockerRunning, $ignoreList, $shareList;
 
 	if ( ! is_dir("/mnt/cache") ) { return; }
-	
+
 	$iniFile = @parse_ini_file("/boot/config/share.cfg",true);
 	if ( strtolower(($iniFile['shareMoverLogging'] ?? "")) == "yes" ) {
 		addOther("Mover logging is enabled","It is generally recommended to disable mover logging as unless there are problems with the moving, it performs no useful function and merely fills up the syslog and makes other issues harder to diagnose.   Disable it here: ".addLinkButton("Scheduler","/Settings/Scheduler")."  (Go To Mover Settings)");
 	}
-}	
+}
 
 
 function phpWarnings() {
@@ -1649,7 +1649,7 @@ function invalidIncludedDisk() {
 	global $fixPaths, $fixSettings, $autoUpdateOverride, $developerMode, $communityApplicationsInstalled, $dockerRunning, $ignoreList, $shareList,$unRaidVersion;
 
 	if ( ! is_dir("/mnt/user") ) { return; }
-	
+
 	foreach ($shareList as $share) {
 		$shareCfg = my_parse_ini_file("/boot/config/shares/$share.cfg");
 		$includedDisks = explode(",",$shareCfg['shareInclude'] ?? "");
@@ -1669,7 +1669,7 @@ function CPUSet() {
 
 	$dockerTemplates = new DockerTemplates();
 	$info = $dockerTemplates->getAllInfo();
-	
+
 	$userTemplates = glob("/boot/config/plugins/dockerMan/templates-user/*.xml");
 	foreach ($userTemplates as $template) {
 		$xml = @simplexml_load_file($template);
@@ -1688,11 +1688,11 @@ function isolatedCPUdockerCollision() {
 
 	if ( ! $dockerRunning ) { return; }
 	if ( ! version_compare($unRaidVersion,"6.5.3",">") ) { return; }
-	
+
 	$cmdLine = explode(" ",file_get_contents("/proc/cmdline"));
 #	$cmdLine = explode(" ","BOOT_IMAGE=/bzimage pcie_acs_override=downstream isolcpus=1,3 initrd=/bzroot,/bzroot-gui");
-	
-	
+
+
 	foreach ($cmdLine as $option) {
 		if (strpos($option,"isolcpus") !== false ) {
 			$isolatedCPUs = explode("=",$option)[1];
@@ -1712,7 +1712,7 @@ function isolatedCPUdockerCollision() {
 
 	$dockerTemplates = new DockerTemplates();
 	$info = $dockerTemplates->getAllInfo();
-	
+
 	foreach ($info as $name=>$container) {
 		$flag = 0;
 		foreach (explode(",",$container['cpuset']) as $dockerCPU) {
@@ -1730,7 +1730,7 @@ function testXML() {
 	global $fixPaths, $fixSettings, $autoUpdateOverride, $developerMode, $communityApplicationsInstalled, $dockerRunning, $ignoreList, $shareList,$unRaidVersion;
 
 	require_once("/usr/local/emhttp/plugins/fix.common.problems/include/xmlHelpers.php");
-	
+
 	foreach ( ["/boot/config/plugins/dockerMan/templates","/boot/config/plugins/dockerMan/templates-user"] as $directory) {
 		$contents = glob("$directory/*.xml");
 		foreach ($contents as $xmlfile) {
@@ -1745,9 +1745,9 @@ function testXML() {
 
 function writeCacheDisabled() {
 	global $fixPaths, $fixSettings, $autoUpdateOverride, $developerMode, $communityApplicationsInstalled, $dockerRunning, $ignoreList, $shareList,$unRaidVersion;
-	
-	$disksIni = my_parse_ini_file($fixPaths['disks.ini'],true);	
-	foreach ($disksIni as $drive) {	
+
+	$disksIni = my_parse_ini_file($fixPaths['disks.ini'],true);
+	foreach ($disksIni as $drive) {
 		if ( $fixSettings['disableSpinUp'] == "true" ) {
 			if ( stripos($drive['color'],"blink") || $drive['spundown'] == "1") {
 				continue;
@@ -1759,18 +1759,18 @@ function writeCacheDisabled() {
 		if ( $drive['name'] == "flash" ) {
 			continue;
 		}
-		
+
 		$writeCache = exec("/usr/sbin/hdparm -W /dev/{$drive['device']} | grep 'write-caching' 2>/dev/null");
-		
+
 		if (stripos($writeCache,"off")) {
 			addWarning("Write Cache is disabled on {$drive['name']}","You may experience slow read/writes to {$drive['name']}.  Write Cache should be enabled for better results.  Read this post ( <a href='https://forums.unraid.net/topic/46802-faq-for-unraid-v6/page/2/?tab=comments#comment-755621'>https://forums.unraid.net/topic/46802-faq-for-unraid-v6/page/2/?tab=comments#comment-755621</a> for more information.  NOTE: If this drive is connected to your server via USB, then this test and the fix may or may not work / be accurate as USB support for smartctl and hdparm is hit and miss");
 		}
 	}
 }
-	
+
 function updatePluginSupport() {
 	global $fixPaths, $fixSettings, $autoUpdateOverride, $developerMode, $communityApplicationsInstalled, $dockerRunning, $ignoreList, $shareList,$unRaidVersion;
-	
+
 	$raw_templates = readJsonFile($fixPaths['templates']);
 	$templates = $raw_templates['applist'];
 	if ( ! is_array($templates) ) { return; }
@@ -1799,7 +1799,7 @@ function updatePluginSupport() {
 				$dom->preserveWhiteSpace = false;
 				$dom->formatOutput = true;
 				$dom->loadXML($xml->asXML());
-				file_put_contents($plugin, $dom->saveXML()); 
+				file_put_contents($plugin, $dom->saveXML());
 				addOther("<b>".plugin("name",$plugin)."</b> Support Updated","The support thread has been updated to {$templates[$pluginEntry]['Support']}");
 			}
 		}
@@ -1808,7 +1808,7 @@ function updatePluginSupport() {
 
 function flashSyslog() {
 	global $fixPaths, $fixSettings, $autoUpdateOverride, $developerMode, $communityApplicationsInstalled, $dockerRunning, $ignoreList, $shareList,$unRaidVersion;
-	
+
 	$rsyslogCFG = @file_get_contents("/boot/config/rsyslog.conf");
 	if ( strpos($rsyslogCFG,"/boot/logs/syslog") ) {
 		addWarning("<b>Syslog mirrored to flash</b>","The syslog is currently mirrored to the flashdrive.  This option should only be used for troubleshooting, and extended use of this option may fill up your flash drive, increase the number of writes to it etc.  It should be disabled if you are not actively troubleshooting an issue with your server.  Change this here: ".addLinkButton("Syslog Server","/SyslogSettings"));
@@ -1823,8 +1823,8 @@ function unassignedDevicesPlus() {
 	}
 	if ( ! is_file("/var/log/plugins/unassigned.devices.plg") && is_file("/var/log/plugins/unassigned.devices-plus.plg") ) {
 		addOther("Unassigned Devices <b>Plus</b> installed","Unassigned Devices Plus is installed, but Unassigned Devices is not.  There is zero point in having Unassigned Devices Plus installed without having Unassigned Devices installed.  You should uninstall Unassigned Devices Plus or install Unassigned Devices");
-	}		
-}	
+	}
+}
 
 function sysdream() {
 	global $fixPaths, $fixSettings, $autoUpdateOverride, $developerMode, $communityApplicationsInstalled, $dockerRunning, $ignoreList, $shareList,$unRaidVersion;
@@ -1848,7 +1848,7 @@ function caNotifications() {
 			addOther("Background notifications not enabled","CA has background notifications to alert you if you have known malware installed on your server, or if your server is vulnerable to certain security issues, etc.  It is highly advised to enable this scanning via ".addLinkButton("CA Settings","/Apps/ca_settings"));
 		}
 	}
-}	
+}
 
 function legacyVFIO() {
 	global $fixPaths, $fixSettings, $autoUpdateOverride, $developerMode, $communityApplicationsInstalled, $dockerRunning, $ignoreList, $shareList,$unRaidVersion;
@@ -1903,7 +1903,7 @@ function checkBonding () {
 			}
 		}
 	}
-	
+
 }
 
 function getNetwork4($eth) {
@@ -1932,7 +1932,7 @@ function getNetwork4($eth) {
 		$network4 = long2ip(ip2long($eth['IPADDR:0']) & (0x100000000-2**(32-$mask4)));
 	}
 	return $network4 ?? null;
-} 
+}
 
 function checkSameNetwork() {
 	// https://www.ni.com/en-us/support/documentation/supplemental/11/best-practices-for-using-multiple-network-interfaces--nics--with.html#section--1358462000
@@ -1981,7 +1981,7 @@ function authorizedKeysInGo() {
 
 function reservedUserName() {
 	global $fixPaths, $fixSettings, $autoUpdateOverride, $developerMode, $communityApplicationsInstalled, $dockerRunning, $ignoreList, $shareList,$unRaidVersion;
-	
+
 	if ( version_compare($unRaidVersion,"6.9.0","<") ) return;
 
 	$reservedNames = ["parity","parity2","parity3","diskP","diskQ","diskR","disk","disks","flash","boot","user","user0","dev","disk0","disk1","disk2","disk3","disk4","disk5","disk6","disk7","disk8","disk9","disk10","disk11","disk12","disk13","disk14","disk15","disk16","disk17","disk18","disk19","disk20","disk21","disk22","disk23","disk24","disk25","disk26","disk27","disk28","disk29","disk30","disk31"];
@@ -2020,7 +2020,7 @@ function shareSpace69() {
 	global $fixPaths, $fixSettings, $autoUpdateOverride, $developerMode, $communityApplicationsInstalled, $dockerRunning, $ignoreList, $shareList,$unRaidVersion;
 
 	if ( $unRaidVersion != "6.9.2" ) return;
-	
+
 	foreach ($shareList as $share) {
 		if ( ! is_dir("/mnt/user/$share") ) continue;
 		if ( ! strpos($share," ") ) continue;
@@ -2094,7 +2094,7 @@ function testTLD() {
 			$dnsserver = $$ethX['DNS_SERVER1'];
 			// warn if servername.TLD does not resolve correctly
 			if (!$ip) {
-				addWarning("Missing DNS entry for host", "Using DNS server {$dnsserver}, Unraid is unable to resolve '{$expected_host}'. If this url resolves for your client computers using a different DNS server, you can probably ignore this warning. Otherwise, you should set your TLD to 'local' or add a DNS entry for '{$expected_host}' that points to {$internalip}.  The local TLD can be adjusted here:   ".addLinkButton("Management Settings","Settings/ManagementAccess"),"https://forums.unraid.net/topic/120220-fix-common-problems-more-information/page/2/?tab=comments#comment-1099984");				
+				addWarning("Missing DNS entry for host", "Using DNS server {$dnsserver}, Unraid is unable to resolve '{$expected_host}'. If this url resolves for your client computers using a different DNS server, you can probably ignore this warning. Otherwise, you should set your TLD to 'local' or add a DNS entry for '{$expected_host}' that points to {$internalip}.  The local TLD can be adjusted here:   ".addLinkButton("Management Settings","Settings/ManagementAccess"),"https://forums.unraid.net/topic/120220-fix-common-problems-more-information/page/2/?tab=comments#comment-1099984");
 			} elseif ($internalip != $ip) {
 				addWarning("Wrong DNS entry for host", "Using DNS server {$dnsserver}, the DNS entry for '{$expected_host}' resolves to {$ip}. If this url resolves correctly for your client computers using a different DNS server, you can probably ignore this warning. Otherwise, you should ensure that it resolves to {$internalip}.","https://forums.unraid.net/topic/120220-fix-common-problems-more-information/page/2/?tab=comments#comment-1099984");
 			}
@@ -2145,11 +2145,11 @@ function unknownPluginInstalled() {
 			addOther("Could not perform <b>unknown plugins</b> installed checks","The download of the application feed failed.");
 		}
 	}
-}	
-	
+}
+
 function testDockerOptsIp() {
 	global $fixPaths;
-	
+
 	$dockerCfg = my_parse_ini_file($fixPaths['docker.cfg']);
 	$matches = null;
 	if ( ! ( $dockerCfg['DOCKER_OPTS'] ?? null ) )
@@ -2185,20 +2185,20 @@ function corruptFlash() {
 		}
 	}
 
-	if ( version_compare($unRaidVersion,"6.11.0-rc2",">") ) return;	
+	if ( version_compare($unRaidVersion,"6.11.0-rc2",">") ) return;
 	$keys = glob("/boot/config.key");
 	$go = file_get_contents("/boot/config/go");
 	if ( strpos($go,"/lib64/ld-linux-x86-64.so.2 /boot/config/unraider") ) {
 		addError("Possible rootkit or malware detected","Rootkits can introduce viruses / malware to your system.  Post your diagnostics in the forum for more assistance or email support@lime-technology.com");
 		return;
 	}
-	
+
 	foreach ($keys as $key) {
 		if (filesize($key) > 256) {
 			addError("Possible rootkit or malware detected","Rootkits can introduce viruses / malware to your system.  Post your diagnostics in the forum for more assistance or email support@lime-technology.com");
 			break;
 		}
-	}	
+	}
 }
 
 function jumboFrames() {
@@ -2214,14 +2214,14 @@ function jumboFrames() {
 
 function eth0NoIP() {
 	$eths = parse_ini_file("/var/local/emhttp/network.ini",true);
-	
+
 	foreach ( $eths as $eth => $config) {
  		if ( $eth == "eth0" && (filter_var($config['IPADDR:0'],FILTER_VALIDATE_IP) || filter_var($config['IPADDR6:0'],FILTER_VALIDATE_IP)) )
 			return;
-		
+
 		if ( $eth == "eth0" )
 			continue;
-		
+
 		if ( filter_var($config['IPADDR:0'],FILTER_VALIDATE_IP) || filter_var($config['IPADDR6:0'],FILTER_VALIDATE_IP) ) {
 			addError("eth0 does not have a valid IP address","eth0 does not have a valid IP address, but $eth does.  For the best experience, you should go to ".addLinkButton("Network Settings","/Settings/NetworkSettings")." and adjust the settings (Interface Rules) so that eth0 is your primary NIC","https://forums.unraid.net/topic/120220-fix-common-problems-more-information/page/2/#comment-1170361");
 			break;
@@ -2252,7 +2252,7 @@ function checkServerDate() {
 	  return true;
 	$caVersion = str_replace(".","-",$caVersion);
 	$caVersion = strtotime($caVersion);
-  
+
 	if ( ($caVersion - $currentDate) > 2592000 ) # 30 Days
 		addError("Date And Time Incorrect","The Date and Time on your server appears to be wrong.  This will directly impact being able to install any updates to the OS or applications, operation of the Apps tab and many other services on your server.  You should fix this here: ".addLinkButton("Date and Time","/Settings/DateTime"),"https://forums.unraid.net/topic/120220-fix-common-problems-more-information/page/2/#comment-1314425");
 }
