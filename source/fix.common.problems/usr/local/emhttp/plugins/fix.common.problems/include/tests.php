@@ -2262,8 +2262,8 @@ function checkServerDate() {
 ######################################
 
 function checkRealtek() {
-  exec('lspci -nn', $pciDevices);
-  exec('lsusb', $usbDevices);
+  exec('lspci -nn 2>/dev/null', $pciDevices);
+  exec('lsusb 2>/dev/null', $usbDevices);
 
   $r8125 = [
     '10EC:5000',
@@ -2351,13 +2351,13 @@ function checkRealtek() {
   }
 
   if (!empty($r8125result) && !file_exists('/boot/config/plugins/unraid-r8125.plg')) {
-    addWarning("Realtek <b>R8125</b> NIC found","The default Realtek NIC driver is known to have issues, please install the plugin from Community Applications to avoid further issues. Search for: r8125 in Community Applications, install the plugin and reboot your server.","https://forums.unraid.net/topic/141349-plugin-realtek-r8125-r8168-and-r81526-drivers/");
+    addWarning("Realtek <b>R8125</b> NIC found","The default Realtek NIC driver is known to have issues, consider installing the driver plugin from Community Applications if you are having stability issues or trouble with networking. Search for: r8125 in Community Applications, install the plugin and reboot your server.","https://forums.unraid.net/topic/141349-plugin-realtek-r8125-r8168-and-r81526-drivers/");
   }
   if (!empty($r8152result) && !file_exists('/boot/config/plugins/unraid-r8152.plg')) {
-    addWarning("Realtek <b>R8152</b> USB NIC found","The default Realtek USB NIC driver is known to have issues, please install the plugin from Community Applications to avoid further issues. Search for: r8152 in Community Applications, install the plugin and reboot your server.","https://forums.unraid.net/topic/141349-plugin-realtek-r8125-r8168-and-r81526-drivers/");
+    addWarning("Realtek <b>R8152</b> USB NIC found","The default Realtek NIC driver is known to have issues, consider installing the driver plugin from Community Applications if you are having stability issues or trouble with networking. Search for: r8152 in Community Applications, install the plugin and reboot your server.","https://forums.unraid.net/topic/141349-plugin-realtek-r8125-r8168-and-r81526-drivers/");
   }
   if (!empty($r8186result) && !file_exists('/boot/config/plugins/unraid-r8168.plg')) {
-  addWarning("Realtek <b>R8186</b> NIC found","The default Realtek NIC driver is known to have issues, please install the plugin from Community Applications to avoid further issues. Search for: r8186 in Community Applications, install the plugin and reboot your server.","https://forums.unraid.net/topic/141349-plugin-realtek-r8125-r8168-and-r81526-drivers/");
+  addWarning("Realtek <b>R8186</b> NIC found","The default Realtek NIC driver is known to have issues, consider installing the driver plugin from Community Applications if you are having stability issues or trouble with networking. Search for: r8186 in Community Applications, install the plugin and reboot your server.","https://forums.unraid.net/topic/141349-plugin-realtek-r8125-r8168-and-r81526-drivers/");
   }
 }
 
