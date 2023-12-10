@@ -169,7 +169,8 @@ if ( $troubleshooting ?? false) {
 	"corruptFlash",
 	"dockerUpdatePatch",
 	"macvlan",
-	"legacyMyServers"
+	"legacyMyServers",
+	"checkRealtek"
 	);
 	$currentTest = 0;
 	foreach ($tests as $test) {
