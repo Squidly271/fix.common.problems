@@ -2262,6 +2262,8 @@ function checkServerDate() {
 ######################################
 
 function checkRealtek() {
+  if ( version_compare($unRaidVersion,"6.12.0","<") ) return;
+
   exec('lspci -nn 2>/dev/null', $pciDevices);
   exec('lsusb 2>/dev/null', $usbDevices);
 
