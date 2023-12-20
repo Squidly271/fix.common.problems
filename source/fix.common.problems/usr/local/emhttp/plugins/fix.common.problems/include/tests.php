@@ -2256,4 +2256,111 @@ function checkServerDate() {
 	if ( ($caVersion - $currentDate) > 2592000 ) # 30 Days
 		addError("Date And Time Incorrect","The Date and Time on your server appears to be wrong.  This will directly impact being able to install any updates to the OS or applications, operation of the Apps tab and many other services on your server.  You should fix this here: ".addLinkButton("Date and Time","/Settings/DateTime"),"https://forums.unraid.net/topic/120220-fix-common-problems-more-information/page/2/#comment-1314425");
 }
+
+######################################
+# Check for problematic Realtek NICs #
+######################################
+
+function checkRealtek() {
+  if ( version_compare($unRaidVersion,"6.12.0","<") ) return;
+
+  exec('lspci -nn 2>/dev/null', $pciDevices);
+  exec('lsusb 2>/dev/null', $usbDevices);
+
+  $r8125 = [
+    '10EC:5000',
+    '10EC:8126',
+    '10EC:3000',
+    '10EC:8162',
+    '10EC:8125'
+  ];
+
+  $r8152 = [
+    '413C:B097',
+    '0B05:1976',
+    '2BAF:0012',
+    '2357:0601',
+    '0955:09FF',
+    '13B1:0041',
+    '17EF:A387',
+    '17EF:A359',
+    '17EF:8153',
+    '17EF:721E',
+    '17EF:7214',
+    '17EF:720C',
+    '17EF:720B',
+    '17EF:720A',
+    '17EF:7205',
+    '17EF:3098',
+    '17EF:3082',
+    '17EF:3069',
+    '17EF:3062',
+    '17EF:3057',
+    '17EF:3054',
+    '17EF:3052',
+    '17EF:304F',
+    '04E8:A101',
+    '04E8:0C5E',
+    '04E8:0927',
+    '04E8:07C6',
+    '04E8:07AB',
+    '0BDA:8156',
+    '0BDA:8155',
+    '0BDA:8153',
+    '0BDA:8152',
+    '0BDA:8053',
+    '0BDA:8050'
+  ];
+
+  $r8186 = [
+    '1186:4300',
+    '1186:4B10',
+    '10EC:2600',
+    '10EC:2502',
+    '10EC:8161',
+    '10EC:8168'
+  ];
+
+  $r8125 = array_map('strtolower', $r8125);
+  $r8152 = array_map('strtolower', $r8152);
+  $r8186 = array_map('strtolower', $r8186);
+
+  foreach ($pciDevices as $pciDevice) {
+    if (preg_match("/([\da-fA-F]{4}):([\da-fA-F]{4})/", $pciDevice, $matches)) {
+      $vendorId = $matches[1];
+      $deviceId = $matches[2];
+      $deviceToCheck = strtolower("$vendorId:$deviceId");
+
+      if (in_array($deviceToCheck, $r8125)) {
+        $r8125result[$deviceToCheck] = true;
+      }
+      if (in_array($deviceToCheck, $r8186)) {
+        $r8186result[$deviceToCheck] = true;
+      }
+    }
+  }
+
+  foreach ($usbDevices as $usbDevice) {
+    if (preg_match("/([\da-fA-F]{4}):([\da-fA-F]{4})/", $usbDevice, $matches)) {
+      $vendorId = $matches[1];
+      $deviceId = $matches[2];
+      $deviceToCheck = strtolower("$vendorId:$deviceId");
+
+      if (in_array($deviceToCheck, $r8152)) {
+        $r8152result[$deviceToCheck] = true;
+      }
+    }
+  }
+
+  if (!empty($r8125result) && !file_exists('/boot/config/plugins/unraid-r8125.plg')) {
+    addWarning("Realtek <b>R8125</b> NIC found","The default Realtek NIC driver is known to have issues, consider installing the driver plugin from Community Applications if you are having stability issues or trouble with networking. Search for: r8125 in Community Applications, install the plugin and reboot your server.","https://forums.unraid.net/topic/141349-plugin-realtek-r8125-r8168-and-r81526-drivers/");
+  }
+  if (!empty($r8152result) && !file_exists('/boot/config/plugins/unraid-r8152.plg')) {
+    addWarning("Realtek <b>R8152</b> USB NIC found","The default Realtek NIC driver is known to have issues, consider installing the driver plugin from Community Applications if you are having stability issues or trouble with networking. Search for: r8152 in Community Applications, install the plugin and reboot your server.","https://forums.unraid.net/topic/141349-plugin-realtek-r8125-r8168-and-r81526-drivers/");
+  }
+  if (!empty($r8186result) && !file_exists('/boot/config/plugins/unraid-r8168.plg')) {
+  addWarning("Realtek <b>R8186</b> NIC found","The default Realtek NIC driver is known to have issues, consider installing the driver plugin from Community Applications if you are having stability issues or trouble with networking. Search for: r8186 in Community Applications, install the plugin and reboot your server.","https://forums.unraid.net/topic/141349-plugin-realtek-r8125-r8168-and-r81526-drivers/");
+  }
+}
+
 ?>
