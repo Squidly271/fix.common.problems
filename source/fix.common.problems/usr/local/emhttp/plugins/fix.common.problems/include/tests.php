@@ -2325,7 +2325,7 @@ global $fixPaths, $unRaidVersion, $fixSettings, $autoUpdateOverride, $developerM
 
   $r8125 = array_map('strtolower', $r8125);
   $r8152 = array_map('strtolower', $r8152);
-  $r8186 = array_map('strtolower', $r8168);
+  $r8168 = array_map('strtolower', $r8168);
 
   foreach ($pciDevices as $pciDevice) {
     if (preg_match("/([\da-fA-F]{4}):([\da-fA-F]{4})/", $pciDevice, $matches)) {
