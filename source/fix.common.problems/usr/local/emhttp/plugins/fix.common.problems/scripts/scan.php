@@ -170,7 +170,8 @@ if ( $troubleshooting ?? false) {
 	"dockerUpdatePatch",
 	"macvlan",
 	"legacyMyServers",
-	"checkRealtek"
+	"checkRealtek",
+	"macvlanfix"
 	);
 	$currentTest = 0;
 	foreach ($tests as $test) {
