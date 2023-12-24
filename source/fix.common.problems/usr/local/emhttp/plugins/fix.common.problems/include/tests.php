@@ -1071,8 +1071,8 @@ function mceCheck() {
     return;
   }
   if ($output) {
-    addError("<b>Machine Check Events</b> detected on your server",addButton("Acknowledge Error","acknowledgeMCE(this.id);")."Your server has detected hardware errors.  You should install mcelog via the NerdPack plugin, post your diagnostics and ask for assistance on the Unraid forums.  The output of mcelog (if installed) has been logged","https://forums.unraid.net/topic/120220-fix-common-problems-more-information/?tab=comments#comment-1098725");
     if ( is_file("/usr/sbin/mcelog") ) {
+      addError("<b>Machine Check Events</b> detected on your server",addButton("Acknowledge Error","acknowledgeMCE(this.id);")."Your server has detected hardware errors.  The output of mcelog has been loggeg.  Post your diagnostics and ask for assistance on the Unraid forums","https://forums.unraid.net/topic/120220-fix-common-problems-more-information/?tab=comments#comment-1098725");
       $filename = randomFile("/tmp");
       exec("mcelog > $filename 2>&1",$mcelog);
       $mcelog = explode("\n",file_get_contents($filename));
@@ -1080,6 +1080,7 @@ function mceCheck() {
         logger($line);
       }
     } else {
+      addError("<b>Machine Check Events</b> detected on your server",addButton("Acknowledge Error","acknowledgeMCE(this.id);")."Your server has detected hardware errors.  You should install mcelog via the NerdPack plugin, post your diagnostics and ask for assistance on the Unraid forums.  The output of mcelog (if installed) has been logged","https://forums.unraid.net/topic/120220-fix-common-problems-more-information/?tab=comments#comment-1098725");
       logger("mcelog not installed");
     }
   }

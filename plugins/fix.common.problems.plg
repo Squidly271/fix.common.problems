@@ -2,8 +2,8 @@
 <!DOCTYPE PLUGIN [
 <!ENTITY name      "fix.common.problems">
 <!ENTITY author    "Andrew Zawadzki">
-<!ENTITY version   "2023.12.21">
-<!ENTITY md5       "c7e705f3f021c89e7c8a2b63bdf63cbe">
+<!ENTITY version   "2023.12.24">
+<!ENTITY md5       "05812e57f570d50e7f1360cef4ac5985">
 <!ENTITY launch    "Settings/FixProblems">
 <!ENTITY plugdir   "/usr/local/emhttp/plugins/&name;">
 <!ENTITY github    "Squidly271/fix.common.problems">
@@ -13,6 +13,9 @@
 <PLUGIN name="&name;" author="&author;" version="&version;" launch="&launch;" pluginURL="&pluginURL;" icon="warning" min="6.7.0">
 
 <CHANGES>
+###2023.12.24
+- Wording changes on various tests
+
 ###2023.12.21
 - Check for macvlan and bridging enabled 6.12.4+
 - Check for realtek and plugin
