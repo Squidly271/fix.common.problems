@@ -183,7 +183,7 @@ if ( $troubleshooting ?? false) {
 	}
 }
 
-if ( $ignored && ( $fixSettings['logIgnored'] != "yes") ) {
+if ( ($ignored ?? false) && ( $fixSettings['logIgnored'] != "yes") ) {
 	logger("Fix Common Problems: Ignored errors / warnings / other comments found, but not logged per user settings");
 }
 
