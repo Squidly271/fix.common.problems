@@ -2,7 +2,7 @@
 <!DOCTYPE PLUGIN [
 <!ENTITY name      "fix.common.problems">
 <!ENTITY author    "Andrew Zawadzki">
-<!ENTITY version   "2023.12.24">
+<!ENTITY version   "2024.01.07">
 <!ENTITY md5       "05812e57f570d50e7f1360cef4ac5985">
 <!ENTITY launch    "Settings/FixProblems">
 <!ENTITY plugdir   "/usr/local/emhttp/plugins/&name;">
@@ -13,6 +13,10 @@
 <PLUGIN name="&name;" author="&author;" version="&version;" launch="&launch;" pluginURL="&pluginURL;" icon="warning" min="6.7.0">
 
 <CHANGES>
+###2024.01.07
+- Further flash corruption changes
+- PHP8 upgrades
+
 ###2023.12.24
 - Wording changes on various tests
 
@@ -762,7 +766,7 @@ rm -rf /tmp/fix.common.problems/errors.json
 echo ""
 echo "----------------------------------------------------"
 echo " &name; has been installed."
-echo " Copyright 2016-2022, Andrew Zawadzki"
+echo " Copyright 2016-2024, Andrew Zawadzki"
 echo " Version: &version;"
 echo "----------------------------------------------------"
 echo ""

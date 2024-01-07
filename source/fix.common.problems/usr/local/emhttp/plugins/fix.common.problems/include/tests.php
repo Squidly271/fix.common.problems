@@ -2,7 +2,7 @@
 
 ###############################################################
 #                                                             #
-# Fix Common Problems copyright 2015-2023, Andrew Zawadzki    #
+# Fix Common Problems copyright 2015-2024, Andrew Zawadzki    #
 #                                                             #
 ###############################################################
 
@@ -2066,7 +2066,7 @@ function testTLD() {
 
   if (file_exists($cert_path.$https_2_cert)) {
     if (isUnraidLegacyCert($cert_path.$https_2_cert)) {
-      // after 2023-JAN-01, unraid.net certificates will no longer be renewed
+      // after 2024-JAN-01, unraid.net certificates will no longer be renewed
       addWarning("Legacy certificate detected","Your unraid.net certificate needs to be upgraded to a myunraid.net certificate ASAP.", "https://unraid.net/blog/ssl-certificate-update-2");
     } elseif (!isUnraidWildcardCert($cert_path.$https_2_cert)) {
       // in 6.10.? the https_2_cert can only be used for unraid.net or myunraid.net certificates. Flag any custom certs here.
@@ -2170,7 +2170,7 @@ function corruptFlash() {
   global $fixPaths, $unRaidVersion, $fixSettings, $autoUpdateOverride, $developerMode, $communityApplicationsInstalled, $dockerRunning, $ignoreList, $shareList;
 
   $paths = ["/boot/config","/boot/config/shares","/boot/config/plugins/dynamix"];
-  $excluded = ["/boot/config/case-model.cfg","/boot/config/plugins/dynamix/case-model.cfg","/boot/config/network-rules.cfg","/boot/config/plugins/corefreq/corefreq.cfg","/boot/config/plugins/open-vm-tools/open-vm-tools.cfg","/boot/config/plugins/ca.turbo/settings.ini","/boot/config/plugins/prometheus_fritzbox_exporter/settings.cfg","/boot/config/plugins/iscsi-initiator/targets.cfg","/boot/config/old.network-rules.cfg","/boot/config/plugins/prometheus_node_exporter/settings.cfg","/boot/config/syslinux.cfg","/boot/config/editor.cfg"];
+  $excluded = ["/boot/config/favorites.cfg","/boot/config/case-model.cfg","/boot/config/plugins/dynamix/case-model.cfg","/boot/config/network-rules.cfg","/boot/config/plugins/corefreq/corefreq.cfg","/boot/config/plugins/open-vm-tools/open-vm-tools.cfg","/boot/config/plugins/ca.turbo/settings.ini","/boot/config/plugins/prometheus_fritzbox_exporter/settings.cfg","/boot/config/plugins/iscsi-initiator/targets.cfg","/boot/config/old.network-rules.cfg","/boot/config/plugins/prometheus_node_exporter/settings.cfg","/boot/config/syslinux.cfg","/boot/config/editor.cfg"];
   $files = [];
   foreach ($paths as $path) {
     $files = array_merge($files,glob("$path/*.cfg"));
