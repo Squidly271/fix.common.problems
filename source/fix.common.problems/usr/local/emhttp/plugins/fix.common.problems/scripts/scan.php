@@ -170,7 +170,7 @@ if ( $troubleshooting ?? false) {
 	"dockerUpdatePatch",
 	"macvlan",
 	"legacyMyServers",
-	"checkRealtek",
+//	"checkRealtek",
 	"macvlanfix"
 	);
 	$currentTest = 0;

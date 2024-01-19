@@ -2261,6 +2261,7 @@ function checkServerDate() {
 ######################################
 # Check for problematic Realtek NICs #
 ######################################
+// removed from tests
 
 function checkRealtek() {
 global $fixPaths, $unRaidVersion, $fixSettings, $autoUpdateOverride, $developerMode, $communityApplicationsInstalled, $dockerRunning, $ignoreList, $shareList;

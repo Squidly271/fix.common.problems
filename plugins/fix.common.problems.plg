@@ -2,8 +2,8 @@
 <!DOCTYPE PLUGIN [
 <!ENTITY name      "fix.common.problems">
 <!ENTITY author    "Andrew Zawadzki">
-<!ENTITY version   "2024.01.07">
-<!ENTITY md5       "085ee69665494da5129a27dbebe18be6">
+<!ENTITY version   "2024.01.18">
+<!ENTITY md5       "8a1c6505f535cf100a86cfb144628c7e">
 <!ENTITY launch    "Settings/FixProblems">
 <!ENTITY plugdir   "/usr/local/emhttp/plugins/&name;">
 <!ENTITY github    "Squidly271/fix.common.problems">
@@ -13,6 +13,9 @@
 <PLUGIN name="&name;" author="&author;" version="&version;" launch="&launch;" pluginURL="&pluginURL;" icon="warning" min="6.7.0">
 
 <CHANGES>
+###2024.01.18
+- Remove Realtek NIC tests
+
 ###2024.01.07
 - Further flash corruption changes
 - PHP8 upgrades
