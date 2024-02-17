@@ -171,7 +171,8 @@ if ( $troubleshooting ?? false) {
 	"macvlan",
 	"legacyMyServers",
 //	"checkRealtek",
-	"macvlanfix"
+	"macvlanfix",
+	"dockerPatch6812"
 	);
 	$currentTest = 0;
 	foreach ($tests as $test) {

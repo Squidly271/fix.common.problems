@@ -2383,4 +2383,12 @@ function macvlanfix() {
     addError("Macvlan and Bridging found","Macvlan and bridging has been found.  This might cause issues with stability on your server.","https://docs.unraid.net/unraid-os/release-notes/6.12.4/#fix-for-macvlan-call-traces");
   }
 }
+
+function dockerPatch6812() {
+  global $fixPaths, $fixSettings, $autoUpdateOverride, $developerMode, $communityApplicationsInstalled, $dockerRunning, $ignoreList, $shareList,$unRaidVersion;
+
+  if ( $unRaidVersion == "6.12.8" && ! is_file("/var/log/plugins/docker.patch2.plg") ) {
+    addWarning("Docker Patch Not Installed","Due to a change in the docker executable, docker run errors may result in certain circumstances resulting in orphaned containers when updating or installing.  Recommended to install the Docker Patch 6.12.8 from the Apps Tab","https://forums.unraid.net/topic/154107-plugin-docker-patch-6128/#comment-1371877");
+  }
+}
 ?>
