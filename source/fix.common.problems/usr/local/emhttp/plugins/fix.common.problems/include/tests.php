@@ -2186,7 +2186,6 @@ function corruptFlash() {
     }
   }
 
-  if ( version_compare($unRaidVersion,"6.11.0-rc2",">") ) return;
   $keys = glob("/boot/config.key");
   $go = file_get_contents("/boot/config/go");
   if ( strpos($go,"/lib64/ld-linux-x86-64.so.2 /boot/config/unraider") ) {
