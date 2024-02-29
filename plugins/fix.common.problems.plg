@@ -2,8 +2,8 @@
 <!DOCTYPE PLUGIN [
 <!ENTITY name      "fix.common.problems">
 <!ENTITY author    "Andrew Zawadzki">
-<!ENTITY version   "2024.02.22">
-<!ENTITY md5       "adf1aa453d85543974720fb643784560">
+<!ENTITY version   "2024.02.29">
+<!ENTITY md5       "beee360c7f32a5c5e19c92c328f5112c">
 <!ENTITY launch    "Settings/FixProblems">
 <!ENTITY plugdir   "/usr/local/emhttp/plugins/&name;">
 <!ENTITY github    "Squidly271/fix.common.problems">
@@ -13,6 +13,9 @@
 <PLUGIN name="&name;" author="&author;" version="&version;" launch="&launch;" pluginURL="&pluginURL;" icon="warning" min="6.7.0">
 
 <CHANGES>
+###2024.02.29
+- Ignore certain MCE errors
+
 ###2024.02.22
 - Some tests weren't running on 6.12
 

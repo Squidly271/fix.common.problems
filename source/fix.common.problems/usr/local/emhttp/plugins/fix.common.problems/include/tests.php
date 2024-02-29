@@ -23,7 +23,7 @@ $unRaidVersion                  - Currently installed version of Unraid
 */
 
 ###########################
-# Check for array started #
+# Check for array started #fmce
 ###########################
 
 # NOTE: This sets the global variables $shareList so it needs to be run first of all the tests
@@ -1071,6 +1071,8 @@ function mceCheck() {
     return;
   }
   if ($output) {
+    if ( exec("cat /var/log/syslog | grep -i 'failed to prefill DIMM database from DMI data'") )
+      return;
     if ( is_file("/usr/sbin/mcelog") ) {
       addError("<b>Machine Check Events</b> detected on your server",addButton("Acknowledge Error","acknowledgeMCE(this.id);")."Your server has detected hardware errors.  The output of mcelog has been loggeg.  Post your diagnostics and ask for assistance on the Unraid forums","https://forums.unraid.net/topic/120220-fix-common-problems-more-information/?tab=comments#comment-1098725");
       $filename = randomFile("/tmp");
