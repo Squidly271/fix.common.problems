@@ -282,7 +282,7 @@ function writeToDriveTest() {
 
     $filename = randomFile("/mnt/$drive");
 
-    @file_put_contents($filename,"test");
+    @file_put_contents_atomic($filename,"test");
     $result = @file_get_contents($filename);
     if ( $result != "test" ) {
       addError("Unable to write to $drive","Drive mounted read-only or completely full.  Begin Investigation Here: ".addLinkButton("Unraid Main","/Main"),"https://forums.unraid.net/topic/120220-fix-common-problems-more-information/?tab=comments#comment-1098699");
@@ -294,7 +294,7 @@ function writeToDriveTest() {
 
   if ( $dockerRunning ) {
     $filename = randomFile("/var/lib/docker/tmp");
-    @file_put_contents($filename,"test");
+    @file_put_contents_atomic($filename,"test");
     $result = @file_get_contents($filename);
 
     if ( $result != "test" ) {
@@ -1364,7 +1364,7 @@ function inotifyExhausted() {
   }
 
   $filename = randomFile("/tmp");
-  file_put_contents($filename,"doesn't matter");
+  file_put_contents_atomic($filename,"doesn't matter");
 
   $inotifyResult = passthru("inotifywatch $filename -t 1 > /dev/null 2>&1",$returnValue);
   if ( $returnValue ) {
@@ -1425,11 +1425,12 @@ function reiserCache() {
   if ( version_compare($unRaidVersion,"6.11.0-rc1",">") ) {
     foreach ($disks as $disk) {
       if ( isset($disk['fsType']) && $disk['fsType'] == "reiserfs") {
-      addWarning("ResierFS on {$disk['name']} {$disk['fsType']}","ReiserFS is deprecated, and will be removed from the Linux Kernal in future releases.  Highly recommended to convert to XFS to prevent data loss in future releases of the OS","https://wiki.unraid.net/index.php/File_System_Conversion");
+      addError("ResierFS on {$disk['name']} {$disk['fsType']}","ReiserFS is deprecated, and will be removed from the Linux Kernel in 2025.  Highly recommended to convert to XFS to prevent data loss in future releases of the OS","https://wiki.unraid.net/index.php/File_System_Conversion");
       }
     }
   }
 }
+
 ################################################
 # Check for SSD Cache, but not SSD trim plugin #
 ################################################
@@ -1802,7 +1803,7 @@ function updatePluginSupport() {
         $dom->preserveWhiteSpace = false;
         $dom->formatOutput = true;
         $dom->loadXML($xml->asXML());
-        file_put_contents($plugin, $dom->saveXML());
+        file_put_contents_atomic($plugin, $dom->saveXML());
         addOther("<b>".plugin("name",$plugin)."</b> Support Updated","The support thread has been updated to {$templates[$pluginEntry]['Support']}");
       }
     }

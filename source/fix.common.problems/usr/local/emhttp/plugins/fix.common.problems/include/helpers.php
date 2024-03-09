@@ -10,6 +10,16 @@ require_once("/usr/local/emhttp/plugins/fix.common.problems/include/paths.php");
 require_once("/usr/local/emhttp/plugins/dynamix.plugin.manager/include/PluginHelpers.php");
 
 
+if ( ! function_exists("file_put_contents_atomic") ) {
+	function file_put_contents_atomic($filename, $data, $flags = 0, $context = null) {
+		if (file_put_contents($filename."~", $data, $flags, $context) === strlen($data)) {
+		return rename($filename."~",$filename,$context) ? strlen($data) : false;  
+		}
+		exec("logger ".escapeshellarg("Failed to write $filename"));
+		@unlink($filename."~", $context);
+		return false;
+	}
+}
 ####################################################################################################
 #                                                                                                  #
 # 2 Functions because unRaid includes comments in .cfg files starting with # in violation of PHP 7 #
@@ -200,7 +210,7 @@ function readJsonFile($filename) {
 }
 
 function writeJsonFile($filename,$jsonArray) {
-	file_put_contents($filename,json_encode($jsonArray, JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT));
+	file_put_contents_atomic($filename,json_encode($jsonArray, JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT));
 }
 
 ##############################################################
@@ -220,7 +230,7 @@ function findAppdata($volumes) {
 	if ( ! is_file("/boot/config/shares/$shareName.cfg") ) { 
 		$shareName = "****";
 	}
-	file_put_contents("/tmp/test",$defaultShareName);
+	file_put_contents_atomic("/tmp/test",$defaultShareName);
 	if ( is_array($volumes) ) {
 		foreach ($volumes as $volume) {
 			$temp = explode(":",$volume);
