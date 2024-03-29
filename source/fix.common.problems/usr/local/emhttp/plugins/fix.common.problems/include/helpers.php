@@ -286,11 +286,31 @@ function startsWith($haystack, $needle) {
 #                                             #
 ###############################################
 
-function download_url($url, $path = "", $bg = false){
-	exec("curl --compressed --max-time 60 --silent --insecure --location --fail ".($path ? " -o '$path' " : "")." $url ".($bg ? ">/dev/null 2>&1 &" : "2>/dev/null"), $out, $exit_code );
-	return ($exit_code === 0 ) ? implode("\n", $out) : false;
-}
+function download_url($url, $path = "", $bg = false, $timeout = 45) {
+	$ch = curl_init();
+	curl_setopt($ch,CURLOPT_URL,$url);
+	curl_setopt($ch,CURLOPT_FRESH_CONNECT,true);
+	curl_setopt($ch,CURLOPT_RETURNTRANSFER,true);
+	curl_setopt($ch,CURLOPT_CONNECTTIMEOUT,$timeout);
+	curl_setopt($ch,CURLOPT_TIMEOUT,$timeout);
+	curl_setopt($ch,CURLOPT_ENCODING,"");
+	curl_setopt($ch,CURLOPT_RETURNTRANSFER,true);
+	curl_setopt($ch,CURLOPT_FOLLOWLOCATION, true);
+	curl_setopt($ch,CURLOPT_FAILONERROR,true);
+  
+	if ( ! getenv("http_proxy") && is_file("/boot/config/plugins/community.applications/proxy.cfg") ) {
+		$proxyCFG = parse_ini_file("/boot/config/plugins/community.applications/proxy.cfg");
+		curl_setopt($ch, CURLOPT_PROXYPORT,intval($proxyCFG['port']));
+		curl_setopt($ch, CURLOPT_HTTPPROXYTUNNEL,intval($proxyCFG['tunnel']));
+		curl_setopt($ch, CURLOPT_PROXY,$proxyCFG['proxy']);
+	}
+	$out = curl_exec($ch);
+	curl_close($ch);
+	if ( $path )
+	  file_put_contents($path,$out);
 
+	return $out ?: false;
+  }
 ##########################
 #                        #
 # returns unRaid version #

@@ -2,8 +2,8 @@
 <!DOCTYPE PLUGIN [
 <!ENTITY name      "fix.common.problems">
 <!ENTITY author    "Andrew Zawadzki">
-<!ENTITY version   "2024.03.09">
-<!ENTITY md5       "771e2cb896347d35612e322ef0ac0a53">
+<!ENTITY version   "2024.03.29">
+<!ENTITY md5       "fbb8998d6c86732bb0a4d854cf58fbae">
 <!ENTITY launch    "Settings/FixProblems">
 <!ENTITY plugdir   "/usr/local/emhttp/plugins/&name;">
 <!ENTITY github    "Squidly271/fix.common.problems">
@@ -13,6 +13,9 @@
 <PLUGIN name="&name;" author="&author;" version="&version;" launch="&launch;" pluginURL="&pluginURL;" icon="warning" min="6.7.0">
 
 <CHANGES>
+###2024.03.29
+- Support proxy for downloads (Use 6.13.x proxy method with fallback to existing proxy settings in Community Applications
+
 ###2024.03.09
 - Use atomic writes
 
