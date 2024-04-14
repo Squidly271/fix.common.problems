@@ -14,24 +14,16 @@ if ( $settings['excludedPerms'] ) {
     $excludedShares[$excluded] = $excluded;
   }
 }
-$dockerSettings = @parse_ini_file("/boot/config/docker.cfg");
-if ($dockerSettings) {
-	if ( is_dir($dockerSettings['DOCKER_IMAGE_FILE']) ) {
-		$path = explode("/",$dockerSettings['DOCKER_IMAGE_FILE']);
-		$excludedShares[$path[3]] = $path[3];
-	}
-}
-
 $disks = my_parse_ini_file("/var/local/emhttp/disks.ini", true);
 
 foreach ($disks as $disk) {
-  if ( ! is_dir("/mnt/".$disk['name']) ) {
+  if ( ! is_dir("/mnt/".$disk['name']) )
     continue;
-  }
+  
   $folderlist = array_diff(scandir("/mnt/".$disk['name']),array(".",".."));
   
   foreach ($folderlist as $folder) {
-    if ( $excludedShares[$folder] ) {
+    if ( $excludedShares[$folder] ?? false ) {
       continue;
     }
     $fullpath = escapeshellarg("/mnt/".$disk['name']."/$folder");

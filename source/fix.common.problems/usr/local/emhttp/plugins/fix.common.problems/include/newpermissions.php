@@ -14,7 +14,7 @@ switch ($_POST['action']) {
     if ( $settings['excludedPerms'] ) {
       $exclude = explode(",",$settings['excludedPerms']);
       foreach ($exclude as $excluded) {
-        $excludedShares[$excluded] = $excluded;
+        $excludedShares[$excluded] = $excluded."&nbsp;&nbsp&nbsp;(<i>Excluded via Fix Common Problems' Settings</i>)";
       }
     }
   

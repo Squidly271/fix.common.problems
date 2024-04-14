@@ -44,11 +44,14 @@ For read/write files:
 For readonly files:
   -r--r--r--
   </code>  </pre>
-  The following shares will <b>NOT</b> be touched: <font color='purple'>Additional shares can be excluded <a href='/Settings/FixProblems'>HERE</a></font>
+  The following shares will <b>NOT</b> be touched: (Any shares found deemed to be an appdata share, docker image folder cannot be explicitly included).  Additional shares can be excluded <a href='/Settings/FixProblems'>HERE</a>
   
 <span id='excluded'></span>
 
 Clicking Start will open another window and start the background process. Closing the window before completion will terminate the background process - so don't do that. This process can take a long time if you have many files.  During this time, the webUI will be unavailable.  If you do close the pop up window, the current folder in progress will be finished before the webUI is responsive again.
+
+NOTE: If the docker system is disabled, only the default appdata path AND the share containing a docker folder (not an image) will be determined.
+
 
 <font color='red'>If you have a <b>preclear</b> in progress, do not run this utility (or the regular new permissions utility) as the process will appear to hang until the preclear is finished (due to the new permissions utility running the <b>sync</b> command)
 
