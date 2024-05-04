@@ -2,8 +2,8 @@
 <!DOCTYPE PLUGIN [
 <!ENTITY name      "fix.common.problems">
 <!ENTITY author    "Andrew Zawadzki">
-<!ENTITY version   "2024.04.14">
-<!ENTITY md5       "ec4283c4760462516bb0d06a61dd7db4">
+<!ENTITY version   "2024.05.04">
+<!ENTITY md5       "570665324e7e14883ff596fe4d44d8a1">
 <!ENTITY launch    "Settings/FixProblems">
 <!ENTITY plugdir   "/usr/local/emhttp/plugins/&name;">
 <!ENTITY github    "Squidly271/fix.common.problems">
@@ -13,6 +13,10 @@
 <PLUGIN name="&name;" author="&author;" version="&version;" launch="&launch;" pluginURL="&pluginURL;" icon="warning" min="6.7.0">
 
 <CHANGES>
+###2024.05.04
+- Fixed: Fall back on curl encoding to "deflate" if accepting all encodings does not succeed
+- Changed: Automatically rescan if error list is over an hour old
+
 ###2024.04.14
 - Fixed: New Permissions Tools wasn't detecting properly auto-excluded shares that were directly referencing a disk share or cache pool (other than the default named pool of "cache"
 - Added: Automatically exclude the share containing a docker folder (not the docker image)
