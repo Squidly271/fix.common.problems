@@ -305,6 +305,10 @@ function download_url($url, $path = "", $bg = false, $timeout = 45) {
     curl_setopt($ch, CURLOPT_PROXY,$proxyCFG['proxy']);
   }
   $out = curl_exec($ch);
+  if ( ! $out ) {
+    curl_setopt($ch,CURLOPT_ENCODING,"deflate");
+    $out = curl_exec($ch);
+  }
   curl_close($ch);
   if ( $path )
     file_put_contents($path,$out);

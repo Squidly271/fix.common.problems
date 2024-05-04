@@ -1677,6 +1677,7 @@ function CPUSet() {
   $userTemplates = glob("/boot/config/plugins/dockerMan/templates-user/*.xml");
   foreach ($userTemplates as $template) {
     $xml = @simplexml_load_file($template);
+    if ( ! $xml ) continue;
     $Name = (string)$xml->Name;
     if ( ! isset($info[$Name]) ) continue;
     if (strlen($xml->CPUset) && strpos($xml->ExtraParams,"cpuset-cpus")) {

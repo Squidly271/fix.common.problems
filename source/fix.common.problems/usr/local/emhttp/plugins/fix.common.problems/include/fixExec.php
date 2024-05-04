@@ -135,10 +135,11 @@ switch ($_POST['action']) {
     break;
     
   case 'getTimeStamp':
-    if ( is_file("/tmp/fix.common.problems/errors.json") ) {
+    if ( is_file("/tmp/fix.common.problems/errors.json") && (time() - @filemtime("/tmp/fix.common.problems/errors.json") ) < 3600 ) {
       $errorTimeStamp = date("l F dS  g:i A",filemtime("/tmp/fix.common.problems/errors.json"));
       echo $errorTimeStamp;
     } else {
+      @unlink("/tmp/fix.common.problems/errors.json");
       echo "*".date("l F dS  g:i A");
     }
     break;
