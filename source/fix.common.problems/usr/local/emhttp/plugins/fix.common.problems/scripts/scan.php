@@ -68,7 +68,7 @@ if ( is_file($fixPaths['templates']) ) {
 	download_url($fixPaths['application-feed-last-updated'],$tempFile);
 	$newList = readJsonFile($tempFile);
 	@unlink($tempFile);
-	if ( ($newList['last_updated_timestamp'] ?: inf) != ($templates['last_updated_timestamp'] ?? null) ) {
+	if ( ($newList['last_updated_timestamp'] ?: INF) != ($templates['last_updated_timestamp'] ?? null) ) {
 		download_url($fixPaths['application-feed'],$fixPaths['templates']);
 		$templates = readJsonFile($fixPaths['templates']);
 	}
@@ -172,7 +172,8 @@ if ( $troubleshooting ?? false) {
 	"legacyMyServers",
 //	"checkRealtek",
 	"macvlanfix",
-	"dockerPatch6812"
+	"dockerPatch6812",
+	"oldStyleSSDTrim"
 	);
 	$currentTest = 0;
 	foreach ($tests as $test) {

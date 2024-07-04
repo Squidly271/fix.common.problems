@@ -2,8 +2,8 @@
 <!DOCTYPE PLUGIN [
 <!ENTITY name      "fix.common.problems">
 <!ENTITY author    "Andrew Zawadzki">
-<!ENTITY version   "2024.05.04">
-<!ENTITY md5       "570665324e7e14883ff596fe4d44d8a1">
+<!ENTITY version   "2024.06.03">
+<!ENTITY md5       "371c873e49ce6d53baa3c9b46f897eaa">
 <!ENTITY launch    "Settings/FixProblems">
 <!ENTITY plugdir   "/usr/local/emhttp/plugins/&name;">
 <!ENTITY github    "Squidly271/fix.common.problems">
@@ -13,6 +13,9 @@
 <PLUGIN name="&name;" author="&author;" version="&version;" launch="&launch;" pluginURL="&pluginURL;" icon="warning" min="6.7.0">
 
 <CHANGES>
+###2024.06.03
+- Added: Check for incompatible cron file created by Dynamix SSD Trim plugin
+- Fixed: PHP error if a download failed
 ###2024.05.04
 - Fixed: Fall back on curl encoding to "deflate" if accepting all encodings does not succeed
 - Changed: Automatically rescan if error list is over an hour old

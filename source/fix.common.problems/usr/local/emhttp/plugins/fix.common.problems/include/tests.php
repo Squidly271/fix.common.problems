@@ -2394,4 +2394,19 @@ function dockerPatch6812() {
     addWarning("Docker Patch Not Installed","Due to a change in the docker executable, docker run errors may result in certain circumstances resulting in orphaned containers when updating or installing.  Recommended to install the Docker Patch 6.12.8 from the Apps Tab","https://forums.unraid.net/topic/154107-plugin-docker-patch-6128/#comment-1371877");
   }
 }
+
+function oldStyleSSDTrim() {
+  global $fixPaths, $fixSettings, $autoUpdateOverride, $developerMode, $communityApplicationsInstalled, $dockerRunning, $ignoreList, $shareList,$unRaidVersion;
+
+  if ( ! file_exists("/boot/config/plugins/dynamix/ssd-trim.cron") ) return;
+  if ( ! file_exists("/usr/local/emhttp/plugins/dynamix/scripts/ssd_trim") ) return;
+
+  $cron = file("/boot/config/plugins/dynamix/ssd-trim.cron");
+  foreach ($cron as $line) {
+    if (startsWith(trim($line),"#")) continue;
+    if (strpos($line,"/sbin/fstrim ") ) {
+      addError("Old version of SSD Trim Schedule","An incompatible schedule created originally with the Dynamix SSD Trim plugin found.  This will cause errors on your system.  You will need recreate your schedule for trimming your SSD.  Fix this here: ".addLinkButton("Scheduler","Settings/Scheduler")."  Note: Even if the displayed schedule appears to be correct, disabling the Trim Schedule and then re-enabling it should fix this issue");
+    }
+  }
+}
 ?>
