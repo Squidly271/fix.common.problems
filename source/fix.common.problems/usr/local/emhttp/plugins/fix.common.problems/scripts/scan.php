@@ -173,7 +173,8 @@ if ( $troubleshooting ?? false) {
 //	"checkRealtek",
 	"macvlanfix",
 	"dockerPatch6812",
-	"oldStyleSSDTrim"
+	"oldStyleSSDTrim",
+	"syslinuxRoot"
 	);
 	$currentTest = 0;
 	foreach ($tests as $test) {

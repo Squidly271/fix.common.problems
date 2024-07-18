@@ -294,6 +294,16 @@ if ( version_compare($newUnRaidVersion,"6.10.3","<") ) {
 	}
 }
 
+echo "\nChecking for root kernel parameter\n";
+
+$config = @file_get_contents("/boot/syslinux/syslinux.cfg");
+  
+if ( strpos($config,"root=") ) {
+  ISSUE("A kernel parameter (root=...) is present in your syslinux.cfg file (/syslinux/syslinux.cfg on the flash drive).  This option was previously needed for some users in order to boot Unraid.  It has not been required for a number of releases, and will prevent the OS from booting 7.0 if it is present.  You should edit your syslinux.cfg file and remove that option.");
+} else {
+	OK("No root kernel parameter found");
+}
+
 if ( isset($ISSUES_FOUND)) {
 	echo "\n\n<font color='red'>Issues have been found with your server that may hinder the OS upgrade.  You should rectify those problems before upgrading</font>\n";
 } else {

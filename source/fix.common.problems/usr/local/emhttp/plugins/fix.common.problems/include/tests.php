@@ -2401,12 +2401,24 @@ function oldStyleSSDTrim() {
   if ( ! file_exists("/boot/config/plugins/dynamix/ssd-trim.cron") ) return;
   if ( ! file_exists("/usr/local/emhttp/plugins/dynamix/scripts/ssd_trim") ) return;
 
+  if ( version_compare($unRaidVersion,"6.12.0","<") )
+    return;
   $cron = file("/boot/config/plugins/dynamix/ssd-trim.cron");
   foreach ($cron as $line) {
     if (startsWith(trim($line),"#")) continue;
     if (strpos($line,"/sbin/fstrim ") ) {
       addError("Old version of SSD Trim Schedule","An incompatible schedule created originally with the Dynamix SSD Trim plugin found.  This will cause errors on your system.  You will need recreate your schedule for trimming your SSD.  Fix this here: ".addLinkButton("Scheduler","Settings/Scheduler")."  Note: Even if the displayed schedule appears to be correct, disabling the Trim Schedule and then re-enabling it should fix this issue");
     }
+  }
+}
+
+function syslinuxRoot() {
+  global $fixPaths, $fixSettings, $autoUpdateOverride, $developerMode, $communityApplicationsInstalled, $dockerRunning, $ignoreList, $shareList,$unRaidVersion;
+
+  $config = @file_get_contents("/boot/syslinux/syslinux.cfg");
+
+  if ( strpos($config,"root=") ) {
+    addError("root kernel parameter in syslinux.cfg","A kernel parameter (root=...) is present in your syslinux.cfg file (/syslinux/syslinux.cfg on the flash drive).  This option was previously needed for some users in order to boot Unraid.  It has not been required for a number of releases, and will prevent the OS from booting 7.0 if it is present.  You should edit your syslinux.cfg file and remove that option.  Fix this here: ".addLinkButton("Flash","/Settings/Flash"));
   }
 }
 ?>
