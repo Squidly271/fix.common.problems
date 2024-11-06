@@ -2374,7 +2374,9 @@ function macvlanfix() {
   global $fixPaths, $unRaidVersion, $fixSettings, $autoUpdateOverride, $developerMode, $communityApplicationsInstalled, $dockerRunning, $ignoreList, $shareList;
 
   if ( version_compare($unRaidVersion,"6.12.4","<") ) return;
-  
+  if ( version_compare($unRaidVersion,"6.12.10",">") ) return;
+
+
   $macvlan = $nic2 = false;
   exec("docker network ls --filter driver=macvlan --format='{{.Name}}'", $names);
 
