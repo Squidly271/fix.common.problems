@@ -2,8 +2,8 @@
 <!DOCTYPE PLUGIN [
 <!ENTITY name      "fix.common.problems">
 <!ENTITY author    "Andrew Zawadzki">
-<!ENTITY version   "2024.11.05">
-<!ENTITY md5       "1df3599f6ae313fb8e3515af7d49b5d2">
+<!ENTITY version   "2024.11.09">
+<!ENTITY md5       "2220f8d18f7a0ce2516f4749cbe6e953">
 <!ENTITY launch    "Settings/FixProblems">
 <!ENTITY plugdir   "/usr/local/emhttp/plugins/&name;">
 <!ENTITY github    "Squidly271/fix.common.problems">
@@ -13,6 +13,9 @@
 <PLUGIN name="&name;" author="&author;" version="&version;" launch="&launch;" pluginURL="&pluginURL;" icon="warning" min="6.7.0">
 
 <CHANGES>
+###2024.11.05
+- Miscellaneous / Security updates
+
 ###2024.11.05
 - Fixed: certain tests were failing on unaffected OS versions
 

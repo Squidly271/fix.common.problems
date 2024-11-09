@@ -397,10 +397,24 @@ function readXmlFile($xmlfile) {
   $o['Support']     = ($doc->getElementsByTagName( "Support" )->length ) ? $doc->getElementsByTagName( "Support" )->item(0)->nodeValue : $Repo['forum'];
   $o['Support']     = $o['Support'];
   $o['IconWeb']     = stripslashes($doc->getElementsByTagName( "Icon" )->item(0)->nodeValue);
-  
+ 
+  removeXMLtags($o);
   return $o;
 }
-
+function removeXMLtags(&$template) {
+  foreach ($template as $key => &$element) {
+    if ( is_array($element) ) {
+        removeXMLtags($element);
+    } else {
+      $tempElement = htmlspecialchars_decode($element??"");
+      $tempElement = str_replace("<br>","\n",$tempElement);
+      if ( trim($tempElement) !== trim(strip_tags($tempElement)) ) {
+        $tempElement = str_replace(["<",">"],["",""],$tempElement);
+        $element = $tempElement;
+      }
+    }
+  }
+}
 #########################################################
 #                                                       #
 # Returns an array of all of the appdata shares present #
