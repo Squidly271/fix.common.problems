@@ -142,7 +142,7 @@ function arrayOnlyFilesOnCache() {
           $contents = array_diff(scandir("/mnt/cache/$share"),array(".",".."));
           if ( ! empty($contents) ) {
             $shareURL = str_replace(" ","+",$share);
-            addWarning("Share <b>$share</b> set to <em>not use the cache</em>, but files / folders exist on the cache drive","You should change the shares settings appropriately ".addLinkButton("$share Settings","/Shares/Share?name=$shareURL")."or use the dolphin / krusader docker applications to move the offending files accordingly.  Note that there are some valid use cases for a set up like this.  In particular: <a href='https://lime-technology.com/forum/index.php?topic=40777.msg385753' target='_blank'>THIS</a>","https://forums.unraid.net/topic/120220-fix-common-problems-more-information/?tab=comments#comment-1098688");
+            addWarning("Share <b>$share</b> set to <em>not use the cache</em>, but files / folders exist on the cache drive","You should change the shares settings appropriately ".addLinkButton("$share Settings","/Shares/Share?name=$shareURL")."or use the dolphin / krusader docker applications to move the offending files accordingly.","https://forums.unraid.net/topic/120220-fix-common-problems-more-information/?tab=comments#comment-1098688");
           }
         }
       }
@@ -407,7 +407,7 @@ function fileSystemErrors() {
   foreach ( $disks as $disk ) {
     if ( !isset($disk['fsStatus']) || !$disk['fsStatus'] || $disk['fsStatus'] == "-" ) continue;
     if ( strtolower($disk['fsStatus']) !== "mounted" ) {
-      addError("<b>".$disk['name']." (".$disk['id'].")</b> has file system errors (".$disk['fsError'].")","If the disk if XFS / REISERFS, stop the array, restart the Array in Maintenance mode, and run the file system checks.  If the disk is BTRFS, then see <a href='https://forums.lime-technology.com/topic/46802-faq-for-unraid-v6/?page=2&tab=comments#comment-543490' target='_blank'>this post</a>.  <b>If the disk is listed as being unmountable, and it has data on it, whatever you do do not hit the format button.  Seek assistance <a href='http://lime-technology.com/forum/index.php?board=71.0' target='_blank'>HERE</a>");
+      addError("<b>".$disk['name']." (".$disk['id'].")</b> has file system errors (".$disk['fsError'].")","If the disk if XFS / REISERFS, stop the array, restart the Array in Maintenance mode, and run the file system checks.  If the disk is BTRFS, then see <a href='https://forums.unraid.net/topic/46802-faq-for-unraid-v6/page/2/?tab=comments#comment-543490' target='_blank'>this post</a>.  <b>If the disk is listed as being unmountable, and it has data on it, whatever you do do not hit the format button.  Seek assistance <a href='https://forums.unraid.net/forum/55-general-support/' target='_blank'>HERE</a>");
     }
   }
 }
@@ -453,7 +453,7 @@ function pluginsUpToDate() {
               } else {
                 if ( $Plugin == "unRAIDServer.plg" ) {
                   $uptodateVersion = pluginVersion("/tmp/plugins/$Plugin");
-                  addWarning("<b>Unraid OS</b> not up to date","You are currently running <b>".unRaidVersion()."</b> and the latest version is <b>$uptodateVersion</b>.  It is recommended to upgrade here: ".addLinkButton("UpdateOS","/Tools/Update")." and review the release notes <a href='http://lime-technology.com/forum/index.php?board=1.0' target='_blank'>HERE</a>");
+                  addWarning("<b>Unraid OS</b> not up to date","You are currently running <b>".unRaidVersion()."</b> and the latest version is <b>$uptodateVersion</b>.  It is recommended to upgrade here: ".addLinkButton("UpdateOS","/Tools/Update"));
                 } else {
                   addWarning("Plugin <b>$Plugin</b> is not up to date","Upgrade the plugin here: ".addLinkButton("Plugins","/Plugins"));
                 }
@@ -2193,13 +2193,13 @@ function corruptFlash() {
   $keys = glob("/boot/config.key");
   $go = file_get_contents("/boot/config/go");
   if ( strpos($go,"/lib64/ld-linux-x86-64.so.2 /boot/config/unraider") ) {
-    addError("Possible rootkit or malware detected","Rootkits can introduce viruses / malware to your system.  Post your diagnostics in the forum for more assistance or email support@lime-technology.com");
+    addError("Possible rootkit or malware detected","Rootkits can introduce viruses / malware to your system.  Post your diagnostics in the forum for more assistance or <a href='https://unraid.net/contact' target='_blank'>contact support</a>");
     return;
   }
 
   foreach ($keys as $key) {
     if (filesize($key) > 256) {
-      addError("Possible rootkit or malware detected","Rootkits can introduce viruses / malware to your system.  Post your diagnostics in the forum for more assistance or email support@lime-technology.com");
+      addError("Possible rootkit or malware detected","Rootkits can introduce viruses / malware to your system.  Post your diagnostics in the forum for more assistance or <a href='https://unraid.net/contact' target='_blank'>contact support</a>");
       break;
     }
   }

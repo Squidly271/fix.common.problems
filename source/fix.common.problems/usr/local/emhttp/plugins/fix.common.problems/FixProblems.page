@@ -405,8 +405,8 @@ function showCredits() {
 <center><input type='button' value='What is checked' onclick='checkList();'></center>
 
 <center>
-<b>For assistance with any of the errors / warnings displayed here, please post a new topic in <a href='http://lime-technology.com/forum/index.php?board=71.0' target='_blank'>General Support</a></b><br>
-<b>For assistance with the plugin, including requests for additional checks, false positives, etc please post <a href='http://lime-technology.com/forum/index.php?topic=48972.0' target='_blank'>HERE</a></b>
+<b>For assistance with any of the errors / warnings displayed here, please post a new topic in <a href='https://forums.unraid.net/forum/55-general-support/' target='_blank'>General Support</a></b><br>
+<b>For assistance with the plugin, including requests for additional checks, false positives, etc please post <a href='https://forums.unraid.net/topic/47266-plugin-ca-fix-common-problems/' target='_blank'>HERE</a></b>
 </center>
 
 > <center><a href='https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=7M7CBCVU732XG' target='_blank'><img src="https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif"></a></center>
