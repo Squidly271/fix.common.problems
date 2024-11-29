@@ -5,6 +5,10 @@
 #                                                             #
 ###############################################################
 
+$docroot = $docroot ?? $_SERVER['DOCUMENT_ROOT'] ?: "/usr/local/emhttp";
+if (is_file("$docroot/webGui/include/MarkdownExtra.inc.php") ) {
+    require_once "$docroot/webGui/include/MarkdownExtra.inc.php";
+}
 require_once("/usr/local/emhttp/plugins/dynamix/include/Markdown.php");
 
 $checkList = "
