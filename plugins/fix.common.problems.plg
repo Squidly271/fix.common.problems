@@ -2,8 +2,8 @@
 <!DOCTYPE PLUGIN [
 <!ENTITY name      "fix.common.problems">
 <!ENTITY author    "Andrew Zawadzki">
-<!ENTITY version   "2024.11.29">
-<!ENTITY md5       "efe0c0a668764220c5d9562cd0158ec5">
+<!ENTITY version   "2024.12.04">
+<!ENTITY md5       "e14e449436dfd71af7f1d3f165a0e3ea">
 <!ENTITY launch    "Settings/FixProblems">
 <!ENTITY plugdir   "/usr/local/emhttp/plugins/&name;">
 <!ENTITY github    "Squidly271/fix.common.problems">
@@ -13,6 +13,9 @@
 <PLUGIN name="&name;" author="&author;" version="&version;" launch="&launch;" pluginURL="&pluginURL;" icon="warning" min="6.7.0">
 
 <CHANGES>
+###2024.12.04
+- Fixed: Unknown plugins installed test wasn't running
+
 ###2024.11.29
 - Fixed: What is checked button
 

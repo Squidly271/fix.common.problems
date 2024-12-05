@@ -163,7 +163,7 @@ if ( $troubleshooting ?? false) {
 	"xmrig",
 	"shareSpace69",
 	"testTLD",
-//	"unknownPluginInstalled",
+	"unknownPluginInstalled",
 	"testDockerOptsIp",
 	"wrongCachePoolFiles",
 	"corruptFlash",
