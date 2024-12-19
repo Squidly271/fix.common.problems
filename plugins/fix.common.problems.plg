@@ -2,17 +2,20 @@
 <!DOCTYPE PLUGIN [
 <!ENTITY name      "fix.common.problems">
 <!ENTITY author    "Andrew Zawadzki">
-<!ENTITY version   "2024.12.04">
-<!ENTITY md5       "e14e449436dfd71af7f1d3f165a0e3ea">
+<!ENTITY version   "2024.12.19">
+<!ENTITY md5       "72e105ab99f6d486b26f2870c0c41333">
 <!ENTITY launch    "Settings/FixProblems">
 <!ENTITY plugdir   "/usr/local/emhttp/plugins/&name;">
-<!ENTITY github    "Squidly271/fix.common.problems">
+<!ENTITY github    "unraid/fix.common.problems">
 <!ENTITY pluginURL "https://raw.githubusercontent.com/&github;/master/plugins/&name;.plg">
 ]>
 
 <PLUGIN name="&name;" author="&author;" version="&version;" launch="&launch;" pluginURL="&pluginURL;" icon="warning" min="6.7.0">
 
 <CHANGES>
+###2024.12.19
+- Move repository to unraid
+
 ###2024.12.04
 - Fixed: Unknown plugins installed test wasn't running
 
@@ -816,6 +819,7 @@ rm -rf /tmp/fix.common.problems/errors.json
 echo ""
 echo "----------------------------------------------------"
 echo " &name; has been installed."
+echo " Copyright 2020-2024, Lime Technology"
 echo " Copyright 2016-2024, Andrew Zawadzki"
 echo " Version: &version;"
 echo "----------------------------------------------------"
