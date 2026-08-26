@@ -6,7 +6,7 @@
 <!ENTITY md5       "72e105ab99f6d486b26f2870c0c41333">
 <!ENTITY launch    "Settings/FixProblems">
 <!ENTITY plugdir   "/usr/local/emhttp/plugins/&name;">
-<!ENTITY github    "unraid/fix.common.problems">
+<!ENTITY github    "squidly271/fix.common.problems">
 <!ENTITY pluginURL "https://raw.githubusercontent.com/&github;/master/plugins/&name;.plg">
 ]>
 
