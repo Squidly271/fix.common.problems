@@ -36,6 +36,13 @@ function echoResult($string) {
   file_put_contents($fixPaths['extendedLog'],"<tt>$string</tt>",FILE_APPEND);
 }
 
+# File and folder names come from the array and are fully user controlled.
+# echoResult() writes them into extendedLog, which showExtendedLog.php
+# renders straight into the webGUI, so they must be escaped first.
+function escapeResult($string) {
+  return htmlspecialchars($string, ENT_QUOTES, 'UTF-8');
+}
+
 
 function scanDirectory($directory) {
   global $disks, $errors, $excludedDirectory, $fixPaths, $totalDir, $totalFile;
@@ -52,7 +59,7 @@ function scanDirectory($directory) {
     if ( $directory == "/mnt/user" )
     {
 		  if ( $excludedDirectory[$share[0]] ) continue;
-      echoResult("Processing $directory/$entry\n");
+      echoResult("Processing ".escapeResult("$directory/$entry")."\n");
       file_put_contents($fixPaths['extendedStatus'],"Processing $directory/$entry");
     }
 
@@ -156,7 +163,7 @@ if ($dockerSettings) {
 if ( ! empty($excludedDirectory) ) {
   echoResult("<b>The following user shares will be excluded from the permissions tests:</b>\n\n");
   foreach ($excludedDirectory as $share) {
-    echoResult("/mnt/user/$share\n");
+    echoResult(escapeResult("/mnt/user/$share")."\n");
   }
   echoResult("\n");
 }
@@ -172,35 +179,35 @@ if ( ! is_array($errors) ) {
   if ( is_array($errors['case']) ) {
     echoResult("\n<b>The following directories exist with similar names, only differing by the 'case' which will play havoc with Windows / SMB access.  Windows does NOT support folder names only differing by their case and strange results will happen should you attempt to manipulate the folders or files</b>\n\n");
     foreach ( $errors['case'] as $error ) {
-      echoResult($error."\n");
+      echoResult(escapeResult($error)."\n");
     }
     echoResult("\n");
   }
   if ( is_array($errors['dupe']) ) {
     echoResult("<b>The following files exist within the same folder on more than one disk.  This duplicated file means that only the version on the lowest numbered disk will be readable, and the others are only going to confuse unRaid and take up excess space:</b>\n\n");
     foreach ( $errors['dupe'] as $error ) {
-      echoResult($error."\n");
+      echoResult(escapeResult($error)."\n");
     }    
     echoResult("\n");
   }
   if ( is_array($errors['permissions']) ) {
     echoResult("<b>The following files / folders may not be accessible to the users allowed via each Share's SMB settings.  This is often caused by wrong permissions being used on new downloads / copies by CouchPotato, Sonarr, and the like:</b>\n\n");
     foreach ( $errors['permissions'] as $error ) {
-      echoResult($error."\n");
+      echoResult(escapeResult($error)."\n");
     }    
     echoResult("\n");
   }
   if ( is_array($errors['illegal']) ) {
     echoResult("<b>The following files / folders contain illegal characters in its name, which is going to confuse / cause issues with Windows / MAC systems:</b>\n\n");
     foreach ( $errors['illegal'] as $error ) {
-      echoResult($error."\n");
+      echoResult(escapeResult($error)."\n");
     }    
     echoResult("\n");
   }
   if ( is_array($errors['whitespace']) ) {
     echoResult("<b>The following files / folders contain whitespace at either the beginning or the end of the file names.  This will cause issues with Windows / SMB because whitespace is disallowed at either the beginning or end of a file/folder</b>\n\n");
     foreach ( $errors['whitespace'] as $error ) {
-      echoResult($error."\n");
+      echoResult(escapeResult($error)."\n");
     }    
     echoResult("\n"); 
   }
