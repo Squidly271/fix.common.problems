@@ -256,7 +256,7 @@ function logger($string,$ignored = false) {
     $string .= " ** Ignored";
   }
   $string = htmlspecialchars_decode($string, ENT_QUOTES); 
-  shell_exec('logger "'.$string.'"');
+  shell_exec('logger '.escapeshellarg($string));
 }
 
 ###########################################
@@ -266,7 +266,13 @@ function logger($string,$ignored = false) {
 ###########################################
 
 function notify($event,$subject,$description,$message,$type="normal") {
-  $command = '/usr/local/emhttp/plugins/dynamix/scripts/notify -e "'.$event.'" -s "'.$subject.'" -d "'.$description.'" -m "'.$message.'" -i "'.$type.'" -l "/Settings/FixProblems"';
+  $command = '/usr/local/emhttp/plugins/dynamix/scripts/notify'
+            .' -e '.escapeshellarg($event)
+            .' -s '.escapeshellarg($subject)
+            .' -d '.escapeshellarg($description)
+            .' -m '.escapeshellarg($message)
+            .' -i '.escapeshellarg($type)
+            .' -l '.escapeshellarg("/Settings/FixProblems");
   shell_exec($command);
 }
 
