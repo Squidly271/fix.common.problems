@@ -30,6 +30,16 @@ function fixTemplateURL($template, $url) {
   if (empty($url)) {
     return error("Missing template URL.");
   }
+  # $template arrives from the query string and is both read and rewritten below,
+  # so confine it to the docker template directory before either happens.
+  # realpath() resolves ".." and symlinks; the trailing slash on the comparison
+  # stops a sibling directory with the same prefix from matching.
+  $templateDir = realpath("/boot/config/plugins/dockerMan/templates-user");
+  $templatePath = realpath($template);
+  if ($templateDir === false || $templatePath === false || strpos($templatePath, $templateDir."/") !== 0) {
+    return error("Template is not inside /boot/config/plugins/dockerMan/templates-user");
+  }
+  $template = $templatePath;
   if (!is_file($template)) {
     return error("Template not found: ".$template);
   }
