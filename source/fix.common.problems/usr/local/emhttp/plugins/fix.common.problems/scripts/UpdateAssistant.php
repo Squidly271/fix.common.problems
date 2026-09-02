@@ -113,14 +113,14 @@ if ( ! $appfeed ) {
 			if ( version_compare($newUnRaidVersion,$moderation[$pluginURL]['MaxVer'],">") ) {
 				$pluginName = plugin("name",$installedPlg);
 				
-				ISSUE(basename($installedPlg)." is not compatible with $newUnRaidVersion.  It is HIGHLY recommended to uninstall this plugin. {$moderation[$pluginURL]['ModeratorComment']}");
+				ISSUE(basename($installedPlg)." is not compatible with $newUnRaidVersion.  It is HIGHLY recommended to uninstall this plugin. ".htmlspecialchars($moderation[$pluginURL]['ModeratorComment'] ?? ""));
 				$versionsFlag = true;
 			}
 		}
 		if ( isset($moderation[$pluginURL]['DeprecatedMaxVer']) ) {
 			if ( version_compare($newUnRaidVersion,$moderation[$pluginURL]['DeprecatedMaxVer'],">") ) {
 				$pluginName = plugin("name",$installedPlg);
-				ISSUE(basename($installedPlg)." is deprecated with $newUnRaidVersion.  It is recommended to uninstall this plugin. {$moderation[$pluginURL]['ModeratorComment']}");
+				ISSUE(basename($installedPlg)." is deprecated with $newUnRaidVersion.  It is recommended to uninstall this plugin. ".htmlspecialchars($moderation[$pluginURL]['ModeratorComment'] ?? ""));
 				$versionsFlag = true;
 			}
 		}
@@ -315,7 +315,7 @@ function download_url($url, $path = "", $bg = false,$requestNoCache=false){
 	if ( ! strpos($url,"?") ) {
 		$url .= "?".time(); # append time to always wind up requesting a non cached version
 	}
-	exec("curl --compressed --max-time 60 --silent --insecure --location --fail ".($path ? " -o '$path' " : "")." $url ".($bg ? ">/dev/null 2>&1 &" : "2>/dev/null"), $out, $exit_code );
+	exec("curl --compressed --max-time 60 --silent --location --fail ".($path ? " -o '$path' " : "")." $url ".($bg ? ">/dev/null 2>&1 &" : "2>/dev/null"), $out, $exit_code );
 	return ($exit_code === 0 ) ? implode("\n", $out) : false;
 }
 function readJsonFile($filename) {
